@@ -161,41 +161,20 @@ function matchFirstAttack(e) {
   //TODO: tagToSearch is the tag that goes immediately after the header tag,
   // i.e the 'end' of the injection point. This needs to be marked with an unique
   // identifier so as to look for it with top-down bottom-up approach.
-  //var tagToSearch = document.querySelector('div.second:nth-child(8)');
-  /*var tagToSearch = document.body.innerHTML.lastIndexOf('<div class="second">');
-  var bodyChildren = document.body.children;
-  var lastNode = bodyChildren[bodyChildren.length-1];
-  //var closestSearchToLast = $(lastNode).closest('.edit-link')[0];
-  /*var query = reverseDOMSearch(headerTag, lastNode, tagToSearch);
-  
-  console.log('matches? ');
-  var isMatch = query === tagToSearch;
-  console.log(isMatch);
-  while (!!query) {
-    isMatch = query === tagToSearch;
-  }*/
-  //if (isMatch) {
-    //TODO: this identification should happen before the injection (if possible), i.e the database should specify
-    //which ones are the header and tagToSearch beforehand.
-    headerTag.classList.add('searchF1');
-    //tagToSearch.classList.add('searchF1');  
-    //now we know the injected code is between  headerTag and isMatch
-    //we can grab the html between these two points and remove any javascript i.e
-    //a script tag, or a called funtion from an inserted element
-    var s = document.body.innerHTML;
-    //why can't we just do this at the beginning and skip the searching?
-    //maybe because the identification cannot be done before injection happens as it's all loaded inline?
-    var first = s.indexOf('<div id="first" class="searchF1">');
-    var last = s.lastIndexOf('<div class="second">');
-    var between = s.substr(first,last-first);
-    if (e.target.outerHTML.includes('<script')) {
-      e.preventDefault();
-      var sanitized = DOMPurify.sanitize(between);
-      document.body.innerHTML = s.substring(0, first) + sanitized + s.substring(last);
-    }
-  //} else {
-  //  console.log("no match found");
-  //}
+  //now we know the injected code is between  headerTag and isMatch
+  //we can grab the html between these two points and remove any javascript i.e
+  //a script tag, or a called funtion from an inserted element
+  var s = document.body.innerHTML;
+  //why can't we just do this at the beginning and skip the searching?
+  //maybe because the identification cannot be done before injection happens as it's all loaded inline?
+  var first = s.indexOf('<div id="first">');
+  var last = s.lastIndexOf('<div class="second">');
+  var between = s.substr(first,last-first);
+  if (e.target.outerHTML.includes('<script')) {
+    e.preventDefault();
+    var sanitized = DOMPurify.sanitize(between);
+    document.body.innerHTML = s.substring(0, first) + sanitized + s.substring(last);
+  }
 }
 
 //Search for a DOM element identified by 'query' between 'start' and 'end'
