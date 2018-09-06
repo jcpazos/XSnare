@@ -1,0 +1,12 @@
+Some blocked features are accessible through the prototype property of the blocked object.
+
+As an example:
+Blocking all features under "Core functionality" will have the following behaviour:
+`document.write` returns the blocking proxy `ƒ anonymous()`.
+`document.__proto__.write` returns the blocking proxy `ƒ anonymous()`.
+`document.__proto__.__proto__.write` returns the native JavaScript method `ƒ write() { [native code] }`.
+
+Thus, a simple exploit to bypass the block can be executed like so:
+`document.__proto__.__proto__.write.apply(document, ["exploit"])`
+
+In this case, window.document is an instance of HTMLDocument, and HTMLDocument.prototype is an instance of Document. Both HTMLDocument.write and Document.write exist and are the same function.

@@ -1,0 +1,5 @@
+vulnerabilities:
+
+https://gist.github.com/B0UG/f0cfb356e23be3cd6ebea69566d6100a
+https://github.com/airbnb/knowledge-repo/issues/431
+https://www.cvedetails.com/cve/CVE-2018-10102/
