@@ -1,10 +1,14 @@
-CVE-2018-6943
-CVE-2018-6944 
-CVE-2018-7280 
-CVE-2018-7543 
-CVE-2018-7747 
-CVE-2018-8729
-CVE-2018-9020
+CVE-2018-6943	IN DOUBT
+CVE-2018-6944 	IN DOUBT
+CVE-2018-7280 	possible XSS on response back (missing content-type application/json header???), not evident of where response is placed on DOM.
+CVE-2018-7543 	reproducible, unclear whether it is an actual attack.
+CVE-2018-7747 	exploit1 can be intercepted on a div with id="cf-autoresponder-message-{{_id}}" (in 101:config.php)
+				exploit2 can't be verified, form submission not working
+				exploit3 can be intercepted by the following selector: #fld_29462 > h3 more information could be the caldera-editor-field-title class, and being the first
+				tag after the previous id.
+CVE-2018-8729	for posts with javascript in the title, no immediate identifier for element with injection, but might be enough to stop javascript from running in the 		  							"description" columns of the activity log table
+CVE-2018-9020	all these unsanitized inputs have identifying ids (e.g. location-name, location-town, etc.) which could be used to stop a script running here. Furthermore the problem
+				in this specific case in a JS file (events-manager.js) loaded in the header, which could potentially be modified to sanitize the mapTitle variable before anything happens.
 CVE-2018-9034
 CVE-2018-9172
 CVE-2018-9844 
