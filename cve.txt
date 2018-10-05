@@ -9,14 +9,18 @@ CVE-2018-7747 	exploit1 can be intercepted on a div with id="cf-autoresponder-me
 CVE-2018-8729	for posts with javascript in the title, no immediate identifier for element with injection, but might be enough to stop javascript from running in the 		  							"description" columns of the activity log table
 CVE-2018-9020	all these unsanitized inputs have identifying ids (e.g. location-name, location-town, etc.) which could be used to stop a script running here. Furthermore the problem
 				in this specific case in a JS file (events-manager.js) loaded in the header, which could potentially be modified to sanitize the mapTitle variable before anything happens.
-CVE-2018-9034
-CVE-2018-9172
-CVE-2018-9844 
-CVE-2018-9864 
-CVE-2018-10102 
-CVE-2018-10234 
-CVE-2018-10300 
-CVE-2018-10301 
+CVE-2018-9034	Blocked by chrome's XSS auditor (ERR_BLOCKED_BY_XSS_AUDITOR), Firefox doesn't block it but an extension could do so using similar techniques to chrome's.
+				(more info at https://www.exploit-db.com/exploits/44366/), admin being tricked into accessing url
+CVE-2018-9172	this attack injects the attack script several times inside the "upload div". Fortunately, it seems like upload functionality is broken anyway by any kind of injection,
+				so it would be safe to disable everything inside the div with id='wordpress_file_upload_block'+(injected_js), e.g. for the attack I tried, the id looked like wordpress_file_upload_block_<script>alert('ManhNho')</script>, this id will be distinct across pages but the 'wordpress_file_upload_block' part should not.
+				(more info at https://www.exploit-db.com/exploits/44443/)
+CVE-2018-9844 	skipped for now
+CVE-2018-9864 	Unable to reproduce (history feature not working), however, from the  video (https://www.youtube.com/watch?v=eHG1pWaez9w), it should be easy to target the exploit as 					they happen on the admin page, which should be uniform across all sites, and has clear identifiers for the table elements (class="chat_name column_chat_name" + id's 					based on element number).
+CVE-2018-10102 	related to wordpress version, version string was not escaped in the get_the_generator function, and could lead to XSS in a generator tag. It sounds like it would be
+				very hard to pinpoint for an arbitrary page.
+CVE-2018-10234 	not clear how the js can be injected, as it seems to be using the p tag's innerText property, need to investigate plugin code further.
+CVE-2018-10300 	in here, an user (might have to have admin privileges) will modify it's instagram bio and use it to inject js into the wp instagram feed. The unique identifier for the 				place where this occurs seems to be the 'class="wdi_bio"', as well as further information that this specific page is indeed an instagram feed in wordpress (from other 					context clues).
+CVE-2018-10301 	this exploit seems specific to the pro version of the 10-web instagram feed so I haven't been able to try it out.
 CVE-2018-10309 
 CVE-2018-10310 
 CVE-2018-10371 
@@ -29,3 +33,5 @@ CVE-2018-11709
 CVE-2018-13832 
 CVE-2018-14430
 CVE-2018-16285
+https://packetstormsecurity.com/files/149603/SYSS-2018-014.txt
+https://wpvulndb.com/
