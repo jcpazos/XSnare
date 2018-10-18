@@ -1,37 +1,44 @@
-CVE-2018-6943	IN DOUBT
-CVE-2018-6944 	IN DOUBT
-CVE-2018-7280 	possible XSS on response back (missing content-type application/json header???), not evident of where response is placed on DOM.
-CVE-2018-7543 	reproducible, unclear whether it is an actual attack.
-CVE-2018-7747 	exploit1 can be intercepted on a div with id="cf-autoresponder-message-{{_id}}" (in 101:config.php)
-				exploit2 can't be verified, form submission not working
-				exploit3 can be intercepted by the following selector: #fld_29462 > h3 more information could be the caldera-editor-field-title class, and being the first
-				tag after the previous id.
-CVE-2018-8729	for posts with javascript in the title, no immediate identifier for element with injection, but might be enough to stop javascript from running in the 		  							"description" columns of the activity log table
-CVE-2018-9020	all these unsanitized inputs have identifying ids (e.g. location-name, location-town, etc.) which could be used to stop a script running here. Furthermore the problem
-				in this specific case in a JS file (events-manager.js) loaded in the header, which could potentially be modified to sanitize the mapTitle variable before anything happens.
-CVE-2018-9034	Blocked by chrome's XSS auditor (ERR_BLOCKED_BY_XSS_AUDITOR), Firefox doesn't block it but an extension could do so using similar techniques to chrome's.
-				(more info at https://www.exploit-db.com/exploits/44366/), admin being tricked into accessing url
-CVE-2018-9172	this attack injects the attack script several times inside the "upload div". Fortunately, it seems like upload functionality is broken anyway by any kind of injection,
-				so it would be safe to disable everything inside the div with id='wordpress_file_upload_block'+(injected_js), e.g. for the attack I tried, the id looked like wordpress_file_upload_block_<script>alert('ManhNho')</script>, this id will be distinct across pages but the 'wordpress_file_upload_block' part should not.
-				(more info at https://www.exploit-db.com/exploits/44443/)
-CVE-2018-9844 	skipped for now
-CVE-2018-9864 	Unable to reproduce (history feature not working), however, from the  video (https://www.youtube.com/watch?v=eHG1pWaez9w), it should be easy to target the exploit as 					they happen on the admin page, which should be uniform across all sites, and has clear identifiers for the table elements (class="chat_name column_chat_name" + id's 					based on element number).
-CVE-2018-10102 	related to wordpress version, version string was not escaped in the get_the_generator function, and could lead to XSS in a generator tag. It sounds like it would be
-				very hard to pinpoint for an arbitrary page.
-CVE-2018-10234 	not clear how the js can be injected, as it seems to be using the p tag's innerText property, need to investigate plugin code further.
-CVE-2018-10300 	in here, an user (might have to have admin privileges) will modify it's instagram bio and use it to inject js into the wp instagram feed. The unique identifier for the 				place where this occurs seems to be the 'class="wdi_bio"', as well as further information that this specific page is indeed an instagram feed in wordpress (from other 					context clues).
-CVE-2018-10301 	this exploit seems specific to the pro version of the 10-web instagram feed so I haven't been able to try it out.
-CVE-2018-10309 
-CVE-2018-10310 
-CVE-2018-10371 
-CVE-2018-10752 
-CVE-2018-11105 
-CVE-2018-11366
-CVE-2018-11485
-CVE-2018-11568
-CVE-2018-11709
-CVE-2018-13832 
-CVE-2018-14430
-CVE-2018-16285
-https://packetstormsecurity.com/files/149603/SYSS-2018-014.txt
-https://wpvulndb.com/
+U 	AO 	UO 	D 	 	 	
+x	x	x	x	CVE-2018-6943	IN DOUBT
+x	x	x	x	CVE-2018-6944 	IN DOUBT
+x	x	x	x	CVE-2018-7280 	possible XSS on response back (missing content-type application/json header???), not evident of where response is placed on DOM.
+y	n	n	n	CVE-2018-7543 	reproducible, unclear whether it is an actual attack.
+				CVE-2018-7747 	
+n	n	y	y	(1)				exploit1 can be intercepted on a div with id="cf-autoresponder-message-{{_id}}" (in 101:config.php)
+x	x	x	x	(2)				exploit2 can't be verified, form submission not working
+n	y	n	y	(3)				exploit3 can be intercepted by the following selector: #fld_29462 > h3 more information could be the caldera-editor-field-title class, and being the first
+								tag after the previous id.
+n	y	n	y	CVE-2018-8729	for posts with javascript in the title, no immediate identifier for element with injection, but might be enough to stop javascript from running in the 		  							"description" columns of the activity log table
+n	y	n	y	CVE-2018-9020	all these unsanitized inputs have identifying ids (e.g. location-name, location-town, etc.) which could be used to stop a script running here. 											Furthermore the problem in this specific case in a JS file (events-manager.js) loaded in the header, which could potentially be modified to sanitize the 				 			     mapTitle variable before anything happens. (https://www.youtube.com/watch?v=40d7uXl36O4)
+y	n	n	n	CVE-2018-9034	Blocked by chrome's XSS auditor (ERR_BLOCKED_BY_XSS_AUDITOR), Firefox doesn't block it but an extension could do so using similar techniques to chrome's.
+								(more info at https://www.exploit-db.com/exploits/44366/), admin being tricked into accessing url
+y	n	y	y	CVE-2018-9172	this attack injects the attack script several times inside the "upload div". Fortunately, it seems like upload functionality is broken anyway by any kind 								  of injection, so it would be safe to disable everything inside the div with id='wordpress_file_upload_block'+(injected_js), e.g. for the attack I tried, 									the id looked like wordpress_file_upload_block_<script>alert('ManhNho')</script>, this id will be distinct across pages but the 														'wordpress_file_upload_block' part should not.
+								(more info at https://www.exploit-db.com/exploits/44443/)
+n	n	n	n	CVE-2018-9844 	skipped for now
+n	y	n	y	CVE-2018-9864 	Unable to reproduce (history feature not working), however, from the  video (https://www.youtube.com/watch?v=eHG1pWaez9w), it should be easy to target 									the exploit as they happen on the admin page, which should be uniform across all sites, and has clear identifiers for the table elements (												class="chat_name column_chat_name" + id's based on element number).
+y	n	n	y	CVE-2018-10102 	related to wordpress version, version string was not escaped in the get_the_generator function, and could lead to XSS in a generator tag. It sounds like 								 it would be very hard to pinpoint for an arbitrary page.
+n	n	y	y	CVE-2018-10234 	not clear how the js can be injected, as it seems to be using the p tag's innerText property, need to investigate plugin code further.
+n	n	y	y	CVE-2018-10300 	in here, an user (might have to have admin privileges) will modify it's instagram bio and use it to inject js into the wp instagram feed. The unique 									identifier for the place where this occurs seems to be the 'class="wdi_bio"', as well as further information that this specific page is indeed an 										instagram feed in wordpress (from other context clues).
+x	x	x	x	CVE-2018-10301 	this exploit seems specific to the pro version of the 10-web instagram feed so I haven't been able to try it out.
+n	n	y	y	CVE-2018-10309 	authenticated attack (admin on admin), injection occurs inside div class="rcc-panel group". trap (on scripts) seems to run before the rest of the body is 				  				  loaded. (more info at https://www.exploit-db.com/exploits/44563/)
+n	y	n	y	CVE-2018-10310 	authenticated attack (admin on admin), this only occurs in the admin view, and there is enough context here to block an attack regardless of the site, 									i.e. no scripts in table class="form-table" until <p class="submit">. (more info at https://www.exploit-db.com/exploits/44503/)
+n	y	n	y	CVE-2018-10371	basically the same as above,  table class="form-table" until <input name="Submit" (more info at https://www.exploit-db.com/exploits/44585/).
+n	n	n	y	CVE-2018-10752 	authenticated attack (admin on admin), there's some identifiers here but probably wouldn't hold in an arbitrary page, in div with classes "tggr-tweets									type-tggr-tweets", seems to be in the title part (header) of the aticle. (more info at https://www.exploit-db.com/exploits/45225/)
+n	y	n	y	CVE-2018-11105 	same as CVE-2018-9864.
+y	y	n	y	CVE-2018-11366	unauthenticated attack, injection happens on admin view, i.e no code runs in table class="wp-list-table widefat fixed users" until input 												name="lz_reset_ip". (more info at https://wpvulndb.com/vulnerabilities/9088)
+y	y	n	y	CVE-2018-11485	unauthenticated attack, was not able to reproduce, injection didn't seem to work, but regardless, injection happes on admin view, presumably in order 									column of table.
+x	x	x	x	CVE-2018-11568	can't reproduce, this theme has to be payed for, lloks like URL attack only, blocked by chrome XSS auditor. 																			(more info https://packetstormsecurity.com/files/143666/WordPress-GamePlan-Event-And-Gym-Fitness-Theme-1.5.13.2-Cross-Site-Scripting.html)
+y	n	n	n	CVE-2018-11709	URL attack on plugin, (e.g. accessing localhost/index.php/community/?%22%3E%3Cscript%3Ealert(/XSS/)%3C/script%3E), blocked by chrome XSS auditor.
+n	y	n	y	CVE-2018-13832 	authenticated attack (admin on admin), as before, this happens in admin view, table class="form-table", until p class="submit".
+y	n	n	n	CVE-2018-14430	unclear if this is self-xss, or will run on admin view, more investigation needed. 																										(more info at https://hackpuntes.com/cve-2018-14430-wordpress-plugin-multi-step-form-125-multiples-xss-reflejados/#comment-902)
+y	n	n	n	CVE-2018-16285	costs money to use, but essentially looks like a POST request causes injected code in the request to run, not sure if anything can be done about this one
+								(e.g. 
+								post /wp-admin/admin-ajax.php
+								Host domain.com
+								action=userpro_shortcode_template&shortcode=[userpro<img src=a onerror=alert(1)> id=1 layout="float" collage_per_page="20" emd_paginate_top="1" emd_paginate="1" emd_gender="Gender,radi)
+								(more info at https://risataim.blogspot.com/2018/09/xss-en-plugin-userpro-de-wordpress.html)
+
+				https://packetstormsecurity.com/files/149603/SYSS-2018-014.txt
+				https://wpvulndb.com/
+
+				Most of the information recorded here applies for <script> tags, as the 'beforescriptexecute' event works well with those. However, for things like images with 'onerror','onload',etc. and other elements, should be able to use proxies or other event rewriting methods to recreate what 'beforescriptexecute' does when these properties are accessed (TODO).
