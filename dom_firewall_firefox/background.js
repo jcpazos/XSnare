@@ -1,6 +1,31 @@
 'use strict';
 
 //var storageArea = chrome.storage.local;
+var respData = [];
+
+function listener(details) {
+  let filter = browser.webRequest.filterResponseData(details.requestId);
+  let decoder = new TextDecoder("utf-8");
+  let encoder = new TextEncoder();
+
+  filter.ondata = event => {
+    let str = decoder.decode(event.data, {stream: true});
+    respData.push(str);
+    // Just change any instance of Example in the HTTP response
+    // to WebExtension Example.
+    str = str.replace(/xss/g, 'WebExtension Example');
+    filter.write(encoder.encode(str));
+    filter.disconnect();
+  }
+
+  //return {}; // not needed
+}
+
+browser.webRequest.onBeforeRequest.addListener(
+  listener,
+  {urls: ["<all_urls>"], types: ["main_frame"]},
+  ["blocking"]
+);
 
 browser.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
