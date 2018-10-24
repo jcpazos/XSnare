@@ -42,3 +42,182 @@ y	n	n	n	CVE-2018-16285	costs money to use, but essentially looks like a POST req
 				https://wpvulndb.com/
 
 				Most of the information recorded here applies for <script> tags, as the 'beforescriptexecute' event works well with those. However, for things like images with 'onerror','onload',etc. and other elements, should be able to use proxies or other event rewriting methods to recreate what 'beforescriptexecute' does when these properties are accessed (TODO).
+
+
+EXTRA CVEs for enhanced study:
+
+				REST OF 2018:
+y	n	n	n	CVE-2018-1000556	Reflected XSS, when loading specific URL, script runs 																																	(http://[path to WordPress]/wp-admin/admin.php?page=wps_pages_page&page-uri=%3F%22%3E%3Cscript%3Ealert%28document.cookie%29%3B%3C%2Fscript%3E)
+									This is blocked by XSS filtering, i.e Chrome's XSS auditor, but not Firefox.
+n	y	n	y	CVE-2018-18460		XSS through URL (i.e https://localhost/wp-admin/admin.php?page=wplivechat-menu-gdpr-page&term=123%5C%27%3E%3Cimg+src%3D1+onerror%3Dalert%281%29%3E) 									blocked by XSS filters (not Firefox). Interestingly, the content gets loaded from the DOM via the term input, but the HTML might load BEFORE the 										<input name='term' type='text' value='<?php echo($_GET['term')?> element, which makes it hard to pinpoint where the injection location starts. 											However, it might be good enough to just get rid of any script inside the <div id='wpbody-content'>. until the footer div. Otherwise, blocking it at 									 URL level should work.
+				CVE-2018-18373		TODO
+x	x	x	x	CVE-2018-18069		this is a paid plugin.
+y	y	n	y	CVE-2018-17947		reflected XSS on admin view, should work when searching for scripts after <input name="text" placeholder="Search..." value="\" type="text"> and 										before <button class="button" type="submit">
+				CVE-2018-17946
+				CVE-2018-17884	
+				CVE-2018-17866
+				CVE-2018-17140	
+				CVE-2018-17138
+				CVE-2018-16363
+				CVE-2018-13136
+				CVE-2018-11580
+				CVE-2018-11486
+				CVE-2018-6891
+				CVE-2018-6469
+				CVE-2018-6468
+				CVE-2018-6466
+				CVE-2018-6357
+				CVE-2018-6194
+				CVE-2018-6002
+				CVE-2018-6001
+				CVE-2018-5776
+				CVE-2018-5672
+				CVE-2018-5671
+				CVE-2018-5670
+				CVE-2018-5668
+				CVE-2018-5667
+				CVE-2018-5666
+				CVE-2018-5665
+				CVE-2018-5664
+				CVE-2018-5663
+				CVE-2018-5662
+				CVE-2018-5661
+				CVE-2018-5660
+				CVE-2018-5659
+				CVE-2018-5657
+				CVE-2018-5655
+				CVE-2018-5654
+				CVE-2018-5653
+				CVE-2018-5652
+				CVE-2018-5651
+				CVE-2018-5369
+				CVE-2018-5367
+				CVE-2018-5366
+				CVE-2018-5365
+				CVE-2018-5364
+				CVE-2018-5363
+				CVE-2018-5362
+				CVE-2018-5361
+				CVE-2018-5316
+				CVE-2018-5312
+				CVE-2018-5311
+				CVE-2018-5293
+				CVE-2018-5292
+				CVE-2018-5288
+				CVE-2018-5286
+				CVE-2018-5284
+				CVE-2018-5214
+				CVE-2018-5213
+				CVE-2018-5212
+				CVE-2018-0585
+				CVE-2018-0578
+				CVE-2018-0577
+				CVE-2018-0576
+				CVE-2018-0547
+				CVE-2018-0546
+				CVE-2017-18032
+				CVE-2017-18015
+				CVE-2017-18012
+				CVE-2017-18011
+				CVE-2017-18010
+				CVE-2016-10706
+				CVE-2016-10705
+				CVE-2015-9273
+				CVE-2015-9270
+				CVE-2015-4557
+				CVE-2015-2329
+				CVE-2015-2324
+				CVE-2014-6604
+				CVE-2014-4932
+				CVE-2014-2274
+				CVE-2014-2297
+
+				ALL 2017:
+				CVE-2017-1002017
+				CVE-2017-1002011
+				CVE-2017-1000227
+				CVE-2017-1000038
+				CVE-2017-1000033	
+				CVE-2017-17869
+				CVE-2017-17780
+				CVE-2017-17753
+				CVE-2017-17744
+				CVE-2017-17719
+				CVE-2017-17451
+				CVE-2017-17096
+				CVE-2017-17094
+				CVE-2017-17093
+				CVE-2017-17092
+				CVE-2017-17043
+				CVE-2017-16842
+				CVE-2017-16815
+				CVE-2017-16758
+				CVE-2017-15867
+				CVE-2017-15863
+				CVE-2017-15812
+				CVE-2017-15811
+				CVE-2017-15810
+				CVE-2017-15375
+				CVE-2017-14751
+				CVE-2017-14726
+				CVE-2017-14724
+				CVE-2017-14721
+				CVE-2017-14720
+				CVE-2017-14718
+				CVE-2017-14622
+				CVE-2017-14530
+				CVE-2017-14313
+				CVE-2017-14126
+				CVE-2017-13138
+				CVE-2017-12948
+				CVE-2017-12200
+				CVE-2017-12131
+				CVE-2017-12068
+				CVE-2017-10991
+				CVE-2017-9420
+				CVE-2017-9337
+				CVE-2017-9336
+				CVE-2017-9288
+				CVE-2017-9063
+				CVE-2017-9061
+				CVE-2017-7723
+				CVE-2017-6818
+				CVE-2017-6817
+				CVE-2017-6814
+				CVE-2017-6804
+				CVE-2017-6103
+				CVE-2017-6102
+				CVE-2017-5942
+				CVE-2017-5612
+				CVE-2017-5490
+				CVE-2017-5488
+				CVE-2017-2216
+				CVE-2016-10112
+				CVE-2016-7168	
+				CVE-2016-0770
+				CVE-2016-0765
+				CVE-2015-9233
+				CVE-2015-9230
+				CVE-2015-9229
+				CVE-2015-8354
+				CVE-2015-8353
+				CVE-2015-8350
+				CVE-2015-7668
+				CVE-2015-7666
+				CVE-2015-7667
+				CVE-2015-7357
+				CVE-2015-5532
+				CVE-2015-5057
+				CVE-2015-3998
+				CVE-2015-3421
+				CVE-2015-3299
+				CVE-2014-9310
+				CVE-2014-8758
+				CVE-2014-8492
+				CVE-2014-8087
+				CVE-2014-7240
+				CVE-2011-4955
+
+
+
+
