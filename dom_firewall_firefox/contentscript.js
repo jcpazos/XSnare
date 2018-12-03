@@ -103,7 +103,7 @@ document.onreadystatechange = function() {
 
 function starting(e) {
 
-  if (e.target.innerHTML.includes('alert')) {
+  if (e.target.innerHTML.includes('supercalifragilisticoespiralodoso')) {
     matchFirstAttack(e);
     //e.target.innerHTML = "";
   }
