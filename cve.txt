@@ -108,8 +108,8 @@ y	n	n	y	CVE-2018-5288		reflected XSS on a weak parameter, this can be detected a
 y	n	n	y	CVE-2018-5286		reflected XSS on a weak parameter, this can be detected at the URL level, blocked by chrome, but not firefox.
 				CVE-2018-5284		CSRF/XSS combo, admin must be tricked into running CSRF part before XSS. But the XSS can be handled since it only appears in the admin-view, and in 				    a specific spot in the HTML (there's 3 points: forms, extras, and themes). Couldn't reproduce.
 x	x	x	x	CVE-2018-5214		plugin no longer available, closed due to "security issue" TODO: tag as related?
-n	y	n	y	CVE-2018-5213		stored XSS, requires at least editor role. injection runs only on admin view of list of downloads or when clicking malicious download. either way, 										the attack pops up in specific spots in the HTML.
-				CVE-2018-5212
+n	y	n	y	CVE-2018-5213		stored XSS, requires at least editor role. injection runs only on admin view.
+n	n	n	y	CVE-2018-5212		stored XSS, requires at least editor role. injection runs both on admin view and user side (thumbnail parameter is displayed on user side).
 				CVE-2018-0585
 				CVE-2018-0578
 				CVE-2018-0577
