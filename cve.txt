@@ -11,7 +11,7 @@ n	y	n	y	CVE-2018-8729	for posts with javascript in the title, no immediate ident
 n	y	n	y	CVE-2018-9020	all these unsanitized inputs have identifying ids (e.g. location-name, location-town, etc.) which could be used to stop a script running here. 											Furthermore the problem in this specific case in a JS file (events-manager.js) loaded in the header, which could potentially be modified to sanitize the 				 			     mapTitle variable before anything happens. (https://www.youtube.com/watch?v=40d7uXl36O4)
 y	n	n	n	CVE-2018-9034	Blocked by chrome's XSS auditor (ERR_BLOCKED_BY_XSS_AUDITOR), Firefox doesn't block it but an extension could do so using similar techniques to chrome's.
 								(more info at https://www.exploit-db.com/exploits/44366/), admin being tricked into accessing url
-y	n	y	y	CVE-2018-9172	this attack injects the attack script several times inside the "upload div". Fortunately, it seems like upload functionality is broken anyway by any kind 								  of injection, so it would be safe to disable everything inside the div with id='wordpress_file_upload_block'+(injected_js), e.g. for the attack I tried, 									the id looked like wordpress_file_upload_block_<script>alert('ManhNho')</script>, this id will be distinct across pages but the 														'wordpress_file_upload_block' part should not.
+y	n	y	y	CVE-2018-9172	this attack injects the attack script several times inside the "upload div". Fortunately, it seems like upload functionality is broken anyway by any 									kind of injection, so it would be safe to disable everything inside the div with id='wordpress_file_upload_block'+(injected_js), e.g. for the attack I 									tried, the id looked like wordpress_file_upload_block_<script>alert('ManhNho')</script>, this id will be distinct across pages but the 													'wordpress_file_upload_block' part should not.
 								(more info at https://www.exploit-db.com/exploits/44443/)
 n	n	n	n	CVE-2018-9844 	skipped for now
 n	y	n	y	CVE-2018-9864 	Unable to reproduce (history feature not working), however, from the  video (https://www.youtube.com/watch?v=eHG1pWaez9w), it should be easy to target 									the exploit as they happen on the admin page, which should be uniform across all sites, and has clear identifiers for the table elements (												class="chat_name column_chat_name" + id's based on element number).
@@ -19,7 +19,7 @@ y	n	n	y	CVE-2018-10102 	related to wordpress version, version string was not esc
 n	n	y	y	CVE-2018-10234 	not clear how the js can be injected, as it seems to be using the p tag's innerText property, need to investigate plugin code further.
 n	n	y	y	CVE-2018-10300 	in here, an user (might have to have admin privileges) will modify it's instagram bio and use it to inject js into the wp instagram feed. The unique 									identifier for the place where this occurs seems to be the 'class="wdi_bio"', as well as further information that this specific page is indeed an 										instagram feed in wordpress (from other context clues).
 x	x	x	x	CVE-2018-10301 	this exploit seems specific to the pro version of the 10-web instagram feed so I haven't been able to try it out.
-n	n	y	y	CVE-2018-10309 	authenticated attack (admin on admin), injection occurs inside div class="rcc-panel group". trap (on scripts) seems to run before the rest of the body is 				  				  loaded. (more info at https://www.exploit-db.com/exploits/44563/)
+n	n	y	y	CVE-2018-10309 	authenticated attack (admin on admin), injection occurs inside div class="rcc-panel group". trap (on scripts) seems to run before the rest of the body is 				  			   loaded. (more info at https://www.exploit-db.com/exploits/44563/)
 n	y	n	y	CVE-2018-10310 	authenticated attack (admin on admin), this only occurs in the admin view, and there is enough context here to block an attack regardless of the site, 									i.e. no scripts in table class="form-table" until <p class="submit">. (more info at https://www.exploit-db.com/exploits/44503/)
 n	y	n	y	CVE-2018-10371	basically the same as above,  table class="form-table" until <input name="Submit" (more info at https://www.exploit-db.com/exploits/44585/).
 n	n	n	y	CVE-2018-10752 	authenticated attack (admin on admin), there's some identifiers here but probably wouldn't hold in an arbitrary page, in div with classes "tggr-tweets									type-tggr-tweets", seems to be in the title part (header) of the aticle. (more info at https://www.exploit-db.com/exploits/45225/)
@@ -99,16 +99,16 @@ n	y	n	y	CVE-2018-5364		CSRF/XSS combo, admin must be tricked into running CSRF p
 n	y	n	y	CVE-2018-5363		CSRF/XSS combo, admin must be tricked into running CSRF part before XSS. But the XSS can be handled since it only appears in the admin-view, and in 									specific spots in the HTML (there's 3 points: forms, extras, and themes). Couldn't reproduce.
 n	y	n	y	CVE-2018-5362		CSRF/XSS combo, admin must be tricked into running CSRF part before XSS. But the XSS can be handled since it only appears in the admin-view, and in 									specific spots in the HTML (there's 3 points: forms, extras, and themes). Couldn't reproduce.
 n	y	n	y	CVE-2018-5361		CSRF/XSS combo, admin must be tricked into running CSRF part before XSS. But the XSS can be handled since it only appears in the admin-view, and in 									specific spots in the HTML (there's 3 points: forms, extras, and themes). Couldn't reproduce.
-				CVE-2018-5316
-				CVE-2018-5312
-				CVE-2018-5311
-				CVE-2018-5293
-				CVE-2018-5292
-				CVE-2018-5288
-				CVE-2018-5286
-				CVE-2018-5284
-				CVE-2018-5214
-				CVE-2018-5213
+y	n	n	y	CVE-2018-5316		Reflected XSS as part of the URL, blocked by chrome, not firefox, the usual.
+n	y	n	y	CVE-2018-5312		stored xss via at least an editor role, manifested when clicking the malicious tab, script shows up in <div id="TABS_R">. the CVE doesn't mention 										this, but the code also runs in other settings of the wp-admin page. While the code runs under similar situations, I don't know if it would always 										happen in the same location, as these pages seem to be able to change depending on which plugins are installed (such as this one). (TODO)
+n	y	n	y	CVE-2018-5311		couldn't reproduce, but from the description looks like something that can be handled. stored xss via at least editor role, not sure if there is the 									 added behaviour as above as well.
+y	n	n	y	CVE-2018-5293		reflected XSS on a weak parameter, this can be detected at the URL level, blocked by chrome, but not firefox.
+y	n	n	y	CVE-2018-5292		reflected XSS on a weak parameter, this can be detected at the URL level, blocked by chrome, but not firefox.
+y	n	n	y	CVE-2018-5288		reflected XSS on a weak parameter, this can be detected at the URL level, blocked by chrome, but not firefox.
+y	n	n	y	CVE-2018-5286		reflected XSS on a weak parameter, this can be detected at the URL level, blocked by chrome, but not firefox.
+				CVE-2018-5284		CSRF/XSS combo, admin must be tricked into running CSRF part before XSS. But the XSS can be handled since it only appears in the admin-view, and in 				    a specific spot in the HTML (there's 3 points: forms, extras, and themes). Couldn't reproduce.
+x	x	x	x	CVE-2018-5214		plugin no longer available, closed due to "security issue" TODO: tag as related?
+n	y	n	y	CVE-2018-5213		stored XSS, requires at least editor role. injection runs only on admin view of list of downloads or when clicking malicious download. either way, 										the attack pops up in specific spots in the HTML.
 				CVE-2018-5212
 				CVE-2018-0585
 				CVE-2018-0578
