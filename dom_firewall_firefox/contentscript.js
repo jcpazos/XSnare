@@ -1,5 +1,7 @@
 'use strict';
 
+var signatures = Sigs.signatures;
+var endPointsList = [];
 
 var CSAPI = {
   wordPress: function(details) {
@@ -26,7 +28,7 @@ var CSAPI = {
     });
   },
 
-  verifyHTML: function(src) {
+  verifyHTML: function(e) {
 
     var filterTag = function(toFind, elm) {
       var toFindAttrs = toFind.attributes;
@@ -45,69 +47,47 @@ var CSAPI = {
     };
 
     return new Promise(function(resolve, reject) {
-      for (var i=0; i<src.length; i++) {
-        var tagToFind = htmlToElement(src[i]);
-        var tags = Array.from(document.getElementsByTagName(tagToFind.tagName));
-        var tag = Array.from(tags).filter(elm => filterTag(tagToFind, elm))[0];
-        //replaces innerHTML by a sanitized string
-        var isEqual = tag.innerHTML === DOMPurify.sanitize(tag.innerHTML);
-        //tag.innerHTML = DOMPurify.sanitize(tag.innerHTML);
-        //TODO: true/false don't mean anything in this case, need to return identifier for additional checks maybe
-        if (isEqual) {
-          resolve(true);
-        } else {
-          reject(false);
-        }
+      var promises = [];
+
+      for (var i=0; i<endPointsList.length; i++) {
+        var start = htmlToElement(src[i][0]);
+        var startTags = Array.from(document.getElementsByTagName(tagToFind.tagName));
+        var startTag = Array.from(tags).filter(elm => filterTag(tagToFind, elm))[0];
+
+        var end = htmlToElement(src[i][1]);
+        var endTags = Array.from(document.getElementsByTagName(tagToFind.tagName));
+        var endTag = Array.from(tags).filter(elm => filterTag(tagToFind, elm))[0];
+
+        //Check if event e occurs withing startTag and endTag and stop it from running
+        promises.push(checkAndSanitize(e, startTag, endTag));
       }
+
+      Promise.all(promises).then(function (res) {
+        resolve("success");
+      }).catch(function(err) {
+        reject("failed");
+      });
     });
-  }
 };
 
 document.onreadystatechange = function() { 
   //inject script to do preliminary checks
-  var signatures = Sigs.signatures;
+  var currPlugins = getCurrPlugins();
   for (var i = 0; i < signatures.length; i++) {
     var signature = signatures[i];
     var software = signature.software;
     var softwareList = software.split('#').map(x => x.trim());
-    //remove empty string
-
-
-    softwareList.splice(0,1);
-    var softwareDetails = signature.softwareDetails;
-
-    setUpListener();
-
-    //we have several software involved, check each one hierarchically
-    //TODO: does this even make sense to do?
-    traverseSoftware(softwareList, softwareDetails).then(function (software) {
-      //TODO: do the check on the software lowest down the chain i.e (software)
-      //TODO: continue on background side
-      CSAPI[signature.sigType](signature.src).then(function (software) {
-        //TODO: might want to return an identifier for when additional checks need to be done
-        console.log('success');
-      }).catch(function (err){
-        console.log('err');
-      });
-      /*browser.runtime.sendMessage({cmd: "parseHTMLBlob", params: {doc: document, sigType: signature.sigType, software: software, version: signature.version, src: signature.src}
-      }).then(function(response) {
-          var parsed = response.doc;
-          console.log("document has been parsed: " + parsed);
-      });*/
-    }).catch(function (err) {
-      //one of the checks failed, do nothing since it's not the right app
-      console.log('one of the checks failed, we are fine');
-    });
+    if (softwareList.contains(currPlugins)) {
+      endPointsList.push(signature.endPoints);
+    }
   }
 };
 
 function starting(e) {
 
-  if (e.target.innerHTML.includes('supercalifragilisticoespiralodoso')) {
-    matchFirstAttack(e);
-    //e.target.innerHTML = "";
-  }
-  console.log("Starting script with ID: " + e.target.id);
+  CSAPI[verifyHTML](e).then( function (res) {
+    console.log("HTML has been verified.");
+  });
 }
 
 function finishing(e) {
@@ -118,7 +98,7 @@ function finishing(e) {
 document.addEventListener("beforescriptexecute", starting, true);
 document.addEventListener("afterscriptexecute", finishing, true);
 
-function traverseSoftware(softwareList, softwareDetails) {
+/*function traverseSoftware(softwareList, softwareDetails) {
   return new Promise(function(resolve, reject) {
     var promises = [];
     const reducer = (accumulator, currentValue) => accumulator && !!currentValue;
@@ -135,7 +115,7 @@ function traverseSoftware(softwareList, softwareDetails) {
       reject("failed");
     });
   });
-}
+}*/
 
 
 
@@ -153,6 +133,7 @@ function htmlToElement(html) {
 //TODO: this should be more robust. On an arbitrarily placed 'tagtoSearch'
 //this won't work, we need to refine the search and keep looking.
 //A 'bottom-up selector' might be useful here.
+/*
 function matchFirstAttack(e) {
   //Top-down, bottom-up approach to isolate injected code
   //var headerTag = document.querySelector('#first');
@@ -175,6 +156,28 @@ function matchFirstAttack(e) {
     var sanitized = DOMPurify.sanitize(between);
     document.body.innerHTML = s.substring(0, first) + sanitized + s.substring(last);
   }
+}*/
+
+
+function checkAndSanitize(e) {
+  var s = document.body.innerHTML;
+  var first = s.indexOf(startTag);
+  var last = reverseDOMSearch(startTag, document.body.lastChild, endTag);
+  //first and last should be valid because the webpage is running the plugin with them
+  //TODO: fix this
+  var eTag = reverseDOMSearch(startTag, last, e.tagHTML);
+
+  //if e is happening within bounds of first and last, i.e. within an injection point, stop JS execution
+  if (!!eTag) {
+    //var between = s.substr(first,last-first);
+    e.preventDefault();
+    //var sanitized = DOMPurify.sanitize(between);
+    //document.body.innerHTML = s.substring(0, first) + sanitized + s.substring(last);
+  }
+}
+
+function getCurrPlugins() {
+  //TODO: get curr plugins
 }
 
 //Search for a DOM element identified by 'query' between 'start' and 'end'

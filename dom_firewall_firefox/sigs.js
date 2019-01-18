@@ -9,7 +9,7 @@ var signatures = [
        version: '1.1.3',
        description: '',
        sigType: 'verifyHTML',
-       src: ['<h1 class="entry-title">', '<span class="screen-reader-text">']
+       endPoints: ['<h1 class="entry-title">', '<span class="screen-reader-text">']
   }
 ];
 

@@ -13,6 +13,9 @@ function listener(details) {
     respData.push(str);
     // Just change any instance of Example in the HTTP response
     // to WebExtension Example.
+    if (str.includes('xss')) {
+      console.log('success');
+    } 
     str = str.replace(/xss/g, 'WebExtension Example');
     filter.write(encoder.encode(str));
     filter.disconnect();
