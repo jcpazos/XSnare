@@ -13,10 +13,10 @@ function listener(details) {
     respData.push(str);
     // Just change any instance of Example in the HTTP response
     // to WebExtension Example.
-    if (str.includes('xss')) {
+    if (str.includes('CVE-2018-10310')) {
       console.log('success');
     } 
-    str = str.replace(/xss/g, 'WebExtension Example');
+    str = str.replace(/xss/g, 'script defer="defer"');
     filter.write(encoder.encode(str));
     filter.disconnect();
   }
@@ -29,6 +29,22 @@ browser.webRequest.onBeforeRequest.addListener(
   {urls: ["<all_urls>"], types: ["main_frame"]},
   ["blocking"]
 );
+
+
+//TODO: this should only apply to URLs that need sanitization
+browser.webRequest.onHeadersReceived.addListener(
+  function (details) {
+    for (var i = 0; i < details.responseHeaders.length; ++i) {
+      if (details.responseHeaders[i].name.toLowerCase() == 'x-frame-options') {
+        details.responseHeaders.splice(i, 1);
+        return {
+          responseHeaders: details.responseHeaders
+        };
+      }
+    }
+  }, {
+    urls: ["<all_urls>"]
+  }, ["blocking", "responseHeaders"]);
 
 browser.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
@@ -43,6 +59,19 @@ browser.runtime.onMessage.addListener(
   });
 
 var BGAPI = {
+
+  executeSandbox: function(params) {
+    return new Promise(function(resolve, reject) {
+      var url = params.url;
+      var ifr = document.createElement("iframe");
+      ifr.sandbox = "";
+      ifr.src = url;
+      document.body.appendChild(ifr);
+      //TODO: do stuff with the iframe
+      resolve("success");
+    }
+  },
+
   parseHTMLBlob: function(params) {
     return new Promise(function(resolve, reject) {
       //TODO: do better checks on app version, plugins, etc.

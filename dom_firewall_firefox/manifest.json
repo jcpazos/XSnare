@@ -11,9 +11,10 @@
   "background": {
     "scripts": ["lib/jquery-1.11.3.min.js",
                 "lib/dom-purify/dist/purify.min.js",
-                "background.js"
-                
-              ]
+                "emitter.js",
+                "background.js",
+              ],
+    "page": ["background-page.html"]
   },
 
   "browser_action": {

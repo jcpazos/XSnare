@@ -50,16 +50,26 @@ var CSAPI = {
       var promises = [];
 
       for (var i=0; i<endPointsList.length; i++) {
-        var start = htmlToElement(src[i][0]);
-        var startTags = Array.from(document.getElementsByTagName(tagToFind.tagName));
-        var startTag = Array.from(tags).filter(elm => filterTag(tagToFind, elm))[0];
+        var start = htmlToElement(endPointsList[i][0]);
+        var startTags = Array.from(document.getElementsByTagName(start.tagName));
+        var startTag = Array.from(startTags).filter(elm => filterTag(start, elm))[0];
 
-        var end = htmlToElement(src[i][1]);
-        var endTags = Array.from(document.getElementsByTagName(tagToFind.tagName));
-        var endTag = Array.from(tags).filter(elm => filterTag(tagToFind, elm))[0];
+        //if !startTag, startTag hasn't loaded in the HTML yet, we are not in the correct event
+        
 
-        //Check if event e occurs withing startTag and endTag and stop it from running
-        promises.push(checkAndSanitize(e, startTag, endTag));
+        var end = htmlToElement(endPointsList[i][1]);
+        var endTags = Array.from(document.getElementsByTagName(end.tagName));
+        var endTag = Array.from(endTags).filter(elm => filterTag(end, elm))[0];
+
+
+        //Check if event e occurs within startTag and endTag and stop it from running
+        if (!startTag) {
+          promises.push(resolve("success"));
+        } else {
+          //TODO: if the design is so that all content between endpoints is sanitized (as opposed to just disabling the single event) 
+          //make it so that if e matches, remove the end points from list, so we don't keep repeating work.
+          promises.push(checkAndSanitize(e, startTag, endTag));
+        }
       }
 
       Promise.all(promises).then(function (res) {
@@ -68,24 +78,16 @@ var CSAPI = {
         reject("failed");
       });
     });
-};
+  }
+}
 
 document.onreadystatechange = function() { 
-  //inject script to do preliminary checks
-  var currPlugins = getCurrPlugins();
-  for (var i = 0; i < signatures.length; i++) {
-    var signature = signatures[i];
-    var software = signature.software;
-    var softwareList = software.split('#').map(x => x.trim());
-    if (softwareList.contains(currPlugins)) {
-      endPointsList.push(signature.endPoints);
-    }
-  }
+  
 };
 
 function starting(e) {
 
-  CSAPI[verifyHTML](e).then( function (res) {
+  CSAPI["verifyHTML"](e).then( function (res) {
     console.log("HTML has been verified.");
   });
 }
@@ -95,8 +97,32 @@ function finishing(e) {
 }
 
 
-document.addEventListener("beforescriptexecute", starting, true);
-document.addEventListener("afterscriptexecute", finishing, true);
+//inject script to do preliminary checks
+function init_firewall() {
+  //get curr plugins
+  var currPlugins = getCurrPlugins();
+  for (var i=0; i < signatures.length; i++) {
+    var signature = signatures[i];
+    var software = signature.software;
+    var softwareList = software.split('#').map(x => x.trim());
+    if (softwareList.includes(currPlugins)) {
+      endPointsList.push(signature.endPoints);
+    }
+  }
+
+  //TODO: DO THIS IN THE BACKGROUND PAGE
+  var sending = browser.runtime.sendMessage({
+    cmd: "executeSandbox";
+    params: {url: location.href};
+  });
+  sending.then(handleResponse, handleError);
+
+
+  document.addEventListener("beforescriptexecute", starting, true);
+  document.addEventListener("afterscriptexecute", finishing, true);
+}
+
+
 
 /*function traverseSoftware(softwareList, softwareDetails) {
   return new Promise(function(resolve, reject) {
@@ -159,7 +185,7 @@ function matchFirstAttack(e) {
 }*/
 
 
-function checkAndSanitize(e) {
+function checkAndSanitize(e, startTag, endTag) {
   var s = document.body.innerHTML;
   var first = s.indexOf(startTag);
   var last = reverseDOMSearch(startTag, document.body.lastChild, endTag);
@@ -178,6 +204,7 @@ function checkAndSanitize(e) {
 
 function getCurrPlugins() {
   //TODO: get curr plugins
+  return "wpPlugin";
 }
 
 //Search for a DOM element identified by 'query' between 'start' and 'end'
@@ -234,3 +261,5 @@ function setUpListener() {
   // Start observing the target node for configured mutations
   observer.observe(targetNode, config);
 }
+
+init_firewall();
