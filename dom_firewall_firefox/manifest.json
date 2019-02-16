@@ -2,7 +2,7 @@
   "name": "DOM Firewall",
   "version": "0.1",
   "description": "Protect yourself against XSS and CSRF",
-  "permissions": ["activeTab", "storage", "webRequest", "webRequestBlocking", "<all_urls>"],
+  "permissions": ["activeTab", "storage", "webRequest", "webRequestBlocking", "<all_urls>", "tabs"],
   "options_ui": {
     "page": "options.html",
     "browser_style": true
@@ -11,8 +11,7 @@
   "background": {
     "scripts": ["lib/jquery-1.11.3.min.js",
                 "lib/dom-purify/dist/purify.min.js",
-                "emitter.js",
-                "background.js",
+                "background.js"
               ],
     "page": ["background-page.html"]
   },

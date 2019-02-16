@@ -2,6 +2,8 @@
 
 var signatures = Sigs.signatures;
 var endPointsList = [];
+var scriptsToBlock;
+var fullHTML;
 
 var CSAPI = {
   wordPress: function(details) {
@@ -30,6 +32,11 @@ var CSAPI = {
 
   verifyHTML: function(e) {
 
+    if (!fullHTML) {
+      throw new Error("Haven't received HTML from background yet!");
+      return;
+    }
+
     var filterTag = function(toFind, elm) {
       var toFindAttrs = toFind.attributes;
       var elmAttrs = elm.attributes;
@@ -45,6 +52,11 @@ var CSAPI = {
 
       return true;
     };
+
+    /*let res = await browser.runtime.sendMesage({
+      cmd: "verifyHTML",
+      params: {endPointsList: endPointsList}  
+    });*/
 
     return new Promise(function(resolve, reject) {
       var promises = [];
@@ -63,13 +75,14 @@ var CSAPI = {
 
 
         //Check if event e occurs within startTag and endTag and stop it from running
-        if (!startTag) {
+        /*if (!startTag) {
           promises.push(resolve("success"));
-        } else {
+        } else {*/
+          //e.preventDefault();
           //TODO: if the design is so that all content between endpoints is sanitized (as opposed to just disabling the single event) 
           //make it so that if e matches, remove the end points from list, so we don't keep repeating work.
           promises.push(checkAndSanitize(e, startTag, endTag));
-        }
+        
       }
 
       Promise.all(promises).then(function (res) {
@@ -81,12 +94,13 @@ var CSAPI = {
   }
 }
 
-document.onreadystatechange = function() { 
-  
-};
-
 function starting(e) {
-
+  e.preventDefault();
+  return;
+  //e.preventDefault();
+  if (el.id === "myScript") {
+    alert("my Script ran");
+  }
   CSAPI["verifyHTML"](e).then( function (res) {
     console.log("HTML has been verified.");
   });
@@ -96,9 +110,35 @@ function finishing(e) {
   console.log("Starting script with ID: " + e.target.id);
 }
 
+function handleResponse(resp) {
+  fullHTML = resp;
+  var el = htmlToElement(fullHTML);
+  document.insertBefore(el, null);
+
+
+
+  console.log("handling response");
+}
+
+function handleError(err) {
+  //TODO: handle error
+  console.log("handling error");
+}
+
+function inIframe () {
+    try {
+        return window.self !== window.top;
+    } catch (e) {
+        return true;
+    }
+}
 
 //inject script to do preliminary checks
-function init_firewall() {
+async function init_firewall() {
+  //reload webpage
+  //document.write(fullHTML);
+  $(document).html(fullHTML);
+  //location.reload();
   //get curr plugins
   var currPlugins = getCurrPlugins();
   for (var i=0; i < signatures.length; i++) {
@@ -110,40 +150,14 @@ function init_firewall() {
     }
   }
 
-  //TODO: DO THIS IN THE BACKGROUND PAGE
-  var sending = browser.runtime.sendMessage({
-    cmd: "executeSandbox";
-    params: {url: location.href};
-  });
-  sending.then(handleResponse, handleError);
-
-
   document.addEventListener("beforescriptexecute", starting, true);
   document.addEventListener("afterscriptexecute", finishing, true);
+  window.stop();
+  await browser.runtime.sendMessage({
+      cmd: "retrieveHTML",
+      params: {url: location.href}  
+    }).then(handleResponse, handleError);
 }
-
-
-
-/*function traverseSoftware(softwareList, softwareDetails) {
-  return new Promise(function(resolve, reject) {
-    var promises = [];
-    const reducer = (accumulator, currentValue) => accumulator && !!currentValue;
-
-    for (var i = 0; i < softwareList.length; i++) {
-      var software = softwareList[i];
-      promises.push(CSAPI[software](softwareDetails));
-    }
-
-    Promise.all(promises).then(function (res) {
-      //all checks went through, will need to go more in-depth
-      resolve(res[res.length-1]);
-    }).catch(function(err) {
-      reject("failed");
-    });
-  });
-}*/
-
-
 
 /**
  * @param {String} HTML representing a single element
@@ -187,7 +201,7 @@ function matchFirstAttack(e) {
 
 function checkAndSanitize(e, startTag, endTag) {
   var s = document.body.innerHTML;
-  var first = s.indexOf(startTag);
+  var first = fullHTML.indexOf(startTag);
   var last = reverseDOMSearch(startTag, document.body.lastChild, endTag);
   //first and last should be valid because the webpage is running the plugin with them
   //TODO: fix this
@@ -196,7 +210,7 @@ function checkAndSanitize(e, startTag, endTag) {
   //if e is happening within bounds of first and last, i.e. within an injection point, stop JS execution
   if (!!eTag) {
     //var between = s.substr(first,last-first);
-    e.preventDefault();
+    //e.preventDefault();
     //var sanitized = DOMPurify.sanitize(between);
     //document.body.innerHTML = s.substring(0, first) + sanitized + s.substring(last);
   }
@@ -245,14 +259,14 @@ function setUpListener() {
 
   // Callback function to execute when mutations are observed
   var callback = function(mutationsList) {
-      for(var mutation of mutationsList) {
-          if (mutation.type == 'childList') {
-              console.log('A child node has been added or removed.');
-          }
-          else if (mutation.type == 'attributes') {
-              console.log('The ' + mutation.attributeName + ' attribute was modified.');
-          }
+    for (var mutation of mutationsList) {
+      if (mutation.type == 'childList') {
+        console.log('A child node has been added or removed.');
       }
+      else if (mutation.type == 'attributes') {
+        console.log('The ' + mutation.attributeName + ' attribute was modified.');
+      }
+    }
   };
 
   // Create an observer instance linked to the callback function
