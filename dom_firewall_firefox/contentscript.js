@@ -5,6 +5,11 @@ var endPointsList = [];
 var scriptsToBlock;
 var fullHTML;
 
+/*browser.runtime.onMessage.addListener(request => {
+	fullHTML = request.fullHTML;
+	return Promise.resolve({response: "Hi from content script"});
+});*/
+
 var CSAPI = {
   wordPress: function(details) {
     return new Promise(function(resolve, reject) {
@@ -32,8 +37,9 @@ var CSAPI = {
 
   verifyHTML: function(e) {
 
+  	var y = 1;
     if (!fullHTML) {
-      throw new Error("Haven't received HTML from background yet!");
+      console.log("didnt receive html yet!");
       return;
     }
 
@@ -53,10 +59,6 @@ var CSAPI = {
       return true;
     };
 
-    /*let res = await browser.runtime.sendMesage({
-      cmd: "verifyHTML",
-      params: {endPointsList: endPointsList}  
-    });*/
 
     return new Promise(function(resolve, reject) {
       var promises = [];
@@ -95,34 +97,68 @@ var CSAPI = {
 }
 
 function starting(e) {
-  e.preventDefault();
-  return;
   //e.preventDefault();
-  if (el.id === "myScript") {
-    alert("my Script ran");
-  }
+  console.log("Starting script with ID: " + e.target.id);
   CSAPI["verifyHTML"](e).then( function (res) {
     console.log("HTML has been verified.");
   });
 }
 
 function finishing(e) {
-  console.log("Starting script with ID: " + e.target.id);
+	console.log("Finishing script with ID: " + e.target.id);
 }
 
 function handleResponse(resp) {
-  fullHTML = resp;
-  var el = htmlToElement(fullHTML);
-  document.insertBefore(el, null);
+	fullHTML = resp;
 
+	/*window.addEventListener("message", function(event) {
+		document.open();
+		document.write(event.data.html);
+		document.close();
+	}, false);
+	window.postMessage({html: fullHTML}, "*");
+	/*const regex = /<head> (.*?)<\/head>/;
+  	var headHTML = resp.substring(resp.search("<head>")+7,resp.search("</head>"));
+  	var bodyHTML = resp.substring(resp.search("<body")+6,resp.search("</body>"));
+
+  	var head = document.createElement("head");
+  	head.innerHTML = headHTML;
+  	var body = document.createElement("body");
+  	body.innerHTML = bodyHTML;
+  	document.documentElement.appendChild(head);
+  	document.documentElement.appendChild(body);*/
+  	
+	var parser = new DOMParser();
+	var newDoc = parser.parseFromString(resp, 'text/html');
+	console.log("doing the thing");
+	//document.replaceChild(newDoc.documentElement, document.documentElement);
+	//location.replace(newDoc);
+
+	//$("html").html(resp);
+	//document.documentElement.innerHTML = resp[0].substr(159);
+	/*var el = htmlToElement('<script>' +  
+		'function replaceContent(NC) {' +
+			'document.open();' +
+			'document.write(NC);' +
+			'document.close();' +
+		'}' + 
+		'</script>');*/
+
+
+	/*document.body = document.createElement('body');
+	document.body.appendChild(el);
+	replaceContent(fullHTML);*/
+	/*document.open();
+	document.write(resp);
+	document.close();*/
 
 
   console.log("handling response");
 }
 
 function handleError(err) {
-  //TODO: handle error
-  console.log("handling error");
+	//TODO: handle error
+	console.log("handling error");
 }
 
 function inIframe () {
@@ -135,28 +171,24 @@ function inIframe () {
 
 //inject script to do preliminary checks
 async function init_firewall() {
-  //reload webpage
-  //document.write(fullHTML);
-  $(document).html(fullHTML);
-  //location.reload();
-  //get curr plugins
-  var currPlugins = getCurrPlugins();
-  for (var i=0; i < signatures.length; i++) {
-    var signature = signatures[i];
-    var software = signature.software;
-    var softwareList = software.split('#').map(x => x.trim());
-    if (softwareList.includes(currPlugins)) {
-      endPointsList.push(signature.endPoints);
-    }
-  }
+	//reload webpage
+	//document.write(fullHTML);
+	//$(document).html(fullHTML);
+	//location.reload();
+	//get curr plugins
+	var currPlugins = getCurrPlugins();
+	for (var i=0; i < signatures.length; i++) {
+		var signature = signatures[i];
+		var software = signature.software;
+		var softwareList = software.split('#').map(x => x.trim());
+		if (softwareList.includes(currPlugins)) {
+		  endPointsList.push(signature.endPoints);
+		}
+	}
 
-  document.addEventListener("beforescriptexecute", starting, true);
-  document.addEventListener("afterscriptexecute", finishing, true);
-  window.stop();
-  await browser.runtime.sendMessage({
-      cmd: "retrieveHTML",
-      params: {url: location.href}  
-    }).then(handleResponse, handleError);
+	document.addEventListener("beforescriptexecute", starting, true);
+	document.addEventListener("afterscriptexecute", finishing, true);
+	//window.stop();
 }
 
 /**
@@ -251,7 +283,7 @@ String.prototype.replaceBetween = function(start, end, what) {
     return this.substring(0, start) + what + this.substring(end);
 };
 
-function setUpListener() {
+/*function setUpListener() {
   var targetNode = document.body;
 
   // Options for the observer (which mutations to observe)
@@ -274,6 +306,12 @@ function setUpListener() {
 
   // Start observing the target node for configured mutations
   observer.observe(targetNode, config);
+}*/
+if (!inIframe()) {
+	browser.runtime.sendMessage({
+		  cmd: "retrieveHTML",
+		  params: {url: location.href}  
+	}).then(handleResponse, handleError);
 }
 
 init_firewall();

@@ -2,6 +2,7 @@
 
 //var storageArea = chrome.storage.local;
 var respData = {};
+var signatures = Sigs.signatures;
 
 function listener(details) {
   let filter = browser.webRequest.filterResponseData(details.requestId);
@@ -19,8 +20,15 @@ function listener(details) {
 
   filter.onstop = event => {
     // Add a random ID to each script for comparison in the contentscript
-    str = str.replace(/<script/g, replacer);
-    !!respData[details.tabId] ? respData[details.tabId] += str : respData[details.tabId] = str;
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(str, 'text/html');
+    //BGAPI.verifyHTML(doc);
+    /*str = str.replace(/<script/g, replacer);
+    if (!respData[details.tabId]) {
+      respData[details.tabId] = [];
+    } 
+    respData[details.tabId].push(str);*/
+    str = new XMLSerializer().serializeToString(doc);
     filter.write(encoder.encode(str));
     filter.close();    
   };
@@ -28,11 +36,21 @@ function listener(details) {
   //return {}; // not needed
 }
 
+function sendResponse(details) {
+  browser.tabs.sendMessage(details.tabId, {fullHTML: respData[details.tabId]}
+    ).then(response => {console.log("response sent and acknowledged.")}).catch(err => {console.log(err)});
+}
+
 browser.webRequest.onBeforeRequest.addListener(
   listener,
   {urls: ["<all_urls>"], types: ["main_frame"]},
   ["blocking"]
 );
+
+/*browser.webRequest.onCompleted.addListener(
+  sendResponse,
+  {urls: ["<all_urls>"]}
+);*/
 
 browser.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
@@ -55,11 +73,75 @@ function randomString(length) {
     return text;
 }
 
+function checkAndSanitize(e, startTag, endTag, doc) {
+  var s = doc.body.innerHTML;
+  var first = fullHTML.indexOf(startTag);
+  var last = reverseDOMSearch(startTag, doc.body.lastChild, endTag);
+  //first and last should be valid because the webpage is running the plugin with them
+  //TODO: fix this
+  var eTag = reverseDOMSearch(startTag, last, e.tagHTML);
+
+  //if e is happening within bounds of first and last, i.e. within an injection point, stop JS execution
+  if (!!eTag) {
+    e.setAttribute("data-execute", "false");
+    //var between = s.substr(first,last-first);
+    //e.preventDefault();
+    //var sanitized = DOMPurify.sanitize(between);
+    //document.body.innerHTML = s.substring(0, first) + sanitized + s.substring(last);
+  }
+}
+
+
+//Search for a DOM element identified by 'query' between 'start' and 'end'
+//in reverse order
+//TODO: make into a promise
+function reverseDOMSearch(start, end, query) {
+  if (!end || start === end) {
+    return null;
+  }
+  
+  //TODO: change this to a better comparison check,
+  //otherwise there's no way of telling if you have the right 'query'
+  if (end === query) {
+    return end;
+  }
+
+  var previous = $(end).prev()[0];
+  var lastChild = $(end).children().last()[0];
+  var childrenSearch = reverseDOMSearch(start, lastChild, query);
+
+  if (!!childrenSearch) {
+    return childrenSearch;
+  } else {
+    return reverseDOMSearch(start, previous, query);
+  }
+
+}
+
+/**
+ * @param {String} HTML representing a single element
+ * @return {Element}
+ */
+function htmlToElement(html) {
+    var template = document.createElement('template');
+    html = html.trim(); // Never return a text node of whitespace as the result
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+
+function getCurrPlugins() {
+  //TODO: get curr plugins
+  return "wpPlugin";
+}
+
 
 var BGAPI = {
 
   retrieveHTML: function(params, tabId) {
-    return Promise.resolve(respData[tabId]);
+    var data = respData[tabId];
+    delete respData[tabId];
+    return Promise.resolve(data);
   },
 
   parseHTMLBlob: function(params) {
@@ -84,10 +166,22 @@ var BGAPI = {
     });
   },
 
-  verifyHTML: function(params, tabId) {
+  verifyHTML: function(doc) {
 
-    var endPointsList = params.endPointsList;
-    var documentToScan = document.getElementById(tabId).innerHTML;
+    var endPointsList = [];     
+
+    var currPlugins = getCurrPlugins();
+    for (var i=0; i < signatures.length; i++) {
+      var signature = signatures[i];
+      var software = signature.software;
+      var softwareList = software.split('#').map(x => x.trim());
+      if (softwareList.includes(currPlugins)) {
+        endPointsList.push(signature.endPoints);
+      }
+    }
+
+    //var endPointsList = params.endPointsList;
+    //var documentToScan = doc.getElementById(tabId).innerHTML;
 
     var filterTag = function(toFind, elm) {
       var toFindAttrs = toFind.attributes;
@@ -105,38 +199,36 @@ var BGAPI = {
       return true;
     };
 
-    return new Promise(function(resolve, reject) {
-      var promises = [];
+    //return new Promise(function(resolve, reject) {
+      //var promises = [];
 
-      for (var i=0; i<endPointsList.length; i++) {
-        var start = htmlToElement(endPointsList[i][0]);
-        var startTags = Array.from(document.getElementsByTagName(start.tagName));
-        var startTag = Array.from(startTags).filter(elm => filterTag(start, elm))[0];
+      var scripts = doc.getElementsByTagName("script");
 
-        //if !startTag, startTag hasn't loaded in the HTML yet, we are not in the correct event
-        
+      for (var j=0; j<scripts.length; j++) {
+        var e = scripts[j];
+        for (var i=0; i<endPointsList.length; i++) {
+          var start = htmlToElement(endPointsList[i][0]);
+          var startTags = Array.from(doc.getElementsByTagName(start.tagName));
+          var startTag = Array.from(startTags).filter(elm => filterTag(start, elm))[0];
 
-        var end = htmlToElement(endPointsList[i][1]);
-        var endTags = Array.from(document.getElementsByTagName(end.tagName));
-        var endTag = Array.from(endTags).filter(elm => filterTag(end, elm))[0];
+          //if !startTag, startTag hasn't loaded in the HTML yet, we are not in the correct event
+          
+
+          var end = htmlToElement(endPointsList[i][1]);
+          var endTags = Array.from(doc.getElementsByTagName(end.tagName));
+          var endTag = Array.from(endTags).filter(elm => filterTag(end, elm))[0];
 
 
-        //Check if event e occurs within startTag and endTag and stop it from running
-        if (!startTag) {
-          promises.push(resolve("success"));
-        } else {
-          //TODO: if the design is so that all content between endpoints is sanitized (as opposed to just disabling the single event) 
-          //make it so that if e matches, remove the end points from list, so we don't keep repeating work.
-          promises.push(checkAndSanitize(e, startTag, endTag));
+          //Check if event e occurs within startTag and endTag and stop it from running
+          if (!startTag) {
+            continue;
+          } else {
+            //TODO: if the design is so that all content between endpoints is sanitized (as opposed to just disabling the single event) 
+            //make it so that if e matches, remove the end points from list, so we don't keep repeating work.
+            checkAndSanitize(e, startTag, endTag, doc);
+          }
         }
       }
-
-      Promise.all(promises).then(function (res) {
-        resolve("success");
-      }).catch(function(err) {
-        reject("failed");
-      });
-    });
   }
 
 
