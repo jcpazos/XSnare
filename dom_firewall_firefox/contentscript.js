@@ -98,24 +98,27 @@ var CSAPI = {
 
 function starting(e) {
   //e.preventDefault();
+  if (!fullHTML) {
+    e.stopPropagation();
+  e.preventDefault();
+  $(e.target).remove();
+    return;
+  }
   console.log("Starting script with ID: " + e.target.id);
+
   CSAPI["verifyHTML"](e).then( function (res) {
     console.log("HTML has been verified.");
   });
 }
 
 function finishing(e) {
-	console.log("Finishing script with ID: " + e.target.id);
+	//console.log("Finishing script with ID: " + e.target.id);
 }
 
 function handleResponse(resp) {
 	fullHTML = resp;
 
-	/*window.addEventListener("message", function(event) {
-		document.open();
-		document.write(event.data.html);
-		document.close();
-	}, false);
+
 	window.postMessage({html: fullHTML}, "*");
 	/*const regex = /<head> (.*?)<\/head>/;
   	var headHTML = resp.substring(resp.search("<head>")+7,resp.search("</head>"));
@@ -134,7 +137,12 @@ function handleResponse(resp) {
 	//document.replaceChild(newDoc.documentElement, document.documentElement);
 	//location.replace(newDoc);
 
-	//$("html").html(resp);
+  var sc = document.createElement("script");
+  var escapedHTML = newDoc.documentElement.outerHTML.replace(/`/g, '\\`');
+  sc.innerHTML = 'document.write(`' + escapedHTML + '`);'+ 'document.close();' ;
+  document.body.appendChild(sc);
+	//document.documentElement.outerHTML = newDoc.documentElement.outerHTML;
+  //document.documentElement.outerHTML = "<html><head></head><body><div>hello world!</div></body></html>";
 	//document.documentElement.innerHTML = resp[0].substr(159);
 	/*var el = htmlToElement('<script>' +  
 		'function replaceContent(NC) {' +
@@ -158,7 +166,7 @@ function handleResponse(resp) {
 
 function handleError(err) {
 	//TODO: handle error
-	console.log("handling error");
+	console.log("handling error:" + err);
 }
 
 function inIframe () {
@@ -170,7 +178,7 @@ function inIframe () {
 }
 
 //inject script to do preliminary checks
-async function init_firewall() {
+function init_firewall() {
 	//reload webpage
 	//document.write(fullHTML);
 	//$(document).html(fullHTML);

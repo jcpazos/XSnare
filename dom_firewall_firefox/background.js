@@ -23,13 +23,13 @@ function listener(details) {
     var parser = new DOMParser();
     var doc = parser.parseFromString(str, 'text/html');
     //BGAPI.verifyHTML(doc);
-    /*str = str.replace(/<script/g, replacer);
+    str = str.replace(/<script/g, replacer);
     if (!respData[details.tabId]) {
       respData[details.tabId] = [];
     } 
-    respData[details.tabId].push(str);*/
-    str = new XMLSerializer().serializeToString(doc);
-    filter.write(encoder.encode(str));
+    respData[details.tabId].push(str);
+    //var newStr = new XMLSerializer().serializeToString(doc);
+    filter.write(encoder.encode("<!DOCTYPE html><html></html>"));
     filter.close();    
   };
 
