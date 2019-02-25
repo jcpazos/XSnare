@@ -25,11 +25,13 @@ function listener(details) {
     //BGAPI.verifyHTML(doc);
     str = str.replace(/<script/g, replacer);
     if (!respData[details.tabId]) {
-      respData[details.tabId] = [];
+     respData[details.tabId] = str;
     } 
-    respData[details.tabId].push(str);
-    //var newStr = new XMLSerializer().serializeToString(doc);
-    filter.write(encoder.encode("<!DOCTYPE html><html></html>"));
+    
+    var newStr = new XMLSerializer().serializeToString(doc);
+    //filter.write(encoder.encode(newStr.substring(0,newStr.indexOf("<html")-1) + doc.documentElement.outerHTML));
+    filter.write(encoder.encode("<!DOCTYPE HTML><html><head></head><body></body></html>"));
+    //filter.write(encoder.encode(str));
     filter.close();    
   };
 

@@ -4,6 +4,7 @@ var signatures = Sigs.signatures;
 var endPointsList = [];
 var scriptsToBlock;
 var fullHTML;
+var rewriteScriptId = window.crypto.getRandomValues(new Uint16Array(1));
 
 /*browser.runtime.onMessage.addListener(request => {
 	fullHTML = request.fullHTML;
@@ -96,72 +97,58 @@ var CSAPI = {
   }
 }
 
-function starting(e) {
-  //e.preventDefault();
-  if (!fullHTML) {
-    e.stopPropagation();
-  e.preventDefault();
-  $(e.target).remove();
-    return;
-  }
-  console.log("Starting script with ID: " + e.target.id);
-
-  CSAPI["verifyHTML"](e).then( function (res) {
-    console.log("HTML has been verified.");
-  });
+//Stops script execution
+function denyScript(e) {
+	if (!fullHTML) {
+		console.log("Destroying script with ID: " + e.target.id);
+		e.stopPropagation();
+		e.preventDefault();
+		$(e.target).remove();
+	}
 }
 
-function finishing(e) {
+function verifyScript(e) {
+	/*if (!fullHTML) {
+		console.log("Denying script with ID: " + e.target.id);
+		e.stopPropagation();
+		e.preventDefault();
+		$(e.target).remove();
+		return;
+	}*/
+	//No need to sanitize scripts without an id, these were injected dynamically and are thus assumed safe
+	if (e.target.id) {
+		console.log("Verifying script with ID: " + e.target.id);
+		//Do I need to await on this?
+		CSAPI["verifyHTML"](e).then( function (res) {
+			console.log("HTML has been verified.");
+		});
+	}
+}
+
+function finishDeny(e) {
+	//console.log("Finishing script with ID: " + e.target.id);
+}
+
+function finishVerify(e) {
 	//console.log("Finishing script with ID: " + e.target.id);
 }
 
 function handleResponse(resp) {
 	fullHTML = resp;
-
-
-	window.postMessage({html: fullHTML}, "*");
-	/*const regex = /<head> (.*?)<\/head>/;
-  	var headHTML = resp.substring(resp.search("<head>")+7,resp.search("</head>"));
-  	var bodyHTML = resp.substring(resp.search("<body")+6,resp.search("</body>"));
-
-  	var head = document.createElement("head");
-  	head.innerHTML = headHTML;
-  	var body = document.createElement("body");
-  	body.innerHTML = bodyHTML;
-  	document.documentElement.appendChild(head);
-  	document.documentElement.appendChild(body);*/
   	
 	var parser = new DOMParser();
 	var newDoc = parser.parseFromString(resp, 'text/html');
 	console.log("doing the thing");
-	//document.replaceChild(newDoc.documentElement, document.documentElement);
-	//location.replace(newDoc);
 
-  var sc = document.createElement("script");
-  var escapedHTML = newDoc.documentElement.outerHTML.replace(/`/g, '\\`');
-  sc.innerHTML = 'document.write(`' + escapedHTML + '`);'+ 'document.close();' ;
-  document.body.appendChild(sc);
-	//document.documentElement.outerHTML = newDoc.documentElement.outerHTML;
-  //document.documentElement.outerHTML = "<html><head></head><body><div>hello world!</div></body></html>";
-	//document.documentElement.innerHTML = resp[0].substr(159);
-	/*var el = htmlToElement('<script>' +  
-		'function replaceContent(NC) {' +
-			'document.open();' +
-			'document.write(NC);' +
-			'document.close();' +
-		'}' + 
-		'</script>');*/
+	var sc = document.createElement("script");
+	sc.id = rewriteScriptId;
+	//var escapedHTML = newDoc.documentElement.outerHTML.replace(/`/g, '\\`');	
+	var newHTML = resp.substring(0,resp.indexOf("<html")) +  newDoc.documentElement.outerHTML;
+	//sessionStorage.setItem("fullHTML", resp);
+	sc.innerHTML = 'document.write("' + newHTML + '");'+ 'console.log("document was written");' + 'document.close();' ;
+	document.body.appendChild(sc);
 
-
-	/*document.body = document.createElement('body');
-	document.body.appendChild(el);
-	replaceContent(fullHTML);*/
-	/*document.open();
-	document.write(resp);
-	document.close();*/
-
-
-  console.log("handling response");
+	console.log("handling response");
 }
 
 function handleError(err) {
@@ -179,11 +166,7 @@ function inIframe () {
 
 //inject script to do preliminary checks
 function init_firewall() {
-	//reload webpage
-	//document.write(fullHTML);
-	//$(document).html(fullHTML);
-	//location.reload();
-	//get curr plugins
+
 	var currPlugins = getCurrPlugins();
 	for (var i=0; i < signatures.length; i++) {
 		var signature = signatures[i];
@@ -194,9 +177,35 @@ function init_firewall() {
 		}
 	}
 
-	document.addEventListener("beforescriptexecute", starting, true);
-	document.addEventListener("afterscriptexecute", finishing, true);
-	//window.stop();
+	//TODO: still have to verify if CS is loaded again, Firefox really doesn't like this approach with facebook
+	document.addEventListener("beforescriptexecute", verifyScript, true);
+	document.addEventListener("afterscriptexecute", finishVerify, true);
+
+	if (!inIframe() && !fullHTML) {
+		browser.runtime.sendMessage({
+			  cmd: "retrieveHTML",
+			  params: {url: location.href}  
+		}).then(handleResponse, handleError);
+	}
+
+	
+
+	//If we have the full HTML, verify scripts, otherwise stop them from executing and get it from the BG
+	/*if (!!sessionStorage.getItem("fullHTML")) {
+		fullHTML = sessionStorage.getItem("fullHTML");
+		sessionStorage.removeItem("fullHTML");
+		document.addEventListener("beforescriptexecute", verifyScript, true);
+		document.addEventListener("afterscriptexecute", finishVerify, true);
+	} else {
+		if (!inIframe()) {
+			browser.runtime.sendMessage({
+				  cmd: "retrieveHTML",
+				  params: {url: location.href}  
+			}).then(handleResponse, handleError);
+		}
+		document.addEventListener("beforescriptexecute", denyScript, true);
+		document.addEventListener("afterscriptexecute", finishDeny, true);
+	}*/
 }
 
 /**
@@ -246,7 +255,7 @@ function checkAndSanitize(e, startTag, endTag) {
   //first and last should be valid because the webpage is running the plugin with them
   //TODO: fix this
   var eTag = reverseDOMSearch(startTag, last, e.tagHTML);
-
+  resolve("success");
   //if e is happening within bounds of first and last, i.e. within an injection point, stop JS execution
   if (!!eTag) {
     //var between = s.substr(first,last-first);
@@ -315,11 +324,5 @@ String.prototype.replaceBetween = function(start, end, what) {
   // Start observing the target node for configured mutations
   observer.observe(targetNode, config);
 }*/
-if (!inIframe()) {
-	browser.runtime.sendMessage({
-		  cmd: "retrieveHTML",
-		  params: {url: location.href}  
-	}).then(handleResponse, handleError);
-}
 
 init_firewall();
