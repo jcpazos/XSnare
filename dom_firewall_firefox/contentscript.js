@@ -5,6 +5,7 @@ var endPointsList = [];
 var scriptsToBlock;
 var fullHTML;
 var rewriteScriptId = window.crypto.getRandomValues(new Uint16Array(1));
+var newDoc;
 
 /*browser.runtime.onMessage.addListener(request => {
 	fullHTML = request.fullHTML;
@@ -61,39 +62,28 @@ var CSAPI = {
     };
 
 
-    return new Promise(function(resolve, reject) {
-      var promises = [];
+    for (var i=0; i<endPointsList.length; i++) {
+      var start = htmlToElement(endPointsList[i][0]);
+      var startTags = Array.from(newDoc.getElementsByTagName(start.tagName));
+      var startTag = Array.from(startTags).filter(elm => filterTag(start, elm))[0];
 
-      for (var i=0; i<endPointsList.length; i++) {
-        var start = htmlToElement(endPointsList[i][0]);
-        var startTags = Array.from(document.getElementsByTagName(start.tagName));
-        var startTag = Array.from(startTags).filter(elm => filterTag(start, elm))[0];
+      //if !startTag, startTag hasn't loaded in the HTML yet, we are not in the correct event
+      
 
-        //if !startTag, startTag hasn't loaded in the HTML yet, we are not in the correct event
-        
-
-        var end = htmlToElement(endPointsList[i][1]);
-        var endTags = Array.from(document.getElementsByTagName(end.tagName));
-        var endTag = Array.from(endTags).filter(elm => filterTag(end, elm))[0];
+      var end = htmlToElement(endPointsList[i][1]);
+      var endTags = Array.from(newDoc.getElementsByTagName(end.tagName));
+      var endTag = Array.from(endTags).filter(elm => filterTag(end, elm))[0];
 
 
-        //Check if event e occurs within startTag and endTag and stop it from running
-        /*if (!startTag) {
-          promises.push(resolve("success"));
-        } else {*/
-          //e.preventDefault();
-          //TODO: if the design is so that all content between endpoints is sanitized (as opposed to just disabling the single event) 
-          //make it so that if e matches, remove the end points from list, so we don't keep repeating work.
-          promises.push(checkAndSanitize(e, startTag, endTag));
-        
-      }
-
-      Promise.all(promises).then(function (res) {
-        resolve("success");
-      }).catch(function(err) {
-        reject("failed");
-      });
-    });
+      //Check if event e occurs within startTag and endTag and stop it from running
+      /*if (!startTag) {
+        promises.push(resolve("success"));
+      } else {*/
+        //e.preventDefault();
+        //TODO: if the design is so that all content between endpoints is sanitized (as opposed to just disabling the single event) 
+        //make it so that if e matches, remove the end points from list, so we don't keep repeating work.
+        checkAndSanitize(e, startTag, endTag);
+    }
   }
 }
 
@@ -108,6 +98,10 @@ function denyScript(e) {
 }
 
 function verifyScript(e) {
+  if (!document.body) {
+    console.log("Body hasn't loaded yet, no need to verify.");
+    return;
+  }
 	/*if (!fullHTML) {
 		console.log("Denying script with ID: " + e.target.id);
 		e.stopPropagation();
@@ -119,9 +113,8 @@ function verifyScript(e) {
 	if (e.target.id) {
 		console.log("Verifying script with ID: " + e.target.id);
 		//Do I need to await on this?
-		CSAPI["verifyHTML"](e).then( function (res) {
-			console.log("HTML has been verified.");
-		});
+		CSAPI["verifyHTML"](e);
+		console.log("HTML has been verified.");
 	}
 }
 
@@ -135,17 +128,22 @@ function finishVerify(e) {
 
 function handleResponse(resp) {
 	fullHTML = resp;
+  var parser = new DOMParser();
+  newDoc = parser.parseFromString(resp, 'text/html');
+
+  if (!document.body) {
+    return;
+  }
   	
-	var parser = new DOMParser();
-	var newDoc = parser.parseFromString(resp, 'text/html');
+	
 	console.log("doing the thing");
 
 	var sc = document.createElement("script");
 	sc.id = rewriteScriptId;
-	//var escapedHTML = newDoc.documentElement.outerHTML.replace(/`/g, '\\`');	
+	var escapedHTML = newDoc.documentElement.outerHTML.replace(/`/g, '\\`');	
 	var newHTML = resp.substring(0,resp.indexOf("<html")) +  newDoc.documentElement.outerHTML;
 	//sessionStorage.setItem("fullHTML", resp);
-	sc.innerHTML = 'document.write("' + newHTML + '");'+ 'console.log("document was written");' + 'document.close();' ;
+	sc.innerHTML = 'document.write(`' + escapedHTML + '`);'+ 'console.log("document was written");' + 'document.close();' ;
 	document.body.appendChild(sc);
 
 	console.log("handling response");
@@ -250,12 +248,12 @@ function matchFirstAttack(e) {
 
 function checkAndSanitize(e, startTag, endTag) {
   var s = document.body.innerHTML;
-  var first = fullHTML.indexOf(startTag);
+  var first = fullHTML.indexOf(startTag.outerHTML.substring(0,startTag.outerHTML.indexOf('>')+1));
   var last = reverseDOMSearch(startTag, document.body.lastChild, endTag);
   //first and last should be valid because the webpage is running the plugin with them
   //TODO: fix this
-  var eTag = reverseDOMSearch(startTag, last, e.tagHTML);
-  resolve("success");
+  var eTag = reverseDOMSearch(startTag, last, e.target.outerHTML.substring(0,e.target.outerHTML.indexOf('>')+1));
+  return "success";
   //if e is happening within bounds of first and last, i.e. within an injection point, stop JS execution
   if (!!eTag) {
     //var between = s.substr(first,last-first);

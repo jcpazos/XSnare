@@ -30,8 +30,8 @@ function listener(details) {
     
     var newStr = new XMLSerializer().serializeToString(doc);
     //filter.write(encoder.encode(newStr.substring(0,newStr.indexOf("<html")-1) + doc.documentElement.outerHTML));
-    filter.write(encoder.encode("<!DOCTYPE HTML><html><head></head><body></body></html>"));
-    //filter.write(encoder.encode(str));
+    //filter.write(encoder.encode("<!DOCTYPE HTML><html><head></head><body></body></html>"));
+    filter.write(encoder.encode(str));
     filter.close();    
   };
 
