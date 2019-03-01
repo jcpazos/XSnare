@@ -64,15 +64,16 @@ var CSAPI = {
 
     for (var i=0; i<endPointsList.length; i++) {
       var start = htmlToElement(endPointsList[i][0]);
-      var startTags = Array.from(newDoc.getElementsByTagName(start.tagName));
-      var startTag = Array.from(startTags).filter(elm => filterTag(start, elm))[0];
-
-      //if !startTag, startTag hasn't loaded in the HTML yet, we are not in the correct event
+      var possibleStartTags = Array.from(newDoc.getElementsByTagName(start.tagName));
+      var matchingStartTags = Array.from(possibleStartTags).filter(elm => filterTag(start, elm));
+      var startTag = matchingStartTags[0];
       
-
       var end = htmlToElement(endPointsList[i][1]);
-      var endTags = Array.from(newDoc.getElementsByTagName(end.tagName));
-      var endTag = Array.from(endTags).filter(elm => filterTag(end, elm))[0];
+      var possibleEndTags = Array.from(newDoc.getElementsByTagName(end.tagName));
+      var matchingEndTags = Array.from(possibleEndTags).filter(elm => filterTag(end, elm));
+      //The last matching tag is the correct one, other ones are duplicates inserted by attacker
+      var endTag = matchingEndTags[matchingEndTags.length-1];
+
 
 
       //Check if event e occurs within startTag and endTag and stop it from running
@@ -247,13 +248,15 @@ function matchFirstAttack(e) {
 
 
 function checkAndSanitize(e, startTag, endTag) {
-  var s = document.body.innerHTML;
-  var first = fullHTML.indexOf(startTag.outerHTML.substring(0,startTag.outerHTML.indexOf('>')+1));
-  var last = reverseDOMSearch(startTag, document.body.lastChild, endTag);
-  //first and last should be valid because the webpage is running the plugin with them
-  //TODO: fix this
-  var eTag = reverseDOMSearch(startTag, last, e.target.outerHTML.substring(0,e.target.outerHTML.indexOf('>')+1));
-  return "success";
+  //check if e.target is in between startTag and endTag
+  var toSanitize = newDoc.getElementById(e.target.id);
+  var $all = $(newDoc.body).find('*').andSelf();
+  if (!!$all.slice(0, $all.index(toSanitize)).filter(startTag)[0] && !!$all.slice($all.index(toSanitize)+1).filter(endTag)[0]) {
+    e.preventDefault();
+    return "success";
+  } 
+  //var eTag = reverseDOMSearch(startTag, last, e.target.outerHTML.substring(0,e.target.outerHTML.indexOf('>')+1));
+  
   //if e is happening within bounds of first and last, i.e. within an injection point, stop JS execution
   if (!!eTag) {
     //var between = s.substr(first,last-first);
