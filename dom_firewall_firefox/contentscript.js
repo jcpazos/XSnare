@@ -64,28 +64,49 @@ var CSAPI = {
 
     for (var i=0; i<endPointsList.length; i++) {
       var start = htmlToElement(endPointsList[i][0]);
+      var startRegex = sigToRegex(start);
+      var startIndex = startRegex.exec(fullHTML).index;
+
+
+      /*
       var possibleStartTags = Array.from(newDoc.getElementsByTagName(start.tagName));
       var matchingStartTags = Array.from(possibleStartTags).filter(elm => filterTag(start, elm));
-      var startTag = matchingStartTags[0];
+      var startTag = matchingStartTags[0];*/
       
       var end = htmlToElement(endPointsList[i][1]);
+      var endRegex = sigToRegex(end);
+      var endIndex = findLastIndex(endRegex);
+
+      /*
       var possibleEndTags = Array.from(newDoc.getElementsByTagName(end.tagName));
       var matchingEndTags = Array.from(possibleEndTags).filter(elm => filterTag(end, elm));
       //The last matching tag is the correct one, other ones are duplicates inserted by attacker
-      var endTag = matchingEndTags[matchingEndTags.length-1];
+      var endTag = matchingEndTags[matchingEndTags.length-1];*/
 
-
-
-      //Check if event e occurs within startTag and endTag and stop it from running
-      /*if (!startTag) {
-        promises.push(resolve("success"));
-      } else {*/
-        //e.preventDefault();
-        //TODO: if the design is so that all content between endpoints is sanitized (as opposed to just disabling the single event) 
-        //make it so that if e matches, remove the end points from list, so we don't keep repeating work.
-        checkAndSanitize(e, startTag, endTag);
+      checkAndSanitize(e, startIndex, endIndex);
     }
   }
+}
+
+function findLastIndex(regex) {
+  var currMatch;
+  var match;
+  while (match = regex.exec(fullHTML)) {
+    currMatch = match;
+  }
+  return currMatch.index;
+}
+
+//converts a signature to regex to match fullHTML against e.target. signature is an HTML element
+function sigToRegex(signatureHTMLTag) {
+  //const regex = /<\s*option\s+class=(\\"|'|"\/)level-0(\\"|'|")\s+value=(\\"|'|"\/)[^>]*(\\"|'|")\s*>/g;
+  let s = `<\\s*` + signatureHTMLTag.tagName.toLowerCase();
+  for (var i=0; i <signatureHTMLTag.attributes.length; i++) {
+    s+=`\\s+`+signatureHTMLTag.attributes[i].name + `=(\\"|'|"\/)` + signatureHTMLTag.attributes[i].value + `(\\"|'|")`;
+  }
+  s+=`\\s*>`;
+
+  return new RegExp(s, 'g');
 }
 
 //Stops script execution
@@ -164,7 +185,7 @@ function inIframe () {
 }
 
 //inject script to do preliminary checks
-function init_firewall() {
+async function init_firewall() {
 
 	var currPlugins = getCurrPlugins();
 	for (var i=0; i < signatures.length; i++) {
@@ -181,10 +202,12 @@ function init_firewall() {
 	document.addEventListener("afterscriptexecute", finishVerify, true);
 
 	if (!inIframe() && !fullHTML) {
-		browser.runtime.sendMessage({
+		/*browser.runtime.sendMessage({
 			  cmd: "retrieveHTML",
 			  params: {url: location.href}  
-		}).then(handleResponse, handleError);
+		}).then(handleResponse, handleError);*/
+    let resp = await browser.runtime.sendMessage({content: "message from CS"});
+    handleResponse(resp);
 	}
 
 	
@@ -246,9 +269,20 @@ function matchFirstAttack(e) {
   }
 }*/
 
+function checkAndSanitize(e, startIndex, endIndex) {
 
-function checkAndSanitize(e, startTag, endTag) {
+  var elementRegex = new RegExp('id="' + e.target.id + '"', 'g');
+  var elementIndex = elementRegex.exec(fullHTML).index;
   //check if e.target is in between startTag and endTag
+  if (startIndex < elementIndex && elementIndex < endIndex) {
+    e.preventDefault();
+    console.log("Prevented a malicious script!");
+  }
+}
+
+/*function checkAndSanitize(e, startTag, endTag) {
+  //check if e.target is in between startTag and endTag
+
   var toSanitize = newDoc.getElementById(e.target.id);
   var $all = $(newDoc.body).find('*').andSelf();
   if (!!$all.slice(0, $all.index(toSanitize)).filter(startTag)[0] && !!$all.slice($all.index(toSanitize)+1).filter(endTag)[0]) {
@@ -264,7 +298,7 @@ function checkAndSanitize(e, startTag, endTag) {
     //var sanitized = DOMPurify.sanitize(between);
     //document.body.innerHTML = s.substring(0, first) + sanitized + s.substring(last);
   }
-}
+}*/
 
 function getCurrPlugins() {
   //TODO: get curr plugins

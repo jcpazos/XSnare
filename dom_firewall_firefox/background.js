@@ -53,8 +53,14 @@ browser.webRequest.onBeforeRequest.addListener(
   sendResponse,
   {urls: ["<all_urls>"]}
 );*/
-
 browser.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    var data = respData[sender.tab.id];
+    delete respData[sender.tab.id];
+    return Promise.resolve(data);
+});
+
+/*browser.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     var handler = BGAPI[request.cmd];
     return handler(request.params, sender.tab.id).then(function (result) {
@@ -64,7 +70,7 @@ browser.runtime.onMessage.addListener(
         console.error("invalid handler: " + request.cmd);
         return false;
     });
-  });
+  });*/
 
 function randomString(length) {
     var text = "";
