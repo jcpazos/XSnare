@@ -41,7 +41,8 @@ var CSAPI = {
 
   	var y = 1;
     if (!fullHTML) {
-      console.log("didnt receive html yet!");
+      console.log("can't verify script yet, stopping execution.");
+      //e.preventDefault();
       return;
     }
 
@@ -65,7 +66,7 @@ var CSAPI = {
     for (var i=0; i<endPointsList.length; i++) {
       var start = htmlToElement(endPointsList[i][0]);
       var startRegex = sigToRegex(start);
-      var startIndex = startRegex.exec(fullHTML).index;
+      var startIndex = !!startRegex.exec(fullHTML) ? startRegex.exec(fullHTML).index : -1;
 
 
       /*
@@ -94,7 +95,7 @@ function findLastIndex(regex) {
   while (match = regex.exec(fullHTML)) {
     currMatch = match;
   }
-  return currMatch.index;
+  return !!currMatch ? currMatch.index : -1;
 }
 
 //converts a signature to regex to match fullHTML against e.target. signature is an HTML element
@@ -120,6 +121,7 @@ function denyScript(e) {
 }
 
 function verifyScript(e) {
+
   if (!document.body) {
     console.log("Body hasn't loaded yet, no need to verify.");
     return;
@@ -150,14 +152,14 @@ function finishVerify(e) {
 
 function handleResponse(resp) {
 	fullHTML = resp;
-  var parser = new DOMParser();
-  newDoc = parser.parseFromString(resp, 'text/html');
+	sessionStorage.setItem('fullHTML', resp);
+	var parser = new DOMParser();
+	newDoc = parser.parseFromString(resp, 'text/html');
 
-  if (!document.body) {
-    return;
-  }
+	if (!document.body) {
+		return;
+	}
   	
-	
 	console.log("doing the thing");
 
 	var sc = document.createElement("script");
@@ -195,6 +197,12 @@ async function init_firewall() {
 		if (softwareList.includes(currPlugins)) {
 		  endPointsList.push(signature.endPoints);
 		}
+	}
+
+	fullHTML = sessionStorage.getItem("fullHTML");
+
+	if (fullHTML) {
+		sessionStorage.removeItem('fullHTML');
 	}
 
 	//TODO: still have to verify if CS is loaded again, Firefox really doesn't like this approach with facebook
@@ -270,7 +278,10 @@ function matchFirstAttack(e) {
 }*/
 
 function checkAndSanitize(e, startIndex, endIndex) {
-
+  //if for some reason we loaded the wrong signatures, nothing to do
+  if (startIndex || endIndex == -1) {
+  	return;
+  }
   var elementRegex = new RegExp('id="' + e.target.id + '"', 'g');
   var elementIndex = elementRegex.exec(fullHTML).index;
   //check if e.target is in between startTag and endTag
