@@ -4,6 +4,10 @@
 var respData = {};
 var signatures = Sigs.signatures;
 
+String.prototype.replaceBetween = function(start, end, what) {
+    return this.substring(0, start) + what + this.substring(end);
+};
+
 function listener(details) {
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
@@ -20,17 +24,20 @@ function listener(details) {
 
   filter.onstop = event => {
     // Add a random ID to each script for comparison in the contentscript
-    var parser = new DOMParser();
-    var doc = parser.parseFromString(str, 'text/html');
+    /*var parser = new DOMParser();
+    var doc = parser.parseFromString(str, 'text/html');*/
     //BGAPI.verifyHTML(doc);
-    str = str.replace(/<script/g, replacer);
-    if (!respData[details.tabId]) {
+    try {
+      str = verifyHTML(str);
+    } catch(err) {
+      str = "<!DOCTYPE HTML><html><head></head><body>This webpage has been identified as malicious and was stopped from loading</body></html>";
+    }
+    //str = str.replace(/<script/g, replacer);
+    /*if (!respData[details.tabId]) {
      respData[details.tabId] = str;
-    } 
-    
-    var newStr = new XMLSerializer().serializeToString(doc);
-    //filter.write(encoder.encode(newStr.substring(0,newStr.indexOf("<html")-1) + doc.documentElement.outerHTML));
-    //filter.write(encoder.encode("<!DOCTYPE HTML><html><head></head><body></body></html>"));
+    } */
+    //var comment = "<!--" + (str.substr(str.indexOf("<html"))).replace(/-->/g, "") + "-->\n";
+    //var strComm = str.substring(0,str.indexOf("<html")-1) + comment.replace(/(\r\n|\n|\r)/gm, "") + str.substr(str.indexOf("<html")-1);
     filter.write(encoder.encode(str));
     filter.close();    
   };
@@ -60,70 +67,20 @@ browser.runtime.onMessage.addListener(
     return Promise.resolve(data);
 });
 
-/*browser.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    var handler = BGAPI[request.cmd];
-    return handler(request.params, sender.tab.id).then(function (result) {
-      console.log("sending response back");
-      return result;
-    }).catch(function (err) {
-        console.error("invalid handler: " + request.cmd);
-        return false;
-    });
-  });*/
 
-function randomString(length) {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for(var i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-}
-
-function checkAndSanitize(e, startTag, endTag, doc) {
-  var s = doc.body.innerHTML;
-  var first = fullHTML.indexOf(startTag);
-  var last = reverseDOMSearch(startTag, doc.body.lastChild, endTag);
-  //first and last should be valid because the webpage is running the plugin with them
-  //TODO: fix this
-  var eTag = reverseDOMSearch(startTag, last, e.tagHTML);
-
-  //if e is happening within bounds of first and last, i.e. within an injection point, stop JS execution
-  if (!!eTag) {
-    e.setAttribute("data-execute", "false");
-    //var between = s.substr(first,last-first);
-    //e.preventDefault();
-    //var sanitized = DOMPurify.sanitize(between);
-    //document.body.innerHTML = s.substring(0, first) + sanitized + s.substring(last);
+function checkAndSanitize(e, startIndex, endIndex) {
+  //if we can't find start and end, the HTML doesn't match what we expected it to be
+  if (startIndex || endIndex == -1) {
+    throw new Error("HTML doesn't match expected form.")
+    return;
   }
-}
-
-
-//Search for a DOM element identified by 'query' between 'start' and 'end'
-//in reverse order
-//TODO: make into a promise
-function reverseDOMSearch(start, end, query) {
-  if (!end || start === end) {
-    return null;
+  var elementRegex = new RegExp('id="' + e.target.id + '"', 'g');
+  var elementIndex = elementRegex.exec(fullHTML).index;
+  //check if e.target is in between startTag and endTag
+  if (startIndex < elementIndex && elementIndex < endIndex) {
+    e.preventDefault();
+    console.log("Prevented a malicious script!");
   }
-  
-  //TODO: change this to a better comparison check,
-  //otherwise there's no way of telling if you have the right 'query'
-  if (end === query) {
-    return end;
-  }
-
-  var previous = $(end).prev()[0];
-  var lastChild = $(end).children().last()[0];
-  var childrenSearch = reverseDOMSearch(start, lastChild, query);
-
-  if (!!childrenSearch) {
-    return childrenSearch;
-  } else {
-    return reverseDOMSearch(start, previous, query);
-  }
-
 }
 
 /**
@@ -138,10 +95,103 @@ function htmlToElement(html) {
 }
 
 
-function getCurrPlugins() {
+function isRunningPlugin(HTMLString, plugin) {
   //TODO: get curr plugins
-  return "wpPlugin";
+  var regex = new RegExp("html>.*" + plugin + ".*<\/html>", "g");
+  if (HTMLString.match(regex)) {
+    return true;
+  }
+  return false;
+
 }
+
+function inInjectionPoint(scriptIndex, endPointsIndices) {
+
+  for (var i =0; i<endPointsIndices.length; i++) {
+    if (endPointsIndices[i][0] < scriptIndex && scriptIndex < endPointsIndices[i][1]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function findLastIndex(regex, HTMLString) {
+  var currMatch;
+  var match;
+  while (match = regex.exec(HTMLString)) {
+    currMatch = match;
+  }
+  return !!currMatch ? currMatch.index : -1;
+}
+
+function getRegexIndices(regex, string) {
+  var indices = [];
+  var match;
+  while (match = regex.exec(string)) {
+    indices.push(match.index);
+  }
+  return indices;
+}
+
+//converts a signature to regex to match HTML string against element HTML tag
+function sigToRegex(signatureHTMLTag) {
+  //const regex = /<\s*option\s+class=(\\"|'|"\/)level-0(\\"|'|")\s+value=(\\"|'|"\/)[^>]*(\\"|'|")\s*>/g;
+  let s = `<\\s*` + signatureHTMLTag.tagName.toLowerCase();
+  for (var i=0; i <signatureHTMLTag.attributes.length; i++) {
+    s+=`\\s+`+signatureHTMLTag.attributes[i].name + `=(\\"|'|"\/)` + signatureHTMLTag.attributes[i].value + `(\\"|'|")`;
+  }
+  s+=`\\s*>`;
+
+  return new RegExp(s, 'g');
+}
+
+function verifyHTML(HTMLString) {
+
+    var currPlugins = getCurrPlugins(HTMLString);
+    var endPointsList = [];
+
+    for (var i=0; i < signatures.length; i++) {
+      var signature = signatures[i];
+      var software = signature.software;
+      var softwareList = software.split('#').map(x => x.trim());
+      if (isRunningPlugin(HTMLString, signature.softwareDetails)) {
+        endPointsList.push(signature.endPoints);
+      }
+    }
+
+    var endPointsIndices = [];
+    
+    for (var i=0; i<endPointsList.length; i++) {
+      var start = htmlToElement(endPointsList[i][0]);
+      var startRegex = sigToRegex(start);
+      var startIndex = startRegex.exec(HTMLString);
+      var startIndex = !!startIndex ? startIndex.index : -1;
+
+      
+      var end = htmlToElement(endPointsList[i][1]);
+      var endRegex = sigToRegex(end);
+      var endIndex = findLastIndex(endRegex, HTMLString);
+
+      if (startIndex == -1 || endIndex == -1) {
+        throw new Error("Invalid HTML, doesn't match expected");
+      }
+      endPointsIndices.push([startIndex, endIndex]);
+    }
+
+    var scriptsStart = getRegexIndices(/<script/g, HTMLString);
+    var scriptsEnd = getRegexIndices(/<\/script>/g, HTMLString);
+    if (scriptsStart.length != scriptsEnd.length) {
+      throw new Error("Invalid HTML, improperly balanced script tags");
+    }
+
+    for (var i=0; i<scriptsStart.length; i++) {
+      if (inInjectionPoint(scriptsStart[i], endPointsIndices))
+        HTMLString = HTMLString.replaceBetween(scriptsStart[i],scriptsEnd[i], "");
+    }
+    return HTMLString;
+}
+
+
 
 
 var BGAPI = {

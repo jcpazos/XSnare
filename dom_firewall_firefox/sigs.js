@@ -4,7 +4,7 @@
 var signatures = [
   { url: '',
        //TODO: revise if it makes sense to have multiple software listed, change to array if it stays
-       software: '#wordPress #wpPlugin2',
+       software: '#wordPress #wf-cookieconsent',
        softwareDetails: 'wf-cookie-consent',
        version: '1.1.3',
        description: '',

@@ -187,9 +187,9 @@ function inIframe () {
 }
 
 //inject script to do preliminary checks
-async function init_firewall() {
+function init_firewall() {
 
-	var currPlugins = getCurrPlugins();
+	/*var currPlugins = getCurrPlugins();
 	for (var i=0; i < signatures.length; i++) {
 		var signature = signatures[i];
 		var software = signature.software;
@@ -206,17 +206,17 @@ async function init_firewall() {
 	}
 
 	//TODO: still have to verify if CS is loaded again, Firefox really doesn't like this approach with facebook
-	document.addEventListener("beforescriptexecute", verifyScript, true);
-	document.addEventListener("afterscriptexecute", finishVerify, true);
+	//document.addEventListener("beforescriptexecute", verifyScript, true);
+	//document.addEventListener("afterscriptexecute", finishVerify, true);
 
-	if (!inIframe() && !fullHTML) {
-		/*browser.runtime.sendMessage({
+	/*if (!inIframe() && !fullHTML) {
+		browser.runtime.sendMessage({
 			  cmd: "retrieveHTML",
 			  params: {url: location.href}  
-		}).then(handleResponse, handleError);*/
-    let resp = await browser.runtime.sendMessage({content: "message from CS"});
+		}).then(handleResponse, handleError);
+    //let resp = await browser.runtime.sendMessage({content: "message from CS"});
     handleResponse(resp);
-	}
+	}*/
 
 	
 
@@ -278,8 +278,9 @@ function matchFirstAttack(e) {
 }*/
 
 function checkAndSanitize(e, startIndex, endIndex) {
-  //if for some reason we loaded the wrong signatures, nothing to do
+  //if we can't find start and end, the HTML doesn't match what we expected it to be
   if (startIndex || endIndex == -1) {
+    throw new Error("HTML doesn't match expected form.")
   	return;
   }
   var elementRegex = new RegExp('id="' + e.target.id + '"', 'g');
