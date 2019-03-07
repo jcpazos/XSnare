@@ -71,7 +71,7 @@ function isRunningPlugin(HTMLString, plugin) {
 
 function inInjectionPoint(scriptIndex, endPointsIndices) {
 
-  for (var i =0; i<endPointsIndices.length; i++) {
+  for (let i =0; i<endPointsIndices.length; i++) {
     if (endPointsIndices[i][0] < scriptIndex && scriptIndex < endPointsIndices[i][1]) {
       return true;
     }
