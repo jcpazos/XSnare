@@ -67,8 +67,6 @@ function isRunningPlugin(HTMLString, plugin) {
   //TODO: get curr plugins
   let regex = new RegExp("html>.*" + plugin + ".*<\/html>", "g");
   return !!HTMLString.match(regex);
-
-
 }
 
 function inInjectionPoint(scriptIndex, endPointsIndices) {
