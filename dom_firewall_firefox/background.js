@@ -91,14 +91,17 @@ function htmlToElement(html) {
     var template = document.createElement('template');
     html = html.trim(); // Never return a text node of whitespace as the result
     template.innerHTML = html;
+    if (!template.innerHTML) {
+      template.innerHTML = html + ">";
+    }
     return template.content.firstChild;
 }
 
 
 function isRunningPlugin(HTMLString, plugin) {
   //TODO: get curr plugins
-  var regex = new RegExp("html>.*" + plugin + ".*<\/html>", "g");
-  if (HTMLString.match(regex)) {
+  var regex = new RegExp(plugin);
+  if (HTMLString.substring(HTMLString.indexOf("<head>"),HTMLString.indexOf("</head>")).match(regex)) {
     return true;
   }
   return false;
@@ -134,20 +137,22 @@ function getRegexIndices(regex, string) {
 }
 
 //converts a signature to regex to match HTML string against element HTML tag
-function sigToRegex(signatureHTMLTag) {
+function sigToRegex(signatureHTMLTag, isComplete) {
   //const regex = /<\s*option\s+class=(\\"|'|"\/)level-0(\\"|'|")\s+value=(\\"|'|"\/)[^>]*(\\"|'|")\s*>/g;
+
   let s = `<\\s*` + signatureHTMLTag.tagName.toLowerCase();
   for (var i=0; i <signatureHTMLTag.attributes.length; i++) {
     s+=`\\s+`+signatureHTMLTag.attributes[i].name + `=(\\"|'|"\/)` + signatureHTMLTag.attributes[i].value + `(\\"|'|")`;
   }
-  s+=`\\s*>`;
-
+  if (isComplete === "complete") {
+    s+=`\\s*>`;
+  }
   return new RegExp(s, 'g');
 }
 
 function verifyHTML(HTMLString) {
 
-    var currPlugins = getCurrPlugins(HTMLString);
+    //var currPlugins = getCurrPlugins(HTMLString);
     var endPointsList = [];
 
     for (var i=0; i < signatures.length; i++) {
@@ -155,7 +160,7 @@ function verifyHTML(HTMLString) {
       var software = signature.software;
       var softwareList = software.split('#').map(x => x.trim());
       if (isRunningPlugin(HTMLString, signature.softwareDetails)) {
-        endPointsList.push(signature.endPoints);
+        endPointsList.push(signature.endPoints.concat(signature.sigType));
       }
     }
 
@@ -163,13 +168,13 @@ function verifyHTML(HTMLString) {
     
     for (var i=0; i<endPointsList.length; i++) {
       var start = htmlToElement(endPointsList[i][0]);
-      var startRegex = sigToRegex(start);
+      var startRegex = sigToRegex(start,endPointsList[i][2]);
       var startIndex = startRegex.exec(HTMLString);
       var startIndex = !!startIndex ? startIndex.index : -1;
 
       
       var end = htmlToElement(endPointsList[i][1]);
-      var endRegex = sigToRegex(end);
+      var endRegex = sigToRegex(end,endPointsList[i][3]);
       var endIndex = findLastIndex(endRegex, HTMLString);
 
       if (startIndex == -1 || endIndex == -1) {
