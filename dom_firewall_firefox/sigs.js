@@ -8,7 +8,7 @@ var signatures = [
        softwareDetails: 'wf-cookie-consent',
        version: '1.1.3',
        description: '',
-       sigType: 'verifyHTML',
+       sigType: ['complete', 'complete'],
        endPoints: ['<h1 class="entry-title">', '<span class="screen-reader-text">']
   },
   { url: '',
@@ -17,8 +17,17 @@ var signatures = [
        softwareDetails: 'wf-cookie-consent',
        version: '1.1.3',
        description: '',
-       sigType: 'verifyHTML',
+       sigType: ['complete', 'complete'],
        endPoints: ['<option class="level-0" value="133">', '<option class="level-0" value="12">']
+  },
+  { url: '',
+       //TODO: revise if it makes sense to have multiple software listed, change to array if it stays
+       software: '#wordPress #wpPlugin',
+       softwareDetails: 'snazzy-maps',
+       version: '1.1.3',
+       description: '',
+       sigType: ['incomplete', 'complete'],
+       endPoints: ['<input name="text" type="text" placeholder="Search..."', '<button class="button" type="submit">']
   },
 ];
 
