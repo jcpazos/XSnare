@@ -14,7 +14,7 @@ function listener(details) {
   let encoder = new TextEncoder();
 
   const replacer = function () {
-    return '<script id="' + window.crypto.getRandomValues(new Uint16Array(1)) + '"';
+    return '<script id="' + /*window.crypto.getRandomValues(new Uint16Array(1))*/"safe" + '"';
   };
 
   let str = "";
@@ -28,11 +28,12 @@ function listener(details) {
     var doc = parser.parseFromString(str, 'text/html');*/
     //BGAPI.verifyHTML(doc);
     try {
-      str = verifyHTML(str);
+        //TODO: mark verified scripts as 'safe' so contentscript doesn't check them again for dynamic checks
+        str = verifyHTML(str, details.url);
     } catch(err) {
-      str = "<!DOCTYPE HTML><html><head></head><body>This webpage has been identified as malicious and was stopped from loading</body></html>";
+        str = "<!DOCTYPE HTML><html><head></head><body>This webpage has been identified as malicious and was stopped from loading</body></html>";
     }
-    //str = str.replace(/<script/g, replacer);
+    str = str.replace(/<script/g, replacer);
     /*if (!respData[details.tabId]) {
      respData[details.tabId] = str;
     } */
@@ -49,6 +50,13 @@ function listener(details) {
   sendResponse,
   {urls: ["<all_urls>"]}
 );*/
+
+browser.webRequest.onBeforeRequest.addListener(
+    listener,
+    {urls: ["<all_urls>"], types: ["main_frame"]},
+    ["blocking"]
+);
+
 
 
 /**
@@ -106,8 +114,8 @@ function sigToRegex(signatureHTMLTag, isComplete) {
     //const regex = /<\s*option\s+class=(\\"|'|"\/)level-0(\\"|'|")\s+value=(\\"|'|"\/)[^>]*(\\"|'|")\s*>/g;
 
     let s = `<\\s*` + signatureHTMLTag.tagName.toLowerCase();
-    for (var i=0; i <signatureHTMLTag.attributes.length; i++) {
-        s+=`\\s+`+signatureHTMLTag.attributes[i].name + `=(\\"|'|"\/)` + signatureHTMLTag.attributes[i].value + `(\\"|'|")`;
+    for (let i=0; i <signatureHTMLTag.attributes.length; i++) {
+        s+=`\\s+`+signatureHTMLTag.attributes[i].name + `=(\\"|'|"\/)` + signatureHTMLTag.attributes[i].value.replace(/(?=[() ])/g, '\\') + `(\\"|'|")`;
     }
     if (isComplete === "complete") {
         s+=`\\s*>`;
@@ -115,7 +123,11 @@ function sigToRegex(signatureHTMLTag, isComplete) {
     return new RegExp(s, 'g');
 }
 
-function verifyHTML(HTMLString) {
+function isURL(signatureUrl, HTMLUrl) {
+    return signatureUrl === HTMLUrl;
+}
+
+function verifyHTML(HTMLString, url) {
 
   let i;
   const endPointsList = [];
@@ -124,7 +136,7 @@ function verifyHTML(HTMLString) {
     const signature = signatures[i];
     const software = signature.software;
     const softwareList = software.split('#').map(x => x.trim());
-    if (isRunningPlugin(HTMLString, signature.softwareDetails)) {
+    if (isRunningPlugin(HTMLString, signature.softwareDetails) || isURL(signature.url, url)) {
         endPointsList.push(signature.endPoints.concat(signature.sigType));
     }
   }
