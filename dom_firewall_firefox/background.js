@@ -59,16 +59,20 @@ function htmlToElement(html) {
     let template = document.createElement('template');
     html = html.trim(); // Never return a text node of whitespace as the result
     template.innerHTML = html;
+    if (!template.innerHTML) {
+        template.innerHTML = html + ">";
+    }
     return template.content.firstChild;
 }
 
 
 function isRunningPlugin(HTMLString, plugin) {
-  //TODO: get curr plugins
-  let regex = new RegExp("html>.*" + plugin + ".*<\/html>", "g");
-  return !!HTMLString.match(regex);
-}
+    //TODO: get curr plugins
+    const regex = new RegExp(plugin);
+    return !!HTMLString.substring(HTMLString.indexOf("<head>"), HTMLString.indexOf("</head>")).match(regex);
 
+
+}
 function inInjectionPoint(scriptIndex, endPointsIndices) {
 
   for (let i =0; i<endPointsIndices.length; i++) {
@@ -98,21 +102,22 @@ function getRegexIndices(regex, string) {
 }
 
 //converts a signature to regex to match HTML string against element HTML tag
-function sigToRegex(signatureHTMLTag) {
-  //const regex = /<\s*option\s+class=(\\"|'|"\/)level-0(\\"|'|")\s+value=(\\"|'|"\/)[^>]*(\\"|'|")\s*>/g;
-  let s = `<\\s*` + signatureHTMLTag.tagName.toLowerCase();
-  for (let i=0; i <signatureHTMLTag.attributes.length; i++) {
-    s+=`\\s+`+signatureHTMLTag.attributes[i].name + `=(\\"|'|"\/)` + signatureHTMLTag.attributes[i].value + `(\\"|'|")`;
-  }
-  s+=`\\s*>`;
+function sigToRegex(signatureHTMLTag, isComplete) {
+    //const regex = /<\s*option\s+class=(\\"|'|"\/)level-0(\\"|'|")\s+value=(\\"|'|"\/)[^>]*(\\"|'|")\s*>/g;
 
-  return new RegExp(s, 'g');
+    let s = `<\\s*` + signatureHTMLTag.tagName.toLowerCase();
+    for (var i=0; i <signatureHTMLTag.attributes.length; i++) {
+        s+=`\\s+`+signatureHTMLTag.attributes[i].name + `=(\\"|'|"\/)` + signatureHTMLTag.attributes[i].value + `(\\"|'|")`;
+    }
+    if (isComplete === "complete") {
+        s+=`\\s*>`;
+    }
+    return new RegExp(s, 'g');
 }
 
 function verifyHTML(HTMLString) {
 
   let i;
-  const currPlugins = getCurrPlugins(HTMLString);
   const endPointsList = [];
 
   for (i = 0; i < signatures.length; i++) {
@@ -120,7 +125,7 @@ function verifyHTML(HTMLString) {
     const software = signature.software;
     const softwareList = software.split('#').map(x => x.trim());
     if (isRunningPlugin(HTMLString, signature.softwareDetails)) {
-      endPointsList.push(signature.endPoints);
+        endPointsList.push(signature.endPoints.concat(signature.sigType));
     }
   }
 
@@ -128,13 +133,13 @@ function verifyHTML(HTMLString) {
 
   for (i = 0; i<endPointsList.length; i++) {
     const start = htmlToElement(endPointsList[i][0]);
-    const startRegex = sigToRegex(start);
+    const startRegex = sigToRegex(start,endPointsList[i][2]);
     let startMatch = startRegex.exec(HTMLString);
     let startIndex = !!startMatch ? startMatch.index : -1;
 
 
     const end = htmlToElement(endPointsList[i][1]);
-    const endRegex = sigToRegex(end);
+    const endRegex = sigToRegex(end,endPointsList[i][3]);
     const endIndex = findLastIndex(endRegex, HTMLString);
 
     if (startIndex === -1 || endIndex === -1) {
