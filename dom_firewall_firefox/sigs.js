@@ -32,7 +32,7 @@ var signatures = [
     {
         url: 'https://www.cs.ubc.ca/~jpazos/',
         software: '',
-        softwareDetails: '',
+        softwareDetails: '31sdasfas',
         version: '1.0',
         description: '',
         sigType: ['complete', 'complete'],

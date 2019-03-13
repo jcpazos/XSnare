@@ -66,6 +66,9 @@ function verifyScript(e) {
 	}
 }
 
+function verifyToggle(e) {
+  CSAPI["verifyHTML"](e);
+}
 
 function finishVerify(e) {
 	//console.log("Finishing script with ID: " + e.target.id);
@@ -75,6 +78,7 @@ function finishVerify(e) {
 function init_firewall() {
 	document.addEventListener("beforescriptexecute", verifyScript, true);
 	document.addEventListener("afterscriptexecute", finishVerify, true);
+  document.addEventListener("toggle", verifyToggle, true); 
 }
 
 /**
@@ -93,6 +97,7 @@ function checkAndSanitize(e, startTag, endTag) {
     const $all = $(document.body).find('*').andSelf();
     if (!!$all.slice(0, $all.index(e.target)).filter(startTag)[0] && !!$all.slice($all.index(e.target)+1).filter(endTag)[0]) {
         e.preventDefault();
+        e.stopPropagation();
         return "success";
     }
 }
