@@ -77,12 +77,13 @@ function scriptListener(details) {
   let str = "";
   filter.ondata = event => {
     str += decoder.decode(event.data, {stream: true});
+    filter.write(event.data);
   };
 
   filter.onstop = event => {
 
-    filter.write(encoder.encode(str));
-    filter.close();    
+    //filter.write(encoder.encode(str));
+    filter.close();
   };
 }
 
@@ -110,22 +111,24 @@ browser.webRequest.onBeforeRequest.addListener(
 );
 
 browser.webRequest.onBeforeRequest.addListener(
-    xhrListener,
-    {urls: ["<all_urls>"], types: ["xmlhttprequest"]},
-    ["blocking"]
-);
-
-browser.webRequest.onBeforeRequest.addListener(
     scriptListener,
     {urls: ["<all_urls>"], types: ["script"]},
     ["blocking"]
 );
 
+
+/*browser.webRequest.onBeforeRequest.addListener(
+    xhrListener,
+    {urls: ["<all_urls>"], types: ["xmlhttprequest"]},
+    ["blocking"]
+);
+
+
 browser.webRequest.onBeforeRequest.addListener(
     specListener,
     {urls: ["<all_urls>"], types: ["speculative"]},
     ["blocking"]
-);
+);*/
 
 
 
