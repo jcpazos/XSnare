@@ -51,11 +51,82 @@ function listener(details) {
   {urls: ["<all_urls>"]}
 );*/
 
+function xhrListener(details) {
+  let filter = browser.webRequest.filterResponseData(details.requestId);
+  let decoder = new TextDecoder("utf-8");
+  let encoder = new TextEncoder();
+
+  let str = "";
+  filter.ondata = event => {
+    str += decoder.decode(event.data, {stream: true});
+  };
+
+  filter.onstop = event => {
+
+    filter.write(encoder.encode(str));
+    filter.close();    
+  };
+}
+
+
+function scriptListener(details) {
+  let filter = browser.webRequest.filterResponseData(details.requestId);
+  let decoder = new TextDecoder("utf-8");
+  let encoder = new TextEncoder();
+
+  let str = "";
+  filter.ondata = event => {
+    str += decoder.decode(event.data, {stream: true});
+  };
+
+  filter.onstop = event => {
+
+    filter.write(encoder.encode(str));
+    filter.close();    
+  };
+}
+
+function specListener(details) {
+  let filter = browser.webRequest.filterResponseData(details.requestId);
+  let decoder = new TextDecoder("utf-8");
+  let encoder = new TextEncoder();
+
+  let str = "";
+  filter.ondata = event => {
+    str += decoder.decode(event.data, {stream: true});
+  };
+
+  filter.onstop = event => {
+
+    filter.write(encoder.encode(str));
+    filter.close();    
+  };
+}
+
 browser.webRequest.onBeforeRequest.addListener(
     listener,
     {urls: ["<all_urls>"], types: ["main_frame"]},
     ["blocking"]
 );
+
+browser.webRequest.onBeforeRequest.addListener(
+    xhrListener,
+    {urls: ["<all_urls>"], types: ["xmlhttprequest"]},
+    ["blocking"]
+);
+
+browser.webRequest.onBeforeRequest.addListener(
+    scriptListener,
+    {urls: ["<all_urls>"], types: ["script"]},
+    ["blocking"]
+);
+
+browser.webRequest.onBeforeRequest.addListener(
+    specListener,
+    {urls: ["<all_urls>"], types: ["speculative"]},
+    ["blocking"]
+);
+
 
 
 
