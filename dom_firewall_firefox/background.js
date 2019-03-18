@@ -76,7 +76,7 @@ function scriptListener(details) {
 
   let str = "";
   filter.ondata = event => {
-    str += decoder.decode(event.data, {stream: true});
+    //str += decoder.decode(event.data, {stream: true});
     filter.write(event.data);
   };
 
