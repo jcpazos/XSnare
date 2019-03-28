@@ -1,14 +1,18 @@
 'use strict';
 
 //var storageArea = chrome.storage.local;
-var respData = {};
-var signatures = Sigs.signatures;
+const respData = {};
+const mainFrameSignatures = Sigs.main_frame_signatures;
+const scriptSignatures = Sigs.script_signatures;
+let endPointsList = [];
+let scriptsList = [];
+let scriptReplaceValues = [];
 
 String.prototype.replaceBetween = function(start, end, what) {
     return this.substring(0, start) + what + this.substring(end);
 };
 
-function listener(details) {
+function mainFrameListener(details) {
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
   let encoder = new TextEncoder();
@@ -32,6 +36,7 @@ function listener(details) {
         //TODO: mark verified scripts as 'safe' so contentscript doesn't check them again for dynamic checks
         str = verifyHTML(str, details.url);
     } catch(err) {
+        console.log("Error when verifying HTML: " + err);
         str = "<!DOCTYPE HTML><html><head></head><body>This webpage has been identified as malicious and was stopped from loading</body></html>";
     }
     //str = str.replace(/<script/g, replacer);
@@ -47,12 +52,7 @@ function listener(details) {
   //return {}; // not needed
 }
 
-/*browser.webRequest.onCompleted.addListener(
-  sendResponse,
-  {urls: ["<all_urls>"]}
-);*/
-
-function xhrListener(details) {
+/*function xhrListener(details) {
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
   let encoder = new TextEncoder();
@@ -67,33 +67,36 @@ function xhrListener(details) {
     filter.write(encoder.encode(str));
     filter.close();    
   };
+}*/
+
+
+function replaceInScript(str, toReplace, replaceValue) {
+  //TODO: In str, replace string toReplace or string starting at index toReplace with replaceValue
 }
 
-
 function scriptListener(details) {
-  var filter = browser.webRequest.filterResponseData(details.requestId);
-  var decoder = new TextDecoder("utf-8");
-  var encoder = new TextEncoder("utf-8");
-  var str = "";
-  if(details.url.includes("events-manager.js?ver=5.8")) {
+  if (!scriptsList.includes(details.url)) {
+    return {};
+  }
+  let filter = browser.webRequest.filterResponseData(details.requestId);
+  let decoder = new TextDecoder("utf-8");
+  let encoder = new TextEncoder();
+  let str = "";
     filter.ondata = event => {
       str += decoder.decode(event.data, {stream: true});
-      str = str.replace(/location-town/g, "location");
-      debugger;
-      filter.write(encoder.encode(str));
+      let i;
+      let currScript = scriptReplaceValues[scriptsList.indexOf(details.url)];
+      for (i=0; i < currScript.length; i++) {
+        str = replaceInScript(str, currScript[0][i], currScript[1][i]);
+      }
+      let newStr = encoder.encode(str);
+      filter.write(newStr);
       filter.disconnect();
     };
-  } else {
-    filter.ondata = event => {
-      
-      filter.write(event.data);
-      filter.disconnect();
-    };
-  }
   return {};
 }
 
-function specListener(details) {
+/*function specListener(details) {
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
   let encoder = new TextEncoder();
@@ -108,10 +111,10 @@ function specListener(details) {
     filter.write(encoder.encode(str));
     filter.close();    
   };
-}
+}*/
 
 browser.webRequest.onBeforeRequest.addListener(
-  listener,
+  mainFrameListener,
   {urls: ["<all_urls>"], types: ["main_frame"]},
   ["blocking"]
 );
@@ -141,7 +144,7 @@ browser.webRequest.onBeforeRequest.addListener(
 
 /**
  * @param {String} html representing a single element
- * @return {Element}
+ * @return {ChildNode}
  */
 function htmlToElement(html) {
     let template = document.createElement('template');
@@ -207,19 +210,33 @@ function isURL(signatureUrl, HTMLUrl) {
     return signatureUrl === HTMLUrl;
 }
 
+function loadSignatures(HTMLString, url) {
+  let i;
+  for (i = 0; i < mainFrameSignatures.length; i++) {
+    const signature = mainFrameSignatures[i];
+    //const software = signature.software;
+    //const softwareList = software.split('#').map(x => x.trim());
+    if (isRunningPlugin(HTMLString, signature.softwareDetails) || isURL(signature.url, url)) {
+      endPointsList.push(signature.endPoints.concat(signature.sigType));
+    }
+  }
+
+  for (i=0; i < scriptSignatures.length; i++) {
+    const signature = scriptSignatures[i];
+    //const software = signature.software;
+    //const softwareList = software.split('#').map(x => x.trim());
+    if (isRunningPlugin(HTMLString, signature.softwareDetails) || isURL(signature.url, url)) {
+      scriptsList.push(signature.url);
+      scriptReplaceValues.push([signature.toReplace, signature.replaceValues]);
+    }
+  }
+}
+
 function verifyHTML(HTMLString, url) {
 
   let i;
-  const endPointsList = [];
 
-  for (i = 0; i < signatures.length; i++) {
-    const signature = signatures[i];
-    const software = signature.software;
-    const softwareList = software.split('#').map(x => x.trim());
-    if (isRunningPlugin(HTMLString, signature.softwareDetails) || isURL(signature.url, url)) {
-        endPointsList.push(signature.endPoints.concat(signature.sigType));
-    }
-  }
+  loadSignatures(HTMLString, url);
 
   const endPointsIndices = [];
 
@@ -255,7 +272,7 @@ function verifyHTML(HTMLString, url) {
 
 
 
-
+/*
 var BGAPI = {
 
   retrieveHTML: function(params, tabId) {
@@ -264,5 +281,5 @@ var BGAPI = {
     return Promise.resolve(data);
   }
 
-};
+};*/
 

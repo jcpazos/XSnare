@@ -7,7 +7,7 @@ const CSAPI = {
 
         let i;
         const endPointsList = [];
-
+        //TODO: move this functionality outside of verifyHTML so we don't keep loading scripts every time
         for (i = 0; i < signatures.length; i++) {
             const signature = signatures[i];
             if (isRunningPlugin(signature.softwareDetails) || isURL(signature.url)) {

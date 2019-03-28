@@ -1,7 +1,7 @@
 //Database for user-defined signatures, currently shown in plaintext for ease of use
 //might want to move to an actual database later?
 
-var signatures = [
+const main_frame_signatures = [
     {
         url: '',
         software: '#wordPress #wf-cookieconsent',
@@ -40,11 +40,23 @@ var signatures = [
     }
 ];
 
+const script_signatures = [
+    {
+        url: '',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'events-manager',
+        version: '',
+        description: '',
+        toReplace: [],
+        replaceValues: []
+    }
+];
+
 window.Sigs = (function (module) {
 
 
     const exports = {
-        signatures
+        main_frame_signatures
     };
 
 
