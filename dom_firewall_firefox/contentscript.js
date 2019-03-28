@@ -59,11 +59,6 @@ function isURL(signatureUrl) {
 }
 
 function verifyScript(e) {
-  if (e.target.id === "safe" && !!e.target.src) {
-    if (e.target.src.includes("events-manager")) {
-      console.log("ALERT");
-    }
-  }
 	if (e.target.id !== "safe") {
 		console.log("Verifying script with ID: " + e.target.id);
 		CSAPI["verifyHTML"](e);
@@ -72,6 +67,7 @@ function verifyScript(e) {
 }
 
 function verifyToggle(e) {
+  console.log("verifying toggle");
   CSAPI["verifyHTML"](e);
 }
 

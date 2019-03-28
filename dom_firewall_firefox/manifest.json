@@ -2,7 +2,7 @@
   "name": "DOM Firewall",
   "version": "0.1",
   "description": "Protect yourself against XSS and CSRF",
-  "permissions": ["activeTab", "storage", "webRequest", "webRequestBlocking", "<all_urls>", "tabs"],
+  "permissions": ["<all_urls>", "activeTab", "storage", "webRequest", "webRequestBlocking", "tabs"],
   "options_ui": {
     "page": "options.html",
     "browser_style": true

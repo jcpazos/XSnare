@@ -14,6 +14,7 @@ function listener(details) {
   let encoder = new TextEncoder();
 
   const replacer = function () {
+    //TODO: instead of replacing id, consider adding a new attribute or a 'safe' class, since IDs are sometimes important
     return '<script id="' + /*window.crypto.getRandomValues(new Uint16Array(1))*/"safe" + '"';
   };
 
@@ -33,7 +34,7 @@ function listener(details) {
     } catch(err) {
         str = "<!DOCTYPE HTML><html><head></head><body>This webpage has been identified as malicious and was stopped from loading</body></html>";
     }
-    str = str.replace(/<script/g, replacer);
+    //str = str.replace(/<script/g, replacer);
     /*if (!respData[details.tabId]) {
      respData[details.tabId] = str;
     } */
@@ -70,21 +71,26 @@ function xhrListener(details) {
 
 
 function scriptListener(details) {
-  let filter = browser.webRequest.filterResponseData(details.requestId);
-  let decoder = new TextDecoder("utf-8");
-  let encoder = new TextEncoder();
-
-  let str = "";
-  filter.ondata = event => {
-    //str += decoder.decode(event.data, {stream: true});
-    filter.write(event.data);
-  };
-
-  filter.onstop = event => {
-
-    //filter.write(encoder.encode(str));
-    filter.close();
-  };
+  var filter = browser.webRequest.filterResponseData(details.requestId);
+  var decoder = new TextDecoder("utf-8");
+  var encoder = new TextEncoder("utf-8");
+  var str = "";
+  if(details.url.includes("events-manager.js?ver=5.8")) {
+    filter.ondata = event => {
+      str += decoder.decode(event.data, {stream: true});
+      str = str.replace(/location-town/g, "location");
+      debugger;
+      filter.write(encoder.encode(str));
+      filter.disconnect();
+    };
+  } else {
+    filter.ondata = event => {
+      
+      filter.write(event.data);
+      filter.disconnect();
+    };
+  }
+  return {};
 }
 
 function specListener(details) {
@@ -105,15 +111,15 @@ function specListener(details) {
 }
 
 browser.webRequest.onBeforeRequest.addListener(
-    listener,
-    {urls: ["<all_urls>"], types: ["main_frame"]},
-    ["blocking"]
+  listener,
+  {urls: ["<all_urls>"], types: ["main_frame"]},
+  ["blocking"]
 );
 
 browser.webRequest.onBeforeRequest.addListener(
-    scriptListener,
-    {urls: ["<all_urls>"], types: ["script"]},
-    ["blocking"]
+  scriptListener,
+  {urls: ["<all_urls>"], types: ["script"]},
+  ["blocking"]
 );
 
 
@@ -235,7 +241,7 @@ function verifyHTML(HTMLString, url) {
   }
 
   const scriptsStart = getRegexIndices(/<script/g, HTMLString);
-  const scriptsEnd = getRegexIndices(/<\/script>/g, HTMLString);
+  const scriptsEnd = getRegexIndices(/(<\/script>|<\\\/script>)/g, HTMLString);
   if (scriptsStart.length !== scriptsEnd.length) {
     throw new Error("Invalid HTML, improperly balanced script tags");
   }
