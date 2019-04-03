@@ -1,0 +1,43 @@
+\documentclass[sigconf]{acmart}
+\settopmatter{printacmref=false} % Removes citation information below abstract
+\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
+\pagestyle{plain} % removes running headers
+\usepackage{booktabs} % For formal tables
+\usepackage{listings}
+
+
+
+\begin{document}
+\title{DOM Firewall: Client-side Cross-site Scripting Detection}
+
+\author{Jos\'e Carlos Pazos}
+\affiliation{%
+  \institution{University of British Columbia}
+}
+\email{jpazos@cs.ubc.ca}
+
+\author{Jean-S\'ebastien L\'egar\'e}
+\affiliation{%
+	\institution{University of British Columbia}
+}
+\email{jslegare@cs.ubc.ca}
+
+\author{William Aiello}
+\affiliation{%
+	\institution{University of British Columbia}
+}
+\email{aiello@cs.ubc.ca}
+
+\input{abstract}
+\maketitle
+\input{introduction}
+\input{client_approach}
+\input{methodology}
+\input{limitations}
+\input{related_work}
+\input{conclusion}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

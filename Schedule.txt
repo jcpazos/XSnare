@@ -1,0 +1,45 @@
+Schedule:
+
+Due end of April:
+
+Implementation:
+-Writing signatures for applicable studied CVEs, fixing any implementation bugs
+ in the extension related to this (e.g. incorrect regex filtering), as well as
+ adding any functionality required for cases that aren't handled yet (e.g. more dynamic
+ checks like runtime events). 
+
+Writing:
+Finalize introduction, motivation, background, related work and threat model. 
+
+
+Due June 15:
+Implementation:
+-Finalize signature language form, at this point, it should be clear how concise it can be.
+-Implement database for CVEs to speed up queries, and automated signature update model (PoC will most 
+likely be a small server with auto generated signatures).
+
+Writing:
+Finalize implementation section, CVE study methodology, start results.
+-Performance evaluation: Will most likely involve a large amount of dummy signatures and test
+background filter overhead on a large number of popular sites (Alexa Top 500?), as well as script filter
+and contentscript checks (if necessary)
+
+
+Due end of July:
+Writing:
+-False positive evaluation: can't accurately emulate hundreds of signatures, could
+involve small scale evaluation on a large number of popular sites (Alexa Top 500?) regarding a simple
+"did it find a vulnerability with the given signatures?" check. Paper discussion builds on this
+and argues that signatures should be specific enough that it shouldn't affect unintended pages.
+Finalize evaluation, discussion, and conclusion.
+
+Due August 15:
+Clean up thesis for submission.
+
+
+
+
+
+
+
+

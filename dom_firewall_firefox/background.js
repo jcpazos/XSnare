@@ -7,12 +7,19 @@ const scriptSignatures = Sigs.script_signatures;
 let endPointsList = [];
 let scriptsList = [];
 let scriptReplaceValues = [];
+var startTime;
+var endTime;
 
 String.prototype.replaceBetween = function(start, end, what) {
     return this.substring(0, start) + what + this.substring(end);
 };
 
 function mainFrameListener(details) {
+  //reset array values
+  startTime = new Date();
+  endPointsList = [];
+  scriptsList = [];
+  scriptReplaceValues = [];
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
   let encoder = new TextEncoder();
@@ -28,24 +35,18 @@ function mainFrameListener(details) {
   };
 
   filter.onstop = event => {
-    // Add a random ID to each script for comparison in the contentscript
-    /*var parser = new DOMParser();
-    var doc = parser.parseFromString(str, 'text/html');*/
-    //BGAPI.verifyHTML(doc);
     try {
         //TODO: mark verified scripts as 'safe' so contentscript doesn't check them again for dynamic checks
         str = verifyHTML(str, details.url);
     } catch(err) {
         console.log("Error when verifying HTML: " + err);
+        //TODO: advice the user that a vulnerability has been found. maybe add an alert box to the HTML.
         str = "<!DOCTYPE HTML><html><head></head><body>This webpage has been identified as malicious and was stopped from loading</body></html>";
     }
     //str = str.replace(/<script/g, replacer);
-    /*if (!respData[details.tabId]) {
-     respData[details.tabId] = str;
-    } */
-    //var comment = "<!--" + (str.substr(str.indexOf("<html"))).replace(/-->/g, "") + "-->\n";
-    //var strComm = str.substring(0,str.indexOf("<html")-1) + comment.replace(/(\r\n|\n|\r)/gm, "") + str.substr(str.indexOf("<html")-1);
     filter.write(encoder.encode(str));
+    endTime = new Date();
+    console.log(endTime-startTime);
     filter.close();    
   };
 
@@ -112,7 +113,6 @@ function scriptListener(details) {
     filter.close();    
   };
 }*/
-
 browser.webRequest.onBeforeRequest.addListener(
   mainFrameListener,
   {urls: ["<all_urls>"], types: ["main_frame"]},
@@ -251,22 +251,30 @@ function verifyHTML(HTMLString, url) {
     const endRegex = sigToRegex(end,endPointsList[i][3]);
     const endIndex = findLastIndex(endRegex, HTMLString);
 
-    if (startIndex === -1 || endIndex === -1) {
+    //TODO: might not be able to do this check, as a page might have a plugin in the head but not be the infected subpage
+    /*if (startIndex === -1 || endIndex === -1) {
       throw new Error("Invalid HTML, doesn't match expected");
-    }
+    }*/
     endPointsIndices.push([startIndex, endIndex]);
   }
 
-  const scriptsStart = getRegexIndices(/<script/g, HTMLString);
+  for (i = 0; i<endPointsIndices.length; i++) {
+    //TODO: throw an error here instead/tell the BG to send additional info to CS
+    HTMLString = HTMLString.replaceBetween(endPointsIndices[i][0],endPointsIndices[i][1], "");
+  }
+
+  /*const scriptsStart = getRegexIndices(/<script/g, HTMLString);
   const scriptsEnd = getRegexIndices(/(<\/script>|<\\\/script>)/g, HTMLString);
   if (scriptsStart.length !== scriptsEnd.length) {
     throw new Error("Invalid HTML, improperly balanced script tags");
   }
 
+
+
   for (i = 0; i<scriptsStart.length; i++) {
     if (inInjectionPoint(scriptsStart[i], endPointsIndices))
       HTMLString = HTMLString.replaceBetween(scriptsStart[i],scriptsEnd[i], "");
-  }
+  }*/
   return HTMLString;
 }
 

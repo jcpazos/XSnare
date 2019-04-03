@@ -14,7 +14,7 @@ const main_frame_signatures = [
     {
         url: '',
         software: '#wordPress #wpPlugin',
-        softwareDetails: 'wf-cookie-consent',
+        softwareDetails: 'wf-cookieconsent',
         version: '1.1.3',
         description: '',
         sigType: ['complete', 'complete'],
@@ -37,6 +37,96 @@ const main_frame_signatures = [
         description: '',
         sigType: ['complete', 'complete'],
         endPoints: ['<button type="button" onclick="myFunction()">', '<script id="foo" type="text/javascript">']
+    },
+    {
+        url: '',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'events-manager',
+        version: '5.8',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+    },
+    {
+        url: '',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'events-manager',
+        version: '5.8',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+    },
+    {
+        url: '',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'events-manager',
+        version: '5.8',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+    },
+    {
+        url: '',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'events-manager',
+        version: '5.8',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+    },
+    {
+        url: '',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'events-manager',
+        version: '5.8',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+    },
+    {
+        url: '',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'events-manager',
+        version: '5.8',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+    },
+    {
+        url: '',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'events-manager',
+        version: '5.8',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+    },
+    {
+        url: '',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'events-manager',
+        version: '5.8',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+    },
+    {
+        url: '',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'events-manager',
+        version: '5.8',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+    },
+    {
+        url: '',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'events-manager',
+        version: '5.8',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
     }
 ];
 
@@ -56,7 +146,8 @@ window.Sigs = (function (module) {
 
 
     const exports = {
-        main_frame_signatures
+        main_frame_signatures,
+        script_signatures
     };
 
 

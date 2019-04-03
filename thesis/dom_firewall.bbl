@@ -1,0 +1,241 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{14}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{}, \showDOI{}, and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showDOI}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showDOI #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showDOI      \undefined \def \showDOI       #1{#1}\fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[\protect\citeauthoryear{??}{Nos}{[n. d.]}]%
+        {Noscript}
+ \bibinfo{year}{[n. d.]}\natexlab{}.
+\newblock \bibinfo{title}{NoScript homepage}.
+\newblock   (\bibinfo{year}{[n. d.]}).
+\newblock
+\showURL{%
+Retrieved October 26, 2018 from \url{https://noscript.net/}}
+
+
+\bibitem[\protect\citeauthoryear{??}{w3s}{2018}]%
+        {w3stats}
+ \bibinfo{year}{2018}\natexlab{}.
+\newblock \bibinfo{title}{Usage of content management systems for websites}.
+\newblock   (\bibinfo{year}{2018}).
+\newblock
+\showURL{%
+Retrieved October 26, 2018 from
+  \url{https://w3techs.com/technologies/overview/content_management/all}}
+
+
+\bibitem[\protect\citeauthoryear{??}{WPS}{2018}]%
+        {WPStats}
+ \bibinfo{year}{2018}\natexlab{}.
+\newblock \bibinfo{title}{WordPress Statistics}.
+\newblock   (\bibinfo{year}{2018}).
+\newblock
+\showURL{%
+Retrieved October 26, 2018 from \url{https://wordpress.org/about/stats/}}
+
+
+\bibitem[\protect\citeauthoryear{Bisht and Venkatakrishnan}{Bisht and
+  Venkatakrishnan}{2008}]%
+        {Bisht:2008:XPD:1428322.1428325}
+\bibfield{author}{\bibinfo{person}{Prithvi Bisht} {and} \bibinfo{person}{V.~N.
+  Venkatakrishnan}.} \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{XSS-GUARD: Precise Dynamic Prevention of Cross-Site
+  Scripting Attacks}. In \bibinfo{booktitle}{{\em Proceedings of the 5th
+  International Conference on Detection of Intrusions and Malware, and
+  Vulnerability Assessment}} {\em (\bibinfo{series}{DIMVA '08})}.
+  \bibinfo{publisher}{Springer-Verlag}, \bibinfo{address}{Berlin, Heidelberg},
+  \bibinfo{pages}{23--43}.
+\newblock
+\showISBNx{978-3-540-70541-3}
+\showDOI{%
+\url{https://doi.org/10.1007/978-3-540-70542-0_2}}
+
+
+\bibitem[\protect\citeauthoryear{Heiderich, Sp{\"a}th, and Schwenk}{Heiderich
+  et~al\mbox{.}}{2017}]%
+        {10.1007/978-3-319-66399-9_7}
+\bibfield{author}{\bibinfo{person}{Mario Heiderich},
+  \bibinfo{person}{Christopher Sp{\"a}th}, {and} \bibinfo{person}{J{\"o}rg
+  Schwenk}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{DOMPurify: Client-Side Protection Against XSS and
+  Markup Injection}. In \bibinfo{booktitle}{{\em Computer Security -- ESORICS
+  2017}}, \bibfield{editor}{\bibinfo{person}{Simon~N. Foley},
+  \bibinfo{person}{Dieter Gollmann}, {and} \bibinfo{person}{Einar Snekkenes}}
+  (Eds.). \bibinfo{publisher}{Springer International Publishing},
+  \bibinfo{address}{Cham}, \bibinfo{pages}{116--134}.
+\newblock
+\showISBNx{978-3-319-66399-9}
+
+
+\bibitem[\protect\citeauthoryear{Jim, Swamy, and Hicks}{Jim
+  et~al\mbox{.}}{2007}]%
+        {Jim:2007:DSI:1242572.1242654}
+\bibfield{author}{\bibinfo{person}{Trevor Jim}, \bibinfo{person}{Nikhil Swamy},
+  {and} \bibinfo{person}{Michael Hicks}.} \bibinfo{year}{2007}\natexlab{}.
+\newblock \showarticletitle{Defeating Script Injection Attacks with
+  Browser-enforced Embedded Policies}. In \bibinfo{booktitle}{{\em Proceedings
+  of the 16th International Conference on World Wide Web}} {\em
+  (\bibinfo{series}{WWW '07})}. \bibinfo{publisher}{ACM}, \bibinfo{address}{New
+  York, NY, USA}, \bibinfo{pages}{601--610}.
+\newblock
+\showISBNx{978-1-59593-654-7}
+\showDOI{%
+\url{https://doi.org/10.1145/1242572.1242654}}
+
+
+\bibitem[\protect\citeauthoryear{Kirda, Jovanovic, Kruegel, and Vigna}{Kirda
+  et~al\mbox{.}}{2009}]%
+        {Kirda:2009:CCS:2639535.2639808}
+\bibfield{author}{\bibinfo{person}{Engin Kirda}, \bibinfo{person}{Nenad
+  Jovanovic}, \bibinfo{person}{Christopher Kruegel}, {and}
+  \bibinfo{person}{Giovanni Vigna}.} \bibinfo{year}{2009}\natexlab{}.
+\newblock \showarticletitle{Client-side Cross-site Scripting Protection}.
+\newblock \bibinfo{journal}{{\em Comput. Secur.\/}} \bibinfo{volume}{28},
+  \bibinfo{number}{7} (\bibinfo{date}{Oct.} \bibinfo{year}{2009}),
+  \bibinfo{pages}{592--604}.
+\newblock
+\showISSN{0167-4048}
+\showDOI{%
+\url{https://doi.org/10.1016/j.cose.2009.04.008}}
+
+
+\bibitem[\protect\citeauthoryear{Muscat}{Muscat}{2017}]%
+        {Acunetix}
+\bibfield{author}{\bibinfo{person}{Ian Muscat}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \bibinfo{title}{Acunetix Vulnerability Testing Report 2017}.
+\newblock   (\bibinfo{date}{jun} \bibinfo{year}{2017}).
+\newblock
+\showURL{%
+Retrieved October 26, 2018 from
+  \url{https://www.acunetix.com/blog/articles/acunetix-vulnerability-testing-report-2017/}}
+
+
+\bibitem[\protect\citeauthoryear{Nadji, Saxena, and Song}{Nadji
+  et~al\mbox{.}}{2009}]%
+        {Nadji:2009}
+\bibfield{author}{\bibinfo{person}{Yacin Nadji}, \bibinfo{person}{Prateek
+  Saxena}, {and} \bibinfo{person}{Dawn Song}.} \bibinfo{year}{2009}\natexlab{}.
+\newblock \bibinfo{title}{Document Structure Integrity: A Robust Basis for
+  Cross-site Scripting Defense.}
+\newblock   (\bibinfo{date}{01} \bibinfo{year}{2009}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Nguyen{-}Tuong, Guarnieri, Greene, Shirley,
+  and Evans}{Nguyen{-}Tuong et~al\mbox{.}}{2005}]%
+        {DBLP:conf/sec/Nguyen-TuongGGSE05}
+\bibfield{author}{\bibinfo{person}{Anh Nguyen{-}Tuong},
+  \bibinfo{person}{Salvatore Guarnieri}, \bibinfo{person}{Doug Greene},
+  \bibinfo{person}{Jeff Shirley}, {and} \bibinfo{person}{David Evans}.}
+  \bibinfo{year}{2005}\natexlab{}.
+\newblock \showarticletitle{Automatically Hardening Web Applications Using
+  Precise Tainting}. In \bibinfo{booktitle}{{\em Security and Privacy in the
+  Age of Ubiquitous Computing, {IFIP} {TC11} 20th International Conference on
+  Information Security {(SEC} 2005), May 30 - June 1, 2005, Chiba, Japan}}.
+  \bibinfo{pages}{295--308}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Pietraszek and Berghe}{Pietraszek and
+  Berghe}{2006}]%
+        {Pietraszek:2005:DAI:2146257.2146267}
+\bibfield{author}{\bibinfo{person}{Tadeusz Pietraszek} {and}
+  \bibinfo{person}{Chris~Vanden Berghe}.} \bibinfo{year}{2006}\natexlab{}.
+\newblock \showarticletitle{Defending Against Injection Attacks Through
+  Context-sensitive String Evaluation}. In \bibinfo{booktitle}{{\em Proceedings
+  of the 8th International Conference on Recent Advances in Intrusion
+  Detection}} {\em (\bibinfo{series}{RAID'05})}.
+  \bibinfo{publisher}{Springer-Verlag}, \bibinfo{address}{Berlin, Heidelberg},
+  \bibinfo{pages}{124--145}.
+\newblock
+\showISBNx{3-540-31778-3, 978-3-540-31778-4}
+\showDOI{%
+\url{https://doi.org/10.1007/11663812_7}}
+
+
+\bibitem[\protect\citeauthoryear{Snyder, Taylor, and Kanich}{Snyder
+  et~al\mbox{.}}{2017}]%
+        {Snyder:2017:MWD:3133956.3133966}
+\bibfield{author}{\bibinfo{person}{Peter Snyder}, \bibinfo{person}{Cynthia
+  Taylor}, {and} \bibinfo{person}{Chris Kanich}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Most Websites Don'T Need to Vibrate: A Cost-Benefit
+  Approach to Improving Browser Security}. In \bibinfo{booktitle}{{\em
+  Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications
+  Security}} {\em (\bibinfo{series}{CCS '17})}. \bibinfo{publisher}{ACM},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{179--194}.
+\newblock
+\showISBNx{978-1-4503-4946-8}
+\showDOI{%
+\url{https://doi.org/10.1145/3133956.3133966}}
+
+
+\bibitem[\protect\citeauthoryear{Stock, Johns, Steffens, and Backes}{Stock
+  et~al\mbox{.}}{2017}]%
+        {Stock:2017:WTI:3241189.3241265}
+\bibfield{author}{\bibinfo{person}{Ben Stock}, \bibinfo{person}{Martin Johns},
+  \bibinfo{person}{Marius Steffens}, {and} \bibinfo{person}{Michael Backes}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{How the Web Tangled Itself: Uncovering the History
+  of Client-side Web (in)Security}. In \bibinfo{booktitle}{{\em Proceedings of
+  the 26th USENIX Conference on Security Symposium}} {\em
+  (\bibinfo{series}{SEC'17})}. \bibinfo{publisher}{USENIX Association},
+  \bibinfo{address}{Berkeley, CA, USA}, \bibinfo{pages}{971--987}.
+\newblock
+\showISBNx{978-1-931971-40-9}
+\showURL{%
+\url{http://dl.acm.org/citation.cfm?id=3241189.3241265}}
+
+
+\bibitem[\protect\citeauthoryear{Xu, Bhatkar, and Sekar}{Xu
+  et~al\mbox{.}}{2006}]%
+        {Xu:2006:TPE:1267336.1267345}
+\bibfield{author}{\bibinfo{person}{Wei Xu}, \bibinfo{person}{Sandeep Bhatkar},
+  {and} \bibinfo{person}{R. Sekar}.} \bibinfo{year}{2006}\natexlab{}.
+\newblock \showarticletitle{Taint-enhanced Policy Enforcement: A Practical
+  Approach to Defeat a Wide Range of Attacks}. In \bibinfo{booktitle}{{\em
+  Proceedings of the 15th Conference on USENIX Security Symposium - Volume 15}}
+  {\em (\bibinfo{series}{USENIX-SS'06})}. \bibinfo{publisher}{USENIX
+  Association}, \bibinfo{address}{Berkeley, CA, USA}, Article
+  \bibinfo{articleno}{9}.
+\newblock
+\showURL{%
+\url{http://dl.acm.org/citation.cfm?id=1267336.1267345}}
+
+
+\end{thebibliography}
