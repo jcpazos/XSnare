@@ -158,8 +158,8 @@ function htmlToElement(html) {
 
 
 function isRunningPlugin(HTMLString, plugin) {
-    //TODO: get curr plugins
-    const regex = new RegExp(plugin);
+    //TODO: get curr plugins, might not be only in head, might have to check plugin version as well
+    const regex = new RegExp("/wp-content/plugins/" + plugin);
     return !!HTMLString.substring(HTMLString.indexOf("<head>"), HTMLString.indexOf("</head>")).match(regex);
 
 
@@ -198,25 +198,22 @@ function sigToRegex(signatureHTMLTag, isComplete) {
 
     let s = `<\\s*` + signatureHTMLTag.tagName.toLowerCase();
     for (let i=0; i <signatureHTMLTag.attributes.length; i++) {
-        s+=`\\s+`+signatureHTMLTag.attributes[i].name + `=(\\"|'|"\/)` + signatureHTMLTag.attributes[i].value.replace(/(?=[() ])/g, '\\') + `(\\"|'|")`;
+        s+=`\\s+`+signatureHTMLTag.attributes[i].name + `=(\\"|'|"\/)` + signatureHTMLTag.attributes[i].value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + `(\\"|'|")`;
     }
     if (isComplete === "complete") {
-        s+=`\\s*>`;
+        s+=`\\s*\/?>`;
     }
     return new RegExp(s, 'g');
-}
-
-function isURL(signatureUrl, HTMLUrl) {
-    return signatureUrl === HTMLUrl;
 }
 
 function loadSignatures(HTMLString, url) {
   let i;
   for (i = 0; i < mainFrameSignatures.length; i++) {
     const signature = mainFrameSignatures[i];
-    //const software = signature.software;
     //const softwareList = software.split('#').map(x => x.trim());
-    if (isRunningPlugin(HTMLString, signature.softwareDetails) || isURL(signature.url, url)) {
+    //TODO: make this more efficient to only check signatures that could be related to the current url
+    //for example, if we load facebook.com, we shouldn't even be checking wordpress signatures
+    if (isRunningPlugin(HTMLString, signature.softwareDetails) || HTMLUrl.includes(signatureUrl) {
       endPointsList.push(signature.endPoints.concat(signature.sigType));
     }
   }
@@ -251,16 +248,17 @@ function verifyHTML(HTMLString, url) {
     const endRegex = sigToRegex(end,endPointsList[i][3]);
     const endIndex = findLastIndex(endRegex, HTMLString);
 
+    if (startIndex !== -1 && endIndex !== -1) {
+      //we are in the right infected page
+      HTMLString = HTMLString.replaceBetween(startIndex,endIndex, "");
+      console.log("HTML is now clean!");
+      //endPointsIndices.push([startIndex, endIndex]);
+    }
     //TODO: might not be able to do this check, as a page might have a plugin in the head but not be the infected subpage
     /*if (startIndex === -1 || endIndex === -1) {
       throw new Error("Invalid HTML, doesn't match expected");
     }*/
-    endPointsIndices.push([startIndex, endIndex]);
-  }
 
-  for (i = 0; i<endPointsIndices.length; i++) {
-    //TODO: throw an error here instead/tell the BG to send additional info to CS
-    HTMLString = HTMLString.replaceBetween(endPointsIndices[i][0],endPointsIndices[i][1], "");
   }
 
   /*const scriptsStart = getRegexIndices(/<script/g, HTMLString);

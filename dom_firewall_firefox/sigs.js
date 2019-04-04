@@ -4,16 +4,35 @@
 const main_frame_signatures = [
     {
         url: '',
-        software: '#wordPress #wf-cookieconsent',
-        softwareDetails: 'wf-cookie-consent',
-        version: '1.1.3',
+        software: '#wordPress',
+        softwareDetails: 'responsive-cookie-consent',
+        version: '1.5',
         description: '',
-        sigType: ['complete', 'complete'],
-        endPoints: ['<h1 class="entry-title">', '<span class="screen-reader-text">']
+        sigType: ['incomplete', 'complete'],
+        endPoints: ['<div class="rcc-panel group" style="background: rgb(34, 34, 34) none repeat scroll 0% 0%; display: block;">', '<spadsan class="screen-reader-text">']
     },
     {
+        url: 'wp-admin/options-general.php?page=rcc-settings',
+        software: '#wordPress',
+        softwareDetails: 'responsive-cookie-consent',
+        version: '1.5',
+        description: '',
+        sigType: ['complete', 'complete'],
+        endPoints: ['<input id="rcc_settings[font]" name="rcc_settings[font]" type="text" value="">', '<label class="description" for="rcc_settings[font]">']
+    },
+    {
+        url: 'wp-admin/options-general.php?page=rcc-settings',
+        software: '#wordPress',
+        softwareDetails: 'responsive-cookie-consent',
+        version: '1.5',
+        description: '',
+        sigType: ['complete', 'complete'],
+        endPoints: ['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" type="text" value="">', '<label class="description" for="rcc_settings[border-size]">']
+    },
+
+    {
         url: '',
-        software: '#wordPress #wpPlugin',
+        software: '#wordPress',
         softwareDetails: 'wf-cookieconsent',
         version: '1.1.3',
         description: '',
