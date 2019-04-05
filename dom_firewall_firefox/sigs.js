@@ -3,7 +3,7 @@
 
 const main_frame_signatures = [
     {
-        url: '',
+        url: null,
         software: '#wordPress',
         softwareDetails: 'responsive-cookie-consent',
         version: '1.5',
@@ -31,7 +31,7 @@ const main_frame_signatures = [
     },
 
     {
-        url: '',
+        url: null,
         software: '#wordPress',
         softwareDetails: 'wf-cookieconsent',
         version: '1.1.3',
@@ -40,7 +40,7 @@ const main_frame_signatures = [
         endPoints: ['<option class="level-0" value="133">', '<option class="level-0" value="12">']
     },
     {
-        url: '',
+        url: null,
         software: '#wordPress #wpPlugin',
         softwareDetails: 'snazzy-maps',
         version: '1.1.3',
@@ -58,7 +58,7 @@ const main_frame_signatures = [
         endPoints: ['<button type="button" onclick="myFunction()">', '<script id="foo" type="text/javascript">']
     },
     {
-        url: '',
+        url: null,
         software: '#wordPress #wpPlugin',
         softwareDetails: 'events-manager',
         version: '5.8',
@@ -67,7 +67,7 @@ const main_frame_signatures = [
         endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
     },
     {
-        url: '',
+        url: null,
         software: '#wordPress #wpPlugin',
         softwareDetails: 'events-manager',
         version: '5.8',
@@ -76,7 +76,7 @@ const main_frame_signatures = [
         endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
     },
     {
-        url: '',
+        url: null,
         software: '#wordPress #wpPlugin',
         softwareDetails: 'events-manager',
         version: '5.8',
@@ -85,7 +85,7 @@ const main_frame_signatures = [
         endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
     },
     {
-        url: '',
+        url: null,
         software: '#wordPress #wpPlugin',
         softwareDetails: 'events-manager',
         version: '5.8',
@@ -94,7 +94,7 @@ const main_frame_signatures = [
         endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
     },
     {
-        url: '',
+        url: null,
         software: '#wordPress #wpPlugin',
         softwareDetails: 'events-manager',
         version: '5.8',
@@ -103,7 +103,7 @@ const main_frame_signatures = [
         endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
     },
     {
-        url: '',
+        url: null,
         software: '#wordPress #wpPlugin',
         softwareDetails: 'events-manager',
         version: '5.8',
@@ -112,7 +112,7 @@ const main_frame_signatures = [
         endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
     },
     {
-        url: '',
+        url: null,
         software: '#wordPress #wpPlugin',
         softwareDetails: 'events-manager',
         version: '5.8',
@@ -121,7 +121,7 @@ const main_frame_signatures = [
         endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
     },
     {
-        url: '',
+        url: null,
         software: '#wordPress #wpPlugin',
         softwareDetails: 'events-manager',
         version: '5.8',
@@ -130,7 +130,7 @@ const main_frame_signatures = [
         endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
     },
     {
-        url: '',
+        url: null,
         software: '#wordPress #wpPlugin',
         softwareDetails: 'events-manager',
         version: '5.8',
@@ -139,7 +139,7 @@ const main_frame_signatures = [
         endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
     },
     {
-        url: '',
+        url: null,
         software: '#wordPress #wpPlugin',
         softwareDetails: 'events-manager',
         version: '5.8',

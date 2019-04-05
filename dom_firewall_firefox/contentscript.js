@@ -60,14 +60,14 @@ function isURL(signatureUrl) {
 
 function verifyScript(e) {
 	if (e.target.id !== "safe") {
-		console.log("Verifying script with ID: " + e.target.id);
+		//console.log("Verifying script with ID: " + e.target.id);
 		CSAPI["verifyHTML"](e);
-		console.log("HTML has been verified.");
+		//console.log("HTML has been verified.");
 	}
 }
 
 function verifyToggle(e) {
-  console.log("verifying toggle");
+  //console.log("verifying toggle");
   CSAPI["verifyHTML"](e);
 }
 
@@ -79,7 +79,8 @@ function finishVerify(e) {
 function init_firewall() {
 	document.addEventListener("beforescriptexecute", verifyScript, true);
 	document.addEventListener("afterscriptexecute", finishVerify, true);
-  document.addEventListener("toggle", verifyToggle, true); 
+  document.addEventListener("toggle", verifyToggle, true);
+
 }
 
 /**
@@ -104,4 +105,4 @@ function checkAndSanitize(e, startTag, endTag) {
 }
 
 
-init_firewall();
+//init_firewall();

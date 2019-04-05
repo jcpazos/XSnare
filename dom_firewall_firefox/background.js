@@ -2,8 +2,8 @@
 
 //var storageArea = chrome.storage.local;
 const respData = {};
-const mainFrameSignatures = Sigs.main_frame_signatures;
-const scriptSignatures = Sigs.script_signatures;
+const mainFrameSignatures = Sigs_test.main_frame_signatures_test;
+const scriptSignatures = Sigs_test.script_signatures_test;
 let endPointsList = [];
 let scriptsList = [];
 let scriptReplaceValues = [];
@@ -213,7 +213,7 @@ function loadSignatures(HTMLString, url) {
     //const softwareList = software.split('#').map(x => x.trim());
     //TODO: make this more efficient to only check signatures that could be related to the current url
     //for example, if we load facebook.com, we shouldn't even be checking wordpress signatures
-    if (isRunningPlugin(HTMLString, signature.softwareDetails) || HTMLUrl.includes(signatureUrl) {
+    if (isRunningPlugin(HTMLString, signature.softwareDetails) || url.includes(signature.url)) {
       endPointsList.push(signature.endPoints.concat(signature.sigType));
     }
   }
@@ -222,7 +222,7 @@ function loadSignatures(HTMLString, url) {
     const signature = scriptSignatures[i];
     //const software = signature.software;
     //const softwareList = software.split('#').map(x => x.trim());
-    if (isRunningPlugin(HTMLString, signature.softwareDetails) || isURL(signature.url, url)) {
+    if (isRunningPlugin(HTMLString, signature.softwareDetails) ||  url.includes(signature.url)) {
       scriptsList.push(signature.url);
       scriptReplaceValues.push([signature.toReplace, signature.replaceValues]);
     }

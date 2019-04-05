@@ -12,6 +12,7 @@
     "scripts": ["lib/jquery-1.11.3.min.js",
                 "lib/dom-purify/dist/purify.min.js",
                 "sigs.js",
+                "sigs_test.js",
                 "background.js"
               ]
   },
