@@ -9,7 +9,8 @@ const main_frame_signatures = [
         version: '1.5',
         description: '',
         sigType: ['incomplete', 'complete'],
-        endPoints: ['<div class="rcc-panel group" style="background: rgb(34, 34, 34) none repeat scroll 0% 0%; display: block;">', '<spadsan class="screen-reader-text">']
+        sigOccurrence: 'unique',
+        endPoints: ['<div class="rcc-panel group" style="background: rgb(34, 34, 34) none repeat scroll 0% 0%; display: block;">', '<span class="screen-reader-text">']
     },
     {
         url: 'wp-admin/options-general.php?page=rcc-settings',
@@ -18,6 +19,7 @@ const main_frame_signatures = [
         version: '1.5',
         description: '',
         sigType: ['complete', 'complete'],
+        sigOccurrence: 'unique',
         endPoints: ['<input id="rcc_settings[font]" name="rcc_settings[font]" type="text" value="">', '<label class="description" for="rcc_settings[font]">']
     },
     {
@@ -27,6 +29,7 @@ const main_frame_signatures = [
         version: '1.5',
         description: '',
         sigType: ['complete', 'complete'],
+        sigOccurrence: 'unique',
         endPoints: ['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" type="text" value="">', '<label class="description" for="rcc_settings[border-size]">']
     },
 
@@ -37,6 +40,7 @@ const main_frame_signatures = [
         version: '1.1.3',
         description: '',
         sigType: ['complete', 'complete'],
+        sigOccurrence: 'unique',
         endPoints: ['<option class="level-0" value="133">', '<option class="level-0" value="12">']
     },
     {
@@ -55,6 +59,7 @@ const main_frame_signatures = [
         version: '1.0',
         description: '',
         sigType: ['complete', 'complete'],
+        sigOccurrence: 'unique',
         endPoints: ['<button type="button" onclick="myFunction()">', '<script id="foo" type="text/javascript">']
     },
     {
@@ -64,89 +69,50 @@ const main_frame_signatures = [
         version: '5.8',
         description: '',
         sigType: ['incomplete', 'complete'],
+        sigOccurrence: 'unique',
         endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
     },
     {
-        url: null,
+        url: 'wp-admin/admin.php?page=activity_log_page',
         software: '#wordPress #wpPlugin',
-        softwareDetails: 'events-manager',
-        version: '5.8',
+        softwareDetails: 'aryo-activity-log',
+        version: '4.2.0',
         description: '',
-        sigType: ['incomplete', 'complete'],
-        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+        sigType: ['complete', 'complete'],
+        sigOccurrence: 'several',
+        endPoints: ['<td class="description column-description" data-colname="Description">', '<td class="date column-date has-row-actions column-primary" data-colname="Date">']
     },
     {
-        url: null,
+        url:'wp-admin/options-general.php?page=wf-cookieconsent',
         software: '#wordPress #wpPlugin',
-        softwareDetails: 'events-manager',
-        version: '5.8',
+        softwareDetails: 'wf-cookieconsent',
+        version: '1.1.3',
         description: '',
-        sigType: ['incomplete', 'complete'],
-        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+        sigType: ['complete', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['<option class="level-0" value="30">', '<option class="level-0" value="12">']
     },
     {
-        url: null,
+        url:'wp-admin/options-general.php?page=ctcc&tab=content',
         software: '#wordPress #wpPlugin',
-        softwareDetails: 'events-manager',
-        version: '5.8',
+        softwareDetails: 'uk-cookie-consent',
+        version: '2.3.9',
         description: '',
-        sigType: ['incomplete', 'complete'],
-        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+        sigType: ['complete', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['<option value="28">', '<option value="27" selected="selected">']
     },
     {
-        url: null,
+        url:'wp-admin/options-general.php?page=wf-cookieconsent',
         software: '#wordPress #wpPlugin',
-        softwareDetails: 'events-manager',
-        version: '5.8',
+        softwareDetails: 'wf-cookieconsent',
+        version: '1.1.3',
         description: '',
-        sigType: ['incomplete', 'complete'],
-        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
-    },
-    {
-        url: null,
-        software: '#wordPress #wpPlugin',
-        softwareDetails: 'events-manager',
-        version: '5.8',
-        description: '',
-        sigType: ['incomplete', 'complete'],
-        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
-    },
-    {
-        url: null,
-        software: '#wordPress #wpPlugin',
-        softwareDetails: 'events-manager',
-        version: '5.8',
-        description: '',
-        sigType: ['incomplete', 'complete'],
-        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
-    },
-    {
-        url: null,
-        software: '#wordPress #wpPlugin',
-        softwareDetails: 'events-manager',
-        version: '5.8',
-        description: '',
-        sigType: ['incomplete', 'complete'],
-        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
-    },
-    {
-        url: null,
-        software: '#wordPress #wpPlugin',
-        softwareDetails: 'events-manager',
-        version: '5.8',
-        description: '',
-        sigType: ['incomplete', 'complete'],
-        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
-    },
-    {
-        url: null,
-        software: '#wordPress #wpPlugin',
-        softwareDetails: 'events-manager',
-        version: '5.8',
-        description: '',
-        sigType: ['incomplete', 'complete'],
-        endPoints: ['<input id="location-town" type="text" name="location_town"', '<tr class="em-location-data-state">']
+        sigType: ['complete', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['<select name="wf_cookieconsent_options[en][wf_linkhref]" id="wf_cookieconsent_options[en][wf_linkhref]">', '<p class="description">']
     }
+
 ];
 
 const script_signatures = [

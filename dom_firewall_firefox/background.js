@@ -2,9 +2,10 @@
 
 //var storageArea = chrome.storage.local;
 const respData = {};
-const mainFrameSignatures = Sigs_test.main_frame_signatures_test;
-const scriptSignatures = Sigs_test.script_signatures_test;
+const mainFrameSignatures = Sigs.main_frame_signatures;
+const scriptSignatures = Sigs.script_signatures;
 let endPointsList = [];
+let occurrence = [];
 let scriptsList = [];
 let scriptReplaceValues = [];
 var startTime;
@@ -16,10 +17,11 @@ String.prototype.replaceBetween = function(start, end, what) {
 
 function mainFrameListener(details) {
   //reset array values
-  startTime = new Date();
+  //startTime = new Date();
   endPointsList = [];
   scriptsList = [];
   scriptReplaceValues = [];
+  occurrence = [];
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
   let encoder = new TextEncoder();
@@ -39,14 +41,15 @@ function mainFrameListener(details) {
         //TODO: mark verified scripts as 'safe' so contentscript doesn't check them again for dynamic checks
         str = verifyHTML(str, details.url);
     } catch(err) {
+        debugger;
         console.log("Error when verifying HTML: " + err);
         //TODO: advice the user that a vulnerability has been found. maybe add an alert box to the HTML.
         str = "<!DOCTYPE HTML><html><head></head><body>This webpage has been identified as malicious and was stopped from loading</body></html>";
     }
     //str = str.replace(/<script/g, replacer);
     filter.write(encoder.encode(str));
-    endTime = new Date();
-    console.log(endTime-startTime);
+    //endTime = new Date();
+    //console.log(endTime-startTime);
     filter.close();    
   };
 
@@ -215,6 +218,7 @@ function loadSignatures(HTMLString, url) {
     //for example, if we load facebook.com, we shouldn't even be checking wordpress signatures
     if (isRunningPlugin(HTMLString, signature.softwareDetails) || url.includes(signature.url)) {
       endPointsList.push(signature.endPoints.concat(signature.sigType));
+      occurrence.push(signature.sigOccurrence);
     }
   }
 
@@ -239,25 +243,33 @@ function verifyHTML(HTMLString, url) {
 
   for (i = 0; i<endPointsList.length; i++) {
     const start = htmlToElement(endPointsList[i][0]);
-    const startRegex = sigToRegex(start,endPointsList[i][2]);
+    const startRegex = sigToRegex(start, endPointsList[i][2]);
+    const end = htmlToElement(endPointsList[i][1]);
+    const endRegex = sigToRegex(end, endPointsList[i][3]);
+
     let startMatch = startRegex.exec(HTMLString);
     let startIndex = !!startMatch ? startMatch.index : -1;
-
-
-    const end = htmlToElement(endPointsList[i][1]);
-    const endRegex = sigToRegex(end,endPointsList[i][3]);
-    const endIndex = findLastIndex(endRegex, HTMLString);
-
+    //TODO: could make this more efficient by only looking starting at the startIndex + 1, then replace between startIndex and startIndex+endIndex;
+    let endIndex = findLastIndex(endRegex, HTMLString);
     if (startIndex !== -1 && endIndex !== -1) {
-      //we are in the right infected page
-      HTMLString = HTMLString.replaceBetween(startIndex,endIndex, "");
-      console.log("HTML is now clean!");
-      //endPointsIndices.push([startIndex, endIndex]);
+      /*if (occurrence[i] === "unique") {
+        //we are in the right infected page
+        HTMLString = HTMLString.replaceBetween(startIndex, endIndex, "");
+
+        //endPointsIndices.push([startIndex, endIndex]);
+        //TODO: might not be able to do this check, as a page might have a plugin in the head but not be the infected subpage
+      } else {
+        while (startIndex && endIndex) {
+          HTMLString = HTMLString.replaceBetween(startIndex, endIndex, "");
+          startMatch = startRegex.exec(HTMLString);
+          startIndex = !!startMatch ? startMatch.index : -1;
+          endIndex = findLastIndex(endRegex, HTMLString);
+          HTMLString = HTMLString.replaceBetween(startIndex, endIndex, "");
+        }
+      }*/
+      HTMLString = HTMLString.replaceBetween(startIndex, endIndex, "");
     }
-    //TODO: might not be able to do this check, as a page might have a plugin in the head but not be the infected subpage
-    /*if (startIndex === -1 || endIndex === -1) {
-      throw new Error("Invalid HTML, doesn't match expected");
-    }*/
+    console.log("HTML is now clean!");
 
   }
 
