@@ -1,4 +1,17 @@
-\section{client-side firewall approach}
+\section{The DOM Firewall}
+
+We now present the DOM Firewall's components and how they interact with each other. First, we give a overview of current defence solutions and how they into our model. Further details of these different approaches are described in Section 5.
+
+\subsection{Web application architecture}
+Figure~\ref{fig:web_architecture} shows a typical architecture for web applications. The first line of defence against vulnerabilities lies in the application logic itself. The developer might choose to protect their server-side, either by use existing solutions, or by securing the code themselves. 
+\begin{figure}[h]
+	\includegraphics[scale=0.3]{img/web_architecture.png}
+	\caption{Architecture of typical web applications. Different security solutions apply at different layers.}
+	\label{fig:web_architecture}
+\end{figure}
+
+
+\subsection{Client-side Approach}
  Commonly, bug bounty hunters and penetration testers will scour websites to find vulnerabilities and alert developers of issues in these, as well as potential fixes. Developers will then fix the bugs accordingly so that users are not subject to vulnerabilities. Inspired by this workflow, we believe this process can be partly automated using a firewall-based approach, so that users don't have to wait for developers to update their code. Figure~\ref{fig:dom_firewall} illustrates how the firewall can be used to guarantee full client-side protection: A user loads a request, such as www.myblog.com, this request might come back with malicious code in the form of an XSS attack. Before rendering the webpage in the browser, an extension can analyze the potentially malicious document, doing so by loading signatures which a developer (a bug bounty hunter, for example) has uploaded to a database, and completely eliminating the injected code. Finally, the extension returns a clean HTML document, which the browser then proceeds to render.
 
 In order to further illustrate this approach, we present a small example of how DOM context can be used to defend against XSS. Consider a website running PHP on the backend that takes user input and stores it to later display it to another user, in this case, the value 'border-size'.
