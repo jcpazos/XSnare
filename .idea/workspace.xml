@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8b593fab-6f3a-4154-ae60-df07a45ad0bc" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/thesis/abstract.tex" beforeDir="false" afterPath="$PROJECT_DIR$/thesis/abstract.tex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thesis/introduction.tex" beforeDir="false" afterPath="$PROJECT_DIR$/thesis/introduction.tex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thesis/references.bib" beforeDir="false" afterPath="$PROJECT_DIR$/thesis/references.bib" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/background.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="34" column="28" selection-start-line="34" selection-start-column="28" selection-end-line="34" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/contentscript.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="367">
+              <caret line="89" column="30" selection-start-line="89" selection-start-column="30" selection-end-line="89" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="26" column="31" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs_test.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2100">
+              <caret line="141" column="17" selection-start-line="141" selection-start-column="17" selection-end-line="141" selection-end-column="17" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs_cs.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/manifest.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>sigtoregex</find>
+      <find>isrunning</find>
+      <find>isRunning</find>
+      <find>addlistener</find>
+      <find>verifyh</find>
+      <find>checkandsaniti</find>
+      <find>localstorage</find>
+      <find>doesn't</find>
+      <find>signatures</find>
+      <find>html</find>
+      <find>load</find>
+      <find>main_frame_sig</find>
+      <find>console.log</find>
+      <find>jpazo</find>
+      <find>main_frame</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/dom_firewall_firefox/sigs_cs" />
+        <option value="$PROJECT_DIR$/dom_firewall_firefox/sigs_test" />
+        <option value="$PROJECT_DIR$/dom_firewall_firefox/manifest.json" />
+        <option value="$PROJECT_DIR$/dom_firewall_firefox/background.js" />
+        <option value="$PROJECT_DIR$/dom_firewall_firefox/sigs.js" />
+        <option value="$PROJECT_DIR$/dom_firewall_firefox/sigs_test.js" />
+        <option value="$PROJECT_DIR$/dom_firewall_firefox/contentscript.js" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="458" />
+    <option name="y" value="-16" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="dom-firewall" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dom-firewall" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dom-firewall" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dom-firewall" type="462c0819:PsiDirectoryNode" />
+              <item name="dom_firewall_firefox" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.customizations" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8b593fab-6f3a-4154-ae60-df07a45ad0bc" name="Default Changelist" comment="" />
+      <created>1552449443918</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1552449443918</updated>
+      <workItem from="1552449445156" duration="66000" />
+      <workItem from="1552449524525" duration="5770000" />
+      <workItem from="1552759914515" duration="7106000" />
+      <workItem from="1553128457471" duration="601000" />
+      <workItem from="1553743604687" duration="5608000" />
+      <workItem from="1553749663720" duration="27000" />
+      <workItem from="1554433804545" duration="599000" />
+      <workItem from="1554437033341" duration="6667000" />
+      <workItem from="1554857416109" duration="879000" />
+      <workItem from="1556503335865" duration="669000" />
+    </task>
+    <task id="LOCAL-00001" summary="merging branches">
+      <created>1552450062202</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1552450062202</updated>
+    </task>
+    <task id="LOCAL-00002" summary="[BG] Fixing signature regex matching for cases when attribute value is a function call + refactoring code and sending verified scripts with id=&quot;safe&quot; for better performance on CS side.&#10;[CS] Refactoring code, added functionality for dynamic signatures, essentially same workflow as BG, but works on a separate list of signatures that cannot be checked there.&#10;[sigs_cs] File to keep track of dynamic signature checks (i.e. on button clicked, on image load, etc.)">
+      <created>1552455700255</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1552455700255</updated>
+    </task>
+    <task id="LOCAL-00003" summary="[BG] More testing on script filtering, memory crash error pops up when trying to use it (decoding seems to be using wrong format, will have to look further into this).">
+      <created>1552771792634</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1552771792634</updated>
+    </task>
+    <task id="LOCAL-00004" summary="[BG] Added functionality to replace content of scripts with the background filter, still needs testing. Refactored some functionality in verifyHTML">
+      <created>1553749416182</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1553749416182</updated>
+    </task>
+    <task id="LOCAL-00005" summary="[BG] Added dummy signatures for initial performance evaluation.">
+      <created>1554449060915</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1554449060915</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Updated intro and client-side approach sections of paper.">
+      <created>1554875213808</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1554875213808</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="27992000" />
+  </component>
+  <component name="TodoView" selected-index="4">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22023182" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32998884" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.19770116" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32988507" />
+      <window_info active="true" anchor="bottom" id="Messages" order="12" visible="true" weight="0.32988507" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="merging branches" />
+    <MESSAGE value="[BG] Fixing signature regex matching for cases when attribute value is a function call + refactoring code and sending verified scripts with id=&quot;safe&quot; for better performance on CS side.&#10;[CS] Refactoring code, added functionality for dynamic signatures, essentially same workflow as BG, but works on a separate list of signatures that cannot be checked there.&#10;[sigs_cs] File to keep track of dynamic signature checks (i.e. on button clicked, on image load, etc.)" />
+    <MESSAGE value="[BG] More testing on script filtering, memory crash error pops up when trying to use it (decoding seems to be using wrong format, will have to look further into this)." />
+    <MESSAGE value="[BG] Added functionality to replace content of scripts with the background filter, still needs testing. Refactored some functionality in verifyHTML" />
+    <MESSAGE value="[BG] Added dummy signatures for initial performance evaluation." />
+    <MESSAGE value="Updated intro and client-side approach sections of paper." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated intro and client-side approach sections of paper." />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs_cs" />
+    <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs_test" />
+    <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/background.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" column="28" selection-start-line="34" selection-start-column="28" selection-end-line="34" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="26" column="31" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs_test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2100">
+          <caret line="141" column="17" selection-start-line="141" selection-start-column="17" selection-end-line="141" selection-end-column="17" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs_cs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/manifest.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/contentscript.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="89" column="30" selection-start-line="89" selection-start-column="30" selection-end-line="89" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
