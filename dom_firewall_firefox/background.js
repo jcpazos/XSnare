@@ -122,7 +122,7 @@ browser.webRequest.onBeforeRequest.addListener(
   ["blocking"]
 );
 
-browser.webRequest.onBeforeRequest.addListener(
+/*browser.webRequest.onBeforeRequest.addListener(
   scriptListener,
   {urls: ["<all_urls>"], types: ["script"]},
   ["blocking"]
@@ -233,6 +233,8 @@ function loadSignatures(HTMLString, url) {
   }
 }
 
+//TODO: add functionality to do different things based on occurrence and
+//what the signature dictates for sanitization
 function sanitizeInjectionPoint(HTMLString, startIndex, endIndex, occurrence) {
   HTMLString = HTMLString.replaceBetween(startIndex, endIndex, "");
   return HTMLString;
@@ -255,7 +257,6 @@ function verifyHTML(HTMLString, url) {
 
     let startMatch = startRegex.exec(HTMLString);
     let startIndex = !!startMatch ? startMatch.index : -1;
-    //TODO: could make this more efficient by only looking starting at the startIndex + 1, then replace between startIndex and startIndex+endIndex;
     //TODO: this needs to change assuming non-uniqueness, it currently just gets the last one, but it should be the nth one from the bottom up
     let endIndex = findLastIndex(endRegex, HTMLString);
     if (startIndex !== -1 && endIndex !== -1) {
@@ -309,34 +310,5 @@ function verifyHTML(HTMLString, url) {
       HTMLString = HTMLString.replaceBetween(startIndex, endIndex, "");
     }*/
   console.log("HTML is now clean!");
-
-}
-
-  /*const scriptsStart = getRegexIndices(/<script/g, HTMLString);
-  const scriptsEnd = getRegexIndices(/(<\/script>|<\\\/script>)/g, HTMLString);
-  if (scriptsStart.length !== scriptsEnd.length) {
-    throw new Error("Invalid HTML, improperly balanced script tags");
-  }
-
-
-
-  for (i = 0; i<scriptsStart.length; i++) {
-    if (inInjectionPoint(scriptsStart[i], endPointsIndices))
-      HTMLString = HTMLString.replaceBetween(scriptsStart[i],scriptsEnd[i], "");
-  }*/
   return HTMLString;
 }
-
-
-
-/*
-var BGAPI = {
-
-  retrieveHTML: function(params, tabId) {
-    var data = respData[tabId];
-    delete respData[tabId];
-    return Promise.resolve(data);
-  }
-
-};*/
-
