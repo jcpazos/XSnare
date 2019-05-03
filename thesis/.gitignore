@@ -2,8 +2,9 @@
 *.bbl
 *.blg
 *.log
+*.out
 revision.tex
 dom_firewall.pdf
-dom_firewall_synctex.gz
+dom_firewall.synctex.gz
 *~
 #*
