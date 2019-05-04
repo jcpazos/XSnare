@@ -8,8 +8,6 @@ let endPointsList = [];
 let occurrence = [];
 let scriptsList = [];
 let scriptReplaceValues = [];
-var startTime;
-var endTime;
 
 String.prototype.replaceBetween = function(start, end, what) {
     return this.substring(0, start) + what + this.substring(end);
@@ -17,7 +15,6 @@ String.prototype.replaceBetween = function(start, end, what) {
 
 function mainFrameListener(details) {
   //reset array values
-  //startTime = new Date();
   endPointsList = [];
   scriptsList = [];
   scriptReplaceValues = [];
@@ -217,7 +214,14 @@ function loadSignatures(HTMLString, url) {
     //TODO: make this more efficient to only check signatures that could be related to the current url
     //for example, if we load facebook.com, we shouldn't even be checking wordpress signatures
     if (isRunningPlugin(HTMLString, signature.softwareDetails) || url.includes(signature.url)) {
-      endPointsList.push(signature.endPoints.concat(signature.sigType));
+      if (signature.type === "multiple-unique") {
+        let i = 0;
+        for (i=0; i < signature.endPoints.length; i++) {
+          endPointsList.push(signature.endPoints[i].concat(signature.sigType[i]));
+        }
+      } else {
+        endPointsList.push(signature.endPoints.concat(signature.sigType));
+      }
       occurrence.push(signature.sigOccurrence);
     }
   }
@@ -233,11 +237,13 @@ function loadSignatures(HTMLString, url) {
   }
 }
 
-//TODO: add functionality to do different things based on occurrence and
-//what the signature dictates for sanitization
+//TODO: add functionality to do different things based on occurrence and what the signature dictates for sanitization
+//TODO: might be able to have the signature specify allowed/blocked elements as per https://github.com/cure53/DOMPurify, Can I configure DOMPurify?
 function sanitizeInjectionPoint(HTMLString, startIndex, endIndex, occurrence) {
-  HTMLString = HTMLString.replaceBetween(startIndex, endIndex, "");
-  return HTMLString;
+  let toReplace = HTMLString.replaceBetween(startIndex, endIndex, DOMPurify.sanitize(HTMLString.substring(startIndex, endIndex)));
+  let trimmedCount = HTMLString.length - toReplace.length;
+  HTMLString = toReplace;
+  return [HTMLString, trimmedCount];
 }
 
 function verifyHTML(HTMLString, url) {
@@ -257,7 +263,7 @@ function verifyHTML(HTMLString, url) {
 
     let startMatch = startRegex.exec(HTMLString);
     let startIndex = !!startMatch ? startMatch.index : -1;
-    //TODO: this needs to change assuming non-uniqueness, it currently just gets the last one, but it should be the nth one from the bottom up
+    //TODO: this needs to change assuming non-uniqueness, it currently just gets the last one, but it should be the nth to last one
     let endIndex = findLastIndex(endRegex, HTMLString);
     if (startIndex !== -1 && endIndex !== -1) {
       startIndices.push(startIndex);
@@ -270,24 +276,34 @@ function verifyHTML(HTMLString, url) {
     occurrenceMap[startIndices[i]] = occurrence[i];
   }
 
-  startIndices.sort();
-  endIndices.sort();
+
 
   if (startIndices.length === 1) {
-    HTMLString = sanitizeInjectionPoint(HTMLString, startIndices[0], endIndices[0], occurrenceMap[startIndices[0]]);
+    HTMLString = sanitizeInjectionPoint(HTMLString, startIndices[0], endIndices[0], occurrenceMap[startIndices[0]])[0];
   }
   else if (startIndices.length > 1) {
+    let sortedStart = startIndices;
+    sortedStart.sort((a, b) => a - b);
+    let sortedEnd = endIndices;
+    sortedEnd.sort((a, b) => a - b);
+
     //if there's more than 1 CVE in the current page, need to check for duplicates
-    for (i=0; i <startIndices.length; i++) {
-      if (endIndices[i] > startIndices[i+1]) {
+    for (i=0; i <sortedStart.length; i++) {
+      if (sortedEnd[i] > sortedStart[i+1]) {
         //TODO: found a duplicate, only load things before startIndices[0] and endIndices[endIndices.length-1];
-        HTMLString = sanitizeInjectionPoint(HTMLString, startIndices[0], endIndices[endIndices.length-1], 'unique');
+        HTMLString = sanitizeInjectionPoint(HTMLString, sortedStart[0], endIndices[sortedEnd.length-1], 'unique')[0];
         return HTMLString;
       }
     }
     //now we know all injection points are independent from each other, sanitize each individually
-    for (i=0; i<startIndices.length; i++) {
-      HTMLString = sanitizeInjectionPoint(HTMLString, startIndices[i], endIndices[i], occurrenceMap[startIndices[i]]);
+    //and find new indices again after each sanitization
+    let trimmedCount = 0;
+    for (i=0; i<sortedStart.length; i++) {
+      sortedStart[i]-=trimmedCount;
+      sortedEnd[i]-=trimmedCount;
+      let sanitized = sanitizeInjectionPoint(HTMLString, sortedStart[i], sortedEnd[i], occurrenceMap[sortedStart[i]]);
+      HTMLString = sanitized[0];
+      trimmedCount = sanitized[1];
     }
   }
   /*

@@ -8,6 +8,7 @@ const main_frame_signatures = [
         softwareDetails: 'responsive-cookie-consent',
         version: '1.5',
         description: '',
+        type: 'single-unique',
         sigType: ['incomplete', 'complete'],
         sigOccurrence: 'unique',
         endPoints: ['<div class="rcc-panel group" style="background: rgb(34, 34, 34) none repeat scroll 0% 0%; display: block;">', '<span class="screen-reader-text">']
@@ -17,6 +18,7 @@ const main_frame_signatures = [
         software: '#wordPress',
         softwareDetails: 'responsive-cookie-consent',
         version: '1.5',
+        type: 'single-unique',
         description: '',
         sigType: ['complete', 'complete'],
         sigOccurrence: 'unique',
@@ -27,6 +29,7 @@ const main_frame_signatures = [
         software: '#wordPress',
         softwareDetails: 'responsive-cookie-consent',
         version: '1.5',
+        type: 'single-unique',
         description: '',
         sigType: ['complete', 'complete'],
         sigOccurrence: 'unique',
@@ -39,6 +42,7 @@ const main_frame_signatures = [
         softwareDetails: 'wf-cookieconsent',
         version: '1.1.3',
         description: '',
+        type: 'single-unique',
         sigType: ['complete', 'complete'],
         sigOccurrence: 'unique',
         endPoints: ['<option class="level-0" value="133">', '<option class="level-0" value="12">']
@@ -48,6 +52,7 @@ const main_frame_signatures = [
         software: '#wordPress #wpPlugin',
         softwareDetails: 'snazzy-maps',
         version: '1.1.3',
+        type: 'single-unique',
         description: '',
         sigType: ['incomplete', 'complete'],
         endPoints: ['<input name="text" type="text" placeholder="Search..."', '<button class="button" type="submit">']
@@ -58,6 +63,7 @@ const main_frame_signatures = [
         softwareDetails: '31sdasfas',
         version: '1.0',
         description: '',
+        type: 'single-unique',
         sigType: ['complete', 'complete'],
         sigOccurrence: 'unique',
         endPoints: ['<button type="button" onclick="myFunction()">', '<script id="foo" type="text/javascript">']
@@ -67,6 +73,7 @@ const main_frame_signatures = [
         software: '#wordPress #wpPlugin',
         softwareDetails: 'events-manager',
         version: '5.8',
+        type: 'single-unique',
         description: '',
         sigType: ['incomplete', 'complete'],
         sigOccurrence: 'unique',
@@ -77,6 +84,7 @@ const main_frame_signatures = [
         software: '#wordPress #wpPlugin',
         softwareDetails: 'aryo-activity-log',
         version: '4.2.0',
+        type: 'single-unique',
         description: '',
         sigType: ['complete', 'complete'],
         sigOccurrence: 'several',
@@ -87,6 +95,7 @@ const main_frame_signatures = [
         software: '#wordPress #wpPlugin',
         softwareDetails: 'wf-cookieconsent',
         version: '1.1.3',
+        type: 'single-unique',
         description: '',
         sigType: ['complete', 'complete'],
         sigOccurrence: 'unique',
@@ -97,6 +106,7 @@ const main_frame_signatures = [
         software: '#wordPress #wpPlugin',
         softwareDetails: 'uk-cookie-consent',
         version: '2.3.9',
+        type: 'single-unique',
         description: '',
         sigType: ['complete', 'complete'],
         sigOccurrence: 'unique',
@@ -107,10 +117,42 @@ const main_frame_signatures = [
         software: '#wordPress #wpPlugin',
         softwareDetails: 'wf-cookieconsent',
         version: '1.1.3',
+        type: 'single-unique',
         description: '',
         sigType: ['complete', 'complete'],
         sigOccurrence: 'unique',
         endPoints: ['<select name="wf_cookieconsent_options[en][wf_linkhref]" id="wf_cookieconsent_options[en][wf_linkhref]">', '<p class="description">']
+    },
+    {
+        url:'/wp-admin/admin.php?page=loginizer_brute_force',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'loginizer',
+        version: '1.3.9',
+        description: '',
+        type: 'single-unique',
+        sigType: ['complete', 'complete'],
+        sigOccurrence: 'several',
+        endPointsPositions : [1,1],
+        endPoints: ['<table class="wp-list-table widefat fixed users" border="0">', '<input name="lz_reset_ip" class="button button-primary action" value="Remove From Logs" type="submit">']
+    },
+
+    {
+        url:'/wp-admin/admin.php?page=loginizer_brute_force',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'all-in-one-favicon',
+        version: '4.6   ',
+        description: '',
+        type: 'multiple-unique',
+        sigType: [['complete', 'complete'],
+                  ['complete', 'complete'],
+                  ['complete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPointsPositions : [1,1],
+        endPoints: [['<div id="frontendICO-favicon">', '<input id="aio-favicon_settings-frontendICO-text" type="text" name="aio-favicon_settings[frontendICO-text]" size="60" maxlength="100000" value="\\">'],
+                    ['<input id="aio-favicon_settings-frontendICO-text" type="text" name="aio-favicon_settings[frontendICO-text]" size="60" maxlength="100000" value="\\">', '<label id="aio-favicon_settings-frontendICO-button" name="frontendICO-button" class="button-secondary trigger-file-input" for="aio-favicon_settings-frontendICO">'],
+                    ['<input id="aio-favicon_settings-frontendICO" type="file" name="frontendICO" size="50" maxlength="100000" accept="image/*" value="\\">', '<label for="aio-favicon_settings-frontendGIF">']
+        ]
     }
 
 ];
