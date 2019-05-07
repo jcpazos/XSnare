@@ -4,18 +4,18 @@ We now present the DOM Firewall's components and how they interact with each oth
 
 \subsection{Web application architecture}
 Figure~\ref{fig:web_architecture} shows a typical architecture for web applications. There are several different places where vulnerability defences can be integrated. We give a brief description of what can be done at each point:
-\begin{itemize}
-	\item  At the application layer, the developer is trying to defend itself against malicious users. The first line of defence for these vulnerabilities lies in the application logic itself. The developer might choose to ensure safety of the code, either by use existing solutions, or by securing the code themselves, for example, by applying static analysis to detect unsanitised input.
+\begin{enumerate}
+	\item  At the application layer, the developer is trying to defend itself against malicious users. The first line of defence for these vulnerabilities lies in the application logic itself. The developer might choose to ensure safety of the code, either by using existing solutions, or by securing the code themselves, for example, by applying static analysis on the server code to detect unsanitised input.
 	\item The information then goes through the server-side networking of the web application. At this point, defences include generic firewalls and more specific Web Application firewalls (WAFs), which defend against  attacks such as DDoS, SQL injections and XSS.
 	\item At the client side layer, there is another networking component. At this point, the user is defending from malicious websites, and may have their own generic firewall, blacklisted websites, and proxies. 
 	\item Finally, the information gets to the user's browser. This will usually have built-in defences, such as Chrome's XSS auditor. The user might also install browser-dependent functionality, such as extensions like NoScript.
-\end{itemize}
+\end{enumerate}
 
 It should be noted that many of these approaches are either too specific or too generic. For example, a WAF might be enough to defend against most XSS attacks, but it would require each individual developer to have the necessary knowledge and resources to integrate one. A proxy at the client-side will usually have a generic set of rules to apply on incoming network traffic, and this will often lead to an elevated rate of false positives. Browser built-in defences are very coarse, and will only work on a subset of exploits. Chrome's XSS auditor, for example, only attempts to defend against reflected XSS. 
 
 Our approach, instead, focuses on application-specific detection at the client-side layer, and thus, doesn't rely on any server-side infrastructure and is more accurate than many client-side solutions. Furthermore, it is complementary to the aforementioned techniques: a WAF will not reduce the security of our approach by any means, and having these two work in tandem is beneficial to the user's experience. On the other hand, an user that has not installed our extension will receive none of the benefit.
 \begin{figure}[h]
-	\includegraphics[scale=0.3]{img/web_architecture.png}
+	\includegraphics[scale=0.3]{img/web_app_architecture.png}
 	\caption{Architecture of typical web applications. Different security solutions apply at distinct layers.}
 	\label{fig:web_architecture}
 \end{figure}
@@ -30,39 +30,56 @@ Our approach, instead, focuses on application-specific detection at the client-s
  	\label{fig:dom_firewall}
  \end{figure}
 
-In order to further illustrate this approach, we present a small example of how DOM context can be used to defend against XSS (this is reproducible in an off-the-box WordPress installation running the Responsive Cookie Consent plugin, v1.8, Chrome's XSS auditor, for example, does not protect against this). Consider a website running PHP on the backend that takes user input and stores it to later display it to another user, in this case, the value 'border-size'.
+In order to further illustrate this approach, we present a small example of how DOM context can be used to defend against XSS (this is reproducible in an off-the-box WordPress installation running the Responsive Cookie Consent plugin, v1.8, Chrome's XSS auditor, for example, does not protect against this). Consider a website running PHP on the backend that takes user input and stores it to later display it to another user; in this case, the input element's value attribute is set by the webpage admin using the plugin's UI.
 \\
 \begin{lstlisting}
-<div class="rcc-panel group" 
-border-bottom:<@\textcolor{red}{<?php rcc\_value('border-size')};>
+<input id="rcc_settings[border-size]" 
+ name="rcc-settings[border-size]" 
+ type="text" value=<@\textcolor{red}{"0"}@>>
+<label class="description"
+ for="rcc_settings[border-size]">
 \end{lstlisting}
-This div element will display the border-bottom attribute that was input by the user, under normal circumstances, it might display something such as: 
-\begin{lstlisting}
-<div class="rcc-panel group" 
-border-bottom: <@\textcolor{red}{0px solid rgb(85,85,85)}@>;>
-\end{lstlisting}
-However, if the user is malicious, it could inject a script through the border-size variable, as it is not sanitized on the server side. If we have
+Under normal circumstances, it might display something such as "0". However, if the user is malicious, it could inject a script through the border-size variable, as it is not sanitized on the server side. If we have
 \begin{lstlisting}
 border-size = ""><script>alert('XSS')</script>
 \end{lstlisting}
 then, the browser will render the following, executing the injected script:
 \begin{lstlisting}
-<div class="rcc-panel group" 
-border-bottom:<@\textcolor{red}{"">
-<script>alert('XSS')</script>}
+<input id="rcc_settings[border-size]" 
+name="rcc-settings[border-size]" 
+type="text" value=<@\textcolor{red}{""><script>alert('XSS')</script>}@>
+<label class="description"
+for="rcc_settings[border-size]">
 \end{lstlisting}
 
-Assuming an analyst has knowledge of how the full HTML should render without any injections, they can single out the point of injection, by separating user input from the server-side template, and get rid of the malicious script entirely. This works by essentially "sandwiching" the injection point. In the example, the injected script in red can be easily distinguished from the rest of the HTML template by looking for the div element that comes right before it from the top of the document, and the element that comes right after it from the bottom. TODO: mention why this might not work for some pages later on.
+Note that this HTML is well-formed, so it is hard to detect that a malicious injection has occurred. However, assuming an analyst has knowledge of how the full HTML should render without any injections, they can single out the point of injection, by separating user input from the server-side template, and get rid of the malicious script entirely. In the example, the injected script in red can be easily distinguished from the rest of the HTML template due to their identifiable attributes. By searching for this specific input element from the top of the document, and this label element from the bottom, the injection can be eliminated. TODO: mention why this might not work for some pages later on. 
 
 In the following sections we give a detailed description of each component of our system, the challenges that arise when trying to defend against XSS client-side, and the tools provided by the browser to facilitate our methods. 
  
  \subsection{Firewall Signatures}
-	 The firewall signatures are at the core of our defense strategy. These must be precise enough for the extension to single out the intended injection, and not an otherwise vital element of the website. Since we are only relying on DOM knowledge, these signatures must be related to HTML features, for example, specifying elements and element attributes that are unique to where the exploit might occur. The basis for our signatures relies on two observations: first, an injection has a start and end point, that is, an element can only be injected between a specific HTML node and its immediate sibling in the HTML tree; second, in a well-formed DOM, the injected element will not be able to change its location without any JavaScript execution. Thus, our basic approach at signature definition is to specify an injection's start and it's end, and the extension will stop any JavaScript from executing in this section of the HTML. Of course, it's up to the signature developer to decide whether there should be any JavaScript executing in this location. However, it is often easy to make this decision, as there are many input parameters which clearly shouldn't execute any JavaScript.
+	 The firewall signatures are at the core of our defense strategy. These must be precise enough for the extension to single out the intended injection, and not an otherwise vital element of the website. Since we are only relying on DOM knowledge, these signatures must be related to HTML features, for example, specifying elements and element attributes that are unique to where the exploit might occur. The basis for our signatures relies on two observations: first, an injection has a start and end point, that is, an element can only be injected between a specific HTML node and its immediate sibling in the DOM tree; second, in a well-formed DOM, the injected element will not be able to change its location without any JavaScript execution. Thus, our basic approach at signature definition is to specify an injection's start and its end, and any sanitization to be done between these two endpoints. Different scenarios might warrant different resolutions, ranging from stopping a webpage's rendering altogether, to performing some basic checks on the string. We discuss how different exploits might affect a signature definition and how our signature language gives an analyst enough expressibility to deal with these in later sections.
 	 
-	An immediate concern that can come up is who writes these signatures. We believe CVEs to be an ideal source for these: as discussed previously, bug bounty hunters and penetration testers will commonly identify issues in application code, inform developers and publish it for the benefit of the community in the form of CVEs. Our system adds an extra component to this workflow, where hackers and security enthusiasts also write the signatures to defend users.
+	An immediate concern that can come up is who writes the signatures. We believe CVEs to be an ideal source for these: as discussed previously, bug bounty hunters and penetration testers will commonly identify issues in application code, inform developers and publish it for the benefit of the community in the form of CVEs. Our system adds an extra component to this workflow, where hackers and security enthusiasts also write the signatures to defend users. Thus, the signature database is maintained by a trusted entity which audits CVEs, and thus, a malicious analyst can not take advantage of this workflow to throttle the extension's performance.
  
  \subsection{Firewall Signature Language}
- Our signature language needs to be such that it has enough power of expression for the developer to be as precise as they need. Due to the nature of our signature definitions, a regex language should suffice to express precise sections of the HTML. Furthermore, a regex language allows us to identify malformed HTML before it renders on the browser, as described below.
+ Our signature language needs to be such that it has enough power of expression for the developer to be as precise as they need. Due to the nature of our signature definitions, a regex language suffices to express precise sections of the HTML. Furthermore, a regex language allows us to identify malformed HTML before it renders on the browser. The following is the signature that defends against the motivating example of Section 2.1:
+ \lstset{basicstyle=\tiny}
+ \begin{lstlisting}
+ url: 'wp-admin/options-general.php?page=rcc-settings',
+ software: '#wordPress',
+ softwareDetails: 'responsive-cookie-consent',
+ version: '1.5',
+ type: 'single-unique',
+ description: '',
+ sigType: ['incomplete', 'complete'],
+ sigOccurrence: 'unique',
+ endPoints: 
+ 	['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" 
+ 	 type="text" value',
+  	 '<label class="description" for="rcc_settings[border-size]">']
+ \end{lstlisting}
+ 
+ Along with the previously mentioned endpoints, the signature also defines the specific url in which the exploit occurs, what kind of webpage it is (WordPress in this case), and any additional details of the software. In this case, since it's a WordPress site, the details include the plugin where the exploit occurs, as well as its version. Since we are looking at injection points in the HTML, there are different scenarios with regards to the number of places where an injection can occur. This is encoded in the 'type' and has the following format: \textbf{occurrence}-\textbf{uniqueness}. The occurrence refers to the number of CVEs in one specific page and can be either 'single' or 'multiple'; and the uniqueness refers to the identifiability of the endpoints, and can be either 'unique' or 'general'. To understand this better, consider our example: we stated that the endpoints were easily identifiable and as such, the injection could only happen in one specific spot, therefore the type is single-unique. However, if the injection were to happen in an arbitrary row in a table, it's hard to determine which row is the one affected, but we know the injection is still bound to that specific table, so the type is single-general. If a page has, for example, two different variables that are set by user input and are not sanitized, then the occurrence will be 'multiple'. These different scenarios complicate the detection mechanism and are further discussed in the implementation section.
  
  \subsection{Firefox Extension}
  The extension model provided by several browsers allows us to interpose on any functionality of a website in a privileged execution environment, unavailable to any third-party. Firefox in particular allows the interception of any script elements in the HTML, via the \textbf{beforescriptexecute} event. Thus, whenever any malicious script wants to run, we can first audit it and determine whether it should execute or not, according to rules defined by the firewall. While not all XSS is triggered by script elements, they do require JavaScript. Thus, we can modify any event listeners as well, effectively interposing on any JavaScript execution. Any required modifications of the HTML can be done in-place, as the website loads. 

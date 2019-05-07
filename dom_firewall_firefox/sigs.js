@@ -31,9 +31,9 @@ const main_frame_signatures = [
         version: '1.5',
         type: 'single-unique',
         description: '',
-        sigType: ['complete', 'complete'],
+        sigType: ['incomplete', 'complete'],
         sigOccurrence: 'unique',
-        endPoints: ['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" type="text" value="">', '<label class="description" for="rcc_settings[border-size]">']
+        endPoints: ['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" type="text" value', '<label class="description" for="rcc_settings[border-size]">']
     },
 
     {
