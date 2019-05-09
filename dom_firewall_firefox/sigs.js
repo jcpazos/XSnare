@@ -202,6 +202,31 @@ const main_frame_signatures = [
         sigType: ['complete', 'complete'],
         sigOccurrence: 'unique',
         endPoints: ['<input type="hidden" name="page" value="wplivechat-menu-gdpr-page">', '<input type="submit" class="button" value="Search">']
+    },
+    {
+        url:'wp-admin/admin.php?page=slideshow-galleries',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'slideshow-gallery',
+        version: '1.6.4',
+        type: 'htmlTag',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['<a href="/wp-admin/admin.php?page=slideshow-galleries', '<span class="sorting-indicator">']
+    },
+
+    {
+        url:'wp-admin/admin.php?page=slideshow-slides',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'slideshow-gallery',
+        version: '1.6.4',
+        type: 'htmlTag',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['<a href="/wp-admin/admin.php?page=slideshow-slides', '<span class="sorting-indicator">']
     }
 
 ];

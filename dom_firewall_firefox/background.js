@@ -153,6 +153,9 @@ function htmlToElement(html) {
     if (!template.innerHTML) {
         template.innerHTML = html + ">";
     }
+  if (!template.innerHTML) {
+    template.innerHTML = html + '">';
+  }
     return template.content.firstChild;
 }
 
@@ -198,7 +201,7 @@ function htmlToRegex(signatureHTMLTag, isComplete) {
 
     let s = `<\\s*` + signatureHTMLTag.tagName.toLowerCase();
     for (let i=0; i <signatureHTMLTag.attributes.length; i++) {
-        s+=`\\s+`+signatureHTMLTag.attributes[i].name + `=(\\"|'|"\/)` + signatureHTMLTag.attributes[i].value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + `(\\"|'|")`;
+        s+=`\\s+`+signatureHTMLTag.attributes[i].name + `=(\\"|'|"\/)?` + signatureHTMLTag.attributes[i].value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + `(\\"|'|")?`;
     }
     if (isComplete === "complete") {
         s+=`\\s*\/?>`;

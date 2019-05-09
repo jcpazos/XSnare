@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="df9aad19-8d42-4422-bde2-946d08eaa0d2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dom_firewall_firefox/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/dom_firewall_firefox/background.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dom_firewall_firefox/sigs.js" beforeDir="false" afterPath="$PROJECT_DIR$/dom_firewall_firefox/sigs.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -19,8 +20,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/background.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="161" column="34" selection-start-line="161" selection-start-column="34" selection-end-line="161" selection-end-column="34" />
+            <state relative-caret-position="392">
+              <caret line="206" column="22" lean-forward="true" selection-start-line="206" selection-start-column="22" selection-end-line="206" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -28,8 +29,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="66" column="93" selection-start-line="66" selection-start-column="93" selection-end-line="66" selection-end-column="93" />
+            <state relative-caret-position="420">
+              <caret line="228" column="71" selection-start-line="228" selection-start-column="71" selection-end-line="228" selection-end-column="71" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
@@ -52,7 +53,6 @@
       <find>c</find>
       <find>occurrence</find>
       <find>sigtoegex</find>
-      <find>htmltoregex</find>
       <find>'</find>
       <find>sigtoregex</find>
       <find>currsigs[</find>
@@ -66,6 +66,12 @@
       <find>chat</find>
       <find>typedet</find>
       <find>snazzy-maps</find>
+      <find>complete</find>
+      <find>href</find>
+      <find>a href</find>
+      <find>htmltoelem</find>
+      <find>htmltoelement</find>
+      <find>htmltoregex</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -139,7 +145,8 @@
       <workItem from="1556916445240" duration="8728000" />
       <workItem from="1557351639379" duration="8394000" />
       <workItem from="1557361252135" duration="42000" />
-      <workItem from="1557361747259" duration="1467000" />
+      <workItem from="1557361747259" duration="1621000" />
+      <workItem from="1557436749493" duration="2183000" />
     </task>
     <task id="LOCAL-00001" summary="adding untracked files">
       <created>1556916830421</created>
@@ -169,11 +176,25 @@
       <option name="project" value="LOCAL" />
       <updated>1557361279054</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="[CVEs] updated spreadsheet to reflect latest signed cves&#10;[sigs] added more working sigs">
+      <created>1557363332712</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1557363332712</updated>
+    </task>
+    <task id="LOCAL-00006" summary="[CVEs] updated spreadsheet to reflect latest signed cves&#10;[sigs] added more working sigs">
+      <created>1557363356274</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1557363356274</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19859000" />
+    <option name="totallyTimeSpent" value="22196000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -207,7 +228,8 @@
     <MESSAGE value="[BG] Improved support for multiple CVEs in one HTML. In CVE CVE-2018-13832, first injection seems to happen after rest of the html comes through the network, need to investigate further.&#10;[sigs] Added sig types for multiple occurrences of unique elements.&#10;[cves] updated signatured CVEs" />
     <MESSAGE value="[BG] Fixed a bug with regards to support for multiple CVEs in one HTML. Added functionality for arbitrary string regexes. CVE in last commit has now been correctly signed and fixed." />
     <MESSAGE value="[CVEs] updated spreadsheet to reflect latest signed cves" />
-    <option name="LAST_COMMIT_MESSAGE" value="[CVEs] updated spreadsheet to reflect latest signed cves" />
+    <MESSAGE value="[CVEs] updated spreadsheet to reflect latest signed cves&#10;[sigs] added more working sigs" />
+    <option name="LAST_COMMIT_MESSAGE" value="[CVEs] updated spreadsheet to reflect latest signed cves&#10;[sigs] added more working sigs" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/cves.ods">
@@ -222,15 +244,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/background.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="161" column="34" selection-start-line="161" selection-start-column="34" selection-end-line="161" selection-end-column="34" />
+        <state relative-caret-position="392">
+          <caret line="206" column="22" lean-forward="true" selection-start-line="206" selection-start-column="22" selection-end-line="206" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="66" column="93" selection-start-line="66" selection-start-column="93" selection-end-line="66" selection-end-column="93" />
+        <state relative-caret-position="420">
+          <caret line="228" column="71" selection-start-line="228" selection-start-column="71" selection-end-line="228" selection-end-column="71" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
