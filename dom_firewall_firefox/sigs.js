@@ -56,10 +56,17 @@ const main_frame_signatures = [
         software: '#wordPress #wpPlugin',
         softwareDetails: 'snazzy-maps',
         version: '1.1.3',
-        type: 'single-unique',
+        type: 'htmlTag',
+        typeDet: 'multiple-unique',
         description: '',
-        sigType: ['incomplete', 'complete'],
-        endPoints: ['<input name="text" type="text" placeholder="Search..."', '<button class="button" type="submit">']
+        sigType: [
+            ['complete', 'complete'],
+            ['incomplete', 'complete']
+        ],
+        endPoints: [
+            ['<a href="?page=snazzy_maps&amp;tab=1\\">', '<div class="col-md-10 col-lg-6">'],
+            ['<input name="text" type="text" placeholder="Search..."', '<button class="button" type="submit">']
+        ]
     },
     {
         url: 'https://www.cs.ubc.ca/~jpazos/',
@@ -183,6 +190,19 @@ const main_frame_signatures = [
                     ['<input id="aio-favicon_settings-frontendGIF" type="file" name="frontendGIF" size="50" maxlength="100000" accept="image/*" value="\\">', '<label for="aio-favicon_settings-frontendPNG">']
         ]
     },
+
+    {
+        url:'wp-admin/admin.php?page=wplivechat-menu-gdpr-page',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'wp-live-chat-support',
+        version: '8.0.15',
+        type: 'htmlTag',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: ['complete', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['<input type="hidden" name="page" value="wplivechat-menu-gdpr-page">', '<input type="submit" class="button" value="Search">']
+    }
 
 ];
 
