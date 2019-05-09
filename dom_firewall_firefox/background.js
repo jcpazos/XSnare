@@ -5,9 +5,9 @@ const respData = {};
 const mainFrameSignatures = Sigs.main_frame_signatures;
 const scriptSignatures = Sigs.script_signatures;
 let endPointsList = [];
-let occurrence = [];
 let scriptsList = [];
 let scriptReplaceValues = [];
+let currSigs = [];
 
 String.prototype.replaceBetween = function(start, end, what) {
     return this.substring(0, start) + what + this.substring(end);
@@ -18,7 +18,7 @@ function mainFrameListener(details) {
   endPointsList = [];
   scriptsList = [];
   scriptReplaceValues = [];
-  occurrence = [];
+  currSigs = [];
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
   let encoder = new TextEncoder();
@@ -193,7 +193,7 @@ function getRegexIndices(regex, string) {
 }
 
 //converts a signature to regex to match HTML string against element HTML tag
-function sigToRegex(signatureHTMLTag, isComplete) {
+function htmlToRegex(signatureHTMLTag, isComplete) {
     //const regex = /<\s*option\s+class=(\\"|'|"\/)level-0(\\"|'|")\s+value=(\\"|'|"\/)[^>]*(\\"|'|")\s*>/g;
 
     let s = `<\\s*` + signatureHTMLTag.tagName.toLowerCase();
@@ -214,15 +214,16 @@ function loadSignatures(HTMLString, url) {
     //TODO: make this more efficient to only check signatures that could be related to the current url
     //for example, if we load facebook.com, we shouldn't even be checking wordpress signatures
     if (isRunningPlugin(HTMLString, signature.softwareDetails) || url.includes(signature.url)) {
-      if (signature.type === "multiple-unique") {
+      if (signature.typeDet === "multiple-unique") {
         let i = 0;
         for (i=0; i < signature.endPoints.length; i++) {
           endPointsList.push(signature.endPoints[i].concat(signature.sigType[i]));
+          currSigs.push(signature);
         }
       } else {
         endPointsList.push(signature.endPoints.concat(signature.sigType));
+        currSigs.push(signature);
       }
-      occurrence.push(signature.sigOccurrence);
     }
   }
 
@@ -240,6 +241,7 @@ function loadSignatures(HTMLString, url) {
 //TODO: add functionality to do different things based on occurrence and what the signature dictates for sanitization
 //TODO: might be able to have the signature specify allowed/blocked elements as per https://github.com/cure53/DOMPurify, Can I configure DOMPurify?
 function sanitizeInjectionPoint(HTMLString, startIndex, endIndex, occurrence) {
+  //let toReplace = HTMLString.replaceBetween(startIndex, endIndex, "");
   let toReplace = HTMLString.replaceBetween(startIndex, endIndex, DOMPurify.sanitize(HTMLString.substring(startIndex, endIndex)));
   let trimmedCount = HTMLString.length - toReplace.length;
   HTMLString = toReplace;
@@ -256,24 +258,35 @@ function verifyHTML(HTMLString, url) {
   let endIndices = [];
 
   for (i = 0; i<endPointsList.length; i++) {
-    const start = htmlToElement(endPointsList[i][0]);
-    const startRegex = sigToRegex(start, endPointsList[i][2]);
-    const end = htmlToElement(endPointsList[i][1]);
-    const endRegex = sigToRegex(end, endPointsList[i][3]);
+    let start;
+    let startRegex;
+    let end;
+    let endRegex;
+    if (currSigs[i].type === "htmlTag") {
+      start = htmlToElement(endPointsList[i][0]);
+      startRegex = htmlToRegex(start, endPointsList[i][2]);
+      end = htmlToElement(endPointsList[i][1]);
+      endRegex = htmlToRegex(end, endPointsList[i][3]);
+    } else {
+      startRegex = new RegExp(endPointsList[i][0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+      endRegex = new RegExp(endPointsList[i][1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+    }
 
     let startMatch = startRegex.exec(HTMLString);
     let startIndex = !!startMatch ? startMatch.index : -1;
     //TODO: this needs to change assuming non-uniqueness, it currently just gets the last one, but it should be the nth to last one
     let endIndex = findLastIndex(endRegex, HTMLString);
     if (startIndex !== -1 && endIndex !== -1) {
+      startIndex+=endPointsList[i][0].length;
       startIndices.push(startIndex);
       endIndices.push(endIndex);
     }
   }
 
   let occurrenceMap = {};
-  for (i=0; i<occurrence.length; i++) {
-    occurrenceMap[startIndices[i]] = occurrence[i];
+  for (i=0; i<currSigs.length; i++) {
+    let signature = currSigs[i];
+    occurrenceMap[startIndices[i]] = signature.typeDet.substring(signature.typeDet.indexOf('-')+1);
   }
 
 
@@ -299,8 +312,10 @@ function verifyHTML(HTMLString, url) {
     //and find new indices again after each sanitization
     let trimmedCount = 0;
     for (i=0; i<sortedStart.length; i++) {
-      sortedStart[i]-=trimmedCount;
-      sortedEnd[i]-=trimmedCount;
+      sortedStart = sortedStart.map(x => {return x-trimmedCount});
+      sortedEnd = sortedEnd.map(x => {return x-trimmedCount});
+      //sortedStart[i]-=trimmedCount;
+      //sortedEnd[i]-=trimmedCount;
       let sanitized = sanitizeInjectionPoint(HTMLString, sortedStart[i], sortedEnd[i], occurrenceMap[sortedStart[i]]);
       HTMLString = sanitized[0];
       trimmedCount = sanitized[1];
