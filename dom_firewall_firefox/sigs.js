@@ -227,6 +227,45 @@ const main_frame_signatures = [
         sigType: ['incomplete', 'complete'],
         sigOccurrence: 'unique',
         endPoints: ['<a href="/wp-admin/admin.php?page=slideshow-slides', '<span class="sorting-indicator">']
+    },
+
+    {
+        url:'wp-admin/index.php',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'gwolle-gb',
+        version: '2.5.3',
+        type: 'string',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: ['complete', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['<a href=\"/wp-admin/index.php', '<a href=\"admin.php?page=gwolle-gb/entries.php&amp;show=all\" class=\"button button-primary\">']
+    },
+
+    {
+        url:'?war_soundy_preview',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'soundy-background-music',
+        version: '3.9',
+        type: 'string',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: ['complete', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['var war_soundy_front_end = new war_SoundyFrontEnd', '</head>']
+    },
+
+    {
+        url:'?war_soundy_preview',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'soundy-audio-playlist',
+        version: '4.6',
+        type: 'string',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: ['complete', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['var war_soundy_front_end = new war_SoundyFrontEnd', '</head>']
     }
 
 ];
