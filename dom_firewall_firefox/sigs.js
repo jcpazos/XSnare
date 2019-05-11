@@ -256,7 +256,7 @@ const main_frame_signatures = [
     },
 
     {
-        url:'?war_soundy_preview',
+        url:'?war_soundy_pl_preview',
         software: '#wordPress #wpPlugin',
         softwareDetails: 'soundy-audio-playlist',
         version: '4.6',
