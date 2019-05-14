@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="df9aad19-8d42-4422-bde2-946d08eaa0d2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cves.ods" beforeDir="false" afterPath="$PROJECT_DIR$/cves.ods" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dom_firewall_firefox/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/dom_firewall_firefox/background.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dom_firewall_firefox/sigs.js" beforeDir="false" afterPath="$PROJECT_DIR$/dom_firewall_firefox/sigs.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -17,20 +17,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/background.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="203" column="59" selection-start-line="203" selection-start-column="59" selection-end-line="203" selection-end-column="59" />
+            <state relative-caret-position="272">
+              <caret line="317" column="8" selection-start-line="317" selection-start-column="8" selection-end-line="317" selection-end-column="8" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="267" column="36" lean-forward="true" selection-start-line="267" selection-start-column="36" selection-end-line="267" selection-end-column="36" />
+            <state relative-caret-position="423">
+              <caret line="304" column="32" selection-start-line="304" selection-start-column="32" selection-end-line="304" selection-end-column="32" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
@@ -43,12 +43,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>loadsignatures</find>
-      <find>.type</find>
-      <find>c</find>
-      <find>occurrence</find>
-      <find>sigtoegex</find>
-      <find>'</find>
       <find>sigtoregex</find>
       <find>currsigs[</find>
       <find>currsigs</find>
@@ -59,8 +53,6 @@
       <find>.length-1</find>
       <find>wp-l</find>
       <find>chat</find>
-      <find>typedet</find>
-      <find>snazzy-maps</find>
       <find>complete</find>
       <find>href</find>
       <find>a href</find>
@@ -73,6 +65,14 @@
       <find>sanitizeinjection</find>
       <find>sanitizeinj</find>
       <find>htmltoregex</find>
+      <find>snazzy-maps</find>
+      <find>several</find>
+      <find>typedet</find>
+      <find>error</find>
+      <find>findlastin</find>
+      <find>findlastindex</find>
+      <find>findlast</find>
+      <find>findnindex</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -81,8 +81,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/dom_firewall_firefox/background.js" />
         <option value="$PROJECT_DIR$/dom_firewall_firefox/sigs.js" />
+        <option value="$PROJECT_DIR$/dom_firewall_firefox/background.js" />
       </list>
     </option>
   </component>
@@ -148,7 +148,8 @@
       <workItem from="1557361252135" duration="42000" />
       <workItem from="1557361747259" duration="1621000" />
       <workItem from="1557436749493" duration="2404000" />
-      <workItem from="1557529974885" duration="4227000" />
+      <workItem from="1557529974885" duration="4364000" />
+      <workItem from="1557782832521" duration="8266000" />
     </task>
     <task id="LOCAL-00001" summary="adding untracked files">
       <created>1556916830421</created>
@@ -199,11 +200,25 @@
       <option name="project" value="LOCAL" />
       <updated>1557439315722</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="[sigs] added signatures for more cves.&#10;[CVEs] updated signed cves">
+      <created>1557538293747</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1557538293748</updated>
+    </task>
+    <task id="LOCAL-00009" summary="[sigs] fixed typo in soundy-audio signature">
+      <created>1557538342226</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1557538342226</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26644000" />
+    <option name="totallyTimeSpent" value="35047000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -239,7 +254,9 @@
     <MESSAGE value="[CVEs] updated spreadsheet to reflect latest signed cves" />
     <MESSAGE value="[CVEs] updated spreadsheet to reflect latest signed cves&#10;[sigs] added more working sigs" />
     <MESSAGE value="[BG] fixed a bug with HTMLtoregex method.&#10;[sigs] added signatures for more cves.&#10;[CVEs] updated signed cves" />
-    <option name="LAST_COMMIT_MESSAGE" value="[BG] fixed a bug with HTMLtoregex method.&#10;[sigs] added signatures for more cves.&#10;[CVEs] updated signed cves" />
+    <MESSAGE value="[sigs] added signatures for more cves.&#10;[CVEs] updated signed cves" />
+    <MESSAGE value="[sigs] fixed typo in soundy-audio signature" />
+    <option name="LAST_COMMIT_MESSAGE" value="[sigs] fixed typo in soundy-audio signature" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/cves.ods">
@@ -252,21 +269,21 @@
     <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/background.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="203" column="59" selection-start-line="203" selection-start-column="59" selection-end-line="203" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/sigs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="267" column="36" lean-forward="true" selection-start-line="267" selection-start-column="36" selection-end-line="267" selection-end-column="36" />
+        <state relative-caret-position="423">
+          <caret line="304" column="32" selection-start-line="304" selection-start-column="32" selection-end-line="304" selection-end-column="32" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/background.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="317" column="8" selection-start-line="317" selection-start-column="8" selection-end-line="317" selection-end-column="8" />
         </state>
       </provider>
     </entry>

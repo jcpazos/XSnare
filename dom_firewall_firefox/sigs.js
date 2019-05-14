@@ -266,6 +266,44 @@ const main_frame_signatures = [
         sigType: ['complete', 'complete'],
         sigOccurrence: 'unique',
         endPoints: ['var war_soundy_front_end = new war_SoundyFrontEnd', '</head>']
+    },
+
+    {
+        url:'wp-admin/admin.php?page=Acurax-Social-Widget-Settings',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'acurax-social-media-widget',
+        version: '3.2.5',
+        type: 'htmlTag',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: ['incomplete', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['<li id="recordsArray', '<img src="http://localhost:8080/wp-content/plugins/acurax-social-media-widget/images/themes/1/facebook.png" border="0">']
+    },
+
+    {
+        url:'wp-admin/admin.php?page=wpdevart-extras',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'booking-calendar',
+        version: '1.8.4',
+        type: 'htmlTag',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: ['complete ', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['<div class="wpdevart-item-section-cont">', '<input type="hidden" name="task" value="save">']
+    },
+    {
+        url:'wp-admin/admin.php?page=wpdevart-forms',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'booking-calendar',
+        version: '1.8.4',
+        type: 'htmlTag',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: ['complete ', 'complete'],
+        sigOccurrence: 'unique',
+        endPoints: ['<div class="wpdevart-item-section-cont">', '<input type="hidden" name="task" value="save">']
     }
 
 ];
