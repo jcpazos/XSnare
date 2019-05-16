@@ -354,7 +354,6 @@ function verifyHTML(HTMLString, url) {
     //if there's more than 1 CVE in the current page, need to check for duplicates
     for (i=0; i <sortedStart.length; i++) {
       if (sortedEnd[i] > sortedStart[i+1]) {
-        //TODO: found a duplicate, only load things before startIndices[0] and endIndices[endIndices.length-1];
         HTMLString = sanitizeInjectionPoint(HTMLString, sortedStart[0], endIndices[sortedEnd.length-1], 'unique')[0];
         return HTMLString;
       }

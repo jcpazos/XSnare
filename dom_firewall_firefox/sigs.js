@@ -324,7 +324,7 @@ const main_frame_signatures = [
                 ['<input type="text" name="rnu_username_validation_title" class="ss_text" value', '<div class="table-cell" name="rnu_hdr_username_validation_title">'],
             ]
     },
-
+    /*
     {
         url:'wp-admin/admin.php?page=rcsm-weblizar',
         software: '#wordPress #wpPlugin',
@@ -347,8 +347,8 @@ const main_frame_signatures = [
             ['<input  class=\"form-control\" type=\"text\" name=\"coming-soon_title\" id=\"coming-soon_title\"  value', '<label>Sub Title</label>'],
             ['<input  class=\"form-control\" type=\"text\" name=\"coming-soon_sub_title\" id=\"coming-soon_sub_title\"  value', '<label>Message</label>'],
         ]
-    }
-    /*{
+    }*/
+    {
         url:'wp-admin/admin.php?page=rcsm-weblizar',
         software: '#wordPress #wpPlugin',
         softwareDetails: 'responsive-coming-soon-page',
@@ -357,20 +357,34 @@ const main_frame_signatures = [
         typeDet: 'multiple-unique',
         description: '',
         sigType: [
-            ['incomplete', 'complete'],
-            ['incomplete', 'complete']
+            ['complete', 'complete'],
+            ['complete', 'complete'],
+            ['complete', 'complete'],
+            ['complete', 'complete'],
+            ['complete', 'complete'],
+            ['complete', 'complete']
         ],
         endPointsPositions : [
             [5,24],
-            [1,22]
+            [1,23],
+            [47,3],
+            [48,2],
+            [1,22],
+            [14,40],
+            [9,21]
         ],
 
         sigOccurrence: 'unique',
         endPoints: [
             ['<div class="col-md-12 form-group">', '<div class="col-md-12 form-group">'],
-            ['<div class="col-md-12 form-group logo-option active" id="logo_image">', '<div class="col-md-12 form-group">']
+            ['<div class="col-md-12 form-group logo-option active" id="logo_image">', '<div class="col-md-12 form-group">'],
+            ['<div class="col-md-6">', '<div class="row">'],
+            ['<div class="col-md-6">', '<div class="row">'],
+            ['<div class="col-md-12 form-group template-option active" id="Background_Color">', '<div class="col-md-12 form-group">'],
+            ['<div class="col-md-6">', '<div class="col-md-6">'],
+            ['<div class="row">', '<div class="col-md-12 form-group">']
         ]
-    }*/
+    }
 
 ];
 
