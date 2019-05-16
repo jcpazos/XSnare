@@ -186,13 +186,15 @@ function findLastIndex(regex, HTMLString) {
   return !!currMatch ? currMatch.index : -1;
 }
 
-function findNIndex(regex, HTMLString, position) {
+//finds regex match at position either from the top or the bottom, start=true means front, start=false, means bottom
+function findNIndex(regex, HTMLString, position, start) {
   let match;
   let matches = [];
   while (match = regex.exec(HTMLString)) {
     matches.push(match);
   }
-  return !!matches[matches.length-position] ? matches[matches.length-position].index : -1;
+  position = start ? position-1 : matches.length-position;
+  return !!matches[position] ? matches[position].index : -1;
 }
 
 function getRegexIndices(regex, string) {
@@ -302,23 +304,26 @@ function verifyHTML(HTMLString, url) {
       currStart = startRegex.exec(HTMLString);
       currEnd = endRegex.exec(HTMLString);
       while (currStart && currEnd) {
-        startIndices.push(currStart.index + endPointsList[i][0].length);
+        startIndices.push(currStart.index /*+ endPointsList[i][0].length*/);
         endIndices.push(currEnd.index);
         currStart = startRegex.exec(HTMLString);
         currEnd = endRegex.exec(HTMLString);
       }
     } else {
-      let startMatch = startRegex.exec(HTMLString);
-      let startIndex = !!startMatch ? startMatch.index : -1;
+      let startMatch;
+      let startIndex;
       //TODO: this needs to change assuming non-uniqueness, it currently just gets the last one, but it should be the nth to last one
       let endIndex;
       if (currSigs[i].endPointsPositions) {
-        endIndex = findNIndex(endRegex, HTMLString, currSigs[i].endPointsPositions[1]);
+        startIndex = findNIndex(startRegex, HTMLString, currSigs[i].endPointsPositions[i][0], true);
+        endIndex = findNIndex(endRegex, HTMLString, currSigs[i].endPointsPositions[i][1], false);
       } else {
+        startMatch = startRegex.exec(HTMLString);
+        startIndex = !!startMatch ? startMatch.index : -1;
         endIndex = findLastIndex(endRegex, HTMLString);
       }
       if (startIndex !== -1 && endIndex !== -1) {
-        startIndex += endPointsList[i][0].length;
+        //startIndex += endPointsList[i][0].length;
         startIndices.push(startIndex);
         endIndices.push(endIndex);
       }

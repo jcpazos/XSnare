@@ -304,7 +304,73 @@ const main_frame_signatures = [
         sigType: ['complete ', 'complete'],
         sigOccurrence: 'unique',
         endPoints: ['<div class="wpdevart-item-section-cont">', '<input type="hidden" name="task" value="save">']
+    },
+
+    {
+        url:'wp-admin/options-general.php?page=read-and-understood-menu-slug-01',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'read-and-understood',
+        version: '2.1',
+        type: 'htmlTag',
+        typeDet: 'multiple-unique',
+        description: '',
+        sigType: [
+                ['incomplete', 'complete'],
+                ['incomplete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: [
+                ['<input type="text" name="rnu_username_validation_pattern" class="ss_text" value', '<div name="rnu_ftr_username_validation_pattern">'],
+                ['<input type="text" name="rnu_username_validation_title" class="ss_text" value', '<div class="table-cell" name="rnu_hdr_username_validation_title">'],
+            ]
+    },
+
+    {
+        url:'wp-admin/admin.php?page=rcsm-weblizar',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'responsive-coming-soon-page',
+        version: '1.1.18',
+        type: 'string',
+        typeDet: 'multiple-unique',
+        description: '',
+        sigType: [
+            ['incomplete', 'complete'],
+            ['incomplete', 'complete']
+        ],
+        endPointsPositions : [
+            [1,2],
+            [1,2]
+        ],
+
+        sigOccurrence: 'unique',
+        endPoints: [
+            ['<input  class=\"form-control\" type=\"text\" name=\"coming-soon_title\" id=\"coming-soon_title\"  value', '<label>Sub Title</label>'],
+            ['<input  class=\"form-control\" type=\"text\" name=\"coming-soon_sub_title\" id=\"coming-soon_sub_title\"  value', '<label>Message</label>'],
+        ]
     }
+    /*{
+        url:'wp-admin/admin.php?page=rcsm-weblizar',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'responsive-coming-soon-page',
+        version: '1.1.18',
+        type: 'string',
+        typeDet: 'multiple-unique',
+        description: '',
+        sigType: [
+            ['incomplete', 'complete'],
+            ['incomplete', 'complete']
+        ],
+        endPointsPositions : [
+            [5,24],
+            [1,22]
+        ],
+
+        sigOccurrence: 'unique',
+        endPoints: [
+            ['<div class="col-md-12 form-group">', '<div class="col-md-12 form-group">'],
+            ['<div class="col-md-12 form-group logo-option active" id="logo_image">', '<div class="col-md-12 form-group">']
+        ]
+    }*/
 
 ];
 
