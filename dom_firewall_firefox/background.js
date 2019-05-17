@@ -227,8 +227,8 @@ function loadSignatures(HTMLString, url) {
     //const softwareList = software.split('#').map(x => x.trim());
     //TODO: make this more efficient to only check signatures that could be related to the current url
     //for example, if we load facebook.com, we shouldn't even be checking wordpress signatures
-    if (isRunningPlugin(HTMLString, signature.softwareDetails) && !!signature.url && url.includes(signature.url)) {
-      if (signature.typeDet.includes("multiple-unique")) {
+    if (/*isRunningPlugin(HTMLString, signature.softwareDetails) && */!!signature.url && url.includes(signature.url)) {
+      if (signature.typeDet.includes("multiple")) {
         let i = 0;
         for (i=0; i < signature.endPoints.length; i++) {
           endPointsList.push(signature.endPoints[i].concat(signature.sigType[i]));
@@ -240,7 +240,7 @@ function loadSignatures(HTMLString, url) {
       }
     }
     else if (isRunningPlugin(HTMLString, signature.softwareDetails) && !signature.url) {
-      if (signature.typeDet.includes("multiple-unique")) {
+      if (signature.typeDet.includes("multiple")) {
         let i = 0;
         for (i=0; i < signature.endPoints.length; i++) {
           endPointsList.push(signature.endPoints[i].concat(signature.sigType[i]));

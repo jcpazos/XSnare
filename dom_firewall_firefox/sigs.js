@@ -384,7 +384,24 @@ const main_frame_signatures = [
             ['<div class="col-md-6">', '<div class="col-md-6">'],
             ['<div class="row">', '<div class="col-md-12 form-group">']
         ]
+    },
+
+    {
+        url:'wp-admin/admin-ajax.php',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: '',
+        version: '',
+        type: 'string',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [
+            ['complete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: ['Array\n(\n' + '    [PFFREE_Access_Token]', '-1']
     }
+
+
 
 ];
 
