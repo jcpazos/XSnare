@@ -399,6 +399,66 @@ const main_frame_signatures = [
         ],
         sigOccurrence: 'unique',
         endPoints: ['Array\n(\n' + '    [PFFREE_Access_Token]', '-1']
+    },
+
+    {
+        url: 'wp-admin',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'tabs-responsive',
+        version: '',
+        type: 'htmlTag',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [
+            ['complete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: ['<select id="wpsm_tabs_r_insertselect" style="width: 100%;margin-bottom: 20px;">', '<button class="button primary wp_tabs_r_shortcode_button" id="wpsm_tabs_r_insert">']
+    },
+
+    {
+        url: 'wp-admin/admin.php?page=tonjoo_excerpt',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'easy-custom-auto-excerpt',
+        version: '',
+        type: 'htmlTag',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [
+            ['complete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: ['<textarea id="ace_editor_value" name="tonjoo_ecae_options[custom_css]">', '<div class="postbox-container" style="float: right;margin-right: -300px;width: 280px;">']
+    },
+
+    {
+        url: 'wp-admin/edit.php?post_type=sdm_downloads',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'simple-download-monitor',
+        version: '',
+        type: 'htmlTag',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [
+            ['complete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: ['<tbody id="the-list">', '<tfoot>']
+    },
+
+    {
+        url: null,
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'simple-download-monitor',
+        version: '',
+        type: 'htmlTag',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [
+            ['incomplete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: ['<input id="sdm_upload" type="text" size="100" name="sdm_upload"', '<input id="upload_image_button" type="button" class="button-primary" value="Select File">']
     }
 
 
