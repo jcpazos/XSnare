@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="df9aad19-8d42-4422-bde2-946d08eaa0d2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cves.ods" beforeDir="false" afterPath="$PROJECT_DIR$/cves.ods" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dom_firewall_firefox/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/dom_firewall_firefox/background.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dom_firewall_firefox/sigs.js" beforeDir="false" afterPath="$PROJECT_DIR$/dom_firewall_firefox/sigs.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -21,7 +18,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/background.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
+            <state relative-caret-position="968">
               <caret line="257" column="73" selection-start-line="257" selection-start-column="73" selection-end-line="257" selection-end-column="73" />
             </state>
           </provider>
@@ -156,7 +153,7 @@
       <workItem from="1557959537848" duration="7151000" />
       <workItem from="1558040512567" duration="5871000" />
       <workItem from="1558562574097" duration="3836000" />
-      <workItem from="1558728147936" duration="12660000" />
+      <workItem from="1558728147936" duration="12746000" />
     </task>
     <task id="LOCAL-00001" summary="adding untracked files">
       <created>1556916830421</created>
@@ -263,15 +260,21 @@
       <option name="project" value="LOCAL" />
       <updated>1558571601338</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="[bg] refactoring of code to implement XHR verification functionality. currently stops the exploit but also breaks the incoming HTML. Also need to figure out how to only listen to a particular URL.&#10;[sigs] added more signatures for cves&#10;[cves] updated to current sigs">
+      <created>1558748138399</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1558748138399</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64753000" />
+    <option name="totallyTimeSpent" value="64839000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22866175" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -310,7 +313,8 @@
     <MESSAGE value="[cves] updated to current sigs" />
     <MESSAGE value="[bg] fixed bug in signature loading&#10;[sigs] added more signatures for cves&#10;[cves] updated to current sigs" />
     <MESSAGE value="[sigs] added more signatures for cves&#10;[cves] updated to current sigs" />
-    <option name="LAST_COMMIT_MESSAGE" value="[sigs] added more signatures for cves&#10;[cves] updated to current sigs" />
+    <MESSAGE value="[bg] refactoring of code to implement XHR verification functionality. currently stops the exploit but also breaks the incoming HTML. Also need to figure out how to only listen to a particular URL.&#10;[sigs] added more signatures for cves&#10;[cves] updated to current sigs" />
+    <option name="LAST_COMMIT_MESSAGE" value="[bg] refactoring of code to implement XHR verification functionality. currently stops the exploit but also breaks the incoming HTML. Also need to figure out how to only listen to a particular URL.&#10;[sigs] added more signatures for cves&#10;[cves] updated to current sigs" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/cves.ods">
@@ -338,7 +342,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dom_firewall_firefox/background.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
+        <state relative-caret-position="968">
           <caret line="257" column="73" selection-start-line="257" selection-start-column="73" selection-end-line="257" selection-end-column="73" />
         </state>
       </provider>
