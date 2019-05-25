@@ -8,6 +8,8 @@ let endPointsList = [];
 let scriptsList = [];
 let scriptReplaceValues = [];
 let currSigs = [];
+let xhrEndPointsList = [];
+let xhrCurrSigs = [];
 
 String.prototype.replaceBetween = function(start, end, what) {
     return this.substring(0, start) + what + this.substring(end);
@@ -19,6 +21,8 @@ function mainFrameListener(details) {
   scriptsList = [];
   scriptReplaceValues = [];
   currSigs = [];
+  xhrEndPointsList = [];
+  xhrCurrSigs = [];
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
   let encoder = new TextEncoder();
@@ -53,7 +57,7 @@ function mainFrameListener(details) {
   //return {}; // not needed
 }
 
-/*function xhrListener(details) {
+function xhrListener(details) {
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
   let encoder = new TextEncoder();
@@ -65,10 +69,18 @@ function mainFrameListener(details) {
 
   filter.onstop = event => {
 
+    try {
+      str = verifyXHR(str, details.url);
+    } catch(err) {
+      debugger;
+      console.log("Error when verifying XHR: " + err);
+      //TODO: advice the user that a vulnerability has been found. maybe add an alert box to the HTML.
+      //str = "";
+    }
     filter.write(encoder.encode(str));
     filter.close();    
   };
-}*/
+}
 
 
 function replaceInScript(str, toReplace, replaceValue) {
@@ -123,17 +135,17 @@ browser.webRequest.onBeforeRequest.addListener(
   scriptListener,
   {urls: ["<all_urls>"], types: ["script"]},
   ["blocking"]
-);
+);*/
 
 
 /*browser.webRequest.onBeforeRequest.addListener(
     xhrListener,
     {urls: ["<all_urls>"], types: ["xmlhttprequest"]},
     ["blocking"]
-);
+);*/
 
 
-browser.webRequest.onBeforeRequest.addListener(
+/*browser.webRequest.onBeforeRequest.addListener(
     specListener,
     {urls: ["<all_urls>"], types: ["speculative"]},
     ["blocking"]
@@ -227,28 +239,50 @@ function loadSignatures(HTMLString, url) {
     //const softwareList = software.split('#').map(x => x.trim());
     //TODO: make this more efficient to only check signatures that could be related to the current url
     //for example, if we load facebook.com, we shouldn't even be checking wordpress signatures
+    if (signature.type === 'listener') {
+      const data = signature.listenerData;
+      if (data.listenerType === 'xhr') {
+        browser.webRequest.onBeforeRequest.addListener(
+            xhrListener,
+            {urls: ["<all_urls>"], types: ["xmlhttprequest"]},
+            ["blocking"]
+        );
+        xhrEndPointsList.push([]);
+        xhrCurrSigs.push(data);
+        if (data.typeDet.includes("multiple")) {
+          let i = 0;
+          for (i=0; i < data.endPoints.length; i++) {
+            xhrEndPointsList[xhrEndPointsList.length-1].push(data.endPoints[i].concat(data.sigType[i]));
+          }
+        } else {
+          xhrEndPointsList[xhrEndPointsList.length-1].push(data.endPoints.concat(data.sigType));
+        }
+      }
+      continue;
+    }
     if (/*isRunningPlugin(HTMLString, signature.softwareDetails) && */!!signature.url && url.includes(signature.url)) {
+      endPointsList.push([]);
+      currSigs.push(signature);
       if (signature.typeDet.includes("multiple")) {
         let i = 0;
         for (i=0; i < signature.endPoints.length; i++) {
-          endPointsList.push(signature.endPoints[i].concat(signature.sigType[i]));
-          currSigs.push(signature);
+          endPointsList[endPointsList.length-1].push(signature.endPoints[i].concat(signature.sigType[i]));
         }
       } else {
-        endPointsList.push(signature.endPoints.concat(signature.sigType));
-        currSigs.push(signature);
+        endPointsList[endPointsList.length-1].push(signature.endPoints.concat(signature.sigType));
+
       }
     }
     else if (isRunningPlugin(HTMLString, signature.softwareDetails) && !signature.url) {
+      endPointsList.push([]);
+      currSigs.push(signature);
       if (signature.typeDet.includes("multiple")) {
         let i = 0;
         for (i=0; i < signature.endPoints.length; i++) {
           endPointsList.push(signature.endPoints[i].concat(signature.sigType[i]));
-          currSigs.push(signature);
         }
       } else {
         endPointsList.push(signature.endPoints.concat(signature.sigType));
-        currSigs.push(signature);
       }
     }
   }
@@ -274,66 +308,126 @@ function sanitizeInjectionPoint(HTMLString, startIndex, endIndex, occurrence) {
   return [HTMLString, trimmedCount];
 }
 
-function verifyHTML(HTMLString, url) {
-
+function findIndices(dataString, endPointsList, currSigs) {
   let i;
-
-  loadSignatures(HTMLString, url);
-
+  let j;
   let startIndices = [];
   let endIndices = [];
 
   for (i = 0; i<endPointsList.length; i++) {
-    let start;
-    let startRegex;
-    let end;
-    let endRegex;
-    if (currSigs[i].type === "htmlTag") {
-      start = htmlToElement(endPointsList[i][0]);
-      startRegex = htmlToRegex(start, endPointsList[i][2]);
-      end = htmlToElement(endPointsList[i][1]);
-      endRegex = htmlToRegex(end, endPointsList[i][3]);
-    } else {
-      startRegex = new RegExp(endPointsList[i][0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-      endRegex = new RegExp(endPointsList[i][1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-    }
-
-    if (currSigs[i].typeDet.includes("several")) {
-      let currStart;
-      let currEnd;
-      currStart = startRegex.exec(HTMLString);
-      currEnd = endRegex.exec(HTMLString);
-      while (currStart && currEnd) {
-        startIndices.push(currStart.index /*+ endPointsList[i][0].length*/);
-        endIndices.push(currEnd.index);
-        currStart = startRegex.exec(HTMLString);
-        currEnd = endRegex.exec(HTMLString);
-      }
-    } else {
-      let startMatch;
-      let startIndex;
-      //TODO: this needs to change assuming non-uniqueness, it currently just gets the last one, but it should be the nth to last one
-      let endIndex;
-      if (currSigs[i].endPointsPositions) {
-        startIndex = findNIndex(startRegex, HTMLString, currSigs[i].endPointsPositions[i][0], true);
-        endIndex = findNIndex(endRegex, HTMLString, currSigs[i].endPointsPositions[i][1], false);
+    for (j=0; j<endPointsList[i].length; j++) {
+      let start;
+      let startRegex;
+      let end;
+      let endRegex;
+      if (currSigs[i].type === "htmlTag") {
+        start = htmlToElement(endPointsList[i][j][0]);
+        startRegex = htmlToRegex(start, endPointsList[i][j][2]);
+        end = htmlToElement(endPointsList[i][j][1]);
+        endRegex = htmlToRegex(end, endPointsList[i][j][3]);
       } else {
-        startMatch = startRegex.exec(HTMLString);
-        startIndex = !!startMatch ? startMatch.index : -1;
-        endIndex = findLastIndex(endRegex, HTMLString);
+        startRegex = new RegExp(endPointsList[i][j][0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+        endRegex = new RegExp(endPointsList[i][j][1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
       }
-      if (startIndex !== -1 && endIndex !== -1) {
-        //startIndex += endPointsList[i][0].length;
-        startIndices.push(startIndex);
-        endIndices.push(endIndex);
+
+      if (currSigs[i].typeDet.includes("several")) {
+        let currStart;
+        let currEnd;
+        currStart = startRegex.exec(dataString);
+        currEnd = endRegex.exec(dataString);
+        while (currStart && currEnd) {
+          startIndices.push(currStart.index /*+ endPointsList[i][0].length*/);
+          endIndices.push(currEnd.index);
+          currStart = startRegex.exec(dataString);
+          currEnd = endRegex.exec(dataString);
+        }
+      } else {
+        let startMatch;
+        let startIndex;
+        //TODO: this needs to change assuming non-uniqueness, it currently just gets the last one, but it should be the nth to last one
+        let endIndex;
+        if (currSigs[i].endPointsPositions) {
+          startIndex = findNIndex(startRegex, dataString, currSigs[i].endPointsPositions[j][0], true);
+          endIndex = findNIndex(endRegex, dataString, currSigs[i].endPointsPositions[j][1], false);
+        } else {
+          startMatch = startRegex.exec(dataString);
+          startIndex = !!startMatch ? startMatch.index : -1;
+          endIndex = findLastIndex(endRegex, dataString);
+        }
+        if (startIndex !== -1 && endIndex !== -1) {
+          //startIndex += endPointsList[i][0].length;
+          startIndices.push(startIndex);
+          endIndices.push(endIndex);
+        }
       }
     }
   }
+  return [startIndices, endIndices];
+}
+
+function verifyXHR(responseData, url) {
+  let indices = findIndices(responseData, xhrEndPointsList, xhrCurrSigs);
+  let startIndices = indices[0];
+  let endIndices = indices[1];
+  if (startIndices.length !== endIndices.length) {
+    throw new Error("Error: startIndices length doesn't match endIndices length, illegal.");
+  }
+
+  let i;
+  let occurrenceMap = {};
+  for (i=0; i<xhrCurrSigs.length; i++) {
+    let signature = xhrCurrSigs[i];
+    occurrenceMap[startIndices[i]] = signature.typeDet.substring(signature.typeDet.indexOf('-')+1);
+  }
+
+  if (startIndices.length === 1) {
+    responseData = sanitizeInjectionPoint(responseData, startIndices[0], endIndices[0], occurrenceMap[startIndices[0]])[0];
+  }
+  else if (startIndices.length > 1) {
+    let sortedStart = startIndices;
+    sortedStart.sort((a, b) => a - b);
+    let sortedEnd = endIndices;
+    sortedEnd.sort((a, b) => a - b);
+
+    //if there's more than 1 CVE in the current page, need to check for duplicates
+    for (i=0; i <sortedStart.length; i++) {
+      if (sortedEnd[i] > sortedStart[i+1]) {
+        responseData = sanitizeInjectionPoint(responseData, sortedStart[0], endIndices[sortedEnd.length-1], 'unique')[0];
+        return responseData;
+      }
+    }
+    //now we know all injection points are independent from each other, sanitize each individually
+    //and find new indices again after each sanitization
+    let trimmedCount = 0;
+    for (i=0; i<sortedStart.length; i++) {
+      sortedStart = sortedStart.map(x => {return x-trimmedCount});
+      sortedEnd = sortedEnd.map(x => {return x-trimmedCount});
+      //sortedStart[i]-=trimmedCount;
+      //sortedEnd[i]-=trimmedCount;
+      let sanitized = sanitizeInjectionPoint(responseData, sortedStart[i], sortedEnd[i], occurrenceMap[sortedStart[i]]);
+      responseData = sanitized[0];
+      trimmedCount = sanitized[1];
+    }
+  }
+
+  console.log("XHR has been verified.");
+  return responseData;
+
+}
+
+function verifyHTML(HTMLString, url) {
+
+  loadSignatures(HTMLString, url);
+
+  let indices = findIndices(HTMLString, endPointsList, currSigs);
+  let startIndices = indices[0];
+  let endIndices = indices[1];
 
   if (startIndices.length !== endIndices.length) {
     throw new Error("Error: startIndices length doesn't match endIndices length, illegal.");
   }
 
+  let i;
   let occurrenceMap = {};
   for (i=0; i<currSigs.length; i++) {
     let signature = currSigs[i];

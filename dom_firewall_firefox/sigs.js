@@ -459,6 +459,131 @@ const main_frame_signatures = [
         ],
         sigOccurrence: 'unique',
         endPoints: ['<input id="sdm_upload" type="text" size="100" name="sdm_upload"', '<input id="upload_image_button" type="button" class="button-primary" value="Select File">']
+    },
+
+    {
+        url: 'wp-admin/options-general.php?page=flickrrss-settingspage.php',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'flickrRSS',
+        version: '5.3.1',
+        type: 'string',
+        typeDet: 'multiple-unique',
+        description: '',
+        sigType: [
+            ['incomplete', 'complete'],
+            ['incomplete', 'complete'],
+            ['incomplete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: [
+            ['<input name="flickrRSS_id" type="text" id="flickrRSS_id"', '<a href="#" id="idgetter">'],
+            ['<input name="flickrRSS_set" type="text" id="flickrRSS_set"', '<tr valign=\"top\" id=\"tags\">'],
+            ['<input name="flickrRSS_tags" type="text" id="flickrRSS_tags"', 'Comma separated, no spaces']
+            ]
+    },
+
+    {
+        url: null,
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'add-link-to-facebook',
+        version: '2.2.8',
+        type: 'string',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [
+            ['incomplete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: ['<input type="text" name="al2fb_facebook_id" id="al2fb_facebook_id"', '</a></td></tr>\n</table>']
+    },
+    {
+        url:'wp-admin/options-general.php?page=wordpress_file_upload&action=plugin_settings',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'wp-file-upload',
+        version: '4.3.3',
+        type: 'string',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [],
+        endPointsPositions : [
+            [1,7],
+        ],
+
+        sigOccurrence: 'unique',
+        endPoints: ['<input name="wfu_basedir" id="wfu_basedir" type="text"', '</strong></p>\n\t\t\t\t\t\t</td>\n\t\t\t\t\t</tr>']
+    },
+
+    {
+        url: 'wp-admin/options-general.php?page=srbtranslatoptions',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'srbtranslat',
+        version: '1.46',
+        type: 'string',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [
+            ['incomplete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: ['<input name="lang_identificator" type="text"', 'Set what identificator for script selection will be used in urls.']
+    },
+
+    {
+        url: 'cf-api',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: '',
+        version: '1.46',
+        type: 'string',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [
+            ['incomplete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: ['<div class="caldera-grid" id="caldera_form_1"', '</div>']
+    },
+
+    {
+        url: 'wp-admin/admin.php?page=caldera-forms',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'caldera-forms',
+        version: '1.5.9.1',
+        type: 'string',
+        listenerData: {
+            listenerType: 'xhr',
+            listenerMethod: 'POST',
+            listenerUrl: 'http://localhost:8080/wp-admin/admin-ajax.php'
+        },
+        typeDet: 'multiple-unique',
+        description: '',
+        sigType: [
+            ['incomplete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: [
+            ['<tr id="entry_row_3">', '<button class="hidden button button-small cfajax-trigger edit-entry-btn _tisBound" id="edit-entry-3"'],
+            ['<tr id="entry_row_2">', '<button class="hidden button button-small cfajax-trigger edit-entry-btn _tisBound" id="edit-entry-2"'],
+            ['<tr id="entry_row_1">', '<button class="hidden button button-small cfajax-trigger edit-entry-btn _tisBound" id="edit-entry-1"'],
+            ['<div id="main-entry-panel" class="tab-detail-panel hidden" data-tab="Entry"', '<div id="meta-debug" data-tab="Mailer Debug" class="tab-detail-panel hidden">'],
+            ['<div id="meta-debug" data-tab="Mailer Debug" class="tab-detail-panel hidden">', '<div class="baldrick-modal-footer" id="view_entry_baldrickModalFooter"'],
+
+            ]
+    },
+    {
+        url: 'wp-admin/admin.php?page=caldera-forms',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'caldera-forms',
+        version: '1.5.9.1',
+        type: 'listener',
+        listenerData: {
+            listenerType: 'xhr',
+            listenerMethod: 'POST',
+            type: 'string',
+            url: 'http://localhost:8080/wp-admin/admin-ajax.php',
+            typeDet: 'single-unique',
+            sigType: ['complete', 'complete'],
+            endPoints: ['{\"data\"', '\"active\"}']
+        },
     }
 
 
