@@ -552,7 +552,7 @@ const main_frame_signatures = [
         listenerData: {
             listenerType: 'xhr',
             listenerMethod: 'POST',
-            listenerUrl: 'http://localhost:8080/wp-admin/admin-ajax.php'
+            listenerUrl: 'wp-admin/admin-ajax.php'
         },
         typeDet: 'multiple-unique',
         description: '',
@@ -579,13 +579,46 @@ const main_frame_signatures = [
             listenerType: 'xhr',
             listenerMethod: 'POST',
             type: 'string',
-            url: 'http://localhost:8080/wp-admin/admin-ajax.php',
+            url: 'wp-admin/admin-ajax.php',
             typeDet: 'single-unique',
             sigType: ['complete', 'complete'],
-            endPoints: ['{\"data\"', '\"active\"}']
+            endPoints: ['<p><strong>', '[AltBody]']
         },
-    }
-
+    },
+    {
+        url: 'wp-admin/admin.php?edit=',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'caldera-forms',
+        version: '1.5.9.1',
+        type: 'string',
+        typeDet: 'multiple-unique',
+        description: '',
+        sigType: [
+            ['complete', 'complete'],
+            ['incomplete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: [
+        ['id=\"fld_8768091\"', '<input type="hidden" class="field-config" name="config[fields][fld_8768091][ID]" value="fld_8768091">'],
+        ['<input type="text" class="block-input field-config field-slug required" id="fld_8768091_slug" name="config[fields][fld_8768091][slug]" value=', '<label for="fld_8768091_fcond">']
+        ]
+    },
+    {
+        url: 'wp-admin/admin.php?page=bookly-payments',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'bookly-responsive-appointment-booking-tool',
+        version: '13.2',
+        type: 'listener',
+        listenerData: {
+            listenerType: 'xhr',
+            listenerMethod: 'POST',
+            type: 'string',
+            url: 'wp-admin/admin-ajax.php?action=bookly_get_payment_details&payment_id=*',
+            typeDet: 'single-unique',
+            sigType: ['complete', 'complete'],
+            endPoints: ['<tbody>', '<div>Date']
+        },
+    },
 
 
 ];
