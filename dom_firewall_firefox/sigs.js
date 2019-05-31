@@ -620,6 +620,60 @@ const main_frame_signatures = [
         },
     },
 
+    {
+        url: 'wp-admin/admin-ajax.php?action=wpdm_generate_password',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'download-manager',
+        version: '2.9.51',
+        type: 'all',
+        typeDet: 'single-unique',
+        description: ''
+    },
+
+     {
+        url: 'wp-content/plugins/share-this-image/sharer.php',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'share-this-image',
+        version: '1.03',
+        type: 'string',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [
+            ['incomplete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: ['<meta http-equiv="refresh" content="0;url=', '<style type="text/css">']
+    },
+
+    {
+        url: 'wp-content/plugins/z-url-preview/class.zlinkpreview.php',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'z-url-preview',
+        version: '1.03',
+        type: 'string',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [
+            ['incomplete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: ['Info: Array', '[content_type]']
+    },
+    {
+        url: 'wp-admin/options-general.php?page=wpdf-options',
+        software: '#wordPress #wpPlugin',
+        softwareDetails: 'wp-inject',
+        version: '1.15',
+        type: 'string',
+        typeDet: 'single-unique',
+        description: '',
+        sigType: [
+            ['incomplete', 'complete']
+        ],
+        sigOccurrence: 'unique',
+        endPoints: ['<input class="regular-text" type="text" name="flickr_appid"', 'VERIFICATION BUTTON DISPLAY']
+    }
+
 
 ];
 

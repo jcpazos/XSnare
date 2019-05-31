@@ -264,7 +264,11 @@ function loadSignatures(HTMLString, url) {
       continue;
     }*/
     if ((!!signature.url && url.includes(signature.url)) || (isRunningPlugin(HTMLString, signature.softwareDetails) && !signature.url)) {
-      if (signature.type === 'listener') {
+      if (signature.type === 'all') {
+        endPointsList.push([]);
+        currSigs.push(signature);
+      }
+      else if (signature.type === 'listener') {
         const data = signature.listenerData;
         const path = data.url;
         if (data.listenerType === 'xhr') {
@@ -284,18 +288,18 @@ function loadSignatures(HTMLString, url) {
             xhrEndPointsList[xhrEndPointsList.length-1].push(data.endPoints.concat(data.sigType));
           }
         }
-        continue;
-      }
-      endPointsList.push([]);
-      currSigs.push(signature);
-      if (signature.typeDet.includes("multiple")) {
-        let i = 0;
-        for (i=0; i < signature.endPoints.length; i++) {
-          endPointsList[endPointsList.length-1].push(signature.endPoints[i].concat(signature.sigType[i]));
-        }
       } else {
-        endPointsList[endPointsList.length-1].push(signature.endPoints.concat(signature.sigType));
+        endPointsList.push([]);
+        currSigs.push(signature);
+        if (signature.typeDet.includes("multiple")) {
+          let i = 0;
+          for (i=0; i < signature.endPoints.length; i++) {
+            endPointsList[endPointsList.length-1].push(signature.endPoints[i].concat(signature.sigType[i]));
+          }
+        } else {
+          endPointsList[endPointsList.length-1].push(signature.endPoints.concat(signature.sigType));
 
+        }
       }
     }
   }
@@ -328,6 +332,14 @@ function findIndices(dataString, endPointsList, currSigs) {
   let endIndices = [];
 
   for (i = 0; i<endPointsList.length; i++) {
+
+    //sanitize the whole string
+    if (currSigs[i].type === "all") {
+        startIndices.push(0);
+        endIndices.push(dataString.length-1);
+        continue;
+    }
+
     for (j=0; j<endPointsList[i].length; j++) {
       let start;
       let startRegex;

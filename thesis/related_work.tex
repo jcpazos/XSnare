@@ -10,5 +10,8 @@ In the following sections, we discuss a number of related works and how they com
 
 Although not solely related to XSS, Snyder et al. \cite{Snyder:2017:MWD:3133956.3133966} report a study in which they disable several JavaScript APIs and tests the amount of websites that are clearly non-functional without the full functionality of the APIs. They present a novel technique to interpose on JavaScript execution via the use of ES6 Proxies, allowing for efficient trapping of function calls. This approach increases security due to the number of vulnerabilities present in several JavaScript APIs, however, we believe disabling whole aspects of API functionality should only be used as a last resort.
 
+TODO: mention built-in browser techniques? not sure if there's a lot of research but might be worth mentioning industry solutions, i.e. chrome's XSS auditor, CSP, etc.
+
 \subsection{Client and server hybrids}
 Nadji et al. \cite{Nadji:2009} make use of a hybrid approach to XSS defences. They use sever-specified policies that are enforced on the client-side. Unlike previous work, they do not rely on developers to identified untrusted sources, and tag elements server-side, such that the client-side has a clear distinction of untrusted code and can filter it accordingly. Our own tagging mechanism is partly inspired by this, but we do not rely on the server passing this information along, and thus is less effective. However, as previously mentioned, the adoption of server-side techniques might not be feasible for many developers.
+

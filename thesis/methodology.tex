@@ -27,15 +27,15 @@ We tagged the analyzed CVEs with four main pieces of information in a yes/no for
 
 \subsection{Study Results}
 
-We classified 79 CVEs from our original 100. We dropped 21 of them due to insufficient information in the CVE descriptions to get any meaningful information, or because the plugin code was no longer available. In some cases, the plugin had been removed from the WordPress repository due to "security issues", which exacerbates the importance of being able to defend against these attacks.  
+We classified 83 CVEs from our original 100. We dropped 13 of them due to insufficient information in the CVE descriptions to get any meaningful analysis, or because the plugin code was no longer available. In some cases, the plugin had been removed from the WordPress repository due to "security issues", which exacerbates the importance of being able to defend against these attacks.  
 
 The plugins we studied averaged 489,927 installations (min: 10, max: 5 million). Table~\ref{table:1} reports our main results according to our discussed methodology. It is clear from the results that our approach applies to a majority of the studied CVEs. Of particular importance are the first three reported figures.
 
- A 72\% in "No Authentication" implies that most attacks can be realized by an outsider, and is an alarming reflection of the current state of browser and application defenses against XSS. 
+ A 37\% in "No Authentication" implies that a large number of attacks can be realized by an outsider, and is an alarming reflection of the current state of browser and application defenses against XSS. 
  
- The "User View Only" represents the hardest scenario for us to defend against XSS, as many of the elements in this view won't persist across different websites. A 14\% here means that only a small minority of plugins won't be able to benefit from our strategy. It is worth noting that we have tagged webpages according to this criterion by barely being displayed in the user view, however, there might still be enough identifying information for the injection  to be defended against, and this number might therefore not be fully representative of the limitations of our approach.
+ The "User View Only" represents the hardest scenario for us to defend against XSS, as many of the elements in this view won't persist across different websites. A 11\% here means that only a small minority of plugins won't be able to benefit from our strategy. It is worth noting that we have tagged webpages according to this criterion by barely being displayed in the user view, however, there might still be enough identifying information for the injection  to be defended against, and this number might therefore not be fully representative of the limitations of our approach.
  
-  While we report a 66\% in "Admin View Only", in our studies we noted that some of the CVE descriptions were somewhat limited and in some cases weren't accurate in describing where the injection points were rendered. As an example, one CVE explained how an unsanitized parameter could trigger XSS in a specific URL of the admin panel, but we found that there were other parts of the admin panel where the same XSS was being triggered. While we believe that this doesn't pose a big issue since it just counts as a failure of the signature description in the firewall, we note that the actual number of websites that can benefit from our approach might be slightly different. 
+  While we report a 71\% in "Admin View Only", in our studies we noted that some of the CVE descriptions were somewhat limited and in some cases weren't accurate in describing where the injection points were rendered. As an example, one CVE explained how an unsanitized parameter could trigger XSS in a specific URL of the admin panel, but we found that there were other parts of the admin panel where the same XSS was being triggered. While we believe that this doesn't pose a big issue since it just counts as a failure of the signature description in the firewall, we note that the actual number of websites that can benefit from our approach might be slightly different. 
  
  Finally, even for plugins where we didn't consider it to be able to be defended against in the admin view, we still report the ones where we believe there is some HTML Context that identifies the injection point and can be used to defend against XSS; however, these might be more prone to false positives and therefore only consider them as a "last resort".
 
@@ -46,7 +46,7 @@ $http://[path to WordPress]/wp-admin/admin.php?page=wps\_pages\_page\&page-uri=<
 
 While Firefox didn't block this request, Chrome's built-in XSS auditor did block it. We believe such solutions are important and are complementary to our work, and so we still tagged such attacks as identifiable by our approach, as well as having the ability to detecting them in an extension.
 
-After the initial study, we did a second pass over the analysed CVEs. The purpose of this was two-fold: updating any CVEs we hadn't initially considered applicable, now with a more robust iteration of the signature language and detector; and developing signatures for the described exploits. We were able to write x (TODO: update this number) signatures that, when sanitized using DOMPurify, got rid of the injection. Some of the exploits we considered as applicable were not able to be signed. For example, two CVEs had been fixed using an external JavaScript file. For this case, the injection can be easily targeted in the source file. This same thought process applies for other unsigned CVEs. 
+After the initial study, we did a second pass over the analysed CVEs. The purpose of this was two-fold: updating any CVEs we hadn't initially considered applicable, now with a more robust iteration of the signature language and detector; and developing signatures for the described exploits. We were able to write 48 (TODO: update this number) signatures that, when sanitized using DOMPurify, got rid of the injection. Some of the exploits we considered as applicable were not able to be signed. For example, two CVEs had been fixed using an external JavaScript file. For this case, the injection can be easily targeted in the source file. This same thought process applies for other most of the other unsigned CVEs. Another example of unsigned CVEs is the case of a high-privilege user attacking a low-privilege one. While this might be XSS by definition, this type of attack can happen regardless of the existence of XSS, and so we do not consider this our main use-case.
 
 The majority of these signatures maintained the same layout and core functionality of the webpage. However, a small number of signatures rendered parts of the page unusable, due to the sanitization method used (e.g. a table showing user information is now rendered as blank). Most of the responsibility of maintaining functionality is left to the signature developer, being as precise as possible is key: A full sanitization of the whole HTML string will most likely get rid of any exploits, but will also make the page completely unusable in most scenarios.
 
@@ -58,7 +58,7 @@ While our goal with the signature language is to retain as much information of t
 		\hline
 		No Authentication & Admin View Only & User View Only & HTML Context \\ [1ex] 
 		\hline
-		57 (72\%) & 52 (66\%) & 11 (14\%) & 71 (89\%) \\  [1ex] 
+		31 (37\%) & 59 (71\%) & 9 (11\%) & 78 (94\%) \\  [1ex] 
 		\hline
 	\end{tabular}
 \caption{Study results}
