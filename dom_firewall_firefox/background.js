@@ -232,37 +232,33 @@ function htmlToRegex(signatureHTMLTag, isComplete) {
     return new RegExp(s, 'g');
 }
 
+function isRunningWordPress(HTMLString, url) {
+  return HTMLString.includes("wp-content");
+}
+
 function loadSignatures(HTMLString, url) {
-  let i;
-  let matches = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i); //excludes port number
+  let matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
   const domain = matches && matches[1];  // domain will be null if no match is found
+
+  //TODO: if the page is running wordpress, try to load the plugins page synchronously.
+  let pluginsRunning;
+  if (isRunningWordPress(HTMLString, url)) {
+    var request = new XMLHttpRequest();
+    request.open('GET', 'https://' + domain + '/wp-admin/plugins.php', false); 
+    request.send(null);
+
+    if (request.status === 200) {
+      pluginsRunning = request.responseText;
+    }
+  }
+
+
+
+  let i;
   for (i = 0; i < mainFrameSignatures.length; i++) {
     const signature = mainFrameSignatures[i];
-    //const softwareList = software.split('#').map(x => x.trim());
     //TODO: make this more efficient to only check signatures that could be related to the current url
     //for example, if we load facebook.com, we shouldn't even be checking wordpress signatures
-    /*if (signature.type === 'listener') {
-      const data = signature.listenerData;
-      const path = data.url;
-      if (data.listenerType === 'xhr') {
-        browser.webRequest.onBeforeRequest.addListener(
-            xhrListener,
-            {urls: ["*://" + domain + "/" + path], types: ["xmlhttprequest"]},
-            ["blocking"]
-        );
-        xhrEndPointsList.push([]);
-        xhrCurrSigs.push(data);
-        if (data.typeDet.includes("multiple")) {
-          let i = 0;
-          for (i=0; i < data.endPoints.length; i++) {
-            xhrEndPointsList[xhrEndPointsList.length-1].push(data.endPoints[i].concat(data.sigType[i]));
-          }
-        } else {
-          xhrEndPointsList[xhrEndPointsList.length-1].push(data.endPoints.concat(data.sigType));
-        }
-      }
-      continue;
-    }*/
     if ((!!signature.url && url.includes(signature.url)) || (isRunningPlugin(HTMLString, signature.softwareDetails) && !signature.url)) {
       if (signature.type === 'all') {
         endPointsList.push([]);
