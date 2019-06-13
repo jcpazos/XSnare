@@ -10,6 +10,7 @@ let scriptReplaceValues = [];
 let currSigs = [];
 let xhrEndPointsList = [];
 let xhrCurrSigs = [];
+let probes = {};
 
 String.prototype.replaceBetween = function(start, end, what) {
     return this.substring(0, start) + what + this.substring(end);
@@ -23,6 +24,7 @@ function mainFrameListener(details) {
   currSigs = [];
   xhrEndPointsList = [];
   xhrCurrSigs = [];
+  probes = {};
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
   let encoder = new TextEncoder();
@@ -233,7 +235,47 @@ function htmlToRegex(signatureHTMLTag, isComplete) {
 }
 
 function isRunningWordPress(HTMLString, url) {
-  return HTMLString.includes("wp-content");
+  return HTMLString.includes("wp-content") || HTMLString.includes("wp-toolbar");
+}
+
+function runProbes(HTMLString, url, domain) {
+  //this might be done better by loading a signature-like language for probes
+  //for now i'm hardcoding known probes
+  //probes are a list of a known probe i.e 'wordpress' and any additional versioning information necessary
+  //e.g. for wordpress, can load domain/wp-admin/plugins.php if user has access to this page
+
+  //probe for wordpress detection + default plugin versioning. This versioning method only works for
+  //users with access to wp-admin/plugins.php
+  if (isRunningWordPress(HTMLString, url)) {
+    var index = probes.length;
+    probes['WordPress'] = {};
+    //probes.push(['WordPress', {}]);
+    fetch('http://' + domain + '/wp-admin/plugins.php').then(function (response) {
+      if (!response.ok) {
+        console.log("No access to this resource, user not authenticated");
+      }
+      return response.text();
+    }).then(function(response) {
+      let x = 1;
+      let domparser = new DOMParser();
+      let doc = domparser.parseFromString(response, "text/html");
+      let pluginList = doc.getElementById("the-list");
+      let versions = pluginList.getElementsByClassName('plugin-version-author-uri');
+      let i;
+      for (i=0; i<versions.length; i++) {
+        let pluginName = versions[i].parentElement.parentElement.getAttribute('data-slug');
+        let versionNumber = versions[i].innerHTML.match('^Version [^ ]*')[0].substring(8);
+        probes['WordPress'][pluginName] = versionNumber;
+      }
+    }).catch(function (error) {
+      //user was unauthenticated or doesn't have access to this page
+      probes['WordPress'] = null;
+      console.log(error);
+    })
+  }
+
+  //the domain name itself is a probe with no default versioning
+  probes[domain] = null;
 }
 
 function loadSignatures(HTMLString, url) {
@@ -242,24 +284,31 @@ function loadSignatures(HTMLString, url) {
 
   //TODO: if the page is running wordpress, try to load the plugins page synchronously.
   let pluginsRunning;
-  if (isRunningWordPress(HTMLString, url)) {
-    var request = new XMLHttpRequest();
-    request.open('GET', 'https://' + domain + '/wp-admin/plugins.php', false); 
-    request.send(null);
+  runProbes(HTMLString, url, domain);
 
-    if (request.status === 200) {
-      pluginsRunning = request.responseText;
+  let toCheck = [];
+  let i;
+
+  let loadedProbes = Object.keys(probes);
+  for (i=0; i < loadedProbes.length; i++) {
+    if (mainFrameSignatures[loadedProbes[i]]) {
+      toCheck = toCheck.concat(mainFrameSignatures[loadedProbes[i]]);
+    }
+    if (probes[loadedProbes[i]] && Object.keys(probes[loadedProbes[i]]).length < 1) {
+      //request for versioning has not come back yet, wait
+      //TODO: fix race condition here, insert interval on loading
     }
   }
 
-
-
-  let i;
-  for (i = 0; i < mainFrameSignatures.length; i++) {
-    const signature = mainFrameSignatures[i];
-    //TODO: make this more efficient to only check signatures that could be related to the current url
-    //for example, if we load facebook.com, we shouldn't even be checking wordpress signatures
+  for (i = 0; i < toCheck.length; i++) {
+  
+    const signature = toCheck[i];
     if ((!!signature.url && url.includes(signature.url)) || (isRunningPlugin(HTMLString, signature.softwareDetails) && !signature.url)) {
+      //check if versioning is correct when probe passed
+      if (probes[signature.software] && probes[signature.software][signature.softwareDetails] && (signature.version !== probes[signature.software][signature.softwareDetails])) {
+        continue;
+      }
+      //otherwise, plugins page did not load correctly, so carry on
       if (signature.type === 'all') {
         endPointsList.push([]);
         currSigs.push(signature);
@@ -302,8 +351,6 @@ function loadSignatures(HTMLString, url) {
 
   for (i=0; i < scriptSignatures.length; i++) {
     const signature = scriptSignatures[i];
-    //const software = signature.software;
-    //const softwareList = software.split('#').map(x => x.trim());
     if (isRunningPlugin(HTMLString, signature.softwareDetails) ||  url.includes(signature.url)) {
       scriptsList.push(signature.url);
       scriptReplaceValues.push([signature.toReplace, signature.replaceValues]);
