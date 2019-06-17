@@ -34,6 +34,7 @@ endPoints: [
 
 This signature describes an exploit on a WordPress site running the Caldera Forms plugin. The XSS occurs in the specified url. The listenerData attribute defines an extra listener to attach in the background page of the extension. In this case, the page listens for an XHR, specifically done as a POST to the specified listenerUrl. The rest of the information is similar to a regular signature, as it will execute the filter and sanitize the response if necessary, according to the specified endpoints. The background page knows to only filter such requests originated from the correct web page.
 
-TODO: say what extension is implemented on and sanitization used + discussion on sanitization
+TODO: say what extension is implemented on and sanitization used + discussion on sanitization + more details on network filter and signatures that require other type of listener, e.g. script, XHR.
 TODO: say how signatures are stored, client-side and server-side.
+TODO: maybe a description of the thought process for a signature developer?
 Anything else???
