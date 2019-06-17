@@ -546,7 +546,7 @@ const main_frame_signatures = {
 
         {
             url: 'wp-admin/admin.php?page=caldera-forms',
-            software: '#wordPress #wpPlugin',
+            software: 'WordPress',
             softwareDetails: 'caldera-forms',
             version: '1.5.9.1',
             type: 'string',
@@ -557,9 +557,6 @@ const main_frame_signatures = {
             },
             typeDet: 'multiple-unique',
             description: '',
-            sigType: [
-                ['incomplete', 'complete']
-            ],
             sigOccurrence: 'unique',
             endPoints: [
                 ['<tr id="entry_row_3">', '<button class="hidden button button-small cfajax-trigger edit-entry-btn _tisBound" id="edit-entry-3"'],
