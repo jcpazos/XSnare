@@ -1,5 +1,39 @@
 \section{Implementation}
 
+We have implemented our browser extension in 67.0.2. Our signatures are currently stored in a local JavaScript file. Injection point sanitization was done with DOMPurify \cite{10.1007/978-3-319-66399-9_7}. This library is described as a "DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG" by its creators. The Mozilla community cites it as an useful tool for "safely inserting external content into a page" \cite{safecontent}. While it offers a lot of configurability and hooks, we use the default functionality. We think it would be useful for a signature developer to have more expressibility in the sanitization definition and we leave this for future work. 
+
+As previously mentioned, our detector loads signatures and finds injection points in the document. However, there might be a large number of signatures which don't need to be loaded for a specific website. For example, if several signatures are designed for pages running a WordPress plugin, then the extension need not check any of these for a site which is not running WordPress at all. On the other hand, if a site is running WordPress, we might have to check all signatures meant for WordPress, but no others. Therefore, when loading signatures, we proceed in a manner similar to a decision tree. The detector first performs a few probes to identify the underlying framework (we call this the 'software' in our signature language). These are usually found by hints in the document HTML. After running these probes, the detector loads signatures for the specific software. At this point, we check whether the current requested page is running any of those signatures, and only keeps the ones that are. 
+
+Finally, version identification needs to be done so that websites running patched software don't trigger any false positives. We found this to be one of the harder aspects of signature loading. Specifically in WordPress, many of the plugins do not update their file names with the latest versions, or do not include them at all, and thus, this information is often hard to come by from the client-side perspective. In the case of WordPress, the wp-admin/plugins.php subpath contains information about all currently active plugins on the site. Unfortunately, this information is only available to admins of the site. While this might not be the bulk of users, it is, on the other hand, the bulk of disclosed CVEs, as described in Section 4. Furthermore, we believe that even if we load a signature when the application has already been fixed at the server-side, it will often be harmless, as many of the CVEs describe XSS which happens as a result of unsanitized input that was not meant to be JavaScript code regardless.
+
+Some of the exploits may also manifest themselves through dynamically loaded files. One of the CVEs we looked at had XSS triggered when the user loaded information stored in the plugin's database after clicking on an element of the page. Since this was not loaded with the original HTML, it came as a response to an Ajax request. Our signature language provides functionality to protect against these kinds of exploits, as shown in the example below:
+
+ \lstset{basicstyle=\small}
+\begin{lstlisting}
+url: 'wp-admin/admin.php?page=caldera-forms',
+software: 'WordPress',
+softwareDetails: 'caldera-forms',
+version: '1.5.9.1',
+type: 'string',
+listenerData: {
+listenerType: 'xhr',
+listenerMethod: 'POST',
+listenerUrl: 'http://localhost:8080/wp-admin/admin-ajax.php'
+},
+typeDet: 'multiple-unique',
+description: '',
+sigOccurrence: 'unique',
+endPoints: [
+	['<tr id="entry_row_3">', 
+	'<button class="hidden button button-small ...'],
+	['<tr id="entry_row_2">', 
+	'<button class="hidden button button-small ...']
+	...
+]
+\end{lstlisting}
+
+This signature describes an exploit on a WordPress site running the Caldera Forms plugin. The XSS occurs in the specified url. The listenerData attribute defines an extra listener to attach in the background page of the extension. In this case, the page listens for an XHR, specifically done as a POST to the specified listenerUrl. The rest of the information is similar to a regular signature, as it will execute the filter and sanitize the response if necessary, according to the specified endpoints. The background page knows to only filter such requests originated from the correct web page.
+
 TODO: say what extension is implemented on and sanitization used + discussion on sanitization
 TODO: say how signatures are stored, client-side and server-side.
 Anything else???
