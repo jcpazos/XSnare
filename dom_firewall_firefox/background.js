@@ -42,7 +42,7 @@ function mainFrameListener(details) {
   filter.onstop = event => {
     try {
         //TODO: mark verified scripts as 'safe' so contentscript doesn't check them again for dynamic checks
-        str = verifyHTML(str, details.url);
+        str = verifyHTML(str, details.url, details.tabId);
     } catch(err) {
         debugger;
         console.log("Error when verifying HTML: " + err);
@@ -177,10 +177,9 @@ function htmlToElement(html) {
 function isRunningPlugin(HTMLString, plugin) {
     //TODO: get curr plugins, might not be only in head, might have to check plugin version as well
     const regex = new RegExp("/wp-content/plugins/" + plugin);
-    return !!HTMLString.substring(HTMLString.indexOf("<head>"), HTMLString.indexOf("</head>")).match(regex);
-
-
+    return !!HTMLString.substring(HTMLString.indexOf("<head>"), HTMLString.indexOf("</head>")).match(regex) || !!HTMLString.match(regex)
 }
+
 function inInjectionPoint(scriptIndex, endPointsIndices) {
 
   for (let i =0; i<endPointsIndices.length; i++) {
@@ -264,7 +263,7 @@ function runProbes(HTMLString, url, domain) {
       let i;
       for (i=0; i<versions.length; i++) {
         let pluginName = versions[i].parentElement.parentElement.getAttribute('data-slug');
-        let versionNumber = versions[i].innerHTML.match('^Version [^ ]*')[0].substring(8);
+        let versionNumber = versions[i].innerHTML.match('Version [^ ]*')[0].substring(8);
         probes['WordPress'][pluginName] = versionNumber;
       }
     }).catch(function (error) {
@@ -278,7 +277,7 @@ function runProbes(HTMLString, url, domain) {
   probes[domain] = null;
 }
 
-function loadSignatures(HTMLString, url) {
+function loadSignatures(HTMLString, url, tabId) {
   let matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
   const domain = matches && matches[1];  // domain will be null if no match is found
 
@@ -319,7 +318,7 @@ function loadSignatures(HTMLString, url) {
         if (data.listenerType === 'xhr') {
           browser.webRequest.onBeforeRequest.addListener(
               xhrListener,
-              {urls: ["*://" + domain + "/" + path], types: ["xmlhttprequest"]},
+              {urls: ["*://" + domain + "/" + path], types: ["xmlhttprequest"], tabId: tabId},
               ["blocking"]
           );
           xhrEndPointsList.push([]);
@@ -483,9 +482,9 @@ function verifyXHR(responseData, url) {
 
 }
 
-function verifyHTML(HTMLString, url) {
+function verifyHTML(HTMLString, url, tabId) {
 
-  loadSignatures(HTMLString, url);
+  loadSignatures(HTMLString, url, tabId);
 
   let indices = findIndices(HTMLString, endPointsList, currSigs);
   let startIndices = indices[0];
@@ -506,6 +505,7 @@ function verifyHTML(HTMLString, url) {
 
   if (startIndices.length === 1) {
     HTMLString = sanitizeInjectionPoint(HTMLString, startIndices[0], endIndices[0], occurrenceMap[startIndices[0]])[0];
+    console.log("Sanitized unique injection point");
   }
   else if (startIndices.length > 1) {
     let sortedStart = startIndices;
@@ -529,6 +529,7 @@ function verifyHTML(HTMLString, url) {
       //sortedStart[i]-=trimmedCount;
       //sortedEnd[i]-=trimmedCount;
       let sanitized = sanitizeInjectionPoint(HTMLString, sortedStart[i], sortedEnd[i], occurrenceMap[sortedStart[i]]);
+      console.log("Sanitized injection point #" + (i+1));
       HTMLString = sanitized[0];
       trimmedCount = sanitized[1];
     }

@@ -5,27 +5,32 @@ const main_frame_signatures = {
     'WordPress': [
         {
             url: null,
-            software: '#wordPress',
+            software: 'WordPress',
             softwareDetails: 'responsive-cookie-consent',
             version: '1.5',
             description: '',
-            type: 'htmlTag',
+            type: 'string',
             typeDet: 'single-unique',
             sigType: ['incomplete', 'complete'],
             sigOccurrence: 'unique',
-            endPoints: ['<div class="rcc-panel group" style="background: rgb(34, 34, 34) none repeat scroll 0% 0%; display: block;">', '<span class="screen-reader-text">']
+            endPoints: ['<div class=\"rcc-panel group\"', 'class=\"rcc-info-btn\" >MORE INFO</a>']
         },
         {
             url: 'wp-admin/options-general.php?page=rcc-settings',
-            software: '#wordPress',
+            software: 'WordPress',
             softwareDetails: 'responsive-cookie-consent',
             version: '1.5',
-            type: 'htmlTag',
-            typeDet: 'single-unique',
+            type: 'string',
+            typeDet: 'multiple-unique',
             description: '',
             sigType: ['complete', 'complete'],
             sigOccurrence: 'unique',
-            endPoints: ['<input id="rcc_settings[font]" name="rcc_settings[font]" type="text" value="">', '<label class="description" for="rcc_settings[font]">']
+            endPoints: [
+                ['<input id="rcc_settings[font]" name="rcc_settings[font]" type="text"', '<label class="description" for="rcc_settings[font]">'],
+                ['<input id="rcc_settings[width]" name="rcc_settings[width]" type="text"', '<label class="description" for="rcc_settings[width]">'],
+                ['<input id="rcc_settings[max-width]" name="rcc_settings[max-width]" type="text"', '<label class="description" for="rcc_settings[max-width]">'],
+                ['<input id="rcc_settings[padding]" name="rcc_settings[padding]" type="text"', '<label class="description" for="rcc_settings[padding]">']
+            ]
         },
         {
             url: 'wp-admin/options-general.php?page=rcc-settings',
@@ -673,7 +678,53 @@ const main_frame_signatures = {
             ],
             sigOccurrence: 'unique',
             endPoints: ['<input class="regular-text" type="text" name="flickr_appid"', 'VERIFICATION BUTTON DISPLAY']
-        }
+        },
+        {
+            url: '/wp-admin/options-general.php?page=relevanssi%2Frelevanssi.php',
+            software: 'WordPress',
+            softwareDetails: 'relevanssi',
+            version: '4.0.4',
+            type: 'string',
+            typeDet: 'single-unique',
+            description: '',
+            sigType: [
+                ['incomplete', 'complete']
+            ],
+            sigOccurrence: 'unique',
+            endPoints: ['<input type=\'hidden\' name=\'tab\'', '<h2 class="nav-tab-wrapper">']
+        },
+        {
+            url: '',
+            software: 'WordPress',
+            softwareDetails: 'wd-instagram-feed',
+            version: '1.3.0',
+            type: 'listener',
+            listenerData: {
+                listenerType: 'xhr',
+                listenerMethod: 'POST',
+                type: 'string',
+                url: 'wp-admin/admin-ajax.php',
+                typeDet: 'single-unique',
+                sigType: ['complete', 'complete'],
+                endPoints: ['\"bio\":', '\"website\":']
+            },
+        },
+        {
+            url: 'post_type=tggr',
+            software: 'WordPress',
+            softwareDetails: 'tagregator',
+            version: '0.6',
+            description: '',
+            type: 'string',
+            typeDet: 'multiple-unique',
+            sigType: ['incomplete', 'complete'],
+            sigOccurrence: 'unique',
+            endPoints: [
+                ['<h1 class="entry-title">', '<div class="entry-meta">'],
+                ['<div class="entry-meta">', '<div class="entry-content">'],
+                ['<footer class="entry-footer">', "</footer>"]
+            ]
+        },
 
     ]
 };
