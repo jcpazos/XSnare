@@ -52,7 +52,6 @@ The majority of these signatures maintained the same layout and core functionali
 
 While our goal with the signature language is to retain as much information of the webpage as possible after sanitization, we believe that even if a part of the page is now useless, this does not impact the user's experience as much, since most of these exploits manifest themselves in small sections of the HTML. A thorough study with regards to usability is out of scope for this work, but we provide a study on false positives and false negatives in later sections, which is related to this issue.
 
-Previously, we stated that our signatures include versioning, and our approach ideally works for specific version of the software, since once patched, the rate of false positives will increase severely. In many cases, this check can be done easily, as the vulnerable page will often have the plugin name and version number as part of the WordPress header or footer HTML. Unfortunately, we have found that, more often that not, this information is not available, either due to developer negligence or because they believe hiding the version number grants them more security. However, since our use-case is mostly for site administrators and privileged users, the extension can generate a quick request to the wp-admin/plugins.php page to verify that the page is indeed running the suspected plugin on a vulnerable version.
 
 \begin{table}
 \begin{center}

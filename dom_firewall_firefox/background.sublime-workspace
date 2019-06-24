@@ -1,0 +1,379 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"endI",
+				"endIndices"
+			],
+			[
+				"startIn",
+				"startIndices"
+			],
+			[
+				"endPoin",
+				"endPointsIndices"
+			],
+			[
+				"first",
+				"firstChild"
+			],
+			[
+				"prev",
+				"preventDefault"
+			],
+			[
+				"full",
+				"fullHTML"
+			],
+			[
+				"finish",
+				"finishVerify"
+			],
+			[
+				"ve",
+				"verifyScript"
+			],
+			[
+				"sc",
+				"denyScript"
+			],
+			[
+				"get",
+				"getElementsByTagName"
+			],
+			[
+				"tab",
+				"tabId"
+			],
+			[
+				"add",
+				"addEventListener"
+			],
+			[
+				"body",
+				"bodyHTML"
+			],
+			[
+				"head",
+				"headHTML"
+			],
+			[
+				"document",
+				"documentElement"
+			],
+			[
+				"html",
+				"htmlToElement"
+			],
+			[
+				"origin",
+				"originalTabId"
+			],
+			[
+				"n",
+				"n"
+			],
+			[
+				"accoun",
+				"accountCredentials"
+			],
+			[
+				"RSA",
+				"RSA_All_Keys"
+			],
+			[
+				"git",
+				"gitHubToken"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 137.0,
+		"last_filter": "package control: instal",
+		"selected_items":
+		[
+			[
+				"package control: instal",
+				"Package Control: Install Package"
+			],
+			[
+				"package control",
+				"Package Control: Add Repository"
+			],
+			[
+				"packa",
+				"Install Package Control"
+			]
+		],
+		"width": 428.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/jose_/OneDrive/Documents/dom-firewall/dom_firewall_firefox/background.js",
+		"/C/Users/jose_/beeswax/mon/ext/twitter.js",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/contentscript [2].js",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/contentscript.js",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/contentscript.js",
+		"/C/Users/jose_/OneDrive/Documents/dom-firewall/dom_firewall_firefox/sigs.js",
+		"/C/Users/jose_/Downloads/Calculo_Multa.html",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/background.js",
+		"/C/Users/jose_/Downloads/jquery-1.12.0.min.js",
+		"/C/Users/jose_/OneDrive/Documents/dom-firewall/CVE_html_POCs/weird_firefox_rendering_baseline.html",
+		"/C/Users/jose_/OneDrive/Documents/dom-firewall/CVE_html_POCs/foobar.html",
+		"/C/Users/jose_/OneDrive/Documents/dom-firewall/dom_firewall_firefox/contentscript.js",
+		"/C/Users/jose_/OneDrive/Documents/dom-firewall/CVE_html_POCs/weird_firefox_rendering_example.html",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/main.js",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/sigs.js",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/sigs_cs.js",
+		"/C/Users/jose_/OneDrive/Documents/dom-firewall/wiki_example.html",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/meshview.cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/linalg.cpp",
+		"/C/Users/jose_/OneDrive/Documents/cpsc 424/program/subdivision.h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/trimesh.cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/subdivision.cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/Makefile",
+		"/C/Users/jose_/OneDrive/Documents/dom-firewall/dom_firewall_firefox/manifest.json",
+		"/C/Users/jose_/OneDrive/Documents/dom-firewall/dom_firewall_firefox/background-page.html",
+		"/C/Users/jose_/OneDrive/Documents/cpsc 424/program/linalg.cpp",
+		"/C/Users/jose_/OneDrive/Documents/cpsc 424/program/meshview.cpp",
+		"/C/Users/jose_/OneDrive/Documents/cpsc 424/program/subdivision.cpp",
+		"/C/Users/jose_/beeswax/mon/ext/certs.js",
+		"/C/Users/jose_/beeswax/mon/ext/manifest.json",
+		"/C/Users/jose_/beeswax/mon/ext/background.js",
+		"/C/Users/jose_/beeswax/mon/ext/main.js",
+		"/C/Users/jose_/OneDrive/Escritorio/dom_firewall/weird_firefox_rendering_example.html",
+		"/C/Users/jose_/OneDrive/Escritorio/oauth.html",
+		"/C/Users/jose_/beeswax/mon/ext/utils.js",
+		"/C/Users/jose_/OneDrive/Escritorio/dom_firewall/firewall.js",
+		"/C/Users/jose_/OneDrive/Escritorio/dom_firewall/cve.txt",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/background.js",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/bundle [2].js",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/index.js",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/bundle.js",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/twitter.js",
+		"/C/Users/jose_/OneDrive/Escritorio/oauth.js",
+		"/C/Users/jose_/OneDrive/Escritorio/cve.txt",
+		"/C/Users/jose_/OneDrive/Escritorio/dom_firewall/weird_example.txt",
+		"/C/Users/jose_/beeswax/mon/ext/options.js",
+		"/C/Users/jose_/beeswax/mon/ext/keyclasses.js",
+		"/C/Users/jose_/beeswax/mon/ext/contentscript.js",
+		"/C/Users/jose_/OneDrive/Escritorio/dom_firewall/dom_firewall_firefox/contentscript.js",
+		"/C/Users/jose_/beeswax/mon/ext/pageapi/runtime.body.js.in",
+		"/C/Users/jose_/beeswax/mon/ext/pageapi/runtime.js.in",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/twitter [2].js",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/firewall.js",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/subdivision [4].cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/pointcanvas.h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/bezier [2].cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/bezier.h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/subdivision [5].h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/trimesh [2].h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/trimesh [3].cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/meshview [4].cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/subdivision [4].h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/Makefile [2]",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/meshview [3].cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/trimesh.h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/trimesh [2].cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/subdivision [3].h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/subdivision [3].cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/subdivision [2].h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/main.cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/subdivision.h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/subdivision [2].cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/bezier.cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/pointcanvas.cpp",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/meshview.o",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/meshview [2].cpp",
+		"/C/Users/jose_/beeswax/mon/ext/popup.js",
+		"/C/Users/jose_/beeswax/mon/ext/tests.js",
+		"/C/Users/jose_/beeswax/mon/ext/inbox.js",
+		"/C/Users/jose_/beeswax/mon/ext/github.js",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/github.js",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/twitter.js",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/manifest.json",
+		"/C/Users/jose_/OneDrive/Documents/cpsc542G/hw2/q4.m",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/manifest.json",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/twitter-text.js",
+		"/C/Users/jose_/AppData/Local/Temp/Temp1_programs.zip/programs/chap16/Example16_14Table16_6.m",
+		"/C/Users/jose_/AppData/Local/Temp/Temp1_programs.zip/programs/chap16/Example16_21Figure16_13.m",
+		"/C/Users/jose_/AppData/Local/Temp/Temp1_programs.zip/programs/chap16/Example16_20Figure16_11.m",
+		"/C/Users/jose_/AppData/Local/Temp/Temp1_programs.zip/programs/chap16/Example16_17Figure16_9.m",
+		"/C/Users/jose_/AppData/Local/Temp/Temp1_programs.zip/programs/chap16/Example16_12Table16_3.m",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/recurr-kernel.cu",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/hw4.erl",
+		"/C/Users/jose_/AppData/Local/Temp/Temp1_a6_2018_template (1).zip/driver_q1.m",
+		"/C/Users/jose_/AppData/Local/Temp/Temp1_programs.zip/programs/chap16/Example16_8Fig16_5_6.m",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/gradescope_filter.js",
+		"/C/Users/jose_/Downloads/a6_2018_template/driver_q2.m",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/recurr-main.c",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/cpu-helper [2].h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/cuda-helper.cu",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/cpu-helper.h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/recurr-kernel.h",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/hw4_lib.erl",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/wtree.erl",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/workers.erl",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/hw1.erl",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/hw2_tests.erl",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/hw2.erl",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/options.html",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/certs.js",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/outbox.js",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/inbox.js",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/popup.js",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/keyclasses.js",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/vault.js",
+		"/C/Users/jose_/OneDrive/Documents/distort/beeswax/mon/ext/options.js",
+		"/C/Users/jose_/OneDrive/Documents/cpsc 424/hw3/a3_template/bezier",
+		"/C/Users/jose_/OneDrive/Documents/cpsc 424/hw3/a3_template/bezier.o",
+		"/C/Users/jose_/OneDrive/Documents/NetSarang/Xftp/Temporary/bezier [3].cpp"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "background.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 215.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
