@@ -558,7 +558,7 @@ const main_frame_signatures = {
             listenerData: {
                 listenerType: 'xhr',
                 listenerMethod: 'POST',
-                listenerUrl: 'wp-admin/admin-ajax.php'
+                url: 'wp-admin/admin-ajax.php'
             },
             typeDet: 'multiple-unique',
             description: '',
@@ -721,6 +721,34 @@ const main_frame_signatures = {
                 ['<div class="entry-meta">', '<div class="entry-content">'],
                 ['<footer class="entry-footer">', "</footer>"]
             ]
+        },
+        {
+            url: null,
+            software: 'WordPress',
+            softwareDetails: 'multi-step-form',
+            version: '1.2.5',
+            description: '',
+            type: 'string',
+            typeDet: 'single-unique',
+            sigType: ['incomplete', 'complete'],
+            sigOccurrence: 'unique',
+            endPoints: 
+                ['<div class="fw-summary-container">', '<button type="button" class="fw-btn-submit">']
+            
+        },
+        {
+            url: 'wp-admin/admin.php?page=wps_pages_page&page-uri=',
+            software: 'WordPress',
+            softwareDetails: 'wp-statistics',
+            version: '12.0.5',
+            description: '',
+            type: 'string',
+            typeDet: 'single-unique',
+            sigType: ['incomplete', 'complete'],
+            sigOccurrence: 'unique',
+            endPoints: 
+                ['<form method="get">', '<input type="text" size="10" name="rangestart" id="datestartpicker"']
+            
         },
 
     ]

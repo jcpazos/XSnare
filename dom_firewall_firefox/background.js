@@ -313,6 +313,32 @@ function loadSignatures(HTMLString, url, tabId) {
         currSigs.push(signature);
       }
       else if (signature.type === 'listener') {
+
+        var xhrListener = function (details) {
+          let filter = browser.webRequest.filterResponseData(details.requestId);
+          let decoder = new TextDecoder("utf-8");
+          let encoder = new TextEncoder();
+
+          let str = "";
+          filter.ondata = event => {
+            str += decoder.decode(event.data, {stream: true});
+          };
+
+          filter.onstop = event => {
+
+            try {
+              str = verifyXHR(str, details.url);
+            } catch(err) {
+              debugger;
+              console.log("Error when verifying XHR: " + err);
+              //TODO: advice the user that a vulnerability has been found. maybe add an alert box to the HTML.
+              //str = "";
+            }
+            filter.write(encoder.encode(str));
+            filter.close();    
+          };
+        }
+
         const data = signature.listenerData;
         const path = data.url;
         if (data.listenerType === 'xhr') {
@@ -321,6 +347,14 @@ function loadSignatures(HTMLString, url, tabId) {
               {urls: ["*://" + domain + "/" + path], types: ["xmlhttprequest"], tabId: tabId},
               ["blocking"]
           );
+
+          browser.tabs.onRemoved.addListener(function (details) {
+            browser.webRequest.onBeforeRequest.removeListener(xhrListener);
+          });
+          browser.tabs.onUpdated.addListener(function (details) {
+            browser.webRequest.onBeforeRequest.removeListener(xhrListener);
+          });
+
           xhrEndPointsList.push([]);
           xhrCurrSigs.push(data);
           if (data.typeDet.includes("multiple")) {
