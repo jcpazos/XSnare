@@ -1,0 +1,12 @@
+don't trust the locals: prevalnce of persisnte client-side cross-site scripting
+Study about persistent client-side XSS. Authors argue this type of XSS has not been
+well-covered by academic work. They find that 8% of Alexa top 5k are vulnerable to this,
+and 21% of websites that use storage API are vulnerable.
+
+For part mentioning how most input should be sanitized: they find that 90 sites persisted
+JavaScript on purpose, and thus can't be sanitized, it would break fucntionality, and 5
+contained a mix which was hard to tell if it should be sanitized. 
+
+
+other papers to look at:
+https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-stock.pdf
