@@ -750,6 +750,28 @@ const main_frame_signatures = {
                 ['<form method="get">', '<input type="text" size="10" name="rangestart" id="datestartpicker"']
             
         },
+        {
+            url: null,
+            software: 'WordPress',
+            softwareDetails: 'ultimate-member',
+            version: '2.0.27',
+            description: '',
+            type: 'string',
+            typeDet: 'single-unique',
+            endPoints: 
+                ['<div class="um-left um-half">', '<div class="um-col-alt-b">']
+        },
+        {
+            url: 'wp-admin/admin.php?page=um_options&tab=appearance&section=login_form',
+            software: 'WordPress',
+            softwareDetails: 'ultimate-member',
+            version: '2.0.27',
+            description: '',
+            type: 'string',
+            typeDet: 'single-unique',
+            endPoints: 
+                ['<input type=\"text\"  id=\"um_options_login_primary_btn_word\"   class=\"um-forms-field um-medium-field\"   name=\"um_options[login_primary_btn_word]\"   data-field_id=\"login_primary_btn_word\"', '<label  for="um_options_login_secondary_btn" >']
+        }
 
     ]
 };
