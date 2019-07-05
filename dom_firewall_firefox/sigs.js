@@ -881,7 +881,30 @@ const main_frame_signatures = {
             typeDet: 'single-unique',
             endPoints: 
                 ['<input type="time" name="dark_mode_start" id="dark_mode_start"', '<input type="hidden" name="dark_mode_nonce" id="dark_mode_nonce"']
-        }
+        },
+        {
+            url: 'wp-admin/admin.php?page=wpglobus_options',
+            software: 'WordPress',
+            softwareDetails: 'wpglobus',
+            version: '1.9.6',
+            description: '',
+            type: 'string',
+            typeDet: 'multiple-unique',
+            sigType: [
+                    ['incomplete', 'complete'],
+                    ['incomplete', 'complete'],
+                    ['incomplete', 'complete'],
+                    ['incomplete', 'complete'],
+                    ['incomplete', 'complete']
+                ],
+            endPoints: [
+                    ['<input type="hidden" name="wpglobus_option[enabled_languages][en]" id="enabled_languages-en-hidden"', '<label for="enabled_languages[en]">'],
+                    ['<input type="hidden" class="checkbox-check" data-val="1" name="wpglobus_option[selector_wp_list_pages][show_selector]"', '<input type="checkbox" class="checkbox  compiler" id="wpglobus_option_selector_wp_list_pages_show_selector_0"'],
+                    ['<input type="hidden" class="checkbox-check" data-val="1" name="wpglobus_option[post_type][post]"', '<input type="checkbox" class="checkbox " id="wpglobus_option_post_type_post_0"'],
+                    ['<input type="hidden" class="checkbox-check" data-val="1" name="wpglobus_option[post_type][page]"', '<input type="checkbox" class="checkbox " id="wpglobus_option_post_type_page_1"'],
+                    ['<input type="hidden" class="checkbox-check" data-val="1" name="wpglobus_option[browser_redirect][redirect_by_language]"', '<input type="checkbox" class="checkbox " id="wpglobus_option_browser_redirect_redirect_by_language_0"']
+                ]
+        },
 
 
 
