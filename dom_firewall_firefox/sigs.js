@@ -771,7 +771,119 @@ const main_frame_signatures = {
             typeDet: 'single-unique',
             endPoints: 
                 ['<input type=\"text\"  id=\"um_options_login_primary_btn_word\"   class=\"um-forms-field um-medium-field\"   name=\"um_options[login_primary_btn_word]\"   data-field_id=\"login_primary_btn_word\"', '<label  for="um_options_login_secondary_btn" >']
+        },
+        {
+            url: null,
+            software: 'WordPress',
+            softwareDetails: 'quizlord',
+            version: '2.0',
+            description: '',
+            type: 'string',
+            typeDet: 'single-several',
+            endPoints: 
+                ['<h3 class="ql-name">', '<h5 class=\'ql-description\'>']
+        },
+        {
+            url: 'wp-admin/admin.php?page=quizlord',
+            software: 'WordPress',
+            softwareDetails: 'quizlord',
+            version: '2.0',
+            description: '',
+            type: 'string',
+            typeDet: 'single-several',
+            endPoints: 
+                ['<a href=".*/wp-admin/admin\\.php\\?page=quizlord', '<td class="qlqid">']
+        },
+        {
+            url: 'wp-content/plugins/sagepay-server-gateway-for-woocommerce/includes/pages/redirect.php?page=',
+            software: 'WordPress',
+            softwareDetails: 'sagepay-server-gateway-for-woocommerce',
+            version: '1.0.7',
+            description: '',
+            type: 'string',
+            typeDet: 'single-unique',
+            endPoints: 
+                ['<body OnLoad="OnLoadEvent();">', '<noscript><center><p>']
+        },
+        {
+            url: 'wp-admin/admin.php?page=gd-rating-system-information&panel=',
+            software: 'WordPress',
+            softwareDetails: 'gd-rating-system',
+            version: '2.3',
+            description: '',
+            type: 'string',
+            typeDet: 'multiple-unique',
+            sigType: [
+                    ['incomplete', 'complete'],
+                    ['incomplete', 'complete'],
+                    ['incomplete', 'complete']
+                ],
+            endPoints: [
+                    ['<div class="d4p-wrap wpv-52 d4p-page-information d4p-panel d4p-panel', '<div class="d4p-header">'],
+                    ['<input type="hidden" id="_wpnonce" name="_wpnonce"', '<div class="d4p-content-left">'],
+                    ['<input id="gdrts-tool', '<div class="d4p-content-right">']
+                ]
+        },
+        {
+            url: 'wp-admin/admin.php?page=gd-rating-system-about&panel=',
+            software: 'WordPress',
+            softwareDetails: 'gd-rating-system',
+            version: '2.3',
+            description: '',
+            type: 'string',
+            typeDet: 'single-unique',
+            endPoints: 
+                    ['<div class="d4p-wrap wpv-52 d4p-page-about d4p-panel d4p-panel', '<div class="d4p-header">']
+        },
+        {
+            url: 'wp-admin/admin.php?page=gd-rating-system-transfer&panel=',
+            software: 'WordPress',
+            softwareDetails: 'gd-rating-system',
+            version: '2.3',
+            description: '',
+            type: 'string',
+            typeDet: 'multiple-unique',
+            sigType: [
+                    ['incomplete', 'complete'],
+                    ['incomplete', 'complete']
+                ],
+            endPoints: [
+                    ['<div class="d4p-wrap wpv-52 d4p-page-transfer d4p-panel d4p-panel', '<div class="d4p-header">'],
+                    ['<input id="gdrts-tool', '<div class="d4p-content-right">']
+                ]
+        },
+        {
+            url: 'wp-admin/admin.php?page=gd-rating-system-tools&panel=',
+            software: 'WordPress',
+            softwareDetails: 'gd-rating-system',
+            version: '2.3',
+            description: '',
+            type: 'string',
+            typeDet: 'multiple-unique',
+            sigType: [
+                    ['incomplete', 'complete'],
+                    ['incomplete', 'complete'],
+                    ['incomplete', 'complete']
+                ],
+            endPoints: [
+                    ['<div class="d4p-wrap wpv-52 d4p-page-tools d4p-panel d4p-panel', '<div class="d4p-header">'],
+                    ['<input type="hidden" id="_wpnonce" name="_wpnonce"', '<div class="d4p-content-left">'],
+                    ['<input id="gdrts-tool', '<div class="d4p-content-right">']
+                ]
+        },
+        {
+            url: 'wp-admin/profile.php',
+            software: 'WordPress',
+            softwareDetails: 'dark-mode',
+            version: '1.6',
+            description: '',
+            type: 'string',
+            typeDet: 'single-unique',
+            endPoints: 
+                ['<input type="time" name="dark_mode_start" id="dark_mode_start"', '<input type="hidden" name="dark_mode_nonce" id="dark_mode_nonce"']
         }
+
+
 
     ]
 };

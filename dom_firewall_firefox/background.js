@@ -234,7 +234,7 @@ function htmlToRegex(signatureHTMLTag, isComplete) {
 }
 
 function isRunningWordPress(HTMLString, url) {
-  return HTMLString.includes("wp-content") || HTMLString.includes("wp-toolbar");
+  return HTMLString.includes("wp-content") || HTMLString.includes("wp-toolbar") || url.includes("wp-content") || url.includes("wp-admin");
 }
 
 function runProbes(HTMLString, url, domain) {
