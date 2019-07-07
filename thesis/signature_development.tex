@@ -1,0 +1,54 @@
+\section{Developing Signatures}
+
+As previously stated, we envision the process of signature development to be part of the vulnerability discovery work flow and CVE creation. As such, we expect a signature developer to have a solid understanding of the principles behind XSS so that they can properly identify the minimal section of the DOM which acts as an injection point. Similarly, it is important that they can identify unique traits of elements (e.g. HTML id's, classes, etc.) and the page overall in order to reduce the rate of false positives.
+
+\subsection{Signature language specification} 
+
+We first provide a general description of a signature, in particular in the context of WordPress:
+\begin{itemize}
+	\item
+	url: If the exploit occurs in a specific URL or subdomain, this is defined as a string, e.g.
+	\\ /wp-admin/options-general.php?page=relevanssi\%2Frelevanssi.php, otherwise null.
+	\item
+	software: The software framework the page is running if any, e.g. WordPress. A hand-crafted page
+	might not have any identifiable software.
+	\item
+	softwareDetails: If running any software, this provides further information about when to load a signature. For WordPress, these are plugin names as depicted in the HTML of a page running such plugin.
+	\item
+	version: The version number of the software/plugin/page. This is used for versioning as described earlier.
+	\item 
+	type: A string describing the signature type. A value of 'string' describes a basic signature. A value of 'listener' describes a signature which requires an additional listener in the background page for network requests.
+	\item
+	typeDet: A string with the following pattern: 'occurence-uniqueness'. As described in Section 2.4, this specifies whether there are several injection points in the HTML.
+	\item
+	endPoints: An array of startpoint and endpoint tuples, e.g. : ['<input type=\'hidden\' name=\'tab\'', '<h2 class="nav-tab-wrapper">']
+\end{itemize}
+
+Additionally, if the value of type is 'listener', the signature will have an additional field called listenerData. Similarly, to a regular signature, this consists of the following pieces of information:
+\begin{itemize}
+	\item 
+	listenerType: The type of network listener as defined by the WebRequest API (e.g. 'script, 'XHR', etc.)
+	\item
+	listenerMethod: The request's HTTP method, for example "GET" or "POST".
+	\item
+	url: the URL of the request target.
+\end{itemize}
+
+\subsection{Signature writing process}
+We know describe the process by which a signature is written after a client-side vulnerability has been discovered:
+\begin{itemize}
+	\item{
+The signature developer crafts a proof of concept exploit for the given CVE. This step is not necessary but it will often help the developer correctly identify the affected areas of the DOM. For our own signatures, we heavily relied on this part because we didn't have the same information as the CVE writer.}
+\item
+Using information about where in the HTML the exploit will manifest itself, the developer identifies the start and end points of an injection, and creates regexes to match these. This step is particularly important because this is where the signature might end up covering a bigger part of the DOM than is required, potentially disabling desired functionality, to the detriment of the site user's experience. Furthermore, it is at this point where the developer identifies whether the exploit comes in from an external source (such as a response to an Ajax request or an external script) or is embedded in the document's mainframe HTML. This will result in a different signature layout. 
+\item
+Signatures are loaded for specific pages, and the developer has to specify this information, either via an URL or a regex in the HTML. For example, for a WordPress plugin, the exploit might happen in localhost/plugin-name.php. However, for another exploit, the exploit might occur in a page where the plugin is loaded, which contains the string "wp-content/plugins/plugin-name" in the HTML. Additionally, if the webpage is running pre-defined software, such as WordPress, this has to be specified in the signature as well. Much of this information is already known beforehand, and so this step can be done in conjunction with Step 2.
+\item
+After the signature has been written, the developer should make sure it was correctly specified. This is most easily done via testing a PoC exploit and verifying the injection has been properly sanitized. The browser extension can be used for the purposes of debugging. Some of our most common mistakes when writing signatures were incorrect regexes for the endpoints, and not correctly identifying that the injection occurred as part of an additional network request. These two can be easily fixed by looking through the incoming HTML in the background page's filter. 
+
+\subsection{Case Study: CVE-XXX}
+TODO: write this section. Find a suitable CVE to describe the whole process we went through (maybe the RCC one that was already shown as an example earlier?).
+Reference the CVE and show any important info: plugin version, PoC. Show the endpoints and the string in the HTML which includes the plugin name. Describe how each data item in the signature was filled in, and finally show the sanitized HTML. 
+\end{itemize}
+
+
