@@ -24,7 +24,6 @@ const main_frame_signatures = {
             typeDet: 'multiple-unique',
             description: '',
             sigType: ['complete', 'complete'],
-            sigOccurrence: 'unique',
             endPoints: [
                 ['<input id="rcc_settings[font]" name="rcc_settings[font]" type="text"', '<label class="description" for="rcc_settings[font]">'],
                 ['<input id="rcc_settings[width]" name="rcc_settings[width]" type="text"', '<label class="description" for="rcc_settings[width]">'],
@@ -34,14 +33,11 @@ const main_frame_signatures = {
         },
         {
             url: 'wp-admin/options-general.php?page=rcc-settings',
-            software: '#wordPress',
+            software: 'WordPress',
             softwareDetails: 'responsive-cookie-consent',
             version: '1.5',
-            type: 'htmlTag',
+            type: 'string',
             typeDet: 'single-unique',
-            description: '',
-            sigType: ['incomplete', 'complete'],
-            sigOccurrence: 'unique',
             endPoints: ['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" type="text" value', '<label class="description" for="rcc_settings[border-size]">']
         },
 

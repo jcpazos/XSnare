@@ -63,21 +63,20 @@ In the following sections we give a detailed description of each component of ou
  
  \subsection{Firewall Signature Language}
  Our signature language needs to be such that it has enough power of expression for the developer to be as precise as they need. Due to the nature of our signature definitions, a regex language suffices to express precise sections of the HTML. Furthermore, a regex language allows us to identify malformed HTML before it renders on the browser. The following is the signature that defends against the motivating example of Section 2.1:
- \lstset{basicstyle=\tiny}
- \begin{lstlisting}
- url: 'wp-admin/options-general.php?page=rcc-settings',
- software: '#wordPress',
- softwareDetails: 'responsive-cookie-consent',
- version: '1.5',
- type: 'single-unique',
- description: '',
- sigType: ['incomplete', 'complete'],
- sigOccurrence: 'unique',
- endPoints: 
- 	['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" 
- 	 type="text" value',
-  	 '<label class="description" for="rcc_settings[border-size]">']
- \end{lstlisting}
+ \lstset{basicstyle=\small}
+\begin{lstlisting}
+url: 'wp-admin/options-general.php?page=rcc-settings',
+software: 'WordPress',
+softwareDetails: 'responsive-cookie-consent',
+version: '1.5',
+type: 'string',
+typeDet: 'single-unique',
+endPoints: 
+['<input id="rcc_settings[border-size]" 
+name="rcc_settings[border-size]" type="text"',
+'<label class="description" 
+for="rcc_settings[border-size]">']
+\end{lstlisting}
  
  Along with the previously mentioned endpoints, the signature also defines the specific url in which the exploit occurs (if any), what kind of webpage it is (WordPress in this case), and any additional details of the software. In this case, since it's a WordPress site, the details include the plugin where the exploit occurs, as well as its version. Since we are looking at injection points in the HTML, there are different scenarios with regards to the number of places where an injection can occur. This is encoded in the 'type' and has the following format: \textbf{occurrence}-\textbf{uniqueness}. The occurrence refers to the number of CVEs in one specific page and can be either 'single' or 'multiple'; and the uniqueness refers to the identifiability of the endpoints, and can be either 'unique' or 'general'. To understand this better, consider our example: we stated that the endpoints were easily identifiable and as such, the injection could only happen in one specific spot, therefore the type is single-unique. However, if the injection were to happen in an arbitrary row in a table, it's hard to determine which row is the one affected, but we know the injection is still bound to that specific table, so the type is single-general. If a page has, for example, two different variables that are set by user input and are not sanitized, then the occurrence will be 'multiple'. These different scenarios complicate the detection mechanism and are further discussed in the implementation section.
  

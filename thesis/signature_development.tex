@@ -21,7 +21,7 @@ We first provide a general description of a signature, in particular in the cont
 	\item
 	typeDet: A string with the following pattern: 'occurence-uniqueness'. As described in Section 2.4, this specifies whether there are several injection points in the HTML.
 	\item
-	endPoints: An array of startpoint and endpoint tuples, e.g. : ['<input type=\'hidden\' name=\'tab\'', '<h2 class="nav-tab-wrapper">']
+	endPoints: An array of startpoint and endpoint tuples
 \end{itemize}
 
 Additionally, if the value of type is 'listener', the signature will have an additional field called listenerData. Similarly, to a regular signature, this consists of the following pieces of information:
@@ -35,8 +35,8 @@ Additionally, if the value of type is 'listener', the signature will have an add
 \end{itemize}
 
 \subsection{Signature writing process}
-We know describe the process by which a signature is written after a client-side vulnerability has been discovered:
-\begin{itemize}
+We now describe the process by which a signature is written after a client-side vulnerability has been discovered:
+\begin{enumerate}
 	\item{
 The signature developer crafts a proof of concept exploit for the given CVE. This step is not necessary but it will often help the developer correctly identify the affected areas of the DOM. For our own signatures, we heavily relied on this part because we didn't have the same information as the CVE writer.}
 \item
@@ -45,10 +45,58 @@ Using information about where in the HTML the exploit will manifest itself, the 
 Signatures are loaded for specific pages, and the developer has to specify this information, either via an URL or a regex in the HTML. For example, for a WordPress plugin, the exploit might happen in localhost/plugin-name.php. However, for another exploit, the exploit might occur in a page where the plugin is loaded, which contains the string "wp-content/plugins/plugin-name" in the HTML. Additionally, if the webpage is running pre-defined software, such as WordPress, this has to be specified in the signature as well. Much of this information is already known beforehand, and so this step can be done in conjunction with Step 2.
 \item
 After the signature has been written, the developer should make sure it was correctly specified. This is most easily done via testing a PoC exploit and verifying the injection has been properly sanitized. The browser extension can be used for the purposes of debugging. Some of our most common mistakes when writing signatures were incorrect regexes for the endpoints, and not correctly identifying that the injection occurred as part of an additional network request. These two can be easily fixed by looking through the incoming HTML in the background page's filter. 
+\end{enumerate}
 
-\subsection{Case Study: CVE-XXX}
-TODO: write this section. Find a suitable CVE to describe the whole process we went through (maybe the RCC one that was already shown as an example earlier?).
-Reference the CVE and show any important info: plugin version, PoC. Show the endpoints and the string in the HTML which includes the plugin name. Describe how each data item in the signature was filled in, and finally show the sanitized HTML. 
-\end{itemize}
+\subsection{Case Study: CVE-2018-10309}
+Going back to our example in Section 2.4, we describe the full process of writing a signature for one of the CVEs we studied. An entry in Exploit Database \cite{studyCVE} describes a persistent XSS vulnerability in the WordPress plugin Responsive Cookie Consent for versions 1.7/1.6/1.5. This particular entry (as most do) comes with a proof of concept for the exploit: 
+\begin{enumerate}
+\item Access WordPress control panel.
+\item Navigate to the Responsive Cookie Consent plugin page.
+\item Select one of the input fields. For example, "Cookie Bar Border Bottom Size".
+\item Insert the script you wish to inject.
+\item Save the plugin settings.
+\item Injected script will run in the victim's browser. Depending on which input field you inserted the script, the script may also run everytime you load the Responsive Cookie Consent plugin page.
+	
+\end{enumerate}
+
+ As described in Section 4.1, in order to test this vulnerability, we find a link to the affected plugin code, and launch a container a clean installation of WordPress 5.2 with the plugin downloaded. After this, we activate the plugin and proceed to reproduce the proof of concept as described in the Exploit Database entry, inserting the string '">script>alert('XSS')</script>' in the rcc\_settings[border-size] input field, resulting in the following HTML displayed on the page, as well as an alert box popping up in the page:
+
+\begin{lstlisting}
+<input id="rcc_settings[border-size]" 
+name="rcc-settings[border-size]" 
+type="text" value=<@\textcolor{red}{""><script>alert('XSS')</script>}@>
+<label class="description"
+for="rcc_settings[border-size]">
+\end{lstlisting}
+
+In this case, it is clear that the input element is the injection starting point, and we use the label element as the end point, since it is the immediate element after the input. With this information, we are now ready to start writing the corresponding signature:
+
+ \lstset{basicstyle=\small}
+\begin{lstlisting}
+url: 'wp-admin/options-general.php?page=rcc-settings',
+software: 'WordPress',
+softwareDetails: 'responsive-cookie-consent',
+version: '1.7',
+type: 'string',
+typeDet: 'single-unique',
+endPoints: 
+['<input id="rcc_settings[border-size]" 
+name="rcc_settings[border-size]" type="text"',
+'<label class="description" 
+for="rcc_settings[border-size]">']
+\end{lstlisting}
+
+The URL is acquired by noting that this exploit occurs on the plugin's settings page, which is in a specific subdomain of the web site. Of course, the software running is WordPress in this case. The settings page's HTML includes a link to a stylesheet with href "http://localhost:8080/wp-content/plugins/responsive-cookie-consent/includes/css/options-page.css?ver=5.2.2", in particular, "wp-content/plugins/plugin-name" is the standard way of identifying that a WordPress page is running a certain plugin. In this case, "responsive-cookie-consent". While the entry only lists versions 1.7, 1.6, and 1.5 as vulnerable, we apply the signature for all versions less than or equal to 1.7 (in fact, the CVE description states that this occurs "before 1.8").
+Since, the exploit only occurs in this specific spot in the HTML, the typeDet is listed as "single-unique". Finally, we list the endPoints as taken from the HTML.
+
+Finally, we load up our extension and reload the web page. In this example, we expect to not have an alert box pop up, and we manually look at the HTML to verify correct sanitization. Note that there's nothing else in between the input and label elements now:
+
+\begin{lstlisting}
+<input value="" type="text" 
+name="rcc_settings[border-size]" 
+id="rcc_settings[border-size]">
+<label class="description"
+for="rcc_settings[border-size]">
+\end{lstlisting}
 
 
