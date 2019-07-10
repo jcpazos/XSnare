@@ -445,7 +445,6 @@ function findIndices(dataString, endPointsList, currSigs) {
       } else {
         let startMatch;
         let startIndex;
-        //TODO: this needs to change assuming non-uniqueness, it currently just gets the last one, but it should be the nth to last one
         let endIndex;
         if (currSigs[i].endPointsPositions) {
           startIndex = findNIndex(startRegex, dataString, currSigs[i].endPointsPositions[j][0], true);
