@@ -557,6 +557,9 @@ const main_frame_signatures = {
                 url: 'wp-admin/admin-ajax.php'
             },
             typeDet: 'multiple-unique',
+            sigType: [
+                ['incomplete', 'complete']
+            ],
             description: '',
             sigOccurrence: 'unique',
             endPoints: [
@@ -577,6 +580,7 @@ const main_frame_signatures = {
             listenerData: {
                 listenerType: 'xhr',
                 listenerMethod: 'POST',
+                sanitizer: 'escape',
                 type: 'string',
                 url: 'wp-admin/admin-ajax.php',
                 typeDet: 'single-unique',

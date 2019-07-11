@@ -1,6 +1,7 @@
--Problem with endpoint identification doesn't occur because of top-down bottom up.
+about problem with endpoint detection:
 For unique-several, the algorithm assumes the ending point to be the latest to be found. 
-For multiple-unique/several, the signature specifies the expected indices of the endPoints, if necessary.
 Additionally, if the exploit can occur with the same endpoints in several different spots in the HTML, you always
 grab the latest one. In this case, this might get rid of large amounts of the HTML, and is up to the signature writer
 to decide whether they just want to block the page from rendering.
+
+ask best way to do escaping in JS
