@@ -17,11 +17,17 @@ We first provide a general description of a signature, in particular in the cont
 	\item
 	version: The version number of the software/plugin/page. This is used for versioning as described earlier.
 	\item 
-	type: A string describing the signature type. A value of 'string' describes a basic signature. A value of 'listener' describes a signature which requires an additional listener in the background page for network requests.
+	type: A string describing the signature type. A value of "string" describes a basic signature. A value of 'listener' describes a signature which requires an additional listener in the background page for network requests.
+	\item 
+	sanitizer: A string with one of the following values: "DOMPurify", "escape", and "regex". This item is optional, the default is DOMPurify.
+	\item
+	config: The config parameters to go along with the chosen sanitizer, if necessary. For "DOMPurify", the accepted values are as defined by the DOMPurify API (i.e DOMPurify.sanitize(dirty, config). For "escape", an additional escaping pattern can be provided. For "regex", this should be the pattern to match with the injection point content.
 	\item
 	typeDet: A string with the following pattern: 'occurence-uniqueness'. As described in Section 2.4, this specifies whether there are several injection points in the HTML.
 	\item
 	endPoints: An array of startpoint and endpoint tuples
+	\item 
+	endPointsPositions: An array of integer tuples. These are optional but useful when the one of the endPoints HTML are used throughout the whole page and appear a fixed number of times. For example: if an injection ending point happens on an element <h3 class='my-header'>, this element might have 10 appearances throughout the page. However, only the 4th is an injection ending point. The signature would specify the second element of the tuple to be 7, as it would be the 7th such item in a regex match array (using 1-based indexing), counting from the bottom up. For ending points, we have to count from the bottom up because the attacker can inject arbitrarily many of these elements before it, and vice versa for starting points.
 \end{itemize}
 
 Additionally, if the value of type is 'listener', the signature will have an additional field called listenerData. Similarly, to a regular signature, this consists of the following pieces of information:
@@ -35,7 +41,7 @@ Additionally, if the value of type is 'listener', the signature will have an add
 \end{itemize}
 
 \subsection{Signature writing process}
-We now describe the process by which a signature is written after a client-side vulnerability has been discovered:
+We now describe the process by which a signature is written after a vulnerability has been discovered:
 \begin{enumerate}
 	\item{
 The signature developer crafts a proof of concept exploit for the given CVE. This step is not necessary but it will often help the developer correctly identify the affected areas of the DOM. For our own signatures, we heavily relied on this part because we didn't have the same information as the CVE writer.}

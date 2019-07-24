@@ -1,6 +1,6 @@
 \section{Implementation}
 
-We have implemented our browser extension in Firefox 67.0.2. Our signatures are currently stored in a local JavaScript file in the extension package. Injection point sanitization is done with DOMPurify \cite{10.1007/978-3-319-66399-9_7}. This library is described by its creators as a "DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG". The Mozilla community cites it as an useful tool for "safely inserting external content into a page" \cite{safecontent}. While it offers a lot of configurability and hooks, we use the default functionality, with satisfying results, as described in Section 4.
+We have implemented our browser extension in Firefox 67.0.2. Our signatures are currently stored in a local JavaScript file in the extension package. Injection point sanitization is done with DOMPurify \cite{10.1007/978-3-319-66399-9_7}. This library is described by its creators as a "DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG". The Mozilla community cites it as an useful tool for "safely inserting external content into a page" \cite{safecontent}. While it offers a lot of configurability and hooks, we have used the default functionality, with satisfying results, as described in Section 4, in our own signatures. However, there are cases where page functionality is lost due to a naive sanitization approach. Thus, in some cases, it is more desirable to use a different sanitization approach, specially when heavier methods disrupt the look and feel of the web page. We provide different types of sanitization: "DOMPurify", "escape", and "regex". Regex Pattern matching can be particularly effective when the expected value has a simple representation, e.g. a name field should only have a particular subset of characters available. Additionally, for each of these approaches, the signature can specify a corresponding config value, as described in Section 5.1. DOMPurify provides a rich API for additional configuration. When escaping, defining specific characters to escape via regex can be useful. For pattern matching via regex, the config value specifies the string the injection point content should match.
 
 As previously mentioned, our detector loads signatures and finds injection points in the document. However, there might be a large number of signatures which don't need to be loaded for a specific website. For example, if several signatures are designed for pages running a WordPress plugin, then the extension need not check any of these for a site which is not running WordPress at all. On the other hand, if a site is running WordPress, we might have to check all signatures meant for WordPress, but not others. Therefore, when loading signatures, we proceed in a manner similar to a decision tree. The detector first probes the page to identify the underlying framework (we call this the 'software' in our signature language). These are usually found by hints in the document HTML. Probes are framework-specific, and as such, need to be encoded in some way so that the detector can run them. There are two approaches for this: the detector completely takes care of this, and needs to be maintained for changes in frameworks and future technologies, or, the signature developer additionally specifies a more specialized version detector as part of a probe file. We chose to go with the first option, as this provides a greater ease of use for signature developers. In our prototype implementation, hard-coding probes detector did not imply a substantial amount of work, however, as more signatures are written and more applications are required to be included, this can become an arduous task. We believe the second option can be desirable and would not be a terrible burden for signature developers: for example, the widely popular network mapping tool Nmap \cite{nMap} uses probes in a similar manner, and these are kept in a modifiable file so that advanced users can have more expressibility. After running these probes, the detector loads signatures for the specific software (e.g. all signatures for WordPress web sites). At this point, we filter out the ones that do not apply to the current page.
 
@@ -12,21 +12,16 @@ Some of the exploits manifest themselves through dynamically loaded files. For e
 \begin{lstlisting}
 url: 'wp-admin/admin.php?page=caldera-forms',
 ...
+type: 'listener',
 listenerData: {
-listenerType: 'xhr',
-listenerMethod: 'POST',
-listenerUrl: 'wp-admin/admin-ajax.php'
-},
-typeDet: 'multiple-unique',
-description: '',
-sigOccurrence: 'unique',
-endPoints: [
-	['<tr id="entry_row_3">', 
-	'<button class="hidden button button-small ...'],
-	['<tr id="entry_row_2">', 
-	'<button class="hidden button button-small ...']
-	...
-]
+	listenerType: 'xhr',
+	listenerMethod: 'POST',
+	sanitizer: 'escape',
+	type: 'string',
+	url: 'wp-admin/admin-ajax.php',
+	typeDet: 'single-unique',
+	endPoints: ['<p><strong>', '[AltBody]']
+}
 \end{lstlisting}
 
 This signature describes an exploit on a WordPress site running the Caldera Forms plugin. The XSS occurs in the specified url. The listenerData attribute defines an extra listener to attach in the background page of the extension. In this case, the page listens for an XHR, specifically done as a POST to the specified subdomain listenerUrl. The rest of the information is similar to a regular signature, as it will execute the filter and sanitize the response if necessary, according to the specified endpoints. The background page knows to only filter such requests originated from the correct web page. The type of resource to listen for is taken as specified by the webRequest API. 
