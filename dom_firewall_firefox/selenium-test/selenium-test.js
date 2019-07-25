@@ -94,7 +94,7 @@ async function run_tests(start, end) {
 				}	
 			}
 			loadTimeAcc = loadTimeAcc/trials;
-			loadTimes.push(loadTimeAcc);
+			extensionLoadTimes.push(loadTimeAcc);
 			console.log("i is: " + i);
 			if (loadTimeAcc > 5000) {
 				console.log("Webpage: " + urls[i] + " took longer than 5 seconds to load");
@@ -108,11 +108,13 @@ async function run_tests(start, end) {
 
 function initExtensionTests(start, end) {
 	run_tests_extension(start, end).then(function (loadTimes) {
-	extensionLoadTimes = extensionLoadTimes.concat(loadTimes);
-	if (loadTimes.length !== urls.length) {
+	if (extensionLoadTimes.length !== urls.length) {
 		initExtensionTests(extensionLoadTimes.length, urls.length);
 	}
-	console.log("Load times without extension running: " + loadTimes);
+	console.log("Load times without extension running: " + extensionLoadTimes);
+	}).catch (function (err) {
+		console.log("initextensiontests err : " + err);
+		initExtensionTests(extensionLoadTimes.length, urls.length);
 	});
 }
 
