@@ -55,12 +55,12 @@ async function run_tests_extension(start, end) {
 				}	
 			}
 			loadTimeAcc = loadTimeAcc/trials;
-			loadTimes.push(loadTimeAcc);
+			extensionLoadTimes.push(loadTimeAcc);
 			console.log("i is: " + i);
 			if (loadTimeAcc > 5000) {
 				console.log("Webpage: " + urls[i] + " took longer than 5 seconds to load");
 			}
-			console.log("Load times so far with extension running: " + loadTimes);
+			console.log("Load times so far with extension: " + extensionLoadTimes);
 		
 	} 
 	await driver.quit();
@@ -94,12 +94,12 @@ async function run_tests(start, end) {
 				}	
 			}
 			loadTimeAcc = loadTimeAcc/trials;
-			extensionLoadTimes.push(loadTimeAcc);
+			noExtensionLoadTimes.push(loadTimeAcc);
 			console.log("i is: " + i);
 			if (loadTimeAcc > 5000) {
 				console.log("Webpage: " + urls[i] + " took longer than 5 seconds to load");
 			}
-			console.log("Load times so far without extension: " + loadTimes);
+			console.log("Load times so far without extension: " + noExtensionLoadTimes);
 		
 	} 
 	await driver.quit();

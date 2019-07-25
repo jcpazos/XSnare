@@ -32,7 +32,19 @@ Our approach, instead, focuses on application-specific detection at the client-s
  \end{figure}
 
 In order to further illustrate this approach, we present a small example of how DOM context can be used to defend against XSS. This is reproducible in an off-the-box WordPress installation running the Responsive Cookie Consent plugin, v1.8, and Chrome's XSS auditor does not protect against this. Consider a website running PHP on the backend that takes user input and stores it to later display it to another user; in this case, the input element's value attribute is set by the webpage admin using the plugin's UI.
-TODO: add PHP code and compare, also talk about template vs injected content
+
+The PHP code defines the static HTML template (in black) in the "admin-page.php" file, as well as the dynamic input (in red):
+
+\begin{lstlisting}
+<input id="rcc_settings[border-size]" 
+name="rcc-settings[border-size]" 
+type="text" value=<@\textcolor{red}{"<?php rcc\_value('border-size'); ?>"}@>/>
+<label class="description"
+for="rcc_settings[border-size]">
+\end{lstlisting}
+\
+\\
+This same HTML will be displayed in the admin's UI. Under normal circumstances, the input element might be used to insert a value of "0" as the dynamic content:
 \\
 \begin{lstlisting}
 <input id="rcc_settings[border-size]" 
@@ -41,7 +53,7 @@ TODO: add PHP code and compare, also talk about template vs injected content
 <label class="description"
  for="rcc_settings[border-size]">
 \end{lstlisting}
-Under normal circumstances, it might display something such as "0". However, if the user is malicious, it could inject a script through the border-size variable, as it is not sanitized on the server side. If we have
+However, if the user is malicious, it could inject a script, as it is not sanitized on the server side. If we have
 \begin{lstlisting}
 border-size = ""><script>alert('XSS')</script>
 \end{lstlisting}
@@ -59,12 +71,12 @@ Note that this HTML is well-formed, so it is hard to detect that a malicious inj
 In the following sections we give a detailed description of each component of our system, the challenges that arise when trying to defend against XSS client-side, and the tools provided by the browser to facilitate our methods. 
  
  \subsection{Firewall Signatures}
-	 The firewall signatures are at the core of our defense strategy. These must be precise enough for our system to single out the intended injection, and not an element of the website crucial to the user experience. Since we are only relying on DOM knowledge, these signatures must be related to HTML features, for example, specifying elements and element attributes that are unique to where the exploit might occur. The basis for our signatures relies on two observations: first, an injection has a start and end point, that is, an element can only be injected between a specific HTML node and its immediate sibling in the DOM tree; second, in a well-formed DOM, the dynamic content will not be able to change its location without any JavaScript execution. Thus, our basic approach at signature definition is to specify an injection's start and its end, and any sanitization to be done between these two endpoints. Different scenarios might warrant different resolutions, ranging from stopping a webpage's rendering altogether, to performing some basic checks on the string. We discuss how different exploits might affect a signature definition and how our signature language gives an analyst enough expressibility to deal with these in later sections.
+	 The firewall signatures are at the core of our defense strategy. These must be precise enough for our system to single out the intended injection, and not an element of the website crucial to the user experience. Since we are only relying on DOM knowledge, these signatures must be related to HTML features, for example, specifying elements and element attributes that are unique to where the exploit might occur. The basis for our signatures relies on two observations: first, an injection has a start and end point, that is, an element can only be injected between a specific HTML node and its immediate sibling in the DOM tree; second, in a well-formed DOM, the dynamic content will not be able to rearrange its location in the document without any JavaScript execution (e.g. removing and adding elements), allowing us to isolate it from the template code. Thus, our basic approach at signature definition is to specify an injection's start and its end, and any sanitization to be done between these two endpoints. Different scenarios might warrant different resolutions, ranging from stopping a webpage's rendering altogether, to performing some basic checks on the string. We discuss how different exploits might affect a signature definition and how our signature language gives an analyst enough expressibility to deal with these in later sections.
 	 
 	 We believe CVEs to be an ideal source for signatures, and our system assumes these are written by a third-party: as discussed previously, bug bounty hunters and penetration testers will commonly identify issues in application code, inform developers and publish it for the benefit of the community in the form of CVEs. Our system adds an extra component to this workflow, where hackers and security enthusiasts also write the signatures to defend users. Thus, the signature database is maintained by a trusted entity which audits CVEs, and thus, a malicious analyst can not take advantage of this model to throttle the extension's performance. An analyst can write a signature in our language given their knowledge on the exploit, as they will often know both the source and the way it manifests in the HTML, as well as the fix. TODO: feel like this could be expanded but not sure what else to say. Could talk about signature sharing for power-users to get back to the user-centred argument, although we haven't really gotten this far into deployment talk yet.
  
  \subsection{Firewall Signature Language}
- Our signature language needs to be such that it has enough power of expression for the developer to be as precise as they need. Due to the nature of our signature definitions, a regex language suffices to express precise sections of the HTML. Furthermore, a regex language allows us to identify malformed HTML before it renders on the browser. The following is the signature that defends against the motivating example of Section 2.1:
+ Our signature language needs to be such that it has enough power of expression for the signature writer to be precise. Due to the nature of our signature definitions, a regex language suffices to express precise sections of the HTML. Furthermore, a regex language allows us to identify malformed HTML before it renders on the browser. The following is the signature that defends against the motivating example of Section 2.1:
  \lstset{basicstyle=\small}
 \begin{lstlisting}
 url: 'wp-admin/options-general.php?page=rcc-settings',
@@ -80,7 +92,7 @@ name="rcc_settings[border-size]" type="text"',
 for="rcc_settings[border-size]">']
 \end{lstlisting}
  
- Along with the previously mentioned endpoints, the signature also defines the specific url (if any) in which the exploit occurs, what kind of webpage it is (WordPress in this case), and any additional details of the software. In this case, since it's a WordPress site, the details include the plugin where the exploit occurs, as well as its version. Since we are looking at injection points in the HTML, there are different scenarios with regards to the number of places where an injection can occur. This is encoded in the "typeDet" and has the following format: \textbf{occurrence}-\textbf{uniqueness}. The occurrence refers to the number of CVEs in one specific page and can be either "single" or "multiple"; and the uniqueness refers to the identifiability of the endpoints, and can be either "unique" or "general". To understand this better, consider our example: we stated that the endpoints were easily identifiable and as such, the injection could only happen in one specific spot, therefore the type is single-unique. However, if the injection were to happen in an arbitrary row in a table, it's hard to determine which row is the one affected, but we know the injection is still bound to that specific table, so the type is single-unique. If a page has, for example, two different variables that are set by user input and are not sanitized, then the occurrence will be 'multiple'. These different scenarios complicate the detection mechanism and are further discussed in the implementation section.
+ Along with the previously mentioned endpoints, the signature also defines the specific url (if any) in which the exploit occurs, what kind of webpage it is (WordPress in this case), and any additional details of the software. In this case, since it's a WordPress site, the details include the description of the vulnerable plugin. Having multiple injection points in one document complicates the detection mechanism, and requires the signature writer to specify the expected behaviour, encoded in the "typeDet" with the following format: \textbf{occurrence}-\textbf{uniqueness}. The occurrence refers to the number of CVEs in one specific page and can be either "single" or "multiple"; and the uniqueness refers to the identifiability of the endpoints, and can be either "unique" or "general". To understand this better, consider our example: we stated that the endpoints were easily identifiable and as such, the injection could only happen in one specific spot, therefore the type is single-unique. However, if the injection were to happen in an arbitrary row in a table, it's hard to determine which row is the one affected, but we know the injection is still bound to that specific table, so the type is single-unique. If a page has, for example, two different variables that are set by user input and are not sanitized, then the occurrence will be 'multiple'. These different scenarios complicate the detection mechanism and are further discussed in the implementation section.
  
  \subsection{Firefox Extension}
 Our extension's main purpose is to detect vulnerabilities in the HTML by using signature definitions and maintain a local database of signatures that is periodically updated from the main server.
