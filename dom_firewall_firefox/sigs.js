@@ -20,10 +20,14 @@ const main_frame_signatures = {
             software: 'WordPress',
             softwareDetails: 'responsive-cookie-consent',
             version: '1.5',
-            type: 'string',
-            typeDet: 'multiple-unique',
-            description: '',
-            sigType: ['complete', 'complete'],
+            typeDet: 'multiple',
+            sanitizer: 'regex',
+            config: [
+                    '/^[A-Za-z ]+$/',
+                    '/\d+/',
+                    '/^[0-9](\.[0-9]+)?$/',
+                    '/^[0-9](\.[0-9]+)?$/'
+                    ],
             endPoints: [
                 ['<input id="rcc_settings[font]" name="rcc_settings[font]" type="text"', '<label class="description" for="rcc_settings[font]">'],
                 ['<input id="rcc_settings[width]" name="rcc_settings[width]" type="text"', '<label class="description" for="rcc_settings[width]">'],
@@ -37,7 +41,9 @@ const main_frame_signatures = {
             softwareDetails: 'responsive-cookie-consent',
             version: '1.5',
             type: 'string',
-            typeDet: 'single-unique',
+            typeDet: 'single',
+            sanitizer: 'regex',
+            config: '/^[0-9](\.[0-9]+)?$/',
             endPoints: ['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" type="text" value', '<label class="description" for="rcc_settings[border-size]">']
         },
 

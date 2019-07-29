@@ -11,6 +11,9 @@ let currSigs = [];
 let xhrEndPointsList = [];
 let xhrCurrSigs = [];
 let probes = {};
+let configList = [];
+let sanitizerList = [];
+let endPointLength = [];
 
 String.prototype.replaceBetween = function(start, end, what) {
     return this.substring(0, start) + what + this.substring(end);
@@ -24,6 +27,9 @@ function mainFrameListener(details) {
   currSigs = [];
   xhrEndPointsList = [];
   xhrCurrSigs = [];
+  configList = [];
+  sanitizerList = [];
+
   probes = {};
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
@@ -59,6 +65,7 @@ function mainFrameListener(details) {
   //return {}; // not needed
 }
 
+/*
 function xhrListener(details) {
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
@@ -82,7 +89,7 @@ function xhrListener(details) {
     filter.write(encoder.encode(str));
     filter.close();    
   };
-}
+}*/
 
 
 function replaceInScript(str, toReplace, replaceValue) {
@@ -311,6 +318,8 @@ function loadSignatures(HTMLString, url, tabId) {
       if (signature.type === 'all') {
         endPointsList.push([]);
         currSigs.push(signature);
+        configList.push(signature.config);
+        sanitizerList.push(signature.sanitizer);
       }
       else if (signature.type === 'listener') {
 
@@ -357,7 +366,7 @@ function loadSignatures(HTMLString, url, tabId) {
 
           xhrEndPointsList.push([]);
           xhrCurrSigs.push(data);
-          if (data.typeDet.includes("multiple")) {
+          if (data.typeDet.includes("multiple") || data.endPoints[0] instanceof Array) {
             let i = 0;
             for (i=0; i < data.endPoints.length; i++) {
               let sigType = data.sigType ? data.sigType[i] : null
@@ -369,16 +378,20 @@ function loadSignatures(HTMLString, url, tabId) {
         }
       } else {
         endPointsList.push([]);
-        currSigs.push(signature);
-        if (signature.typeDet.includes("multiple")) {
+        if (signature.typeDet.includes("multiple") || signature.endPoints[0] instanceof Array) {
           let i = 0;
           for (i=0; i < signature.endPoints.length; i++) {
             let sigType = signature.sigType ? signature.sigType[i] : null
             endPointsList[endPointsList.length-1].push(signature.endPoints[i].concat(sigType));
+            sanitizerList.push(signature.sanitizer);
+            configList.push(signature.config[i]);
+            currSigs.push(signature);
           }
         } else {
           endPointsList[endPointsList.length-1].push(signature.endPoints.concat(signature.sigType));
-
+          sanitizerList.push(signature.sanitizer);
+          configList.push(signature.config);
+          currSigs.push(signature);
         }
       }
     }
@@ -393,13 +406,13 @@ function loadSignatures(HTMLString, url, tabId) {
   }
 }
 
-function sanitizeInjectionPoint(HTMLString, startIndex, endIndex, occurrence, sanitizer, config) {
+function sanitizeInjectionPoint(HTMLString, startIndex, endIndex, startLength, sanitizer, config) {
   //use signature sanitizer method if exists
   if (sanitizer) {
-    return sanitizerAPI[sanitizer](HTMLString, startIndex, endIndex, occurrence, config);
+    return sanitizerAPI[sanitizer](HTMLString, startIndex, endIndex, config);
   } else {
     //otherwise default to dompurify
-    return sanitizerAPI["DOMPurify"](HTMLString, startIndex, endIndex, occurrence, config);
+    return sanitizerAPI["DOMPurify"](HTMLString, startIndex, endIndex, config);
   }
 }
 
@@ -528,9 +541,7 @@ function verifyHTML(HTMLString, url, tabId) {
   let indices = findIndices(HTMLString, endPointsList, currSigs);
   let startIndices = indices[0];
   let endIndices = indices[1];
-  let sanitizers = [];
-  let configs = [];
-
+  let sigsMap = {};
 
   if (startIndices.length !== endIndices.length) {
     throw new Error("Error: startIndices length doesn't match endIndices length, illegal.");
@@ -540,15 +551,19 @@ function verifyHTML(HTMLString, url, tabId) {
   let occurrenceMap = {};
   for (i=0; i<currSigs.length; i++) {
     let signature = currSigs[i];
-    sanitizers.push(signature.sanitizer);
-    configs.push(signature.config);
     occurrenceMap[startIndices[i]] = signature.typeDet.substring(signature.typeDet.indexOf('-')+1);
   }
 
+  for (i=0; i < startIndices.length; i++) {
+    sigsMap[startIndices[i]] = currSigs[i];
+  }
 
+  let startLength = sigsMap[startIndices[0]].endPoints[0].length;
+  let sanitizer = sigsMap[startIndices[0]].sanitizer;
+  let config = sigsMap[startIndices[0]].config;
 
   if (startIndices.length === 1) {
-    HTMLString = sanitizeInjectionPoint(HTMLString, startIndices[0], endIndices[0], occurrenceMap[startIndices[0]], sanitizers[0], configs[0])[0];
+    HTMLString = sanitizeInjectionPoint(HTMLString, startIndices[0], endIndices[0], startLength, sanitizer, config)[0];
     console.log("Sanitized unique injection point");
   }
   else if (startIndices.length > 1) {
@@ -559,8 +574,12 @@ function verifyHTML(HTMLString, url, tabId) {
 
     //if there's more than 1 CVE in the current page, need to check for duplicates
     for (i=0; i <sortedStart.length; i++) {
+      startLength = sigsMap[startIndices[i]].endPoints[i][0].length;
+      sanitizer = sigsMap[startIndices[i]].sanitizer;
+      config = sigsMap[startIndices[i]].config;
+
       if (sortedEnd[i] > sortedStart[i+1]) {
-        HTMLString = sanitizeInjectionPoint(HTMLString, sortedStart[0], endIndices[sortedEnd.length-1], 'unique', sanitizers[i], configs[i])[0];
+        HTMLString = sanitizeInjectionPoint(HTMLString, sortedStart[0], endIndices[sortedEnd.length-1], startLength, sanitizer, config)[0];
         return HTMLString;
       }
     }
@@ -568,11 +587,15 @@ function verifyHTML(HTMLString, url, tabId) {
     //and find new indices again after each sanitization
     let trimmedCount = 0;
     for (i=0; i<sortedStart.length; i++) {
+      startLength = sigsMap[startIndices[i]].endPoints[i][0].length;
+      sanitizer = sigsMap[startIndices[i]].sanitizer;
+      config = sigsMap[startIndices[i]].config;
+
       sortedStart = sortedStart.map(x => {return x-trimmedCount});
       sortedEnd = sortedEnd.map(x => {return x-trimmedCount});
       //sortedStart[i]-=trimmedCount;
       //sortedEnd[i]-=trimmedCount;
-      let sanitized = sanitizeInjectionPoint(HTMLString, sortedStart[i], sortedEnd[i], occurrenceMap[sortedStart[i]], sanitizers[i], configs[i]);
+      let sanitized = sanitizeInjectionPoint(HTMLString, sortedStart[i], sortedEnd[i], startLength, sanitizer, config);
       console.log("Sanitized injection point #" + (i+1));
       HTMLString = sanitized[0];
       trimmedCount = sanitized[1];
@@ -603,7 +626,7 @@ function verifyHTML(HTMLString, url, tabId) {
 
 var sanitizerAPI = {
 
-  DOMPurify: function(HTMLString, startIndex, endIndex, occurrence, config) {
+  DOMPurify: function(HTMLString, startIndex, endIndex, startLength, config) {
     let toReplace;
     if (config) {
       toReplace = HTMLString.replaceBetween(startIndex, endIndex, DOMPurify.sanitize(HTMLString.substring(startIndex, endIndex), config));
@@ -614,12 +637,29 @@ var sanitizerAPI = {
     return [toReplace, trimmedCount];
   },
 
-  escape: function(HTMLString, startIndex, endIndex, occurrence, config) {
+  escape: function(HTMLString, startIndex, endIndex, startLength, config) {
     //TODO: ask JS about best way to do this
     let temp = document.createElement('div');
     temp.textContent = HTMLString.substring(startIndex, endIndex);
     let toReplace = HTMLString.replaceBetween(startIndex, endIndex, temp.innerHTML);
     let trimmedCount = HTMLString.length - toReplace.length;
     return [toReplace, trimmedCount];
+  },
+
+  regex: function(HTMLString, startIndex, endIndex, startLength, config) {
+    let regexCheck = HTMLString.substring(startIndex, endIndex);
+    let regexp = new RegExp(config);
+    let toReplace;
+    if (!regexp.test(regexCheck)) {
+      //string had unexpected values, CLEANSE
+      toReplace = HTMLString.replaceBetween(startIndex, endIndex, "");
+    }
+    else {
+      //string was fine, do nothing
+      toReplace = HTMLString;
+    }
+    let trimmedCount = HTMLString.length - toReplace.length;
+    return [toReplace, trimmedCount];
   }
+
 }
