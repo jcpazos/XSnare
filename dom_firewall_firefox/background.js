@@ -415,10 +415,10 @@ function loadSignatures(HTMLString, url, tabId) {
 function sanitizeInjectionPoint(HTMLString, startIndex, endIndex, startLength, sanitizer, config) {
   //use signature sanitizer method if exists
   if (sanitizer) {
-    return sanitizerAPI[sanitizer](HTMLString, startIndex, endIndex, config);
+    return sanitizerAPI[sanitizer](HTMLString, startIndex, endIndex, startLength, config);
   } else {
     //otherwise default to dompurify
-    return sanitizerAPI["DOMPurify"](HTMLString, startIndex, endIndex, config);
+    return sanitizerAPI["DOMPurify"](HTMLString, startIndex, endIndex, startLength, config);
   }
 }
 
@@ -427,6 +427,7 @@ function findIndices(dataString, endPointsList, currSigs) {
   let j;
   let startIndices = [];
   let endIndices = [];
+  let currIndex = 0;
 
   for (i = 0; i<endPointsList.length; i++) {
 
@@ -437,19 +438,21 @@ function findIndices(dataString, endPointsList, currSigs) {
         continue;
     }
 
-    for (j=0; j<endPointsList[i].length; j++) {
+    let currEndPoints = endPointsList[i];
+
+    for (j=0; j<currEndPoints.length; j++) {
       let start;
       let startRegex;
       let end;
       let endRegex;
       if (currSigs[i].type === "htmlTag") {
-        start = htmlToElement(endPointsList[i][j][0]);
-        startRegex = htmlToRegex(start, endPointsList[i][j][2]);
-        end = htmlToElement(endPointsList[i][j][1]);
-        endRegex = htmlToRegex(end, endPointsList[i][j][3]);
+        start = htmlToElement(currEndPoints[j][0]);
+        startRegex = htmlToRegex(start, currEndPoints[j][2]);
+        end = htmlToElement(currEndPoints[j][1]);
+        endRegex = htmlToRegex(end, currEndPoints[j][3]);
       } else {
-        startRegex = new RegExp(endPointsList[i][j][0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-        endRegex = new RegExp(endPointsList[i][j][1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+        startRegex = new RegExp(currEndPoints[j][0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+        endRegex = new RegExp(currEndPoints[j][1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
       }
 
       if (currSigs[i].typeDet.includes("several")) {
@@ -479,8 +482,15 @@ function findIndices(dataString, endPointsList, currSigs) {
           //startIndex += endPointsList[i][0].length;
           startIndices.push(startIndex);
           endIndices.push(endIndex);
+        } else {
+          //the current signature's endpoints did not match, so filter it out
+          currSigs[currIndex] = null;
+          startLengths[currIndex] = null;
+          configList[currIndex] = null;
+          sanitizerList[currIndex] = null;
         }
       }
+      currIndex++;
     }
   }
   return [startIndices, endIndices];
@@ -542,6 +552,10 @@ function verifyXHR(responseData, url) {
 
 function verifyHTML(HTMLString, url, tabId) {
 
+  let dataFilter = function(value, index, arr) {
+    return value !== null;
+  };
+
   loadSignatures(HTMLString, url, tabId);
 
   let indices = findIndices(HTMLString, endPointsList, currSigs);
@@ -558,13 +572,13 @@ function verifyHTML(HTMLString, url, tabId) {
 
   let i;
   let occurrenceMap = {};
-  for (i=0; i<currSigs.length; i++) {
-    let signature = currSigs[i];
-    occurrenceMap[startIndices[i]] = signature.typeDet.substring(signature.typeDet.indexOf('-')+1);
-  }
+
+  currSigs = currSigs.filter(dataFilter);
+  sanitizerList = sanitizerList.filter(dataFilter);
+  configList = configList.filter(dataFilter);
+  startLengths = startLengths.filter(dataFilter);
 
   for (i=0; i < startIndices.length; i++) {
-    sigsMap[startIndices[i]] = currSigs[i];
     configMap[startIndices[i]] = configList[i];
     lengthMap[startIndices[i]] = startLengths[i];
     sanitizerMap[startIndices[i]] = sanitizerList[i];

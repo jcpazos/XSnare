@@ -8,11 +8,9 @@ const main_frame_signatures = {
             software: 'WordPress',
             softwareDetails: 'responsive-cookie-consent',
             version: '1.5',
-            description: '',
             type: 'string',
-            typeDet: 'single-unique',
-            sigType: ['incomplete', 'complete'],
-            sigOccurrence: 'unique',
+            sanitizer: 'regex',
+            typeDet: 'single',
             endPoints: ['<div class=\"rcc-panel group\"', 'class=\"rcc-info-btn\" >MORE INFO</a>']
         },
         {
@@ -21,6 +19,7 @@ const main_frame_signatures = {
             softwareDetails: 'responsive-cookie-consent',
             version: '1.5',
             typeDet: 'multiple',
+            type: 'string',
             sanitizer: 'regex',
             config: [
                     '/^[A-Za-z ]+$/',
