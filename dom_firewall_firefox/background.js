@@ -14,6 +14,7 @@ let probes = {};
 let configList = [];
 let sanitizerList = [];
 let endPointLength = [];
+let startLengths = [];
 
 String.prototype.replaceBetween = function(start, end, what) {
     return this.substring(0, start) + what + this.substring(end);
@@ -29,6 +30,7 @@ function mainFrameListener(details) {
   xhrCurrSigs = [];
   configList = [];
   sanitizerList = [];
+  startLengths = [];
 
   probes = {};
   let filter = browser.webRequest.filterResponseData(details.requestId);
@@ -320,6 +322,7 @@ function loadSignatures(HTMLString, url, tabId) {
         currSigs.push(signature);
         configList.push(signature.config);
         sanitizerList.push(signature.sanitizer);
+        startLengths.push(signature.endPoints[0].length);
       }
       else if (signature.type === 'listener') {
 
@@ -386,12 +389,15 @@ function loadSignatures(HTMLString, url, tabId) {
             sanitizerList.push(signature.sanitizer);
             configList.push(signature.config[i]);
             currSigs.push(signature);
+            startLengths.push(signature.endPoints[i][0].length);
+
           }
         } else {
           endPointsList[endPointsList.length-1].push(signature.endPoints.concat(signature.sigType));
           sanitizerList.push(signature.sanitizer);
           configList.push(signature.config);
           currSigs.push(signature);
+          startLengths.push(signature.endPoints[0].length);
         }
       }
     }
@@ -542,6 +548,9 @@ function verifyHTML(HTMLString, url, tabId) {
   let startIndices = indices[0];
   let endIndices = indices[1];
   let sigsMap = {};
+  let configMap = {};
+  let lengthMap = {};
+  let sanitizerMap = {};
 
   if (startIndices.length !== endIndices.length) {
     throw new Error("Error: startIndices length doesn't match endIndices length, illegal.");
@@ -556,12 +565,14 @@ function verifyHTML(HTMLString, url, tabId) {
 
   for (i=0; i < startIndices.length; i++) {
     sigsMap[startIndices[i]] = currSigs[i];
+    configMap[startIndices[i]] = configList[i];
+    lengthMap[startIndices[i]] = startLengths[i];
+    sanitizerMap[startIndices[i]] = sanitizerList[i];
   }
 
-  let startLength = sigsMap[startIndices[0]].endPoints[0].length;
-  let sanitizer = sigsMap[startIndices[0]].sanitizer;
-  let config = sigsMap[startIndices[0]].config;
-
+  let startLength = lengthMap[startIndices[0]];
+  let sanitizer = sanitizerMap[startIndices[0]];
+  let config = configMap[startIndices[0]];
   if (startIndices.length === 1) {
     HTMLString = sanitizeInjectionPoint(HTMLString, startIndices[0], endIndices[0], startLength, sanitizer, config)[0];
     console.log("Sanitized unique injection point");
@@ -574,9 +585,9 @@ function verifyHTML(HTMLString, url, tabId) {
 
     //if there's more than 1 CVE in the current page, need to check for duplicates
     for (i=0; i <sortedStart.length; i++) {
-      startLength = sigsMap[startIndices[i]].endPoints[i][0].length;
-      sanitizer = sigsMap[startIndices[i]].sanitizer;
-      config = sigsMap[startIndices[i]].config;
+      startLength = lengthMap[startIndices[i]]
+      sanitizer = sanitizerMap[startIndices[i]];
+      config = configMap[startIndices[i]];
 
       if (sortedEnd[i] > sortedStart[i+1]) {
         HTMLString = sanitizeInjectionPoint(HTMLString, sortedStart[0], endIndices[sortedEnd.length-1], startLength, sanitizer, config)[0];
@@ -587,9 +598,9 @@ function verifyHTML(HTMLString, url, tabId) {
     //and find new indices again after each sanitization
     let trimmedCount = 0;
     for (i=0; i<sortedStart.length; i++) {
-      startLength = sigsMap[startIndices[i]].endPoints[i][0].length;
-      sanitizer = sigsMap[startIndices[i]].sanitizer;
-      config = sigsMap[startIndices[i]].config;
+      startLength = lengthMap[startIndices[i]]
+      sanitizer = sanitizerMap[startIndices[i]];
+      config = configMap[startIndices[i]];
 
       sortedStart = sortedStart.map(x => {return x-trimmedCount});
       sortedEnd = sortedEnd.map(x => {return x-trimmedCount});
@@ -652,7 +663,7 @@ var sanitizerAPI = {
     let toReplace;
     if (!regexp.test(regexCheck)) {
       //string had unexpected values, CLEANSE
-      toReplace = HTMLString.replaceBetween(startIndex, endIndex, "");
+      toReplace = HTMLString.replaceBetween(startIndex+startLength, endIndex, "");
     }
     else {
       //string was fine, do nothing
