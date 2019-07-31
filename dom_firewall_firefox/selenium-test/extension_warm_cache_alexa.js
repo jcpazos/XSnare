@@ -19,31 +19,34 @@ async function run_tests(start, end) {
 
 	let i;
 	for (i=start; i<end; i++) {
-		let driver = await new Builder()
-			.withCapabilities(
-	  			new Capabilities()
-	  			.setAlertBehavior(UserPromptHandler.ACCEPT))
-  			.forBrowser('firefox')
-  			.setFirefoxOptions(
-        		new firefox.Options()
-        		.headless()
-        		.addExtensions('../web-ext-artifacts/dom_firewall-0.1-an+fx.xpi')
-		  		.setPreference('extensions.dom_firewall.showChromeErrors', true))
-  			.build();
+		let driver;
 
-  		await driver.get("https://www.example.com");
-		let j;
-		for (j=0; j<trials; j++) {
-			let loadTime = 0;
-			try {
+		try {
+			driver = await new Builder()
+				.withCapabilities(
+		  			new Capabilities()
+		  			.setAlertBehavior(UserPromptHandler.ACCEPT))
+	  			.forBrowser('firefox')
+	  			.setFirefoxOptions(
+	        		new firefox.Options()
+	        		.headless()
+	        		.addExtensions('../web-ext-artifacts/dom_firewall-0.1-an+fx.xpi')
+			  		.setPreference('extensions.dom_firewall.showChromeErrors', true))
+	  			.build();
+
+	  		await driver.get("https://www.example.com");
+			let j;
+			for (j=0; j<trials; j++) {
+				let loadTime = 0;
 				await driver.get(urls[i]);
 				loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0].duration');
 				loadTimes.push(loadTime);
-			} catch (err) {
-				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
-			}	
+			}
+		} catch (err) {
+			console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
+		} finally {
+			await driver.quit();	
 		}
-		await driver.quit();	
 	} 
 	return loadTimes;
 }

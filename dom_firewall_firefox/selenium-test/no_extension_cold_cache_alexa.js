@@ -33,17 +33,15 @@ async function run_tests_extension(start, end) {
 				        .headless())
 				  	.forBrowser('firefox')
 				  	.build();
-			} catch (err) {
-				console.log("error creating driver: " + err);
-			}
 
-			try {
 				await driver.get(urls[i]);
 				loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0].duration');
 				loadTimes.push(loadTime);
 				await driver.quit();
 			} catch (err) {
 				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
+			} finally {
+				await driver.quit();
 			}
 			
 		}
