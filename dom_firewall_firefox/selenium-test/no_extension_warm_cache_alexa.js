@@ -65,7 +65,7 @@ function initExtensionTests(start, end) {
 //initExtensionTests(0, urls.length);
 
 run_tests(0, urls.length).then(function (loadTimes) {
-	fs.writeFile("extension_warm_cache_results.txt", data, (err) => {
+	fs.writeFile("extension_warm_cache_results.txt", loadTimes, (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
 	});
