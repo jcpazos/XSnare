@@ -13,6 +13,20 @@ var fs = require("fs");
 let urls = urlArray;
 
 const trials = 5;
+
+let options = new firefox.Options()
+				        .headless()
+				  		.addExtensions('../web-ext-artifacts/dom_firewall-0.1-an+fx.xpi')
+				  		.setPreference('extensions.dom_firewall.showChromeErrors', true);
+let capabilities = new Capabilities()
+				  		.setAlertBehavior(UserPromptHandler.ACCEPT);
+
+let builder = new Builder()
+					.withCapabilities(
+				  		capabilities)
+				  	.setFirefoxOptions(
+				        options)
+				  	.forBrowser('firefox');
  
 async function run_tests_extension(start, end) {
   	let loadTimes = [];
@@ -24,22 +38,10 @@ async function run_tests_extension(start, end) {
 			
 			let driver;
 			try {
-			 	driver = await new Builder()
-				  	.withCapabilities(
-				  		new Capabilities()
-				  		.setAlertBehavior(UserPromptHandler.ACCEPT))
-				  	.setFirefoxOptions(
-				        new firefox.Options()
-				        .headless()
-				  		.addExtensions('../web-ext-artifacts/dom_firewall-0.1-an+fx.xpi')
-				  		.setPreference('extensions.dom_firewall.showChromeErrors', true))
-				  	.forBrowser('firefox')
-				  	.build();
-
+			 	driver = await builder.build();
 				await driver.get(urls[i]);
 				loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0].duration');
 				loadTimes.push(loadTime);
-				await driver.quit();
 			} catch (err) {
 				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
 			} finally {
