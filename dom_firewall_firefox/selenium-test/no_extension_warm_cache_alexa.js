@@ -12,6 +12,19 @@ var fs = require("fs");
 
 let urls = urlArray;
 
+let options = new firefox.Options()
+				        .headless();
+				        
+let capabilities = new Capabilities()
+				  		.setAlertBehavior(UserPromptHandler.ACCEPT);
+
+let builder = new Builder()
+					.withCapabilities(
+				  		capabilities)
+				  	.setFirefoxOptions(
+				        options)
+				  	.forBrowser('firefox');
+
 const trials = 50;
 
 async function run_tests(start, end) {
@@ -22,15 +35,7 @@ async function run_tests(start, end) {
 		let driver;
 
 		try {
-			driver = await new Builder()
-				.withCapabilities(
-		  			new Capabilities()
-		  			.setAlertBehavior(UserPromptHandler.ACCEPT))
-	  			.forBrowser('firefox')
-	  			.setFirefoxOptions(
-	        		new firefox.Options()
-	        		.headless())
-	  			.build();
+			driver = await builder.build();
 
 	  		await driver.get("https://www.example.com");
 			let j;
