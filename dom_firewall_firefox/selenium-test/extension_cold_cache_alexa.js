@@ -29,19 +29,22 @@ let builder = new Builder()
 				  	.forBrowser('firefox');
  
 async function run_tests_extension(start, end) {
-  	let loadTimes = [];
+  	let loadTimes = [[], [], [], []];
   	let loadTime = 0;
 	let i;
-	for (i=start; i<end; i++) {
+	for (i=start; i<10; i++) {
 		let j;
 		for (j=0; j<trials; j++) {
-			
+			loadTime = 0;
 			let driver;
 			try {
 			 	driver = await builder.build();
 				await driver.get(urls[i]);
 				loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0].duration');
-				loadTimes.push(loadTime);
+				loadTimes[0].push(loadTime);
+				/*loadTimes[1].push();
+				loadTimes[2].push();
+				loadTimes[3].push();*/	
 			} catch (err) {
 				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
 			} finally {
