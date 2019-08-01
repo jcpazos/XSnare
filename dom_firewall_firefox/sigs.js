@@ -43,7 +43,7 @@ const main_frame_signatures = {
             typeDet: 'single',
             sanitizer: 'regex',
             config: '/^[0-9](\.[0-9]+)?$/',
-            endPoints: ['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" type="text" value', '<label class="description" for="rcc_settings[border-size]">']
+            endPoints: ['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" type="text" value="', '<label class="description" for="rcc_settings[border-size]">']
         },
 
         {
