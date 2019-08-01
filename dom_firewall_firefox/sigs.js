@@ -578,7 +578,7 @@ const main_frame_signatures = {
         },
         {
             url: 'wp-admin/admin.php?page=caldera-forms',
-            software: '#wordPress #wpPlugin',
+            software: '#wordPress',
             softwareDetails: 'caldera-forms',
             version: '1.5.9.1',
             type: 'listener',
@@ -588,7 +588,7 @@ const main_frame_signatures = {
                 sanitizer: 'escape',
                 type: 'string',
                 url: 'wp-admin/admin-ajax.php',
-                typeDet: 'single-unique',
+                typeDet: 'single',
                 sigType: ['complete', 'complete'],
                 endPoints: ['<p><strong>', '[AltBody]']
             },
