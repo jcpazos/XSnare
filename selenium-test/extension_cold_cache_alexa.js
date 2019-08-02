@@ -13,7 +13,7 @@ var fs = require("fs");
 
 let urls = urlArray;
 
-const trials = 5;
+const trials = 50;
 
 let options = new firefox.Options()
 				        .headless()
