@@ -42,7 +42,7 @@ async function run_tests_extension(start, end) {
 			 	driver = await builder.build();
 				await driver.get(urls[i]);
 				loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-				//console.log(loadTime);
+				console.log(loadTime);
 				let requestStart = loadTime.requestStart;
 				let responseStart = loadTime.responseStart;
 				let responseEnd = loadTime.responseEnd;
