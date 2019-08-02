@@ -49,8 +49,8 @@ async function run_tests_extension(start, end) {
 				let domContentLoaded = loadTime.domContentLoadedEventEnd;
 				let domComplete = loadTime.domComplete;
 				let duration = loadTime.duration;
-				let bodySize = loadTime.decodedBodySize;
-				let data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, decodedBodySize];
+				let bodySize = loadTime.decodedBodySize; 
+				let data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 				loadTimes.push(data);
 				/*loadTimes[1].push();
 				loadTimes[2].push();
