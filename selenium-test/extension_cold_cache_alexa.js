@@ -81,11 +81,12 @@ function initExtensionTests(start, end) {
 	});
 }
 
-
+let start = process.argv[2];
+let end = process.argv[3];
 //initExtensionTests(0, urls.length);
 
 run_tests_extension(0, urls.length).then(function (loadTimes) {
-	fs.writeFile("extension_cold_cache_results.txt", loadTimes, (err) => {
+	fs.writeFile("extension_warm_cache_results_" + end + ".txt", loadTimes, (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
 	});
