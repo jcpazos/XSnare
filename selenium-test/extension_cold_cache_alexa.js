@@ -33,7 +33,7 @@ async function run_tests_extension(start, end) {
   	let loadTimes = [];
   	let loadTime = 0;
 	let i;
-	for (i=start; i<10; i++) {
+	for (i=start; i<end; i++) {
 		let j;
 		for (j=0; j<trials; j++) {
 			loadTime = 0;
