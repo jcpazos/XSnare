@@ -28,11 +28,12 @@ let builder = new Builder()
 				  	.setFirefoxOptions(
 				        options)
 				  	.forBrowser('firefox');
+
+let i;
  
 async function run_tests_extension(start, end) {
   	let loadTimes = [];
   	let loadTime = 0;
-	let i;
 	for (i=start; i<end; i++) {
 		let j;
 		for (j=0; j<trials; j++) {
@@ -58,7 +59,10 @@ async function run_tests_extension(start, end) {
 			} catch (err) {
 				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
 			} finally {
-				await driver.quit();
+				if (driver) {
+					await driver.quit();
+				}
+				return loadTimes;
 			}
 			
 		}
@@ -71,26 +75,31 @@ async function run_tests_extension(start, end) {
 
 function initExtensionTests(start, end) {
 	run_tests_extension(start, end).then(function (loadTimes) {
-	if (extensionLoadTimes.length !== urls.length) {
-		initExtensionTests(extensionLoadTimes.length, urls.length);
+	if (i !== end) {
+		initExtensionTests(i, urls.length);
+	} else {
+		fs.writeFile("extension_cold_cache_results.txt", loadTimes, (err) => {
+		if (err) console.log(err);
+		console.log("Successfully written to file.");
+	});
 	}
-	console.log("Load times without extension running: " + extensionLoadTimes);
+	//console.log("Load times without extension running: " + extensionLoadTimes);
 	}).catch (function (err) {
 		console.log("initextensiontests err : " + err);
-		initExtensionTests(extensionLoadTimes.length, urls.length);
+		initExtensionTests(i, urls.length);
 	});
 }
 
-let start = process.argv[2];
-let end = process.argv[3];
-//initExtensionTests(0, urls.length);
+//let start = process.argv[2];
+//let end = process.argv[3];
+initExtensionTests(0, urls.length);
 
-run_tests_extension(0, urls.length).then(function (loadTimes) {
+/*run_tests_extension(0, urls.length).then(function (loadTimes) {
 	fs.writeFile("extension_warm_cache_results_" + end + ".txt", loadTimes, (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
 	});
 }).catch (function (err) {
 	console.log("initextensiontests err : " + err);
-});
+});*/
 
