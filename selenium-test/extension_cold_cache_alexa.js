@@ -76,6 +76,7 @@ async function run_tests_extension(start, end) {
 function initExtensionTests(start, end) {
 	run_tests_extension(start, end).then(function (loadTimes) {
 	if (i !== end) {
+		console.log("didn't finish tests in one run, trying again with index " + i);
 		initExtensionTests(i, urls.length);
 	} else {
 		fs.writeFile("extension_cold_cache_results.txt", loadTimes, (err) => {
