@@ -48,7 +48,6 @@ async function run_tests_extension(start, end) {
 				if (driver) {
 					await driver.quit();
 				}
-				return loadTimes;
 			}
 			
 		}
