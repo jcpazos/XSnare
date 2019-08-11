@@ -115,8 +115,8 @@ function initExtensionTests(start, end) {
 
 //let start = process.argv[2];
 //let end = process.argv[3];
-//initExtensionTests(0, urls.length);
-initExtensionTests(228, urls.length);
+initExtensionTests(0, urls.length);
+//initExtensionTests(228, urls.length);
 
 /*run_tests_extension(0, urls.length).then(function (loadTimes) {
 	fs.writeFile("extension_warm_cache_results_" + end + ".txt", loadTimes, (err) => {
