@@ -14,7 +14,7 @@ var fs = require("fs");
 
 let urls = urlArray;
 
-const trials = 50;
+const trials = 20;
 
 let options = new firefox.Options()
 				        .headless()
@@ -47,6 +47,7 @@ async function run_tests_extension(start, end) {
 			var end5;
 			loadTime = 0;
 			let driver;
+			let data = [];
 			try {
 				start1 = new Date();
 			 	driver = await builder.build();
@@ -64,14 +65,14 @@ async function run_tests_extension(start, end) {
 				let domComplete = loadTime.domComplete;
 				let duration = loadTime.duration;
 				let bodySize = loadTime.decodedBodySize; 
-				let data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
-				loadTimes.push(data);
+				data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 				/*loadTimes[1].push();
 				loadTimes[2].push();
 				loadTimes[3].push();*/	
 			} catch (err) {
 				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
 			} finally {
+				loadTimes.push(data);
 				if (driver) {
 					end4 = new Date();
 					await driver.quit();
@@ -99,7 +100,7 @@ function initExtensionTests(start, end) {
 		console.log("didn't finish tests in one run, trying again with index " + i);
 		initExtensionTests(i, urls.length);
 	} else {
-		fs.writeFile("extension_cold_cache_results.txt", loadTimes, (err) => {
+		fs.writeFile("extension_cold_cache_results.txt", JSON.stringify(loadTimes), (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
 	});
