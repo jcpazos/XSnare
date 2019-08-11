@@ -35,6 +35,7 @@ async function run_tests_extension(start, end) {
   	let loadTime = 0;
 	for (i=start; i<end; i++) {
 		let j;
+		loadTimes.push([]);
 		var start1 = new Date();
 		for (j=0; j<trials; j++) {
 			var start1;
@@ -45,7 +46,7 @@ async function run_tests_extension(start, end) {
 			var end5;
 			loadTime = 0;
 			let driver;
-			let data;
+			let data = [];
 			try {
 				start1 = new Date();
 			 	driver = await builder.build();
@@ -70,7 +71,7 @@ async function run_tests_extension(start, end) {
 			} catch (err) {
 				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
 			} finally {
-				loadTimes.push(data);
+				loadTimes[i].push(data);
 				if (driver) {
 					end4 = new Date();
 					await driver.quit();
