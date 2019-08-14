@@ -78,7 +78,7 @@ async function run_tests(start, end) {
 }
 
 function initExtensionTests(start, end) {
-	run_tests_extension(start, end).then(function (loadTimes) {
+	run_tests(start, end).then(function (loadTimes) {
 	if (i !== end) {
 		console.log("didn't finish tests in one run, trying again with index " + i);
 		initExtensionTests(i, urls.length);
