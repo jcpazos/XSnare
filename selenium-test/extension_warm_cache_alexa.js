@@ -57,6 +57,10 @@ async function run_tests(start, end) {
 					data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 				} catch (err) {
 					console.log("error when retrieving  page: " + urls[i] + ': ' + err);
+					if (driver) {
+						await driver.quit();
+						driver = await builder.build();
+					}
 				} finally {
 					loadTimes[i].push(data);
 				}
