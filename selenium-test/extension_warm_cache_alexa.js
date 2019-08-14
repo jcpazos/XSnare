@@ -61,7 +61,7 @@ async function run_tests(start, end) {
 				}
 			}
 		} catch (err) {
-			console.log('error in extension tests when building driver');
+			console.log('error in extension tests when building driver: ' + err);
 		}
 		if (driver) {
 			//end4 = new Date();
