@@ -29,9 +29,8 @@ let builder = new Builder()
 
 const trials = 20;
 let i;
-
+let loadTimes = [];
 async function run_tests(start, end) {
-  	let loadTimes = [];
   	let loadTime = 0;
   	var start1;
 	var end1;
@@ -42,7 +41,7 @@ async function run_tests(start, end) {
 	
 	for (i=start; i<end; i++) {
 		let driver;
-		loadTimes.push([]);
+		loadTimes[i] = [];
 		try {
 			driver = await builder.build();
 			await driver.manage().setTimeouts({pageLoad: 25000});
@@ -89,7 +88,7 @@ async function run_tests(start, end) {
 }
 
 function initExtensionTests(start, end) {
-	run_tests(start, end).then(function (loadTimes) {
+	run_tests(start, end).then(function () {
 	if (i !== end) {
 		console.log("didn't finish tests in one run, trying again with index " + i);
 		initExtensionTests(i, urls.length);
