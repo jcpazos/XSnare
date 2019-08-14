@@ -33,6 +33,12 @@ let i;
 async function run_tests(start, end) {
   	let loadTimes = [];
   	let loadTime = 0;
+  	var start1;
+	var end1;
+	var end2;
+	var end3;
+	var end4;
+	var end5;
 	
 	for (i=start; i<end; i++) {
 		let driver;
@@ -69,15 +75,15 @@ async function run_tests(start, end) {
 			console.log('error in extension tests when building driver: ' + err);
 		}
 		if (driver) {
-			//end4 = new Date();
+			end4 = new Date();
 			await driver.quit();
-			//end5 = new Date();
+			end5 = new Date();
 			//console.log("Time to start driver: " + (end1-start1));
 			//console.log("Time to await page get: " + (end2-end1));
 			//console.log("Time to await script execute: " + (end3-end2));
 			//console.log("Time to close driver: " + (end5-end4));
 		}
-		console.log("latest load time for page " + urls[i] + ": " + JSON.stringify(loadTime));
+		//console.log("latest load time for page " + urls[i] + ": " + JSON.stringify(loadTime));
 	} 
 	return loadTimes;
 }
