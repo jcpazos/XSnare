@@ -16,7 +16,7 @@ let options = new firefox.Options()
 				        .headless()
 				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1-an+fx.xpi')
 				  		.setPreference('extensions.dom_firewall.showChromeErrors', true);
-				  		
+
 let capabilities = new Capabilities()
 				  		.setAlertBehavior(UserPromptHandler.ACCEPT);
 
@@ -43,6 +43,7 @@ async function run_tests(start, end) {
 	  		await driver.get("https://www.example.com");
 			let j;
 			for (j=0; j<trials; j++) {
+				let data = [];
 				try {
 					let loadTime = 0;
 					await driver.get(urls[i]);
@@ -54,7 +55,7 @@ async function run_tests(start, end) {
 					let domComplete = loadTime.domComplete;
 					let duration = loadTime.duration;
 					let bodySize = loadTime.decodedBodySize; 
-					let data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
+					data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 				} catch (err) {
 					console.log("error when retrieving  page: " + urls[i] + ': ' + err);
 				} finally {
