@@ -26,46 +26,51 @@ let builder = new Builder()
 				        options)
 				  	.forBrowser('firefox');
 
-const trials = 50;
+const trials = 20;
+let i;
 
 async function run_tests(start, end) {
   	let loadTimes = [];
-
-	let i;
+  	let loadTime = 0;
+	
 	for (i=start; i<end; i++) {
 		let driver;
-
+		loadTimes.push([]);
 		try {
 			driver = await builder.build();
-
+			await driver.manage().setTimeouts({pageLoad: 25000});
 	  		await driver.get("https://www.example.com");
 			let j;
 			for (j=0; j<trials; j++) {
-				let loadTime = 0;
-				await driver.get(urls[i]);
-				let requestStart = loadTime.requestStart;
-				let responseStart = loadTime.responseStart;
-				let responseEnd = loadTime.responseEnd;
-				let domContentLoaded = loadTime.domContentLoadedEventEnd;
-				let domComplete = loadTime.domComplete;
-				let duration = loadTime.duration;
-				let bodySize = loadTime.decodedBodySize; 
-				let data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
-				loadTimes.push(data);
+				try {
+					let loadTime = 0;
+					await driver.get(urls[i]);
+					loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
+					let requestStart = loadTime.requestStart;
+					let responseStart = loadTime.responseStart;
+					let responseEnd = loadTime.responseEnd;
+					let domContentLoaded = loadTime.domContentLoadedEventEnd;
+					let domComplete = loadTime.domComplete;
+					let duration = loadTime.duration;
+					let bodySize = loadTime.decodedBodySize; 
+					let data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
+				} catch (err) {
+					console.log("error when retrieving  page: " + urls[i] + ': ' + err);
+				} finally {
+					loadTimes[i].push(data);
+				}
 			}
 		} catch (err) {
-			console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
-		} finally {
-			if (driver) {
-					end4 = new Date();
-					await driver.quit();
-					end5 = new Date();
-					console.log("Time to start driver: " + (end1-start1));
-					console.log("Time to await page get: " + (end2-end1));
-					console.log("Time to await script execute: " + (end3-end2));
-					console.log("Time to close driver: " + (end5-end4));
-
-				}
+			console.log('error in extension tests when building driver');
+		}
+		if (driver) {
+			//end4 = new Date();
+			await driver.quit();
+			//end5 = new Date();
+			//console.log("Time to start driver: " + (end1-start1));
+			//console.log("Time to await page get: " + (end2-end1));
+			//console.log("Time to await script execute: " + (end3-end2));
+			//console.log("Time to close driver: " + (end5-end4));
 		}
 		console.log("latest load time for page " + urls[i] + ": " + JSON.stringify(loadTime));
 	} 
@@ -78,7 +83,7 @@ function initExtensionTests(start, end) {
 		console.log("didn't finish tests in one run, trying again with index " + i);
 		initExtensionTests(i, urls.length);
 	} else {
-		fs.writeFile("extension_cold_cache_results.txt", loadTimes, (err) => {
+		fs.writeFile("extension_warm_cache_results.txt", JSON.stringify(loadTimes), (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
 	});
