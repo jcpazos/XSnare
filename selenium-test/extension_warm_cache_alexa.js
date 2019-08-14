@@ -45,7 +45,6 @@ async function run_tests(start, end) {
 			for (j=0; j<trials; j++) {
 				let data = [];
 				try {
-					let loadTime = 0;
 					await driver.get(urls[i]);
 					loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
 					let requestStart = loadTime.requestStart;
