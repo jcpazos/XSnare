@@ -82,7 +82,7 @@ async function run_tests(start, end) {
 			//console.log("Time to await script execute: " + (end3-end2));
 			//console.log("Time to close driver: " + (end5-end4));
 		}
-		//console.log("latest load time for page " + urls[i] + ": " + JSON.stringify(loadTime));
+		console.log("latest load time for page " + urls[i] + ": " + JSON.stringify(loadTime));
 	} 
 	return loadTimes;
 }
