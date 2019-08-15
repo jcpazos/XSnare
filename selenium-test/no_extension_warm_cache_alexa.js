@@ -96,7 +96,7 @@ function initExtensionTests(start, end) {
 		console.log("didn't finish tests in one run, trying again with index " + i);
 		initExtensionTests(i, urls.length);
 	} else {
-		fs.writeFile("extension_warm_cache_results.txt", JSON.stringify(loadTimes), (err) => {
+		fs.writeFile("no_extension_warm_cache_results.txt", JSON.stringify(loadTimes), (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
 	});
