@@ -75,7 +75,12 @@ async function run_tests(start, end) {
 		}
 		if (driver) {
 			end4 = new Date();
-			await driver.quit();
+			try {
+				await driver.quit();	
+			} catch (err) {
+				//couldn't quit driver, session was already disconnected, so carry on
+				console.log("error when quitting driver, session was already disconnected: " + err);
+			}
 			end5 = new Date();
 			//console.log("Time to start driver: " + (end1-start1));
 			//console.log("Time to await page get: " + (end2-end1));
