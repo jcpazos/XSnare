@@ -97,7 +97,7 @@ let plugin = process.argv[3];
 
 function initExtensionTests(url) {
 	run_tests_extension(url).then(function (loadTimes) {
-		fs.writeFile("extension_cold_cache_wp_results_" + plugin +".txt", JSON.stringify(loadTimes), (err) => {
+		fs.writeFile("extension_warm_cache_wp_results_" + plugin +".txt", JSON.stringify(loadTimes), (err) => {
 			if (err) console.log(err);
 			console.log("Successfully written to file.");
 		});
