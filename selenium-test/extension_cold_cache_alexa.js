@@ -73,7 +73,11 @@ async function run_tests_extension(start, end) {
 			} catch (err) {
 				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
 				if (driver) {
-					loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
+					try {
+						loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
+					} catch (err) {
+						console.log("error when executing script, driver no longer available: " + err);
+					}
 				}
 			} finally {
 				loadTimes[i].push(data);

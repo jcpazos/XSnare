@@ -62,6 +62,13 @@ async function run_tests(start, end) {
 					data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 				} catch (err) {
 					console.log("error when retrieving  page: " + urls[i] + ': ' + err);
+					if (driver) {
+						try {
+							loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
+						} catch (err) {
+							console.log("error when executing script, driver no longer available: " + err);
+						}
+					}
 					/*if (driver) {
 						await driver.quit();
 						driver = await builder.build();
