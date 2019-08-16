@@ -14,7 +14,7 @@ let urls = urlArray;
 
 let options = new firefox.Options()
 				        .headless()
-				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1-an+fx.xpi')
+				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1.1-an+fx.xpi')
 				  		.setPreference('extensions.dom_firewall.showChromeErrors', true);
 
 let capabilities = new Capabilities()
