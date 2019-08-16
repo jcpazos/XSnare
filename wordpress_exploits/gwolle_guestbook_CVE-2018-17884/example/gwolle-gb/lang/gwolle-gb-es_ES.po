@@ -1,0 +1,717 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Gwolle-GB\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-03-16 14:05+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: José Luis Sanz Ruiz <joseluis90m@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: /Users/wolfgangtimme/Sites/heinegym/wordpress/wp-content/"
+"plugins/gwolle-gb/\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "(no entries yet)"
+msgstr "(Nadie ha firmado aún)"
+
+msgid "<br>We will review it and unlock it in a short while."
+msgstr "revisaremos su firma y será aprobada lo antes posible."
+
+msgid "<strong>Attention:</strong> This entry is marked as spam!"
+msgstr "<strong>Atención:</strong> Esta firma se ha marcado como spam!"
+
+msgid "<strong>Private</strong> key of your Recaptcha account"
+msgstr "Clave <strong>privada</strong> de su cuenta de Recaptcha"
+
+msgid "<strong>Public</strong> key of your Recaptcha account"
+msgstr "Clave <strong>pública</strong> de su cuenta de Recaptcha"
+
+msgid ""
+"A message will be sent to the Akismet team that this entry is not spam. "
+"Continue?"
+msgstr ""
+"Se va a enviar un mensaje al equipo de Akismet para comunicar que esta firma "
+"realmente no es spam. ¿Continuar?"
+
+msgid "Access control"
+msgstr "Control de acceso"
+
+msgid "Action"
+msgstr "Acción"
+
+msgid "Admin mail content"
+msgstr "Contenido del e-mail enviado al administrador"
+
+msgid ""
+"Akismet helps you to fight spam. It's free and easy to install. Download and "
+"install it today to stop spam in your guestbook."
+msgstr ""
+"Akismet le ayuda a combatir el spam en su web. Es gratuito y fácil de "
+"instalar. Descargue e instalelo ahora para evitar el spam en su libro de "
+"visitas."
+
+msgid "All"
+msgstr "Todo"
+
+msgid "Allright, we're done. <a href=\"%1\">Click here to continue...</a>"
+msgstr ""
+"Correcto, todo lo que hemos hecho <a href=\"%1\">Click aquí para continuar..."
+"</a>"
+
+msgid "An error occured while trying to delete the entry."
+msgstr "Ocurrió un error mientras se eliminaba la firma."
+
+msgid "An error occurred while saving your changes."
+msgstr "Ha ocurrido un error mientras se guardaban los cambios."
+
+msgid "Apply"
+msgstr "Aplicar"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "Author's IP-address"
+msgstr "Dirección IP del autor"
+
+msgid "Back to the entries."
+msgstr "Volver a las firmas."
+
+msgid "Changes saved."
+msgstr "Los cambios se han guardado."
+
+msgid "Changes successfully saved."
+msgstr "Los cambios se guardaron correctamente."
+
+msgid ""
+"Choose a heading (doesn't matter) and set &quot;[gwolle-gb]&quot; (without "
+"the quotes) as the content."
+msgstr ""
+"Elija un título (no importa cual) y pegue &quot;[gwolle-gb]&quot (sin "
+"comillas) como contenido."
+
+msgid "Choose the userlevel that has access to the guestbook backend."
+msgstr ""
+"Elija el nivel de usuarios que pueden tener acceso total sobre el libro de "
+"visitas."
+
+msgid "Class by"
+msgstr "Clasificado por"
+
+msgid "Create a new article or page."
+msgstr "Crear un nuevo artículo o página."
+
+msgid "Date"
+msgstr "Fecha"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Details"
+msgstr "Detalles"
+
+msgid "E-Mail"
+msgstr "E-mail"
+
+msgid "E-Mail me no matter the new entry is spam or not."
+msgstr "Notificarme por email aunque la nueva firma sea spam."
+
+msgid "Edit guestbook entry"
+msgstr "Editar firma"
+
+msgid "Entries"
+msgstr "Firmas"
+
+msgid "Entries per page"
+msgstr "Firmas por página"
+
+msgid "Entry (excerpt)"
+msgstr "Firma (extracto)"
+
+msgid "Entry could not be found."
+msgstr "La firma no pudo ser encontrada."
+
+msgid "Entry editor"
+msgstr "Editor de firmas"
+
+msgid "Entry has been locked."
+msgstr "La firma ha sido bloqueada."
+
+msgid "Entry has been unlocked."
+msgstr "La firma ha sido desbloqueada."
+
+msgid "Entry icons"
+msgstr "Iconos de la firma"
+
+msgid "Entry marked as not-spam."
+msgstr "La firma ha sido marcada como no-spam."
+
+msgid "Entry marked as spam."
+msgstr "La firma ha sido marcada como spam."
+
+msgid "Entry successfully classified as not-spam."
+msgstr "La firma se marcó correcamente como no-spam."
+
+msgid "Entry successfully deleted."
+msgstr "La firma se ha eliminado correctamente."
+
+msgid "Error"
+msgstr "Error"
+
+msgid ""
+"Example: <code>http://www.google.com/</code> &#8212; don't forget the "
+"<code>http://</code>!"
+msgstr ""
+"Ejemplo: <code>http://www.google.com/</code> &#8212; ¡No olvides poner "
+"delante <code>http://</code>!"
+
+msgid "Fields marked with * are obligatory."
+msgstr "Los campos marcados con * son obligatorios, el resto opcionales."
+
+msgid "For security reasons we save you ip address <span id=\"ip\">%1</span>."
+msgstr ""
+"Por razones de seguridad guardaremos su dirección IP <span id=\"ip\">%1</"
+"span>, no se alarme, sólo la usamos en casos de spam o actividades "
+"delictivas en este blog."
+
+msgid "Form fields"
+msgstr "Campos del formulario"
+
+msgid "Go to my reCAPTCHA sites..."
+msgstr "Ir a mis sitios reCAPTCHA..."
+
+msgid "Guestbook"
+msgstr "Libro de visitas"
+
+msgid "Guestbook entries"
+msgstr "Firmas del libro de visitas"
+
+msgid "Guestbook entry"
+msgstr "Firma en el libro"
+
+msgid ""
+"Hello,\n"
+"\n"
+"there is a new guestbook entry at '%blog_name%'.\n"
+"You can check it at %entry_management_url%.\n"
+"\n"
+"Have a nice day!\n"
+"Your Gwolle-GB-Mailer"
+msgstr ""
+"Hola,\n"
+"\n"
+"Hay una nueva firma en su libro de visitas de '%blog_name%'.\n"
+"Puede revisarla aquí: %entry_management_url%.\n"
+"\n"
+"¡Tenga un buen día!\n"
+"Su servicio de email de Gwolle-GB"
+
+msgid "Help"
+msgstr "Ayuda"
+
+msgid "Here you can manage the entries."
+msgstr "Aquí puede gestionar las firmas."
+
+msgid "Homepage"
+msgstr "Página Web personal"
+
+msgid "Host"
+msgstr "Servidor de acceso / ISP"
+
+msgid ""
+"I really don't want to bother you; this page just exists to prevent you from "
+"accidentally deleting all your entries.<br>Please check the 'uninstall' "
+"checkbox and hit the button; all tables (including their rows) and all "
+"settings of Gwolle-GB will be deleted.<br><br>Are you REALLY sure you wan't "
+"to continue? There's no 'undo'."
+msgstr ""
+"No quiero asustarle; esta página existe precisamente para evitar que se "
+"borren accidentalmente todas sus firmas.<br>¿Está realemente seguro de que "
+"quiere continuar? No hay forma de revertir esta acción."
+
+msgid "I'm aware of that, continue!"
+msgstr "¡Lo sé y deseo continuar!"
+
+msgid ""
+"I'm sorry, but it seems you're running an PHP version prior 4.x. The Akismet "
+"classes that come with Gwolle-GB are only compatible to 4.x and higher. To "
+"be able to use Akismet you should consider updating your server. (The System "
+"says your PHP version is %1.)"
+msgstr ""
+"Lo sentimos, pero parece que estas utilizando una versión de PHP inferior a "
+"4.x. Las clases que vienen con Gwolle-GB sólo son compatibles con la 4.x y "
+"superiores. Para poder utilizar Akismet deberá pensar en actualizar su "
+"servidor. (El sistema informa que su versión de PHP es %1.)"
+
+msgid ""
+"I've found the Wordpress API key, so you can start using Akismet right now."
+msgstr ""
+"He encontrado la clave API de Wordpress, a partir de ahora puede empezar a "
+"utilizar Akismet."
+
+msgid "ID"
+msgstr "Identidad"
+
+msgid "Icons by"
+msgstr "Iconos de"
+
+msgid ""
+"If you like feel free to drop a message at the <a href=\"%1\" title=\"Go to "
+"the Gwolle-GB homepage...\" target=\"_blank\">Gwolle-GB homepage</a> "
+"regarding why you choosed not to use this plugin anymore; I'd really "
+"appreciate that."
+msgstr ""
+"Tiene la libertad de dejar un mensaje en el <a href=\"%1\" title=\"Ir al "
+"sitio web de Gwolle-GB...\" target=\"_blank\">Sitio web de Gwolle-GB</a> y "
+"explicarnos porque ha decido no seguir usando este plugin; Apreciaré sus "
+"intervenciones."
+
+msgid "Installation"
+msgstr "Instalación"
+
+msgid ""
+"It looks like there has been an error. <a href=\"%1\">Click here to "
+"continue...</a>"
+msgstr ""
+"¡Vaya! Parece que ha habido un error. <a href=\"%1\">Click aquí para "
+"continuar...</a>"
+
+msgid ""
+"It's highly recommended that you turn this on, because your responsible for "
+"the content on your homepage."
+msgstr ""
+"Se recomienda encarecidamente que esto esté activado, porque usted es el "
+"responsable de los contenidos de su página web."
+
+msgid "Latest updates"
+msgstr "Últimas actualizaciones"
+
+msgid "Learn more about Akismet..."
+msgstr "Aprender más sobre Akismet..."
+
+msgid "Learn more about Recaptcha..."
+msgstr "Aprender más sobre Recaptcha..."
+
+msgid "Line breaks"
+msgstr "Salto de linea"
+
+msgid ""
+"Line breaks will not be visible to the visitors due to your <a href="
+"\"%1\">settings</a>."
+msgstr ""
+"Los saltos de linea no son visibles por los visitantes devido a sus <a href="
+"\"%1\">ajustes</a>."
+
+msgid "Link to guestbook"
+msgstr "Enlace al libro de visitas"
+
+msgid "Log"
+msgstr "Registro"
+
+msgid "Mark as checked"
+msgstr "Marcar como comprobado"
+
+msgid "Mark as not checked"
+msgstr "Marcar como sin comprobar"
+
+msgid "Mark as not spam"
+msgstr "Marcar como  no-spam"
+
+msgid "Mark as spam"
+msgstr "Marcara como spam"
+
+msgid "Mass edit actions"
+msgstr "Opciones de edición masiva"
+
+msgid "Moderate Guestbook"
+msgstr "Moderar el libro de visitas"
+
+msgid "Moderate entries before publishing them."
+msgstr "Moderar las firmas antes de que sean publicadas."
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "New"
+msgstr "Nueva"
+
+msgid ""
+"New entries have to be unlocked by an administrator before they are visible "
+"to the public."
+msgstr ""
+"Las nuevas firmas tienen que ser desbloqueadas por un administrador antes de "
+"que puedan ser visibles al público."
+
+msgid "New entry"
+msgstr "Nueva firma"
+
+msgid "New guestbook entry"
+msgstr "Nueva firma en el libro"
+
+msgid "No Spam!"
+msgstr "¡No es Spam!"
+
+msgid "No entries found."
+msgstr "No se han encontrado firmas."
+
+msgid "No entries were edited."
+msgstr "No se han editado firmas"
+
+msgid "No entries yet."
+msgstr "Todavía no hay firmas."
+
+msgid "No mass edit action selected."
+msgstr "No hay ninguna selección masiva para editar."
+
+msgid "Notification"
+msgstr "Notificación"
+
+msgid "Number of entries shown on the frontend in reading mode."
+msgstr "Número de entradas mostradas en el modo lectura."
+
+msgid ""
+"Of course, you should disable comments on that new content; otherwise, your "
+"visitors might get a little confused. ;)"
+msgstr ""
+"Debe deshabilitar los comentarios en la nueva página; de lo contrario tus "
+"visitantes podrían quedar algo confused al ver que bajo el libro de visitas "
+"se puede comentar ;)"
+
+msgid "One entry"
+msgstr "Una firma"
+
+msgid "Only users with the role %1 have access to the guestbook backend."
+msgstr ""
+"Sólo los usuarios con nivel %1 tienen acceso total al libro de visitas."
+
+msgid "Options"
+msgstr "Opciones"
+
+msgid "Origin"
+msgstr "Lugar (país, ciudad, etc.)"
+
+msgid "Overview"
+msgstr "Resumen estadístico"
+
+msgid ""
+"Please <a href=\"%1\">enable Akismet</a> to use the spam feature of Gwolle-"
+"GB."
+msgstr ""
+"Por favor <a href=\"%1\">habilite Akismet</a> para usar la solución spam de "
+"Gwolle-GB."
+
+msgid ""
+"Please activate the use of Akismet on your <a href=\"%1\">Gwolle-GB "
+"configuration page</a>. Thanks!"
+msgstr ""
+"Por favor activa el uso de Akismet en tu <a href=\"%1\">página de ajustes de "
+"Gwolle-GB</a>. ¡Gracias!"
+
+msgid "Please check your Akismet configuration."
+msgstr "Pro favor compruebe su configuración de Akismet."
+
+msgid "Please enter a name."
+msgstr "Por favor escriba un nombre."
+
+msgid "Please write an entry."
+msgstr "Por favor firme."
+
+msgid "Save"
+msgstr "Guardar"
+
+msgid "Save settings"
+msgstr "Guardar ajustes"
+
+msgid "Send me an e-mail when a new entry has been posted."
+msgstr "Envíeme un e-mail cuando alguien firme el libro de visitas."
+
+msgid ""
+"Set the link (= complete URL) to the page the guestbook set up on manually, "
+"in case it is not detected correctly."
+msgstr ""
+"Escriba el link (= URL completa) de la página que contiene el libro de "
+"visitas manualmente, en caso de que no sea detectada correctamente."
+
+msgid "Settings"
+msgstr "Ajustes"
+
+msgid "Show entry icons"
+msgstr "Mostrar los iconos en las firmas"
+
+msgid ""
+"Show line breaks as the entry authors entered them. (May result in very long "
+"entries. Is turned off by default.)"
+msgstr ""
+"Mostrar saltos de linea cuando los autores los pongan en las firmas. (Esto "
+"puede ocasionar firmas muy largas hacia abajo. Está desactivado por defecto.)"
+
+msgid "Show line breaks."
+msgstr "Mostrar el salto de linea."
+
+msgid "Showing:"
+msgstr "Mostrando:"
+
+msgid ""
+"Sorry, but the function <code>mail()</code> required to notify you by mail "
+"is not enabled in your PHP configuration. Please contact your hosting "
+"provider to change this."
+msgstr ""
+"Lo sentimos, pero la función <code>mail()</code> requerida para notificarle "
+"por email no está habilitada en la configuración de PHP. Por favor, pongase "
+"en contacto con el proveedor de hosting para que se lo habilite."
+
+msgid ""
+"Sorry, but the page you're looking for does not exists. Go back to the <a "
+"href=\"%1\">settings page</a>"
+msgstr ""
+"Lo siento, la página que está buscando no existe. Vuelva atrás a la <a href="
+"\"%1\">página de ajustes</a>"
+
+msgid ""
+"Sorry, wasn't able to locate your <strong>Wordpress API key. You can enter "
+"it at the <a href=\"%1\">Akismet configuration page</a>."
+msgstr ""
+"Lo sentimos, pero no podemos localizar su <strong>clave API de wordpress. "
+"Puede meterla en la <a href=\"%1\">página de configuración de Akismet</a>."
+
+msgid "Spam"
+msgstr "Spam"
+
+msgid "Spam!"
+msgstr "¡Spam!"
+
+msgid "Staff"
+msgstr "Redacción"
+
+msgid "Submit"
+msgstr "¡Firmar!"
+
+msgid "Successfully uninstalled"
+msgstr "Desinstalación completa"
+
+msgid "Sure, let's do this!"
+msgstr "¡Seguro, vamos a ello!"
+
+msgid "Thanks for your entry."
+msgstr "¡Gracias por firmar!"
+
+msgid "The captcha has not been entered correctly."
+msgstr "Las letras no se han introducido correctamente."
+
+msgid "The following users have subscribed to this service:"
+msgstr "Los siguientes usuarios están suscritos al servicio:"
+
+msgid "The keys can be found at your"
+msgstr "Estas claves se encuentran en su"
+
+msgid ""
+"There seems to be something wrong with your Wordpress API key; wasn't able "
+"to validate it correctly. Please check it via <a href=\"%1\">Akismet "
+"configuration page</a>."
+msgstr ""
+"Parece que algo está mal en en su clave API de wordpress; No se pudo validar "
+"correctamente. Por favor compruebela en la <a href=\"%1\">página de "
+"configuración de Akismet</a>"
+
+msgid ""
+"These icons are shown in every entry row, so that you know its entry status "
+"(spam, locked or unlocked)."
+msgstr ""
+"Estos iconos son mostrados en todas las firmas, con ellas puede saber el "
+"estado de una firma (spam, bloqueada o desbloqueada)."
+
+msgid "This can <strong>not</strong> be undone."
+msgstr "Esto <strong>NO</strong> se puede deshacer."
+
+msgid "This entry is checked."
+msgstr "Esta firma ha sido comprobada"
+
+msgid "This is how the guestbook will be displayed on your page"
+msgstr "Así es como se ve su libro de visitas en su página"
+
+msgid "This plugin uses the following scripts/programs/images:"
+msgstr "El plugin utiliza los siguientes scripts/programas/imágenes:"
+
+msgid "Uninstall"
+msgstr "Desinstalar"
+
+msgid "Uninstall &raquo;"
+msgstr "Desinstalar &raquo;"
+
+msgid "Uninstall process stopped."
+msgstr "Se canceló la instalación."
+
+msgid ""
+"Uninstalling means that all database entries are removed (settings and "
+"entries)."
+msgstr ""
+"Desinstalando se van a borrar todas las firmas de la base de datos (firmas y "
+"ajustes)"
+
+msgid "Unlocked"
+msgstr "Desbloqueada"
+
+msgid "Use Akismet"
+msgstr "Utilizar Akismet"
+
+msgid "Use Recaptcha"
+msgstr "Utilizar Recaptcha"
+
+msgid ""
+"Using the <a href=\"%1\" target=\"_blank\">Akismet PHP4-Class by Bret Kuhns</"
+"a>."
+msgstr ""
+"Usando el <a href=\"%1\" target=\"_blank\">Akismet PHP4-Klasse de Bret "
+"Kuhns</a>."
+
+msgid ""
+"Using the <a href=\"%1\" target=\"_blank\">Akismet PHP5-Class by Alex</a>."
+msgstr ""
+"Usando el <a href=\"%1\" target=\"_blank\">Akismet PHP5-Klasse de Alex</a>."
+
+msgid "We reserve our right to shorten, delete, or not publish entries."
+msgstr ""
+"Nos reservamos todo el derecho a recortar, eliminar o no publicar sus firmas."
+
+msgid "Welcome to the Guestbook!"
+msgstr "¡Bienvenido al libro de visitas!"
+
+msgid ""
+"Welcome!<br>It seems that either you're using this plugin for the first time "
+"or you've deleted all settings.<br>However, to use this plugin we have to "
+"setup the database tables. Good for you, we've made this as easy as possible."
+"<br>All you've got to do is click on that button below, and that's it."
+msgstr ""
+"¡Bienvenido!<br>Parece que esta utilizando este plugin por primera vez o "
+"eliminó todos los ajustes anteriormente.<br>De todas maneras, para usar este "
+"plugin hay que escribir en las tablas de la base de datos. Es bueno para "
+"usted, ya que hacemos esto lo más fácilmente posible.<br>Todo lo que tienes "
+"que hacer es clickear en el botón siguiente, y ya está."
+
+msgid ""
+"Well, there has been an error querying the database.<br>Please try again "
+"later, thanks!"
+msgstr ""
+"Se ha producido un error mientras se comunicaba con la base de datos. "
+"<br>Por favor, intentelo de nuevo más tarde, ¡Gracias!"
+
+msgid "What's that?"
+msgstr "¿Qué es esto?"
+
+msgid "Write a new entry."
+msgstr "Dejar una firma en el libro."
+
+msgid "Write admin entry"
+msgstr "Escribir una firma como administrador"
+
+msgid "Written"
+msgstr "escrito"
+
+msgid "Yes, I'm absolutely sure of this. Proceed!"
+msgstr "Sí, estoy totalmente seguro de lo que hago. ¡Adelante!"
+
+msgid "You"
+msgstr "Tú"
+
+msgid ""
+"You can set the content of the mail a notification subscriber gets on new "
+"entries. The following tags are supported:"
+msgstr ""
+"Puede ajustar el contenido del e-mail de notifiación para suscriptores a las "
+"nuevas firmas. Se pueden usar los siguientes tags:"
+
+msgid "You don't have the privileges to perform this action."
+msgstr "No tiene suficientes privilegios para realizar esta acción."
+
+msgid ""
+"You now may deactivate the plugin using the <a href=\"%1\" title=\"Go to the "
+"plugin manager...\">plugin manager</a> or/and delete the plugin from your "
+"webserver."
+msgstr ""
+"Puede desactivar el plugin usando <a href=\"%1\" title=\"Ir al gestor de "
+"plugins...\">gestor de plugins</a> y/o eliminar el plugin de su servidor web."
+
+msgid "You successfully uninstalled Gwolle-GB."
+msgstr "Ha desinstalado Gwolle-GB correctamente.."
+
+msgid ""
+"You\\'re about to delete this guestbook entry. This can\\'t be undone. Are "
+"you still sure you want to continue?"
+msgstr ""
+"Está a punto de eliminar esta firma del libro. Esta acción no podrá ser "
+"deshecha. ¿Está seguro/a que desea continuar?"
+
+msgid ""
+"You\\'re about to mark this guestbook entry as spam. It will be sent to the "
+"Akismet team to help other people fighting spam. Entries marked as spam are "
+"automatically deleted after 15 days. Continue?"
+msgstr ""
+"Va a marcar esta firma del libro como spam. La firma será enviada al equipo "
+"de Akismet para ayudar a otra gente a filtrar el spam. Las firmas que se "
+"marcan como spam se borran automáticamente pasados 15 días. ¿Continuar?"
+
+msgid ""
+"Your entry will be visible in the guestbook when we reviewed it and gave our "
+"permission."
+msgstr ""
+"Su firma será visible en el libro de visitas cuando la revisemos y sea "
+"aprobada."
+
+msgid "entries"
+msgstr "firmas"
+
+msgid "entries total"
+msgstr "firmas en total"
+
+msgid "entry total"
+msgstr "firma en total"
+
+msgid "from"
+msgstr "de"
+
+msgid "new entries"
+msgstr "nuevas firmas"
+
+msgid "new entry"
+msgstr "nueva firma"
+
+msgid "no subscriber yet"
+msgstr "no hay usuarios suscritos aún"
+
+msgid "not yet"
+msgstr "todavía"
+
+msgid "o'clock"
+msgstr "en punto"
+
+msgid "of"
+msgstr "de"
+
+msgid "reCAPTCHA sites overview"
+msgstr "cuenta de la web reCAPTCHA"
+
+msgid "spam entries"
+msgstr "firmas spam"
+
+msgid "spam entry"
+msgstr "firma spam"
+
+msgid "successfully edited."
+msgstr "Edición correcta."
+
+msgid "unknown"
+msgstr "desconocido"
+
+msgid "unlocked entries"
+msgstr "firmas desbloqueadas"
+
+msgid "unlocked entry"
+msgstr "firma desbloqueada"
+
+msgid "v%1 installed"
+msgstr "v%1 instalada"
+
+msgid "wrote at"
+msgstr "escribió el"

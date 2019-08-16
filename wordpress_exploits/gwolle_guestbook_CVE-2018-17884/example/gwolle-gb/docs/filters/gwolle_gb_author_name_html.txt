@@ -1,0 +1,43 @@
+
+
+==Description==
+
+The <b>"gwolle_gb_author_name_html"</b> filter is used to change the html text of the author name in each entry. It can contain the website address or even the email address if desired.
+
+You can use this filter as:
+
+<code><?php add_filter( 'gwolle_gb_author_name_html', 'filter_function_name' ) ?></code>
+
+Where 'filter_function_name' is the function WordPress should call when the filter is being used.
+
+'''filter_function_name''' should be a unique function name. It cannot match any other function name already declared.
+
+
+==Examples==
+
+
+function my_gwolle_gb_author_name_html( $author_name_html ) {
+	// $author_name_html is a string
+	$author_name = gwolle_gb_sanitize_output( trim( $entry->get_author_name() ) );
+
+	// Registered User gets italic font-style
+	$author_id = $entry->get_author_id();
+	$is_moderator = gwolle_gb_is_moderator( $author_id );
+	if ( $is_moderator ) {
+			$author_name_html = '<i>' . $author_name . '</i>';
+	} else {
+			$author_name_html = $author_name;
+	}
+
+	// Link to author email.
+	$author_email = trim( $entry->get_author_email() );
+	if ($author_email) {
+			$author_name_html = '<a href="mailto:' . $author_email . '"
+					title="Email ' . $author_name . '">' . $author_name_html . '</a>';
+	}
+
+	return $author_name_html;
+
+}
+add_filter( 'gwolle_gb_author_name_html', 'my_gwolle_gb_author_name_html', 10, 2 );
+
