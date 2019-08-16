@@ -1,6 +1,6 @@
-\section{The DOM Firewall}
+\section{XSnare}
 
-We now present the DOM Firewall's components and how they interact with each other. First, we give a overview of current defence solutions and how they into our model. Further details of these different approaches are described in Section 5.
+We now present XSnare's components and how they interact with each other. First, we give a overview of current defence solutions and how they into our model. Further details of these different approaches are described in Section 5.
 
 \subsection{Web application architecture}
 Figure~\ref{fig:web_architecture} shows a typical architecture for web applications. There are several different places where vulnerability defences can be integrated. We give a brief description of what can be done at each point:
@@ -27,7 +27,7 @@ Our approach, instead, focuses on application-specific detection at the client-s
  
  \begin{figure}[h]
  	\includegraphics[scale=0.23]{img/dom_firewall.png}
- 	\caption{The DOM Firewall approach for protection against XSS.}
+ 	\caption{XSnare's approach for protection against XSS.}
  	\label{fig:dom_firewall}
  \end{figure}
 
@@ -77,7 +77,7 @@ In the following sections we give a detailed description of each component of ou
  \subsection{Firewall Signatures}
 	 The firewall signatures are at the core of our defense strategy. These must be precise enough for our system to single out the intended injection, and not an element of the website crucial to the user experience. Since we are only relying on DOM knowledge, these signatures must be related to HTML features, for example, specifying elements and element attributes that are unique to where the exploit might occur. The basis for our signatures relies on two observations: first, an injection has a start and end point, that is, an element can only be injected between a specific HTML node and its immediate sibling in the DOM tree; second, in a well-formed DOM, the dynamic content will not be able to rearrange its location in the document without any JavaScript execution (e.g. removing and adding elements), allowing us to isolate it from the template code. Thus, our basic approach at signature definition is to specify an injection's start and its end, and any sanitization to be done between these two endpoints. Different scenarios might warrant different resolutions, ranging from stopping a webpage's rendering altogether, to performing some basic checks on the string. We discuss how different exploits might affect a signature definition and how our signature language gives an analyst enough expressibility to deal with these in later sections.
 	 
-	 We believe CVEs to be an ideal source for signatures, and our system assumes these are written by a third-party: as discussed previously, bug bounty hunters and penetration testers will commonly identify issues in application code, inform developers and publish it for the benefit of the community in the form of CVEs. Our system adds an extra component to this workflow, where hackers and security enthusiasts also write the signatures to defend users. Thus, the signature database is maintained by a trusted entity which audits CVEs, and thus, a malicious analyst can not take advantage of this model to throttle the extension's performance. An analyst can write a signature in our language given their knowledge on the exploit, as they will often know both the source and the way it manifests in the HTML, as well as the fix. TODO: feel like this could be expanded but not sure what else to say. Could talk about signature sharing for power-users to get back to the user-centred argument, although we haven't really gotten this far into deployment talk yet.
+	 We believe CVEs to be an ideal source for signatures, and our system assumes these are written by a third-party: as discussed previously, bug bounty hunters and penetration testers will commonly identify issues in application code, inform developers and publish it for the benefit of the community in the form of CVEs. Our system adds an extra component to this workflow, where hackers and security enthusiasts also write the signatures to defend users. Thus, the signature database is maintained by a trusted entity which audits CVEs, and thus, a malicious analyst can not take advantage of this model to throttle the extension's performance. An analyst can write a signature in our language given their knowledge on the exploit, as they will often know both the source and the way it manifests in the HTML, as well as the fix.
  
  \subsection{Firewall Signature Language}
  Our signature language needs to be such that it has enough power of expression for the signature writer to be precise. Due to the nature of our signature definitions, a regex language suffices to express precise sections of the HTML. Furthermore, a regex language allows us to identify malformed HTML before it renders on the browser. The following is the signature that defends against the motivating example of Section 2.1:
