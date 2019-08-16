@@ -8,9 +8,11 @@ const main_frame_signatures = {
             software: 'WordPress',
             softwareDetails: 'responsive-cookie-consent',
             version: '1.5',
+            description: '',
             type: 'string',
-            sanitizer: 'regex',
-            typeDet: 'single',
+            typeDet: 'single-unique',
+            sigType: ['incomplete', 'complete'],
+            sigOccurrence: 'unique',
             endPoints: ['<div class=\"rcc-panel group\"', 'class=\"rcc-info-btn\" >MORE INFO</a>']
         },
         {
@@ -18,15 +20,10 @@ const main_frame_signatures = {
             software: 'WordPress',
             softwareDetails: 'responsive-cookie-consent',
             version: '1.5',
-            typeDet: 'multiple',
             type: 'string',
-            sanitizer: 'regex',
-            config: [
-                    '/^[A-Za-z ]+$/',
-                    '/\d+/',
-                    '/^[0-9](\.[0-9]+)?$/',
-                    '/^[0-9](\.[0-9]+)?$/'
-                    ],
+            typeDet: 'multiple-unique',
+            description: '',
+            sigType: ['complete', 'complete'],
             endPoints: [
                 ['<input id="rcc_settings[font]" name="rcc_settings[font]" type="text"', '<label class="description" for="rcc_settings[font]">'],
                 ['<input id="rcc_settings[width]" name="rcc_settings[width]" type="text"', '<label class="description" for="rcc_settings[width]">'],
@@ -40,10 +37,8 @@ const main_frame_signatures = {
             softwareDetails: 'responsive-cookie-consent',
             version: '1.5',
             type: 'string',
-            typeDet: 'single',
-            sanitizer: 'regex',
-            config: '/^[0-9](\.[0-9]+)?$/',
-            endPoints: ['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" type="text" value="', '<label class="description" for="rcc_settings[border-size]">']
+            typeDet: 'single-unique',
+            endPoints: ['<input id="rcc_settings[border-size]" name="rcc_settings[border-size]" type="text" value', '<label class="description" for="rcc_settings[border-size]">']
         },
 
         {
@@ -578,7 +573,7 @@ const main_frame_signatures = {
         },
         {
             url: 'wp-admin/admin.php?page=caldera-forms',
-            software: '#wordPress',
+            software: '#wordPress #wpPlugin',
             softwareDetails: 'caldera-forms',
             version: '1.5.9.1',
             type: 'listener',
@@ -588,7 +583,7 @@ const main_frame_signatures = {
                 sanitizer: 'escape',
                 type: 'string',
                 url: 'wp-admin/admin-ajax.php',
-                typeDet: 'single',
+                typeDet: 'single-unique',
                 sigType: ['complete', 'complete'],
                 endPoints: ['<p><strong>', '[AltBody]']
             },
