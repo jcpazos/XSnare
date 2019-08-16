@@ -76,7 +76,7 @@ const main_frame_signatures = {
             softwareDetails: '31sdasfas',
             version: '1.0',
             description: '',
-            type: 'htmlTag',
+            type: 'string',
             typeDet: 'single-unique',
             sigType: ['complete', 'complete'],
             sigOccurrence: 'unique',

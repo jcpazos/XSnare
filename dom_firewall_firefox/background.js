@@ -16,6 +16,10 @@ String.prototype.replaceBetween = function(start, end, what) {
     return this.substring(0, start) + what + this.substring(end);
 };
 
+let verifyStart;
+let verifyEnd;
+let loadedCounter = 0;
+
 function mainFrameListener(details) {
   //reset array values
   endPointsList = [];
@@ -29,11 +33,6 @@ function mainFrameListener(details) {
   let decoder = new TextDecoder("utf-8");
   let encoder = new TextEncoder();
 
-  const replacer = function () {
-    //TODO: instead of replacing id, consider adding a new attribute or a 'safe' class, since IDs are sometimes important
-    return '<script id="' + /*window.crypto.getRandomValues(new Uint16Array(1))*/"safe" + '"';
-  };
-
   let str = "";
   filter.ondata = event => {
     str += decoder.decode(event.data, {stream: true});
@@ -42,7 +41,15 @@ function mainFrameListener(details) {
   filter.onstop = event => {
     try {
         //TODO: mark verified scripts as 'safe' so contentscript doesn't check them again for dynamic checks
+        verifyStart = performance.now()
         str = verifyHTML(str, details.url, details.tabId);
+        verifyEnd = performance.now();
+
+        let myRequest = new Request('http://localhost:8000/?time=' + (verifyEnd-verifyStart) + '&loadedSignatures=' + loadedCounter + '&url=' + details.url);
+        fetch(myRequest).then(function (resp) {
+        	//do nothing
+        });
+
     } catch(err) {
         debugger;
         console.log("Error when verifying HTML: " + err);
@@ -72,6 +79,7 @@ function xhrListener(details) {
   filter.onstop = event => {
 
     try {
+
       str = verifyXHR(str, details.url);
     } catch(err) {
       debugger;
@@ -278,6 +286,7 @@ function runProbes(HTMLString, url, domain) {
 }
 
 function loadSignatures(HTMLString, url, tabId) {
+  loadedCounter = 0;
   let matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
   const domain = matches && matches[1];  // domain will be null if no match is found
 
@@ -307,6 +316,7 @@ function loadSignatures(HTMLString, url, tabId) {
       if (probes[signature.software] && probes[signature.software][signature.softwareDetails] && (signature.version !== probes[signature.software][signature.softwareDetails])) {
         continue;
       }
+      loadedCounter++;
       //otherwise, plugins page did not load correctly, so carry on
       if (signature.type === 'all') {
         endPointsList.push([]);
