@@ -71,6 +71,13 @@ async function run_tests_extension(start, end) {
 				loadTimes[3].push();*/	
 			} catch (err) {
 				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
+				if (driver) {
+					try {
+						loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
+					} catch (err) {
+						console.log("error when executing script, driver no longer available: " + err);
+					}
+				}
 			} finally {
 				loadTimes.push(data);
 				if (driver) {
@@ -116,10 +123,16 @@ function initExtensionTests(start, end) {
 //let end = process.argv[3];
 let promises = [];
 k = 0;
-for (k=0; k < 420; k++) {
-	promises.push(new Promise(function (resolve,reject) {
-		run_tests_extension(k*10, (k+1)*10);
-	}));
+for (k=0; k < 4; k++) {
+	if (k==3) {
+		promises.push(new Promise(function (resolve,reject) {
+			run_tests_extension(k*110, 441);
+		}));
+	} else {
+		promises.push(new Promise(function (resolve,reject) {
+			run_tests_extension(k*110, (k+1)*110);
+		}));
+	}
 }
 //initExtensionTests(0, urls.length);
 //initExtensionTests(228, urls.length);
@@ -130,7 +143,7 @@ Promise.all(promises).then(function(loadTimesArray) {
 	});
 }).catch (function (err) {
 		console.log("initextensiontests err : " + err);
-		initExtensionTests(i, urls.length);
+		//initExtensionTests(i, urls.length);
 });
 
 /*run_tests_extension(0, urls.length).then(function (loadTimes) {

@@ -17,9 +17,7 @@ let urls = urlArray;
 const trials = 20;
 
 let options = new firefox.Options()
-				        .headless()
-				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1-an+fx.xpi')
-				  		.setPreference('extensions.dom_firewall.showChromeErrors', true);
+				        .headless();
 let capabilities = new Capabilities()
 				  		.setAlertBehavior(UserPromptHandler.ACCEPT);
 
@@ -37,7 +35,6 @@ async function run_tests_extension(start, end) {
   	let loadTime = 0;
 	for (i=start; i<end; i++) {
 		let j;
-		loadTimes.push([]);
 		var start1 = new Date();
 		for (j=0; j<trials; j++) {
 			var start1;
@@ -73,10 +70,14 @@ async function run_tests_extension(start, end) {
 			} catch (err) {
 				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
 				if (driver) {
-					loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
+					try {
+						loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
+					} catch (err) {
+						console.log("error when executing script, driver no longer available: " + err);
+					}
 				}
 			} finally {
-				loadTimes[i].push(data);
+				loadTimes.push(data);
 				if (driver) {
 					end4 = new Date();
 					await driver.quit();
@@ -118,8 +119,30 @@ function initExtensionTests(start, end) {
 
 //let start = process.argv[2];
 //let end = process.argv[3];
-initExtensionTests(0, urls.length);
+let promises = [];
+k = 0;
+for (k=0; k < 4; k++) {
+	if (k==3) {
+		promises.push(new Promise(function (resolve,reject) {
+			run_tests_extension(k*110, 441);
+		}));
+	} else {
+		promises.push(new Promise(function (resolve,reject) {
+			run_tests_extension(k*110, (k+1)*110);
+		}));
+	}
+}
+//initExtensionTests(0, urls.length);
 //initExtensionTests(228, urls.length);
+Promise.all(promises).then(function(loadTimesArray) {
+	fs.writeFile("no_extension_cold_cache_results_async.txt", JSON.stringify(loadTimes), (err) => {
+		if (err) console.log(err);
+		console.log("Successfully written to file.");
+	});
+}).catch (function (err) {
+		console.log("initextensiontests err : " + err);
+		//initExtensionTests(i, urls.length);
+});
 
 /*run_tests_extension(0, urls.length).then(function (loadTimes) {
 	fs.writeFile("extension_warm_cache_results_" + end + ".txt", loadTimes, (err) => {

@@ -96,7 +96,7 @@ function initExtensionTests(start, end) {
 		console.log("didn't finish tests in one run, trying again with index " + i);
 		initExtensionTests(i, urls.length);
 	} else {
-		fs.writeFile("no_extension_warm_cache_results.txt", JSON.stringify(loadTimes), (err) => {
+		fs.writeFile("extension_warm_cache_results.txt", JSON.stringify(loadTimes), (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
 	});
@@ -111,6 +111,29 @@ function initExtensionTests(start, end) {
 //let start = process.argv[2];
 //let end = process.argv[3];
 //initExtensionTests(0, urls.length);
-initExtensionTests(0, urls.length);
+//initExtensionTests(0, urls.length);
 
-
+let promises = [];
+k = 0;
+for (k=0; k < 4; k++) {
+	if (k==3) {
+		promises.push(new Promise(function (resolve,reject) {
+			run_tests(k*110, 441);
+		}));
+	} else {
+		promises.push(new Promise(function (resolve,reject) {
+			run_tests(k*110, (k+1)*110);
+		}));
+	}
+}
+//initExtensionTests(0, urls.length);
+//initExtensionTests(228, urls.length);
+Promise.all(promises).then(function(loadTimesArray) {
+	fs.writeFile("no_extension_warm_cache_results_async.txt", JSON.stringify(loadTimes), (err) => {
+		if (err) console.log(err);
+		console.log("Successfully written to file.");
+	});
+}).catch (function (err) {
+		console.log("initextensiontests err : " + err);
+		//initExtensionTests(i, urls.length);
+});

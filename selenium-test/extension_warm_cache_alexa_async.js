@@ -10,16 +10,13 @@ for (var k = 0; k<urlArray.length; k++) {
 }
 var fs = require("fs");
 
-
-
 let urls = urlArray;
-
-const trials = 20;
 
 let options = new firefox.Options()
 				        .headless()
 				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1-an+fx.xpi')
 				  		.setPreference('extensions.dom_firewall.showChromeErrors', true);
+
 let capabilities = new Capabilities()
 				  		.setAlertBehavior(UserPromptHandler.ACCEPT);
 
@@ -30,81 +27,78 @@ let builder = new Builder()
 				        options)
 				  	.forBrowser('firefox');
 
+const trials = 20;
 let i;
- 
-async function run_tests_extension(start, end) {
-  	let loadTimes = [];
+let loadTimes = [];
+async function run_tests(start, end) {
   	let loadTime = 0;
+  	var start1;
+	var end1;
+	var end2;
+	var end3;
+	var end4;
+	var end5;
+	
 	for (i=start; i<end; i++) {
-		let j;
-		loadTimes.push([]);
-		var start1 = new Date();
-		for (j=0; j<trials; j++) {
-			var start1;
-			var end1;
-			var end2;
-			var end3;
-			var end4;
-			var end5;
-			loadTime = 0;
-			let driver;
-			let data = [];
-			try {
-				start1 = new Date();
-			 	driver = await builder.build();
-			 	await driver.manage().setTimeouts({pageLoad: 25000});
-			 	end1 = new Date();
-				await driver.get(urls[i]);
-				end2 = new Date();
-				loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-				end3 = new Date();
-				//console.log(loadTime);
-				let requestStart = loadTime.requestStart;
-				let responseStart = loadTime.responseStart;
-				let responseEnd = loadTime.responseEnd;
-				let domContentLoaded = loadTime.domContentLoadedEventEnd;
-				let domComplete = loadTime.domComplete;
-				let duration = loadTime.duration;
-				let bodySize = loadTime.decodedBodySize; 
-				data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
-				/*loadTimes[1].push();
-				loadTimes[2].push();
-				loadTimes[3].push();*/	
-			} catch (err) {
-				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
-				if (driver) {
+		let driver;
+		loadTimes[i] = [];
+		try {
+			driver = await builder.build();
+			await driver.manage().setTimeouts({pageLoad: 25000});
+	  		await driver.get("https://www.example.com");
+			let j;
+			for (j=0; j<trials; j++) {
+				let data = [];
+				try {
+					await driver.get(urls[i]);
 					loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-				}
-			} finally {
-				loadTimes[i].push(data);
-				if (driver) {
-					end4 = new Date();
-					await driver.quit();
-					end5 = new Date();
-					console.log("Time to start driver: " + (end1-start1));
-					console.log("Time to await page get: " + (end2-end1));
-					console.log("Time to await script execute: " + (end3-end2));
-					console.log("Time to close driver: " + (end5-end4));
-
+					let requestStart = loadTime.requestStart;
+					let responseStart = loadTime.responseStart;
+					let responseEnd = loadTime.responseEnd;
+					let domContentLoaded = loadTime.domContentLoadedEventEnd;
+					let domComplete = loadTime.domComplete;
+					let duration = loadTime.duration;
+					let bodySize = loadTime.decodedBodySize; 
+					data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
+				} catch (err) {
+					console.log("error when retrieving  page: " + urls[i] + ': ' + err);
+					/*if (driver) {
+						await driver.quit();
+						driver = await builder.build();
+					}*/
+				} finally {
+					loadTimes[i].push(data);
 				}
 			}
-			
+		} catch (err) {
+			console.log('error in extension tests when building driver: ' + err);
+		}
+		if (driver) {
+			end4 = new Date();
+			try {
+				await driver.quit();	
+			} catch (err) {
+				//couldn't quit driver, session was already disconnected, so carry on
+				console.log("error when quitting driver, session was already disconnected: " + err);
+			}
+			end5 = new Date();
+			//console.log("Time to start driver: " + (end1-start1));
+			//console.log("Time to await page get: " + (end2-end1));
+			//console.log("Time to await script execute: " + (end3-end2));
+			//console.log("Time to close driver: " + (end5-end4));
 		}
 		console.log("latest load time for page " + urls[i] + ": " + JSON.stringify(loadTime));
-		//console.log("tests took: " + (end5-start1));
 	} 
 	return loadTimes;
 }
 
-
-
 function initExtensionTests(start, end) {
-	run_tests_extension(start, end).then(function (loadTimes) {
+	run_tests(start, end).then(function () {
 	if (i !== end) {
 		console.log("didn't finish tests in one run, trying again with index " + i);
 		initExtensionTests(i, urls.length);
 	} else {
-		fs.writeFile("extension_cold_cache_results.txt", JSON.stringify(loadTimes), (err) => {
+		fs.writeFile("extension_warm_cache_results.txt", JSON.stringify(loadTimes), (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
 	});
@@ -118,15 +112,30 @@ function initExtensionTests(start, end) {
 
 //let start = process.argv[2];
 //let end = process.argv[3];
-initExtensionTests(0, urls.length);
-//initExtensionTests(228, urls.length);
+//initExtensionTests(0, urls.length);
+//initExtensionTests(0, urls.length);
 
-/*run_tests_extension(0, urls.length).then(function (loadTimes) {
-	fs.writeFile("extension_warm_cache_results_" + end + ".txt", loadTimes, (err) => {
+let promises = [];
+k = 0;
+for (k=0; k < 4; k++) {
+	if (k==3) {
+		promises.push(new Promise(function (resolve,reject) {
+			run_tests(k*110, 441);
+		}));
+	} else {
+		promises.push(new Promise(function (resolve,reject) {
+			run_tests(k*110, (k+1)*110);
+		}));
+	}
+}
+//initExtensionTests(0, urls.length);
+//initExtensionTests(228, urls.length);
+Promise.all(promises).then(function(loadTimesArray) {
+	fs.writeFile("extension_warm_cache_results_async.txt", JSON.stringify(loadTimes), (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
 	});
 }).catch (function (err) {
-	console.log("initextensiontests err : " + err);
-});*/
-
+		console.log("initextensiontests err : " + err);
+		//initExtensionTests(i, urls.length);
+});
