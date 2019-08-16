@@ -298,20 +298,6 @@ async function run_tests_warm_no_extension(url) {
 let url = process.argv[2];
 let plugin = process.argv[3];
 
-function initExtensionTests(url) {
-	run_tests_extension(url).then(function (loadTimes) {
-		fs.writeFile("extension_cold_cache_wp_results_" + plugin +".txt", JSON.stringify(loadTimes), (err) => {
-			if (err) console.log(err);
-			console.log("Successfully written to file.");
-		});
-	}).catch (function (err) {
-		console.log("initextensiontests err : " + err);
-	});
-}
-
-let url = process.argv[2];
-let plugin = process.argv[3];
-
 async function initTests(url) { 
 
 	let loadTimes;
