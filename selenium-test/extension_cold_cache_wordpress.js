@@ -52,7 +52,13 @@ async function run_tests_cold_extension(url) {
 		try {
 			start1 = new Date();
 		 	driver = await builder_extension.build();
+
 		 	await driver.manage().setTimeouts({pageLoad: 25000});
+		 	await driver.get("http://localhost:8080/wp-admin");
+		 	await driver.findElement(By.id('user_login')).sendKeys('root');
+	 		await driver.findElement(By.id('user_pass')).sendKeys('root');
+	 		await driver.executeScript('document.getElementById("loginform").submit()');
+
 		 	end1 = new Date();
 			await driver.get(url);
 			end2 = new Date();
@@ -112,6 +118,12 @@ async function run_tests_warm_extension(url) {
 		driver = await builder_extension.build();
 		await driver.manage().setTimeouts({pageLoad: 25000});
   		await driver.get("https://www.example.com");
+  		await driver.get("http://localhost:8080/wp-admin");
+
+ 		await driver.findElement(By.id('user_login')).sendKeys('root');
+ 		await driver.findElement(By.id('user_pass')).sendKeys('root');
+ 		await driver.executeScript('document.getElementById("loginform").submit()');
+
 		let j;
 		for (j=0; j<trials; j++) {
 			let data = [];
@@ -183,6 +195,11 @@ async function run_tests_cold_no_extension(url) {
 			start1 = new Date();
 		 	driver = await builder_no_extension.build();
 		 	await driver.manage().setTimeouts({pageLoad: 25000});
+		 	await driver.get("http://localhost:8080/wp-admin");
+		 	await driver.findElement(By.id('user_login')).sendKeys('root');
+	 		await driver.findElement(By.id('user_pass')).sendKeys('root');
+	 		await driver.executeScript('document.getElementById("loginform").submit()');
+
 		 	end1 = new Date();
 			await driver.get(url);
 			end2 = new Date();
@@ -243,6 +260,11 @@ async function run_tests_warm_no_extension(url) {
 		driver = await builder_no_extension.build();
 		await driver.manage().setTimeouts({pageLoad: 25000});
   		await driver.get("https://www.example.com");
+  		await driver.get("http://localhost:8080/wp-admin");
+  		await driver.findElement(By.id('user_login')).sendKeys('root');
+ 		await driver.findElement(By.id('user_pass')).sendKeys('root');
+ 		await driver.executeScript('document.getElementById("loginform").submit()');
+
 		let j;
 		for (j=0; j<trials; j++) {
 			let data = [];
@@ -325,6 +347,8 @@ async function initTests(url) {
 			if (err) console.log(err);
 			console.log("Successfully written warm no extension to file.");
 	});
+
+	resolve(true);
 
 }
 

@@ -241,3 +241,11 @@ for (i=0; i<extension_cold_medians.length; i++) {
 	speedups_warm_responseEnd.push(speedup_warm_responseEnd);
 	speedups_warm_domResponse.push(speedup_warm_domResponse);
 }
+
+speedups_cold_responseStart.sort((a, b) => a - b);
+speedups_cold_responseEnd.sort((a, b) => a - b);
+speedups_cold_domResponse.sort((a, b) => a - b);
+speedups_warm_responseStart.sort((a, b) => a - b);
+speedups_warm_responseEnd.sort((a, b) => a - b);
+speedups_warm_domResponse.sort((a, b) => a - b);
+
