@@ -33,6 +33,12 @@ let builder_no_extension = new Builder()
 				  	.forBrowser('firefox');		  	
 
 let i;
+
+function sleep(ms){
+    return new Promise(resolve=>{
+        setTimeout(resolve,ms)
+    })
+}
  
 async function run_tests_cold_extension(url) {
   	let loadTimes = [];
@@ -56,8 +62,11 @@ async function run_tests_cold_extension(url) {
 		 	await driver.manage().setTimeouts({pageLoad: 25000});
 		 	await driver.get("http://localhost:8080/wp-admin");
 		 	await driver.findElement(By.id('user_login')).sendKeys('root');
+		 	await sleep(1000);
 	 		await driver.findElement(By.id('user_pass')).sendKeys('root');
+	 		await sleep(1000);
 	 		await driver.executeScript('document.getElementById("loginform").submit()');
+	 		await sleep(1000);
 
 		 	end1 = new Date();
 			await driver.get(url);
@@ -119,10 +128,12 @@ async function run_tests_warm_extension(url) {
 		await driver.manage().setTimeouts({pageLoad: 25000});
   		await driver.get("https://www.example.com");
   		await driver.get("http://localhost:8080/wp-admin");
-
- 		await driver.findElement(By.id('user_login')).sendKeys('root');
+	 	await driver.findElement(By.id('user_login')).sendKeys('root');
+	 	await sleep(1000);
  		await driver.findElement(By.id('user_pass')).sendKeys('root');
+ 		await sleep(1000);
  		await driver.executeScript('document.getElementById("loginform").submit()');
+ 		await sleep(1000);
 
 		let j;
 		for (j=0; j<trials; j++) {
@@ -197,8 +208,11 @@ async function run_tests_cold_no_extension(url) {
 		 	await driver.manage().setTimeouts({pageLoad: 25000});
 		 	await driver.get("http://localhost:8080/wp-admin");
 		 	await driver.findElement(By.id('user_login')).sendKeys('root');
+		 	await sleep(1000);
 	 		await driver.findElement(By.id('user_pass')).sendKeys('root');
+	 		await sleep(1000);
 	 		await driver.executeScript('document.getElementById("loginform").submit()');
+	 		await sleep(1000);
 
 		 	end1 = new Date();
 			await driver.get(url);
@@ -261,9 +275,12 @@ async function run_tests_warm_no_extension(url) {
 		await driver.manage().setTimeouts({pageLoad: 25000});
   		await driver.get("https://www.example.com");
   		await driver.get("http://localhost:8080/wp-admin");
-  		await driver.findElement(By.id('user_login')).sendKeys('root');
+	 	await driver.findElement(By.id('user_login')).sendKeys('root');
+	 	await sleep(1000);
  		await driver.findElement(By.id('user_pass')).sendKeys('root');
+ 		await sleep(1000);
  		await driver.executeScript('document.getElementById("loginform").submit()');
+ 		await sleep(1000);
 
 		let j;
 		for (j=0; j<trials; j++) {
