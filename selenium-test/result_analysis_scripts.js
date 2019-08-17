@@ -225,17 +225,17 @@ let speedups_warm_responseEnd = [];
 let speedups_warm_domResponse = [];
 
 for (i=0; i<extension_cold_medians.length; i++) {
-	let speedup_cold_responseStart = (extension_cold_medians[i][0] - no_extension_cold_medians[i][0])/(extension_cold_medians[i][0]+1);
-	let speedup_cold_responseEnd = (extension_cold_medians[i][1] - no_extension_cold_medians[i][1])/(extension_cold_medians[i][1]+1);
-	let speedup_cold_domResponse = (extension_cold_medians[i][2] - no_extension_cold_medians[i][2])/(extension_cold_medians[i][2]+1);
+	let speedup_cold_responseStart = 100*(extension_cold_medians[i][0] - no_extension_cold_medians[i][0])/(no_extension_cold_medians[i][0]+1);
+	let speedup_cold_responseEnd = 100*(extension_cold_medians[i][1] - no_extension_cold_medians[i][1])/(no_extension_cold_medians[i][1]+1);
+	let speedup_cold_domResponse = 100*(extension_cold_medians[i][2] - no_extension_cold_medians[i][2])/(no_extension_cold_medians[i][2]+1);
 
 	speedups_cold_responseStart.push(speedup_cold_responseStart);
 	speedups_cold_responseEnd.push(speedup_cold_responseEnd);
 	speedups_cold_domResponse.push(speedup_cold_domResponse);
 
-	let speedup_warm_responseStart = (extension_warm_medians[i][0] - no_extension_warm_medians[i][0])/(extension_warm_medians[i][0]+1);
-	let speedup_warm_responseEnd = (extension_warm_medians[i][1] - no_extension_warm_medians[i][1])/(extension_warm_medians[i][1]+1);
-	let speedup_warm_domResponse = (extension_warm_medians[i][2] - no_extension_warm_medians[i][2])/(extension_warm_medians[i][2]+1);
+	let speedup_warm_responseStart = 100*(extension_warm_medians[i][0] - no_extension_warm_medians[i][0])/(no_extension_warm_medians[i][0]+1);
+	let speedup_warm_responseEnd = 100*(extension_warm_medians[i][1] - no_extension_warm_medians[i][1])/(no_extension_warm_medians[i][1]+1);
+	let speedup_warm_domResponse = 100*(extension_warm_medians[i][2] - no_extension_warm_medians[i][2])/(no_extension_warm_medians[i][2]+1);
 
 	speedups_warm_responseStart.push(speedup_warm_responseStart);
 	speedups_warm_responseEnd.push(speedup_warm_responseEnd);
