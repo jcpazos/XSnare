@@ -33,77 +33,36 @@ let builder = new Builder()
 let i;
  
 async function run_tests_extension(start, end) {
-  	let loadTimes = [];
-  	let loadTime = 0;
 	for (i=start; i<end; i++) {
 		let j;
-		loadTimes.push([]);
 		var start1 = new Date();
 		for (j=0; j<trials; j++) {
-			loadTime = 0;
 			let driver;
-			let data = [];
 			try {
-				start1 = new Date();
 			 	driver = await builder.build();
 			 	await driver.manage().setTimeouts({pageLoad: 25000});
-			 	end1 = new Date();
 				await driver.get(urls[i]);
-				end2 = new Date();
-				//loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-				end3 = new Date();
-				//console.log(loadTime);
-				let requestStart = loadTime.requestStart;
-				let responseStart = loadTime.responseStart;
-				let responseEnd = loadTime.responseEnd;
-				let domContentLoaded = loadTime.domContentLoadedEventEnd;
-				let domComplete = loadTime.domComplete;
-				let duration = loadTime.duration;
-				let bodySize = loadTime.decodedBodySize; 
-				data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
-				/*loadTimes[1].push();
-				loadTimes[2].push();
-				loadTimes[3].push();*/	
 			} catch (err) {
 				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
-				if (driver) {
-					try {
-						loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-					} catch (err) {
-						console.log("error when executing script, driver no longer available: " + err);
-					}
-				}
 			} finally {
-				loadTimes[i].push(data);
 				if (driver) {
 					await driver.quit();
 				}
 			}
 			
 		}
-		console.log("latest load time for page " + urls[i] + ": " + JSON.stringify(loadTime));
-		//console.log("tests took: " + (end5-start1));
+		console.log("latest loaded page: " + urls[i]);
 	} 
-	return loadTimes;
 }
 
 
 
 function initExtensionTests(start, end) {
-	run_tests_extension(start, end).then(function (loadTimes) {
-	if (i !== end) {
-		console.log("didn't finish tests in one run, trying again with index " + i);
-		initExtensionTests(i, urls.length);
-	} else {
-		fs.writeFile("extension_cold_cache_results.txt", JSON.stringify(loadTimes), (err) => {
-		if (err) console.log(err);
-		console.log("Successfully written to file.");
-	});
-	}
+	run_tests_extension(start, end).then(function () {
+	console.log("loaded signatures tests done.");
 	//console.log("Load times without extension running: " + extensionLoadTimes);
 	}).catch (function (err) {
 		console.log("initextensiontests err : " + err);
-		initExtensionTests(i, urls.length);
 	});
 }
 
