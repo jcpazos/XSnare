@@ -12,12 +12,22 @@ let extension_warm_cache_results = [];
 let no_extension_cold_cache_results = [];
 let no_extension_warm_cache_results = [];
 
+let max_byte_size = 0;
+
+for (i=0; i<extension_cold_cache.length; i++) {
+	for (j=0; j<20; j++) {
+		if (extension_cold_cache[i][j][6] > max_byte_size) {
+			max_byte_size = extension_cold_cache[i][j][6];
+		}
+	}
+}
+
 for (i=0; i<extension_cold_cache.length; i++) {
 	let newRes = [];
 	let j;
 	for (j=0;j<20;j++) {
 		let toAdd = [];
-		if (extension_cold_cache[i][j] && extension_cold_cache[i][j][0] && extension_cold_cache[i][j][0] !== -1 && extension_cold_cache[i][j][0] !== 0) {
+		if (extension_cold_cache[i][j] && extension_cold_cache[i][j][0] && extension_cold_cache[i][j][0] !== -1) {
 			toAdd[0] = extension_cold_cache[i][j][1] - extension_cold_cache[i][j][0];
 			toAdd[1] = extension_cold_cache[i][j][2] - extension_cold_cache[i][j][0];
 			toAdd[2] = extension_cold_cache[i][j][4] - extension_cold_cache[i][j][0];
@@ -26,7 +36,16 @@ for (i=0; i<extension_cold_cache.length; i++) {
 			toAdd[0] = 25000;
 			toAdd[1] = 25000;
 			toAdd[2] = 25000;
-			toAdd[3] = 25000;
+			toAdd[3] = max_byte_size;
+		}
+		if (toAdd[3] === 0) {
+			toAdd[3] = max_byte_size;
+		}
+		if (toAdd[0] === 0) {
+			toAdd[0] = extension_cold_cache[i][j][3];
+		}
+		if (toAdd[1] === 0) {
+			toAdd[1] = extension_cold_cache[i][j][3];
 		}
 		newRes.push(toAdd);
 	}
@@ -34,11 +53,20 @@ for (i=0; i<extension_cold_cache.length; i++) {
 }
 
 for (i=0; i<extension_warm_cache.length; i++) {
+	for (j=0; j<20; j++) {
+		if (extension_warm_cache[i][6] > max_byte_size) {
+			max_byte_size = extension_warm_cache[i][6];
+		}
+	}
+}
+
+
+for (i=0; i<extension_warm_cache.length; i++) {
 	let newRes = [];
 	let j;
 	for (j=0;j<20;j++) {
 		let toAdd = [];
-		if (extension_warm_cache[i][j] && extension_warm_cache[i][j][0] && extension_warm_cache[i][j][0] !== -1 && extension_warm_cache[i][j][0] !== 0) {
+		if (extension_warm_cache[i][j] && extension_warm_cache[i][j][0] && extension_warm_cache[i][j][0] !== -1) {
 			toAdd[0] = extension_warm_cache[i][j][1] - extension_warm_cache[i][j][0];
 			toAdd[1] = extension_warm_cache[i][j][2] - extension_warm_cache[i][j][0];
 			toAdd[2] = extension_warm_cache[i][j][4] - extension_warm_cache[i][j][0];
@@ -47,7 +75,16 @@ for (i=0; i<extension_warm_cache.length; i++) {
 			toAdd[0] = 25000;
 			toAdd[1] = 25000;
 			toAdd[2] = 25000;
-			toAdd[3] = 25000;
+			toAdd[3] = max_byte_size;
+		}
+		if (toAdd[3] === 0) {
+			toAdd[3] = max_byte_size;
+		}
+		if (toAdd[0] === 0) {
+			toAdd[0] = extension_warm_cache[i][j][3];
+		}
+		if (toAdd[1] === 0) {
+			toAdd[1] = extension_warm_cache[i][j][3];
 		}
 		newRes.push(toAdd);
 	}
@@ -55,11 +92,19 @@ for (i=0; i<extension_warm_cache.length; i++) {
 }
 
 for (i=0; i<no_extension_cold_cache.length; i++) {
+	for (j=0; j<20; j++) {
+		if (no_extension_cold_cache[i][6] > max_byte_size) {
+			max_byte_size = no_extension_cold_cache[i][6];
+		}
+	}
+}
+
+for (i=0; i<no_extension_cold_cache.length; i++) {
 	let newRes = [];
 	let j;
 	for (j=0;j<20;j++) {
 		let toAdd = [];
-		if (no_extension_cold_cache[i][j] && no_extension_cold_cache[i][j][0] && no_extension_cold_cache[i][j][0] !== -1 && no_extension_cold_cache[i][j][0] !== 0) {
+		if (no_extension_cold_cache[i][j] && no_extension_cold_cache[i][j][0] && no_extension_cold_cache[i][j][0] !== -1) {
 			toAdd[0] = no_extension_cold_cache[i][j][1] - no_extension_cold_cache[i][j][0];
 			toAdd[1] = no_extension_cold_cache[i][j][2] - no_extension_cold_cache[i][j][0];
 			toAdd[2] = no_extension_cold_cache[i][j][4] - no_extension_cold_cache[i][j][0];
@@ -68,11 +113,29 @@ for (i=0; i<no_extension_cold_cache.length; i++) {
 			toAdd[0] = 25000;
 			toAdd[1] = 25000;
 			toAdd[2] = 25000;
-			toAdd[3] = 25000;
+			toAdd[3] = max_byte_size;
+		}
+		if (toAdd[3] === 0) {
+			toAdd[3] = max_byte_size;
+		}
+		if (toAdd[0] === 0) {
+			toAdd[0] = no_extension_cold_cache[i][j][3];
+		}
+		if (toAdd[1] === 0) {
+			toAdd[1] = no_extension_cold_cache[i][j][3];
 		}
 		newRes.push(toAdd);
 	}
 	no_extension_cold_cache_results.push(newRes);
+}
+
+
+for (i=0; i<no_extension_warm_cache.length; i++) {
+	for (j=0; j<20; j++) {
+		if (no_extension_warm_cache[i][6] > max_byte_size) {
+			max_byte_size = no_extension_warm_cache[i][6];
+		}
+	}
 }
 
 for (i=0; i<no_extension_warm_cache.length; i++) {
@@ -80,7 +143,7 @@ for (i=0; i<no_extension_warm_cache.length; i++) {
 	let j;
 	for (j=0;j<20;j++) {
 		let toAdd = [];
-		if (no_extension_warm_cache[i][j] && no_extension_warm_cache[i][j][0] && no_extension_warm_cache[i][j][0] !== -1 && no_extension_warm_cache[i][j][0] !== 0) {
+		if (no_extension_warm_cache[i][j] && no_extension_warm_cache[i][j][0] && no_extension_warm_cache[i][j][0] !== -1) {
 			toAdd[0] = no_extension_warm_cache[i][j][1] - no_extension_warm_cache[i][j][0];
 			toAdd[1] = no_extension_warm_cache[i][j][2] - no_extension_warm_cache[i][j][0];
 			toAdd[2] = no_extension_warm_cache[i][j][4] - no_extension_warm_cache[i][j][0];
@@ -89,7 +152,16 @@ for (i=0; i<no_extension_warm_cache.length; i++) {
 			toAdd[0] = 25000;
 			toAdd[1] = 25000;
 			toAdd[2] = 25000;
-			toAdd[3] = 25000;
+			toAdd[3] = max_byte_size;
+		}
+		if (toAdd[3] === 0) {
+			toAdd[3] = max_byte_size;
+		}
+		if (toAdd[0] === 0) {
+			toAdd[0] = no_extension_warm_cache[i][j][3];
+		}
+		if (toAdd[1] === 0) {
+			toAdd[1] = no_extension_warm_cache[i][j][3];
 		}
 		newRes.push(toAdd);
 	}
@@ -99,6 +171,7 @@ for (i=0; i<no_extension_warm_cache.length; i++) {
 //get means from valid results
 let no_extension_cold_means = [];
 let no_extension_cold_medians = [];
+
 for (i=0;i<no_extension_cold_cache_results.length;i++) {
 	let currMean = [];
 	let currMedians = [];
@@ -173,6 +246,7 @@ for (i=0;i<extension_cold_cache_results.length;i++) {
 
 let extension_warm_means = [];
 let extension_warm_medians = [];
+
 for (i=0;i<extension_warm_cache_results.length;i++) {
 	let currMean = [];
 	let currMedians = [];
@@ -216,6 +290,7 @@ for (i=0; i<extension_cold_medians.length; i++) {
 	}
 }
 
+let extension_cold_sizes = [];
 let speedups_cold_responseStart = [];
 let speedups_cold_responseEnd = [];
 let speedups_cold_domResponse = [];
@@ -225,6 +300,7 @@ let speedups_warm_responseEnd = [];
 let speedups_warm_domResponse = [];
 
 for (i=0; i<extension_cold_medians.length; i++) {
+	extension_cold_sizes.push(extension_cold_medians[i][3]);
 	let speedup_cold_responseStart = 100*(extension_cold_medians[i][0] - no_extension_cold_medians[i][0])/(no_extension_cold_medians[i][0]+1);
 	let speedup_cold_responseEnd = 100*(extension_cold_medians[i][1] - no_extension_cold_medians[i][1])/(no_extension_cold_medians[i][1]+1);
 	let speedup_cold_domResponse = 100*(extension_cold_medians[i][2] - no_extension_cold_medians[i][2])/(no_extension_cold_medians[i][2]+1);
@@ -242,10 +318,31 @@ for (i=0; i<extension_cold_medians.length; i++) {
 	speedups_warm_domResponse.push(speedup_warm_domResponse);
 }
 
+let sizeMap = new Map();
+
+for (i=0; i<extension_cold_sizes.length; i++) {
+	let tmp = sizeMap.get(extension_cold_sizes[i]);
+	if (!!tmp) {
+		sizeMap.set(extension_cold_sizes[i], Math.max(tmp, extension_cold_medians[i][1]));
+	}
+	else {
+		sizeMap.set(extension_cold_sizes[i], extension_cold_medians[i][1]);
+	}
+}
+
+let sortedMap = sorted = Array.from(sizeMap.keys()).sort((a,b) => a-b).map(function(k) {return {key: k, value: sizeMap.get(k)}});
+let sizes = [];
+let times = [];
+for (i=0; i<sorted.length; i++) {
+	times.push(sorted[i].value);
+	sizes.push(sorted[i].key);
+}
+
 speedups_cold_responseStart.sort((a, b) => a - b);
 speedups_cold_responseEnd.sort((a, b) => a - b);
 speedups_cold_domResponse.sort((a, b) => a - b);
 speedups_warm_responseStart.sort((a, b) => a - b);
 speedups_warm_responseEnd.sort((a, b) => a - b);
 speedups_warm_domResponse.sort((a, b) => a - b);
+extension_cold_sizes.sort((a, b) => a - b);
 
