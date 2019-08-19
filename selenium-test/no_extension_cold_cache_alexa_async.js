@@ -1,3 +1,5 @@
+//var hrstart = process.hrtime();
+//var timeStart = new Date();
 const {Builder, By, Key, logging, until} = require('selenium-webdriver');
 const {Capabilities, UserPromptHandler} = require('selenium-webdriver/lib/capabilities');
 const {NoSuchWindowError} =  require('selenium-webdriver/lib/error')
@@ -14,10 +16,11 @@ var fs = require("fs");
 
 let urls = urlArray;
 
-const trials = 20;
+const trials = 1;
 
 let options = new firefox.Options()
 				        .headless();
+				        
 let capabilities = new Capabilities()
 				  		.setAlertBehavior(UserPromptHandler.ACCEPT);
 
@@ -27,14 +30,14 @@ let builder = new Builder()
 				  	.setFirefoxOptions(
 				        options)
 				  	.forBrowser('firefox');
-
-let i;
  
 async function run_tests_extension(start, end) {
+	let i;
   	let loadTimes = [];
   	let loadTime = 0;
 	for (i=start; i<end; i++) {
 		let j;
+		loadTimes.push([]);
 		var start1 = new Date();
 		for (j=0; j<trials; j++) {
 			var start1;
@@ -77,7 +80,7 @@ async function run_tests_extension(start, end) {
 					}
 				}
 			} finally {
-				loadTimes.push(data);
+				loadTimes[i].push(data);
 				if (driver) {
 					end4 = new Date();
 					await driver.quit();
@@ -99,7 +102,7 @@ async function run_tests_extension(start, end) {
 
 
 
-function initExtensionTests(start, end) {
+/*function initExtensionTests(start, end) {
 	run_tests_extension(start, end).then(function (loadTimes) {
 	if (i !== end) {
 		console.log("didn't finish tests in one run, trying again with index " + i);
@@ -115,29 +118,34 @@ function initExtensionTests(start, end) {
 		console.log("initextensiontests err : " + err);
 		initExtensionTests(i, urls.length);
 	});
-}
+}*/
 
 //let start = process.argv[2];
 //let end = process.argv[3];
+const threads = 4;
 let promises = [];
 k = 0;
-for (k=0; k < 4; k++) {
-	if (k==3) {
+for (k=0; k < threads; k++) {
+	if (k === (threads-1)) {
 		promises.push(new Promise(function (resolve,reject) {
-			run_tests_extension(k*110, 441);
+			resolve(run_tests_extension(k*110, 441));
 		}));
 	} else {
 		promises.push(new Promise(function (resolve,reject) {
-			run_tests_extension(k*110, (k+1)*110);
+			resolve(run_tests_extension(k*110, (k+1)*110));
 		}));
 	}
 }
 //initExtensionTests(0, urls.length);
 //initExtensionTests(228, urls.length);
 Promise.all(promises).then(function(loadTimesArray) {
-	fs.writeFile("no_extension_cold_cache_results_async.txt", JSON.stringify(loadTimes), (err) => {
+	fs.writeFile("extension_cold_cache_results_async.txt", JSON.stringify(loadTimesArray), (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
+		//var hrend = process.hrtime(hrstart);
+		//var timeEnd = new Date();
+		//console.log("Execution time (Date): " + (timeEnd-timeStart));
+		//console.log("Execution time (hr): %ds %dms", hrend[0], hrend[1] / 1000000);
 	});
 }).catch (function (err) {
 		console.log("initextensiontests err : " + err);

@@ -28,9 +28,10 @@ let builder = new Builder()
 				  	.forBrowser('firefox');
 
 const trials = 20;
-let i;
-let loadTimes = [];
+
 async function run_tests(start, end) {
+	let i;
+	let loadTimes = [];
   	let loadTime = 0;
   	var start1;
 	var end1;
@@ -41,7 +42,7 @@ async function run_tests(start, end) {
 	
 	for (i=start; i<end; i++) {
 		let driver;
-		loadTimes[i] = [];
+		loadTimes.push([]);
 		try {
 			driver = await builder.build();
 			await driver.manage().setTimeouts({pageLoad: 25000});
@@ -122,23 +123,24 @@ function initExtensionTests(start, end) {
 //initExtensionTests(0, urls.length);
 //initExtensionTests(0, urls.length);
 
+const threads = 4;
 let promises = [];
 k = 0;
-for (k=0; k < 4; k++) {
-	if (k==3) {
+for (k=0; k < threads; k++) {
+	if (k === (threads-1)) {
 		promises.push(new Promise(function (resolve,reject) {
-			run_tests(k*110, 441);
+			resolve(run_tests_extension(k*110, 441));
 		}));
 	} else {
 		promises.push(new Promise(function (resolve,reject) {
-			run_tests(k*110, (k+1)*110);
+			resolve(run_tests_extension(k*110, (k+1)*110));
 		}));
 	}
 }
 //initExtensionTests(0, urls.length);
 //initExtensionTests(228, urls.length);
 Promise.all(promises).then(function(loadTimesArray) {
-	fs.writeFile("extension_warm_cache_results_async.txt", JSON.stringify(loadTimes), (err) => {
+	fs.writeFile("extension_warm_cache_results_async.txt", JSON.stringify(loadTimesArray), (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
 	});
