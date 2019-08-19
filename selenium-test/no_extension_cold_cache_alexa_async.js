@@ -16,7 +16,7 @@ var fs = require("fs");
 
 let urls = urlArray;
 
-const trials = 1;
+const trials = 20;
 
 let options = new firefox.Options()
 				        .headless();
