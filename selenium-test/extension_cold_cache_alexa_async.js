@@ -16,7 +16,7 @@ var fs = require("fs");
 
 let urls = urlArray;
 
-const trials = 1;
+const trials = 20;
 
 let options = new firefox.Options()
 				        .headless()
@@ -81,7 +81,7 @@ async function run_tests_extension(start, end) {
 					}
 				}
 			} finally {
-				loadTimes[i].push(data);
+				loadTimes[loadTimes.length-1].push(data);
 				if (driver) {
 					end4 = new Date();
 					await driver.quit();

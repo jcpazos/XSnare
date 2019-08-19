@@ -80,7 +80,7 @@ async function run_tests_extension(start, end) {
 					}
 				}
 			} finally {
-				loadTimes[i].push(data);
+				loadTimes[loadTimes.length-1].push(data);
 				if (driver) {
 					end4 = new Date();
 					await driver.quit();

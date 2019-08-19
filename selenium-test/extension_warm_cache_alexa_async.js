@@ -75,7 +75,7 @@ async function run_tests(start, end) {
 						driver = await builder.build();
 					}*/
 				} finally {
-					loadTimes[i].push(data);
+					loadTimes[loadTimes.length-1].push(data);
 				}
 			}
 		} catch (err) {
