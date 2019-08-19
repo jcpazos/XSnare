@@ -138,7 +138,7 @@ for (k=0; k < threads; k++) {
 //initExtensionTests(0, urls.length);
 //initExtensionTests(228, urls.length);
 Promise.all(promises).then(function(loadTimesArray) {
-	fs.writeFile("extension_warm_cache_results_async.txt", JSON.stringify(loadTimesArray), (err) => {
+	fs.writeFile("no_extension_warm_cache_results_async.txt", JSON.stringify(loadTimesArray), (err) => {
 		if (err) console.log(err);
 		console.log("Successfully written to file.");
 	});
