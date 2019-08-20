@@ -11,6 +11,7 @@ let currSigs = [];
 let xhrEndPointsList = [];
 let xhrCurrSigs = [];
 let probes = {};
+let loadedProbes = [];
 
 String.prototype.replaceBetween = function(start, end, what) {
     return this.substring(0, start) + what + this.substring(end);
@@ -45,7 +46,7 @@ function mainFrameListener(details) {
         str = verifyHTML(str, details.url, details.tabId);
         verifyEnd = performance.now();
 
-        let myRequest = new Request('http://localhost:8000/?time=' + (verifyEnd-verifyStart) + '&loadedSignatures=' + loadedCounter + '&url=' + details.url);
+        let myRequest = new Request('http://localhost:8000/?time=' + (verifyEnd-verifyStart) + '&loadedSignatures=' + loadedCounter + 'loadedProbes=' + loadedProbes +'&url=' + details.url);
         fetch(myRequest).then(function (resp) {
         	//do nothing
         });
@@ -246,6 +247,7 @@ function isRunningWordPress(HTMLString, url) {
 }
 
 function runProbes(HTMLString, url, domain) {
+  loadedProbes = [];
   //this might be done better by loading a signature-like language for probes
   //for now i'm hardcoding known probes
   //probes are a list of a known probe i.e 'wordpress' and any additional versioning information necessary
@@ -254,6 +256,7 @@ function runProbes(HTMLString, url, domain) {
   //probe for wordpress detection + default plugin versioning. This versioning method only works for
   //users with access to wp-admin/plugins.php
   if (isRunningWordPress(HTMLString, url)) {
+    loadedProbes.push('wordpress');
     var index = probes.length;
     probes['WordPress'] = {};
     //probes.push(['WordPress', {}]);
