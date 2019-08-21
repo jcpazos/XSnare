@@ -27,7 +27,7 @@ let builder = new Builder()
 
 const trials = 20;
 
-async function run_tests(start, end) {
+async function run_tests_extension(start, end) {
 	let i;
 	let loadTimes = [];
   	let loadTime = 0;
