@@ -364,6 +364,7 @@ async function initTests(url) {
 	});*/
 	stream = fs.createWriteStream("extension_cold_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
+	stream.write(",");
 	stream.end();
 
 
@@ -374,6 +375,7 @@ async function initTests(url) {
 	});*/
 	stream = fs.createWriteStream("extension_warm_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
+	stream.write(",");
 	stream.end();
 
 	loadTimes = await run_tests_cold_no_extension(url);
@@ -383,6 +385,7 @@ async function initTests(url) {
 	});*/
 	stream = fs.createWriteStream("no_extension_cold_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
+	stream.write(",");
 	stream.end();
 
 	loadTimes = await run_tests_warm_no_extension(url);
@@ -392,6 +395,7 @@ async function initTests(url) {
 	});*/
 	stream = fs.createWriteStream("no_extension_warm_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
+	stream.write(",");
 	stream.end();
 
 	return true;
