@@ -86,10 +86,10 @@ async function run_tests_extension(start, end) {
 					end4 = new Date();
 					await driver.quit();
 					end5 = new Date();
-					console.log("Time to start driver: " + (end1-start1));
-					console.log("Time to await page get: " + (end2-end1));
-					console.log("Time to await script execute: " + (end3-end2));
-					console.log("Time to close driver: " + (end5-end4));
+					//console.log("Time to start driver: " + (end1-start1));
+					//console.log("Time to await page get: " + (end2-end1));
+					//console.log("Time to await script execute: " + (end3-end2));
+					//console.log("Time to close driver: " + (end5-end4));
 
 				}
 			}
