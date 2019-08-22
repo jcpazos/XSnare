@@ -50,7 +50,7 @@ plt.axvline(0, linestyle='dashed', color='grey')
 #plt.hlines(0.5, -1, 1, linestyle='dashed', color='grey')
 
 plt.title('Slowdown of webpage load times with extension')
-plt.legend(["0 line", "cold responseStart", "cold responseEnd", "cold domResponse", "warm responseStart", "warm responseEnd", "warm domResponse"])
+plt.legend(["x=0", "cold responseStart", "cold responseEnd", "cold domResponse", "warm responseStart", "warm responseEnd", "warm domResponse"])
 plt.xlabel('Percentage slowdown')
 plt.ylabel('Percentage of sites')
 plt.show()
