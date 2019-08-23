@@ -80,7 +80,7 @@ async function run_tests_cold_extension(url) {
 		let data = [];
 		try {
 			start1 = new Date();
-		 	driver = await builder_extension_verify.build();
+		 	driver = await builder_extension.build();
 
 		 	await driver.manage().setTimeouts({pageLoad: 25000});
 		 	await driver.get("http://localhost:8080/wp-admin");
@@ -151,7 +151,7 @@ async function run_tests_warm_extension(url) {
 	var end5;
 	let driver;
 	try {
-		driver = await builder_extension.build();
+		driver = await builder_extension_verify.build();
 		await driver.manage().setTimeouts({pageLoad: 25000});
   		await driver.get("https://www.example.com");
   		await driver.get("http://localhost:8080/wp-admin");
