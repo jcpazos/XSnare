@@ -18,12 +18,24 @@ for (var k = 0; k<urls.length; k++) {
 
 const trials = 20;
 
-let options_extension = new firefox.Options()
+let options_extension_verify = new firefox.Options()
 				        .headless()
 				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1.3-an+fx.xpi')
 				  		.setPreference('extensions.dom_firewall.showChromeErrors', true);
+let options_extension = new firefox.Options()
+				        .headless()
+				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1.4-an+fx.xpi')
+				  		.setPreference('extensions.dom_firewall.showChromeErrors', true);
+
 let capabilities = new Capabilities()
 				  		.setAlertBehavior(UserPromptHandler.ACCEPT);
+
+let builder_extension_verify = new Builder()
+					.withCapabilities(
+				  		capabilities)
+				  	.setFirefoxOptions(
+				        options_extension_verify)
+				  	.forBrowser('firefox');				  		
 
 let builder_extension = new Builder()
 					.withCapabilities(
@@ -68,7 +80,7 @@ async function run_tests_cold_extension(url) {
 		let data = [];
 		try {
 			start1 = new Date();
-		 	driver = await builder_extension.build();
+		 	driver = await builder_extension_verify.build();
 
 		 	await driver.manage().setTimeouts({pageLoad: 25000});
 		 	await driver.get("http://localhost:8080/wp-admin");
