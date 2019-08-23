@@ -42,15 +42,15 @@ function mainFrameListener(details) {
   filter.onstop = event => {
     try {
         //TODO: mark verified scripts as 'safe' so contentscript doesn't check them again for dynamic checks
-        var length = str.length;
-        verifyStart = performance.now()
+        //var length = str.length;
+        //verifyStart = performance.now()
         str = verifyHTML(str, details.url, details.tabId);
-        verifyEnd = performance.now();
+        //verifyEnd = performance.now();
 
-        let myRequest = new Request('http://localhost:8000/?time=' + (verifyEnd-verifyStart) + '&loadedSignatures=' + loadedCounter + '&loadedProbes=' + loadedProbes + '&length=' + length + '&url=' + details.url);
+        /*let myRequest = new Request('http://localhost:8000/?time=' + (verifyEnd-verifyStart) + '&loadedSignatures=' + loadedCounter + '&loadedProbes=' + loadedProbes + '&length=' + length + '&url=' + details.url);
         fetch(myRequest).then(function (resp) {
         	//do nothing
-        });
+        });*/
 
     } catch(err) {
         debugger;
