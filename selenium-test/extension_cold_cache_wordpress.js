@@ -9,7 +9,7 @@ var fs = require("fs");
 //		for events-manager need to create an event
 // 		for multi-step-form, create a new form and preview it, then get the url
 //		for quizlord, can also create a new quiz and get its url
-const urls = ["wp-admin/options-general.php?page=rcc-settings", "wp-admin/admin.php?page=rcsm-weblizar", "wp-admin/admin.php?page=activity_log_page","wp-admin/profile.php?wp_http_referer=%2Fwp-admin%2Fusers.php","wp-admin/admin.php?page=wpdevart-extras", "wp-admin/admin.php?page=wpdevart-forms", "wp-admin/admin.php?page=bookly-payments", "wp-admin/admin.php?edit=CF5d5f250093242&page=caldera-forms", "wp-admin/profile.php", "wp-admin/admin-ajax.php?action=wpdm_generate_password", "wp-admin/admin.php?page=tonjoo_excerpt", "wp-admin/post.php?post=10&action=edit", "wp-admin/admin.php?page=loginizer_brute_force", "wp-admin/options-general.php?page=flickrrss-settingspage.php", "wp-admin/admin.php?page=gd-rating-system-information&panel=%27%22%3E%3Csvg%2Fonload%3Dconsole.log%28%2Fxss%2F%29%3E%3C%27%22", "wp-admin/index.php", "wp-admin/options-general.php?page=wpdf-options", "2019/08/13-2/", "wp-admin/admin.php?page=quizlord", "wp-admin/options-general.php?page=read-and-understood-menu-slug-01", "wp-admin/options-general.php?page=relevanssi%2Frelevanssi.php" , 'wp-content/plugins/sagepay-server-gateway-for-woocommerce/includes/pages/redirect.php?page=</script>"><script>alert("R1XS4.COM")</script>', "wp-content/plugins/share-this-image/sharer.php", 'wp-admin/edit.php?post_type=sdm_downloads', 'wp-admin/themes.php?page=snazzy_maps&tab=1&text="%3B><%2Fscript><script>alert(42)<%2Fscript>', '?war_soundy_pl_preview', '?war_soundy_preview', 'wp-admin/options-general.php?page=srbtranslatoptions', 'wp-admin', '?post_type=tggr-tweets&p=18&preview=true', 'wp-admin/admin.php?page=slideshow-galleries&method=view&id=1\"><script>alert(1)<%2Fscript>', 'wp-admin/admin.php?page=slideshow-slides&method=save\"><script>alert(1)<%2Fscript>&id=1', 'wp-admin/options-general.php?page=ctcc&tab=content', 'wp-admin/admin.php?page=pffree-weblizar', 'wp-admin/options-general.php?page=wordpress_file_upload&action=plugin_settings', 'wp-admin/admin.php?page=wpglobus_options', 'wp-admin/admin.php?page=wplivechat-menu-gdpr-page', 'wp-admin/admin.php?page=wps_pages_page&page-uri=%3F"><script>alert(document.cookie)%3B<%2Fscript>', 'index.php/community/?%22%3E%3Cscript%3Ealert(/XSS/)%3C/script%3E', 'wp-content/plugins/z-url-preview/class.zlinkpreview.php']
+const urls = ["wp-admin/options-general.php?page=rcc-settings", "wp-admin/admin.php?page=rcsm-weblizar", "wp-admin/admin.php?page=activity_log_page","wp-admin/profile.php?wp_http_referer=%2Fwp-admin%2Fusers.php","wp-admin/admin.php?page=wpdevart-extras", "wp-admin/admin.php?page=wpdevart-forms", "wp-admin/admin.php?page=bookly-payments", "wp-admin/admin.php?edit=CF5d5f250093242&page=caldera-forms", "wp-admin/profile.php", "wp-admin/admin-ajax.php?action=wpdm_generate_password", "wp-admin/admin.php?page=tonjoo_excerpt", "wp-admin/post.php?post=10&action=edit", "wp-admin/admin.php?page=loginizer_brute_force", "wp-admin/options-general.php?page=flickrrss-settingspage.php", "wp-admin/admin.php?page=gd-rating-system-information&panel=%27%22%3E%3Csvg%2Fonload%3Dconsole.log%28%2Fxss%2F%29%3E%3C%27%22", "wp-admin/index.php", "wp-admin/options-general.php?page=wpdf-options", "2019/08/13-2/", "wp-admin/admin.php?page=quizlord", "wp-admin/options-general.php?page=read-and-understood-menu-slug-01", "wp-admin/options-general.php?page=relevanssi%2Frelevanssi.php" , 'wp-content/plugins/sagepay-server-gateway-for-woocommerce/includes/pages/redirect.php?page=</script>"><script>alert("R1XS4.COM")</script>', "wp-content/plugins/share-this-image/sharer.php", 'wp-admin/edit.php?post_type=sdm_downloads', 'wp-admin/themes.php?page=snazzy_maps&tab=1&text="%3B><%2Fscript><script>alert(42)<%2Fscript>', '?war_soundy_pl_preview', '?war_soundy_preview', 'wp-admin/options-general.php?page=srbtranslatoptions', 'wp-admin', '?post_type=tggr-tweets&p=18&preview=true', 'wp-admin/admin.php?page=slideshow-galleries&method=view&id=1\"><script>console.log(1)<%2Fscript>', 'wp-admin/admin.php?page=slideshow-slides&method=save\"><script>console.log(1)<%2Fscript>&id=1', 'wp-admin/options-general.php?page=ctcc&tab=content', 'wp-admin/admin.php?page=pffree-weblizar', 'wp-admin/options-general.php?page=wordpress_file_upload&action=plugin_settings', 'wp-admin/admin.php?page=wpglobus_options', 'wp-admin/admin.php?page=wplivechat-menu-gdpr-page', 'wp-admin/admin.php?page=wps_pages_page&page-uri=%3F"><script>console.log(document.cookie)%3B<%2Fscript>', 'index.php/community/?%22%3E%3Cscript%3Econsole.log(/XSS/)%3C/script%3E', 'wp-content/plugins/z-url-preview/class.zlinkpreview.php']
 let prepend = 'http://localhost:8080/'
 
 for (var k = 0; k<urls.length; k++) {
@@ -243,6 +243,7 @@ async function run_tests_cold_no_extension(url) {
 
 		 	end1 = new Date();
 			await driver.get(url);
+			await sleep(1000);
 			end2 = new Date();
 			loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
 			end3 = new Date();
@@ -315,6 +316,7 @@ async function run_tests_warm_no_extension(url) {
 			try {
 				await driver.get(url);
 				loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
+				await sleep(1000);
 				let requestStart = loadTime.requestStart;
 				let responseStart = loadTime.responseStart;
 				let responseEnd = loadTime.responseEnd;
@@ -369,12 +371,12 @@ async function initTests(url) {
 	let loadTimes;
 	let stream;
 
-	loadTimes = await run_tests_cold_extension(url);
+	//loadTimes = await run_tests_cold_extension(url);
 	/*fs.writeFile("extension_cold_cache_wp_results_" + plugin +".txt", JSON.stringify(loadTimes), (err) => {
 			if (err) console.log(err);
 			console.log("Successfully written to cold extension file.");
 	});*/
-	stream = fs.createWriteStream("extension_cold_cache_wordpress_results.txt", {flags:'a'});
+	/*stream = fs.createWriteStream("extension_cold_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
 	stream.write(",");
 	stream.end();
@@ -385,10 +387,10 @@ async function initTests(url) {
 			if (err) console.log(err);
 			console.log("Successfully written to warm extension file.");
 	});*/
-	stream = fs.createWriteStream("extension_warm_cache_wordpress_results.txt", {flags:'a'});
+	/*stream = fs.createWriteStream("extension_warm_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
 	stream.write(",");
-	stream.end();
+	stream.end();*/
 
 	loadTimes = await run_tests_cold_no_extension(url);
 	/*fs.writeFile("no_extension_cold_cache_wp_results_" + plugin +".txt", JSON.stringify(loadTimes), (err) => {
