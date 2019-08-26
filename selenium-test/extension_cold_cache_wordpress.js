@@ -371,12 +371,12 @@ async function initTests(url) {
 	let loadTimes;
 	let stream;
 
-	//loadTimes = await run_tests_cold_extension(url);
+	loadTimes = await run_tests_cold_extension(url);
 	/*fs.writeFile("extension_cold_cache_wp_results_" + plugin +".txt", JSON.stringify(loadTimes), (err) => {
 			if (err) console.log(err);
 			console.log("Successfully written to cold extension file.");
 	});*/
-	/*stream = fs.createWriteStream("extension_cold_cache_wordpress_results.txt", {flags:'a'});
+	stream = fs.createWriteStream("extension_cold_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
 	stream.write(",");
 	stream.end();
@@ -387,10 +387,10 @@ async function initTests(url) {
 			if (err) console.log(err);
 			console.log("Successfully written to warm extension file.");
 	});*/
-	/*stream = fs.createWriteStream("extension_warm_cache_wordpress_results.txt", {flags:'a'});
+	stream = fs.createWriteStream("extension_warm_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
 	stream.write(",");
-	stream.end();*/
+	stream.end();
 
 	loadTimes = await run_tests_cold_no_extension(url);
 	/*fs.writeFile("no_extension_cold_cache_wp_results_" + plugin +".txt", JSON.stringify(loadTimes), (err) => {
