@@ -97,6 +97,8 @@ plt.scatter(X_6, Y, s=5, color='purple')
 plt.axvline(0, linestyle='dashed', color='grey')
 #plt.axvline(np.median(X), linestyle='dashed', color='grey')
 #plt.hlines(0.5, -1, 1, linestyle='dashed', color='grey')
+
+
 f = interp1d(X_2, Y)
 plt.plot(X_2,f(X_2))
 
@@ -157,6 +159,7 @@ plt.show()
 plt.figure()
 plt.xlim((0,1750000))
 plt.ylim((0,40))
+
 X = np.array(stringLengths)
 Y = np.array(filterTimes)
 z = np.polyfit(X, Y, 1)
