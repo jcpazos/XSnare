@@ -43,34 +43,101 @@ let builder_no_extension = new Builder()
 				        options_no_extension)
 				  	.forBrowser('firefox');		
  
-async function run_tests_cold_extension(start, end) {
-	let i;
+async function run_tests_cold_extension(url) {
   	let loadTimes = [];
   	let loadTime = 0;
-	for (i=start; i<end; i++) {
+	let j;
+	var start1 = new Date();
+	for (j=0; j<trials; j++) {
+		var start1;
+		var end1;
+		var end2;
+		var end3;
+		var end4;
+		var end5;
+		loadTime = 0;
+		let driver;
+		let data = [];
+		try {
+			start1 = new Date();
+		 	driver = await builder_extension.build();
+		 	await driver.manage().setTimeouts({pageLoad: 25000});
+		 	end1 = new Date();
+			await driver.get(url);
+			end2 = new Date();
+			loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
+			end3 = new Date();
+			//console.log(loadTime);
+			let requestStart = loadTime.requestStart;
+			let responseStart = loadTime.responseStart;
+			let responseEnd = loadTime.responseEnd;
+			let domContentLoaded = loadTime.domContentLoadedEventEnd;
+			let domComplete = loadTime.domComplete;
+			let duration = loadTime.duration;
+			let bodySize = loadTime.decodedBodySize; 
+			data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
+			/*loadTimes[1].push();
+			loadTimes[2].push();
+			loadTimes[3].push();*/	
+		} catch (err) {
+			console.log('error in cold extension tests when loading page ' + url + ': ' + err);
+			if (driver) {
+				try {
+					loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
+					let requestStart = loadTime.requestStart;
+					let responseStart = loadTime.responseStart;
+					let responseEnd = loadTime.responseEnd;
+					let domContentLoaded = loadTime.domContentLoadedEventEnd;
+					let domComplete = loadTime.domComplete;
+					let duration = loadTime.duration;
+					let bodySize = loadTime.decodedBodySize; 
+					data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
+				} catch (err) {
+					console.log("error when executing cold extension script, driver no longer available: " + err);
+				}
+			}
+		} finally {
+			loadTimes.push(data);
+			if (driver) {
+				end4 = new Date();
+				await driver.quit();
+				end5 = new Date();
+				//console.log("Time to start driver: " + (end1-start1));
+				//console.log("Time to await page get: " + (end2-end1));
+				//console.log("Time to await script execute: " + (end3-end2));
+				//console.log("Time to close driver: " + (end5-end4));
+
+			}
+		}
+		
+	}
+	console.log("latest load time for cold extension page " + url + ": " + JSON.stringify(loadTime));
+	//console.log("tests took: " + (end5-start1));
+	return loadTimes;
+}
+
+async function run_tests_warm_extension(url) {
+	let i;
+	let loadTimes = [];
+  	let loadTime = 0;
+  	var start1;
+	var end1;
+	var end2;
+	var end3;
+	var end4;
+	var end5;
+	
+	let driver;
+	try {
+		driver = await builder_extension.build();
+		await driver.manage().setTimeouts({pageLoad: 25000});
+  		await driver.get("https://www.example.com");
 		let j;
-		loadTimes.push([]);
-		var start1 = new Date();
 		for (j=0; j<trials; j++) {
-			var start1;
-			var end1;
-			var end2;
-			var end3;
-			var end4;
-			var end5;
-			loadTime = 0;
-			let driver;
 			let data = [];
 			try {
-				start1 = new Date();
-			 	driver = await builder_extension.build();
-			 	await driver.manage().setTimeouts({pageLoad: 25000});
-			 	end1 = new Date();
-				await driver.get(urls[i]);
-				end2 = new Date();
+				await driver.get(url);
 				loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-				end3 = new Date();
-				//console.log(loadTime);
 				let requestStart = loadTime.requestStart;
 				let responseStart = loadTime.responseStart;
 				let responseEnd = loadTime.responseEnd;
@@ -79,11 +146,8 @@ async function run_tests_cold_extension(start, end) {
 				let duration = loadTime.duration;
 				let bodySize = loadTime.decodedBodySize; 
 				data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
-				/*loadTimes[1].push();
-				loadTimes[2].push();
-				loadTimes[3].push();*/	
 			} catch (err) {
-				console.log('error in cold extension tests when loading page ' + urls[i] + ': ' + err);
+				console.log("error when retrieving warm extension page: " + url + ': ' + err);
 				if (driver) {
 					try {
 						loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
@@ -96,53 +160,79 @@ async function run_tests_cold_extension(start, end) {
 						let bodySize = loadTime.decodedBodySize; 
 						data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 					} catch (err) {
-						console.log("error when executing cold extension script, driver no longer available: " + err);
+						console.log("error when executing warm extension script, driver no longer available: " + err);
 					}
 				}
-			} finally {
-				loadTimes[loadTimes.length-1].push(data);
-				if (driver) {
-					end4 = new Date();
+				/*if (driver) {
 					await driver.quit();
-					end5 = new Date();
-					//console.log("Time to start driver: " + (end1-start1));
-					//console.log("Time to await page get: " + (end2-end1));
-					//console.log("Time to await script execute: " + (end3-end2));
-					//console.log("Time to close driver: " + (end5-end4));
-
-				}
+					driver = await builder.build();
+				}*/
+			} finally {
+				loadTimes.push(data);
 			}
-			
 		}
-		console.log("latest load time for cold extension page " + urls[i] + ": " + JSON.stringify(loadTime));
-		//console.log("tests took: " + (end5-start1));
-	} 
+	} catch (err) {
+		console.log('error in warm extension tests when building driver: ' + err);
+	}
+	if (driver) {
+		end4 = new Date();
+		try {
+			await driver.quit();	
+		} catch (err) {
+			//couldn't quit driver, session was already disconnected, so carry on
+			console.log("error when quitting warm extension driver, session was already disconnected: " + err);
+		}
+		end5 = new Date();
+		//console.log("Time to start driver: " + (end1-start1));
+		//console.log("Time to await page get: " + (end2-end1));
+		//console.log("Time to await script execute: " + (end3-end2));
+		//console.log("Time to close driver: " + (end5-end4));
+	}
+	console.log("latest load time for warm extension page " + url + ": " + JSON.stringify(loadTime));
 	return loadTimes;
 }
 
-async function run_tests_warm_extension(start, end) {
+async function run_tests_cold_no_extension(url) {
 	let i;
-	let loadTimes = [];
+  	let loadTimes = [];
   	let loadTime = 0;
-  	var start1;
-	var end1;
-	var end2;
-	var end3;
-	var end4;
-	var end5;
-	
-	for (i=start; i<end; i++) {
+	let j;
+	var start1 = new Date();
+	for (j=0; j<trials; j++) {
+		var start1;
+		var end1;
+		var end2;
+		var end3;
+		var end4;
+		var end5;
+		loadTime = 0;
 		let driver;
-		loadTimes.push([]);
+		let data = [];
 		try {
-			driver = await builder_extension.build();
-			await driver.manage().setTimeouts({pageLoad: 25000});
-	  		await driver.get("https://www.example.com");
-			let j;
-			for (j=0; j<trials; j++) {
-				let data = [];
+			start1 = new Date();
+		 	driver = await builder_no_extension.build();
+		 	await driver.manage().setTimeouts({pageLoad: 25000});
+		 	end1 = new Date();
+			await driver.get(url);
+			end2 = new Date();
+			loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
+			end3 = new Date();
+			//console.log(loadTime);
+			let requestStart = loadTime.requestStart;
+			let responseStart = loadTime.responseStart;
+			let responseEnd = loadTime.responseEnd;
+			let domContentLoaded = loadTime.domContentLoadedEventEnd;
+			let domComplete = loadTime.domComplete;
+			let duration = loadTime.duration;
+			let bodySize = loadTime.decodedBodySize; 
+			data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
+			/*loadTimes[1].push();
+			loadTimes[2].push();
+			loadTimes[3].push();*/	
+		} catch (err) {
+			console.log('error in cold no extension tests when loading page ' + url + ': ' + err);
+			if (driver) {
 				try {
-					await driver.get(urls[i]);
 					loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
 					let requestStart = loadTime.requestStart;
 					let responseStart = loadTime.responseStart;
@@ -153,80 +243,50 @@ async function run_tests_warm_extension(start, end) {
 					let bodySize = loadTime.decodedBodySize; 
 					data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 				} catch (err) {
-					console.log("error when retrieving warm extension page: " + urls[i] + ': ' + err);
-					if (driver) {
-						try {
-							loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-							let requestStart = loadTime.requestStart;
-							let responseStart = loadTime.responseStart;
-							let responseEnd = loadTime.responseEnd;
-							let domContentLoaded = loadTime.domContentLoadedEventEnd;
-							let domComplete = loadTime.domComplete;
-							let duration = loadTime.duration;
-							let bodySize = loadTime.decodedBodySize; 
-							data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
-						} catch (err) {
-							console.log("error when executing warm extension script, driver no longer available: " + err);
-						}
-					}
-					/*if (driver) {
-						await driver.quit();
-						driver = await builder.build();
-					}*/
-				} finally {
-					loadTimes[loadTimes.length-1].push(data);
+					console.log("error when executing cold no extension script, driver no longer available: " + err);
 				}
 			}
-		} catch (err) {
-			console.log('error in warm extension tests when building driver: ' + err);
-		}
-		if (driver) {
-			end4 = new Date();
-			try {
-				await driver.quit();	
-			} catch (err) {
-				//couldn't quit driver, session was already disconnected, so carry on
-				console.log("error when quitting warm extension driver, session was already disconnected: " + err);
+		} finally {
+			loadTimes.push(data);
+			if (driver) {
+				end4 = new Date();
+				await driver.quit();
+				end5 = new Date();
+				/*console.log("Time to start driver: " + (end1-start1));
+				console.log("Time to await page get: " + (end2-end1));
+				console.log("Time to await script execute: " + (end3-end2));
+				console.log("Time to close driver: " + (end5-end4));*/
+
 			}
-			end5 = new Date();
-			//console.log("Time to start driver: " + (end1-start1));
-			//console.log("Time to await page get: " + (end2-end1));
-			//console.log("Time to await script execute: " + (end3-end2));
-			//console.log("Time to close driver: " + (end5-end4));
 		}
-		console.log("latest load time for warm extension page " + urls[i] + ": " + JSON.stringify(loadTime));
-	} 
+		
+	}
+	console.log("latest load time for cold no extension page " + url + ": " + JSON.stringify(loadTime));
 	return loadTimes;
 }
 
-async function run_tests_cold_no_extension(start, end) {
+async function run_tests_warm_no_extension(url) {
 	let i;
-  	let loadTimes = [];
+	let loadTimes = [];
   	let loadTime = 0;
-	for (i=start; i<end; i++) {
+  	var start1;
+	var end1;
+	var end2;
+	var end3;
+	var end4;
+	var end5;
+	
+	let driver;
+	try {
+		driver = await builder_no_extension.build();
+		await driver.manage().setTimeouts({pageLoad: 25000});
+  		await driver.get("https://www.example.com");
 		let j;
-		loadTimes.push([]);
-		var start1 = new Date();
 		for (j=0; j<trials; j++) {
-			var start1;
-			var end1;
-			var end2;
-			var end3;
-			var end4;
-			var end5;
-			loadTime = 0;
-			let driver;
 			let data = [];
 			try {
-				start1 = new Date();
-			 	driver = await builder_no_extension.build();
-			 	await driver.manage().setTimeouts({pageLoad: 25000});
-			 	end1 = new Date();
-				await driver.get(urls[i]);
-				end2 = new Date();
+				await driver.get(url);
 				loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-				end3 = new Date();
-				//console.log(loadTime);
 				let requestStart = loadTime.requestStart;
 				let responseStart = loadTime.responseStart;
 				let responseEnd = loadTime.responseEnd;
@@ -235,11 +295,8 @@ async function run_tests_cold_no_extension(start, end) {
 				let duration = loadTime.duration;
 				let bodySize = loadTime.decodedBodySize; 
 				data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
-				/*loadTimes[1].push();
-				loadTimes[2].push();
-				loadTimes[3].push();*/	
 			} catch (err) {
-				console.log('error in cold no extension tests when loading page ' + urls[i] + ': ' + err);
+				console.log("error when retrieving  warm no extension page: " + url + ': ' + err);
 				if (driver) {
 					try {
 						loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
@@ -252,106 +309,35 @@ async function run_tests_cold_no_extension(start, end) {
 						let bodySize = loadTime.decodedBodySize; 
 						data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 					} catch (err) {
-						console.log("error when executing cold no extension script, driver no longer available: " + err);
+						console.log("error when executing warm no extension script, driver no longer available: " + err);
 					}
 				}
-			} finally {
-				loadTimes[loadTimes.length-1].push(data);
-				if (driver) {
-					end4 = new Date();
+				/*if (driver) {
 					await driver.quit();
-					end5 = new Date();
-					/*console.log("Time to start driver: " + (end1-start1));
-					console.log("Time to await page get: " + (end2-end1));
-					console.log("Time to await script execute: " + (end3-end2));
-					console.log("Time to close driver: " + (end5-end4));*/
-
-				}
+					driver = await builder.build();
+				}*/
+			} finally {
+				loadTimes.push(data);
 			}
-			
 		}
-		console.log("latest load time for cold no extension page " + urls[i] + ": " + JSON.stringify(loadTime));
-		//console.log("tests took: " + (end5-start1));
-	} 
-	return loadTimes;
-}
-
-async function run_tests_warm_no_extension(start, end) {
-	let i;
-	let loadTimes = [];
-  	let loadTime = 0;
-  	var start1;
-	var end1;
-	var end2;
-	var end3;
-	var end4;
-	var end5;
-	
-	for (i=start; i<end; i++) {
-		let driver;
-		loadTimes.push([]);
+	} catch (err) {
+		console.log('error in warm no extension tests when building driver: ' + err);
+	}
+	if (driver) {
+		end4 = new Date();
 		try {
-			driver = await builder_no_extension.build();
-			await driver.manage().setTimeouts({pageLoad: 25000});
-	  		await driver.get("https://www.example.com");
-			let j;
-			for (j=0; j<trials; j++) {
-				let data = [];
-				try {
-					await driver.get(urls[i]);
-					loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-					let requestStart = loadTime.requestStart;
-					let responseStart = loadTime.responseStart;
-					let responseEnd = loadTime.responseEnd;
-					let domContentLoaded = loadTime.domContentLoadedEventEnd;
-					let domComplete = loadTime.domComplete;
-					let duration = loadTime.duration;
-					let bodySize = loadTime.decodedBodySize; 
-					data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
-				} catch (err) {
-					console.log("error when retrieving  warm no extension page: " + urls[i] + ': ' + err);
-					if (driver) {
-						try {
-							loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-							let requestStart = loadTime.requestStart;
-							let responseStart = loadTime.responseStart;
-							let responseEnd = loadTime.responseEnd;
-							let domContentLoaded = loadTime.domContentLoadedEventEnd;
-							let domComplete = loadTime.domComplete;
-							let duration = loadTime.duration;
-							let bodySize = loadTime.decodedBodySize; 
-							data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
-						} catch (err) {
-							console.log("error when executing warm no extension script, driver no longer available: " + err);
-						}
-					}
-					/*if (driver) {
-						await driver.quit();
-						driver = await builder.build();
-					}*/
-				} finally {
-					loadTimes[loadTimes.length-1].push(data);
-				}
-			}
+			await driver.quit();	
 		} catch (err) {
-			console.log('error in warm no extension tests when building driver: ' + err);
+			//couldn't quit driver, session was already disconnected, so carry on
+			console.log("error when quitting warm no extension driver, session was already disconnected: " + err);
 		}
-		if (driver) {
-			end4 = new Date();
-			try {
-				await driver.quit();	
-			} catch (err) {
-				//couldn't quit driver, session was already disconnected, so carry on
-				console.log("error when quitting warm no extension driver, session was already disconnected: " + err);
-			}
-			end5 = new Date();
-			//console.log("Time to start driver: " + (end1-start1));
-			//console.log("Time to await page get: " + (end2-end1));
-			//console.log("Time to await script execute: " + (end3-end2));
-			//console.log("Time to close driver: " + (end5-end4));
-		}
-		console.log("latest load time for warm no extension page " + urls[i] + ": " + JSON.stringify(loadTime));
-	} 
+		end5 = new Date();
+		//console.log("Time to start driver: " + (end1-start1));
+		//console.log("Time to await page get: " + (end2-end1));
+		//console.log("Time to await script execute: " + (end3-end2));
+		//console.log("Time to close driver: " + (end5-end4));
+	}
+	console.log("latest load time for warm no extension page " + url + ": " + JSON.stringify(loadTime));
 	return loadTimes;
 }
 
@@ -361,36 +347,40 @@ async function initTests(start, end) {
 	let loadTimes;
 	let stream;
 
-	loadTimes = await run_tests_cold_extension(start, end);
-	
-	stream = fs.createWriteStream("extension_cold_top_results.txt", {flags:'a'});
-	stream.write(JSON.stringify(loadTimes));
-	stream.write(",");
-	stream.end();
+	for (i=start; i<end; i++) {
+
+		let url = urls[i];
+		loadTimes = await run_tests_cold_extension(url);
+		
+		stream = fs.createWriteStream("extension_cold_top_results.txt", {flags:'a'});
+		stream.write(JSON.stringify(loadTimes));
+		stream.write(",");
+		stream.end();
 
 
-	loadTimes = await run_tests_cold_no_extension(start, end);
+		loadTimes = await run_tests_cold_no_extension(url);
 
-	stream = fs.createWriteStream("no_extension_cold_top_results.txt", {flags:'a'});
-	stream.write(JSON.stringify(loadTimes));
-	stream.write(",");
-	stream.end();
-
-
-	loadTimes = await run_tests_warm_extension(start, end);
-
-	stream = fs.createWriteStream("extension_warm_top_results.txt", {flags:'a'});
-	stream.write(JSON.stringify(loadTimes));
-	stream.write(",");
-	stream.end();
+		stream = fs.createWriteStream("no_extension_cold_top_results.txt", {flags:'a'});
+		stream.write(JSON.stringify(loadTimes));
+		stream.write(",");
+		stream.end();
 
 
-	loadTimes = await run_tests_warm_no_extension(start, end);
+		loadTimes = await run_tests_warm_extension(url);
 
-	stream = fs.createWriteStream("no_extension_warm_top_results.txt", {flags:'a'});
-	stream.write(JSON.stringify(loadTimes));
-	stream.write(",");
-	stream.end();
+		stream = fs.createWriteStream("extension_warm_top_results.txt", {flags:'a'});
+		stream.write(JSON.stringify(loadTimes));
+		stream.write(",");
+		stream.end();
+
+
+		loadTimes = await run_tests_warm_no_extension(url);
+
+		stream = fs.createWriteStream("no_extension_warm_top_results.txt", {flags:'a'});
+		stream.write(JSON.stringify(loadTimes));
+		stream.write(",");
+		stream.end();
+	}
 
 	return true;
 }
