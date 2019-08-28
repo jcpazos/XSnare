@@ -14,7 +14,7 @@ var fs = require("fs");
 
 let urls = urlArray;
 
-const trials = 25;
+const trials = 5;
 
 let options_extension = new firefox.Options()
 				        .headless()
@@ -83,7 +83,7 @@ async function run_tests_cold_extension(start, end) {
 				loadTimes[2].push();
 				loadTimes[3].push();*/	
 			} catch (err) {
-				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
+				console.log('error in cold extension tests when loading page ' + urls[i] + ': ' + err);
 				if (driver) {
 					try {
 						loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
@@ -96,7 +96,7 @@ async function run_tests_cold_extension(start, end) {
 						let bodySize = loadTime.decodedBodySize; 
 						data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 					} catch (err) {
-						console.log("error when executing script, driver no longer available: " + err);
+						console.log("error when executing cold extension script, driver no longer available: " + err);
 					}
 				}
 			} finally {
@@ -114,7 +114,7 @@ async function run_tests_cold_extension(start, end) {
 			}
 			
 		}
-		console.log("latest load time for page " + urls[i] + ": " + JSON.stringify(loadTime));
+		console.log("latest load time for cold extension page " + urls[i] + ": " + JSON.stringify(loadTime));
 		//console.log("tests took: " + (end5-start1));
 	} 
 	return loadTimes;
@@ -153,7 +153,7 @@ async function run_tests_warm_extension(start, end) {
 					let bodySize = loadTime.decodedBodySize; 
 					data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 				} catch (err) {
-					console.log("error when retrieving  page: " + urls[i] + ': ' + err);
+					console.log("error when retrieving warm extension page: " + urls[i] + ': ' + err);
 					if (driver) {
 						try {
 							loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
@@ -166,7 +166,7 @@ async function run_tests_warm_extension(start, end) {
 							let bodySize = loadTime.decodedBodySize; 
 							data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 						} catch (err) {
-							console.log("error when executing script, driver no longer available: " + err);
+							console.log("error when executing warm extension script, driver no longer available: " + err);
 						}
 					}
 					/*if (driver) {
@@ -178,7 +178,7 @@ async function run_tests_warm_extension(start, end) {
 				}
 			}
 		} catch (err) {
-			console.log('error in extension tests when building driver: ' + err);
+			console.log('error in warm extension tests when building driver: ' + err);
 		}
 		if (driver) {
 			end4 = new Date();
@@ -186,7 +186,7 @@ async function run_tests_warm_extension(start, end) {
 				await driver.quit();	
 			} catch (err) {
 				//couldn't quit driver, session was already disconnected, so carry on
-				console.log("error when quitting driver, session was already disconnected: " + err);
+				console.log("error when quitting warm extension driver, session was already disconnected: " + err);
 			}
 			end5 = new Date();
 			//console.log("Time to start driver: " + (end1-start1));
@@ -194,7 +194,7 @@ async function run_tests_warm_extension(start, end) {
 			//console.log("Time to await script execute: " + (end3-end2));
 			//console.log("Time to close driver: " + (end5-end4));
 		}
-		console.log("latest load time for page " + urls[i] + ": " + JSON.stringify(loadTime));
+		console.log("latest load time for warm extension page " + urls[i] + ": " + JSON.stringify(loadTime));
 	} 
 	return loadTimes;
 }
@@ -239,7 +239,7 @@ async function run_tests_cold_no_extension(start, end) {
 				loadTimes[2].push();
 				loadTimes[3].push();*/	
 			} catch (err) {
-				console.log('error in extension tests when loading page ' + urls[i] + ': ' + err);
+				console.log('error in cold no extension tests when loading page ' + urls[i] + ': ' + err);
 				if (driver) {
 					try {
 						loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
@@ -252,7 +252,7 @@ async function run_tests_cold_no_extension(start, end) {
 						let bodySize = loadTime.decodedBodySize; 
 						data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 					} catch (err) {
-						console.log("error when executing script, driver no longer available: " + err);
+						console.log("error when executing cold no extension script, driver no longer available: " + err);
 					}
 				}
 			} finally {
@@ -261,22 +261,22 @@ async function run_tests_cold_no_extension(start, end) {
 					end4 = new Date();
 					await driver.quit();
 					end5 = new Date();
-					console.log("Time to start driver: " + (end1-start1));
+					/*console.log("Time to start driver: " + (end1-start1));
 					console.log("Time to await page get: " + (end2-end1));
 					console.log("Time to await script execute: " + (end3-end2));
-					console.log("Time to close driver: " + (end5-end4));
+					console.log("Time to close driver: " + (end5-end4));*/
 
 				}
 			}
 			
 		}
-		console.log("latest load time for page " + urls[i] + ": " + JSON.stringify(loadTime));
+		console.log("latest load time for cold no extension page " + urls[i] + ": " + JSON.stringify(loadTime));
 		//console.log("tests took: " + (end5-start1));
 	} 
 	return loadTimes;
 }
 
-async function run_tests_extension(start, end) {
+async function run_tests_warm_no_extension(start, end) {
 	let i;
 	let loadTimes = [];
   	let loadTime = 0;
@@ -309,7 +309,7 @@ async function run_tests_extension(start, end) {
 					let bodySize = loadTime.decodedBodySize; 
 					data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 				} catch (err) {
-					console.log("error when retrieving  page: " + urls[i] + ': ' + err);
+					console.log("error when retrieving  warm no extension page: " + urls[i] + ': ' + err);
 					if (driver) {
 						try {
 							loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
@@ -322,7 +322,7 @@ async function run_tests_extension(start, end) {
 							let bodySize = loadTime.decodedBodySize; 
 							data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
 						} catch (err) {
-							console.log("error when executing script, driver no longer available: " + err);
+							console.log("error when executing warm no extension script, driver no longer available: " + err);
 						}
 					}
 					/*if (driver) {
@@ -334,7 +334,7 @@ async function run_tests_extension(start, end) {
 				}
 			}
 		} catch (err) {
-			console.log('error in extension tests when building driver: ' + err);
+			console.log('error in warm no extension tests when building driver: ' + err);
 		}
 		if (driver) {
 			end4 = new Date();
@@ -342,7 +342,7 @@ async function run_tests_extension(start, end) {
 				await driver.quit();	
 			} catch (err) {
 				//couldn't quit driver, session was already disconnected, so carry on
-				console.log("error when quitting driver, session was already disconnected: " + err);
+				console.log("error when quitting warm no extension driver, session was already disconnected: " + err);
 			}
 			end5 = new Date();
 			//console.log("Time to start driver: " + (end1-start1));
@@ -350,7 +350,7 @@ async function run_tests_extension(start, end) {
 			//console.log("Time to await script execute: " + (end3-end2));
 			//console.log("Time to close driver: " + (end5-end4));
 		}
-		console.log("latest load time for page " + urls[i] + ": " + JSON.stringify(loadTime));
+		console.log("latest load time for warm no extension page " + urls[i] + ": " + JSON.stringify(loadTime));
 	} 
 	return loadTimes;
 }
@@ -402,11 +402,13 @@ k = 0;
 for (k=0; k < threads; k++) {
 	if (k === (threads-1)) {
 		promises.push(new Promise(function (resolve,reject) {
-			resolve(initTests(k*110, 441));
+			//resolve(initTests(k*110, 441));
+			resolve(initTests(k*1, 4));
 		}));
 	} else {
 		promises.push(new Promise(function (resolve,reject) {
-			resolve(initTests(k*110, (k+1)*110));
+			//resolve(initTests(k*110, (k+1)*110));
+			resolve(initTests(k*1, (k+1)*1));
 		}));
 	}
 }
@@ -415,18 +417,10 @@ for (k=0; k < threads; k++) {
 
 //initExtensionTests(0, urls.length);
 //initExtensionTests(228, urls.length);
-Promise.all(promises).then(function(loadTimesArray) {
-	fs.writeFile("extension_cold_cache_results_async.txt", JSON.stringify(loadTimesArray), (err) => {
-		if (err) console.log(err);
-		console.log("Successfully written to file.");
-		//var hrend = process.hrtime(hrstart);
-		//var timeEnd = new Date();
-		//console.log("Execution time (Date): " + (timeEnd-timeStart));
-		//console.log("Execution time (hr): %ds %dms", hrend[0], hrend[1] / 1000000);
-	});
+Promise.all(promises).then(function() {
+	console.log("Tests successfully completed");
 }).catch (function (err) {
-		console.log("initextensiontests err : " + err);
-		//initExtensionTests(i, urls.length);
+	console.log("error when writing tests: " + err);
 });
 
 /*run_tests_extension(0, urls.length).then(function (loadTimes) {
