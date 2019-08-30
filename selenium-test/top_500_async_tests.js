@@ -346,7 +346,8 @@ async function initTests(start, end) {
 
 	let loadTimes;
 	let stream;
-
+	let i;
+	
 	for (i=start; i<end; i++) {
 
 		let url = urls[i];
