@@ -68,7 +68,7 @@ async function run_tests_cold_extension(url) {
   	let loadTime = 0;
 	let j;
 	var start1 = new Date();
-	for (j=0; j<trials/trials; j++) {
+	for (j=0; j<trials; j++) {
 		var start1;
 		var end1;
 		var end2;
@@ -372,19 +372,19 @@ async function initTests(url) {
 	let stream;
 
 	loadTimes = await run_tests_cold_extension(url);
-	/*stream = fs.createWriteStream("extension_cold_cache_wordpress_results.txt", {flags:'a'});
+	stream = fs.createWriteStream("extension_cold_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
 	stream.write(",");
-	stream.end();*/
+	stream.end();
 
 
 	loadTimes = await run_tests_warm_extension(url);
-	/*stream = fs.createWriteStream("extension_warm_cache_wordpress_results.txt", {flags:'a'});
+	stream = fs.createWriteStream("extension_warm_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
 	stream.write(",");
-	stream.end();*/
+	stream.end();
 
-	/*loadTimes = await run_tests_cold_no_extension(url);
+	loadTimes = await run_tests_cold_no_extension(url);
 	stream = fs.createWriteStream("no_extension_cold_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
 	stream.write(",");
@@ -394,7 +394,7 @@ async function initTests(url) {
 	stream = fs.createWriteStream("no_extension_warm_cache_wordpress_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
 	stream.write(",");
-	stream.end();*/
+	stream.end();
 
 	return true;
 }
