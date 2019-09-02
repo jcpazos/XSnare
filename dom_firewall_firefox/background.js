@@ -40,11 +40,11 @@ function mainFrameListener(details) {
   };
 
   filter.onstop = event => {
-    try {
+   // try {
         //TODO: mark verified scripts as 'safe' so contentscript doesn't check them again for dynamic checks
         //var length = str.length;
         //verifyStart = performance.now()
-        str = verifyHTML(str, details.url, details.tabId);
+        //str = verifyHTML(str, details.url, details.tabId);
         //verifyEnd = performance.now();
 
         /*let myRequest = new Request('http://localhost:8000/?time=' + (verifyEnd-verifyStart) + '&loadedSignatures=' + loadedCounter + '&loadedProbes=' + loadedProbes + '&length=' + length + '&url=' + details.url);
@@ -52,12 +52,12 @@ function mainFrameListener(details) {
         	//do nothing
         });*/
 
-    } catch(err) {
-        debugger;
+   // } catch(err) {
+        /*debugger;
         console.log("Error when verifying HTML: " + err);
         //TODO: advice the user that a vulnerability has been found. maybe add an alert box to the HTML.
-        str = "<!DOCTYPE HTML><html><head></head><body>This webpage has been identified as malicious and was stopped from loading</body></html>";
-    }
+        str = "<!DOCTYPE HTML><html><head></head><body>This webpage has been identified as malicious and was stopped from loading</body></html>";*/
+   // }
     //str = str.replace(/<script/g, replacer);
     filter.write(encoder.encode(str));
     //endTime = new Date();

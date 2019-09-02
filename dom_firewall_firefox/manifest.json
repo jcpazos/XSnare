@@ -1,7 +1,7 @@
 {
   "name": "DOM Firewall",
-  "version": "0.1.4",
-  "description": "Protect yourself against XSS and CSRF",
+  "version": "0.1.5",
+  "description": "Testing identity filter",
   "permissions": ["<all_urls>", "activeTab", "storage", "webRequest", "webRequestBlocking", "tabs"],
   "options_ui": {
     "page": "options.html",
