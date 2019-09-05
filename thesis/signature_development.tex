@@ -1,6 +1,6 @@
 \section{Writing Signatures}
 
-As previously stated, we envision the process of signature development to be part of the vulnerability discovery work flow and CVE creation. As such, we expect a signature developer to have a solid understanding of the principles behind XSS so that they can properly identify the minimal section of the DOM which acts as an injection point. Similarly, it is important that they can identify unique traits of elements (e.g. HTML id's, classes, etc.) and the page overall in order to reduce the rate of false positives.
+As previously stated, we envision the process of signature development to be part of the vulnerability discovery work flow and CVE creation. As such, we expect a signature developer to have a solid understanding of the principles behind XSS so that they can properly identify the minimal section of the DOM which acts as an injection point. Similarly, it is important that they can identify unique traits of elements (e.g. HTML id's, classes, etc.) and the page overall in order to reduce the rate of false positives. In this section, we aim to show that minor effort is required from a knowledgeable security analyst when writing a signature for our extension.
 
 \subsection{Signature language specification} 
 
@@ -44,7 +44,8 @@ Additionally, if the value of type is 'listener', the signature will have an add
 We now describe the process by which a signature is written after a vulnerability has been discovered:
 \begin{enumerate}
 	\item{
-The signature developer crafts a proof of concept exploit for the given CVE. This step is not necessary but it will often help the developer correctly identify the affected areas of the DOM. For our own signatures, we heavily relied on this part because we didn't have the same information as the CVE writer.}
+The signature developer crafts a proof of concept exploit for the given CVE. This step is not necessary but it will often help the developer correctly identify the affected areas of the DOM. For our own signatures, we heavily relied on this part because we often did not have the same information as the CVE writer.
+Conversely, a knowledgeable analyst will often be able to identify the vulnerable points in the application from the server-side code.}
 \item
 Using information about where in the HTML the exploit will manifest itself, the developer identifies the start and end points of an injection, and creates regexes to match these. This step is particularly important because this is where the signature might end up covering a bigger part of the DOM than is required, potentially disabling desired functionality, to the detriment of the site user's experience. Furthermore, it is at this point where the developer identifies whether the exploit comes in from an external source (such as a response to an Ajax request or an external script) or is embedded in the document's mainframe HTML. This will result in a different signature layout. 
 \item

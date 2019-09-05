@@ -26,7 +26,13 @@ The recorded timestamps do not hold much value by themselves, only when analysed
 	\label{fig:overall_slowdown}
 \end{figure}
 
-We compare the load times with and without the extension running by calculating the relative slowdown with the extension installed. Figure ~\ref{fig:overall_slowdown} shows the computed results. We have zoomed in on the [-50\%,50\%] range, as this is where the grand majority of values lie. The graph shows that the slowdown is not too great when the extension is running. Note that these values are recorded as percentages, and while some are as high as 50\%, the absolute values are in the order of seconds, and in many cases tens or hundreds of milliseconds, especially for the network component. Such values should not alter the user's experience significantly. The slowdown increases when we take caching into account. We expect this to be the case because the network filter probably causes the browser to use less caching, especially for the DOM component, as it might have to process it from scratch every time.
+We compare the load times with and without the extension running by calculating the relative slowdown with the extension installed according to the following formula: 
+
+$$100*\frac{\tilde{x}_{with}-\tilde{x}_{without}}{\tilde{x}_{without}}$$
+\\
+where $\tilde{x}$ is the median and with and without are with the extension running and without the extension running.
+
+Figure ~\ref{fig:overall_slowdown} shows the computed results. We have zoomed in on the [-50\%,50\%] range, as this is where the grand majority of values lie. The graph shows that the slowdown is not too great when the extension is running. Note that these values are recorded as percentages, and while some are as high as 50\%, the absolute values are in the order of seconds, and in many cases tens or hundreds of milliseconds, especially for the network component. Such values should not alter the user's experience significantly. The slowdown increases when we take caching into account. We expect this to be the case because the network filter probably causes the browser to use less caching, especially for the DOM component, as it might have to process it from scratch every time.
 
 \begin{figure}[h]
 	\includegraphics[scale=0.5]{results/density_histogram_filter_slowdown}
