@@ -1,5 +1,7 @@
 \section{Performance Evaluation}
-The extension's performance goals are to provide our security guarantees without being a detriment to the end user's browsing experience. All of our timestamps were recorded using the Performance Web API. While our extension's functionality only applies at the network level, there is potential slowdown at the DOM processing level. Figure ~\ref{fig:navigationtiming} presents shows the different timestamps provided by the Navigation Timing API, as well as a high-level description of the browser processing model. Since our filter listens on the onBeforeRequest event, none of the previous steps before Request are affected. In this section, we refer to the difference in time between responseEnd and requestStart as the "network filter time".
+The extension's performance goals are to provide our security guarantees without being a detriment to the end user's browsing experience. All of our timestamps were recorded using the Performance Web API. Note that while this API normally reports values as doubles, due to recent security threats, such as Spectre \cite{DBLP:journals/corr/abs-1801-01203}, several browser developers have implemented countermeasures by reducing the precision of the DOMHighResTimeStamp resolution \cite{reducetimeprecision,resolutionconsiderations}. In particular, Firefox now reports these values as integer milliseconds. Thus, all our data consists of integer millisecond timestamps, and in some cases, one can discern "tiers" of value, such as Figures \ref{fig:verification_time_string_length} and \ref{fig:verification_time_string_length_wordpress}.
+
+While our extension's functionality only applies at the network level, there is potential slowdown at the DOM processing level due to the optimization techniques the browser applies throughout several levels of the web page load pipeline. Figure ~\ref{fig:navigationtiming} presents shows the different timestamps provided by the Navigation Timing API, as well as a high-level description of the browser processing model. Since our filter listens on the onBeforeRequest event, none of the previous steps before Request are affected. In this section, we refer to the difference in time between responseEnd and requestStart as the "network filter time".
 
 \begin{figure}[h]
  \includegraphics[scale=0.32]{img/timestamp-diagram}
@@ -24,7 +26,13 @@ The recorded timestamps do not hold much value by themselves, only when analysed
 	\label{fig:overall_slowdown}
 \end{figure}
 
-We compare the load times with and without the extension running by calculating the relative slowdown with the extension installed. Figure ~\ref{fig:overall_slowdown} shows the computed results. The graph shows that the slowdown is not too great when the extension is running. Note that these values are recorded as percentages, and while some are as high as 50\%, the absolute values are in the order of seconds, and in many cases tens or hundreds of milliseconds, especially for the network component. Such values should not alter the user's experience significantly. The slowdown increases when we take caching into account. We expect this to be the case because the network filter probably causes the browser to use less caching, especially for the DOM component, as it might have to process it from scratch every time.
+We compare the load times with and without the extension running by calculating the relative slowdown with the extension installed according to the following formula: 
+
+$$100*\frac{\tilde{x}_{with}-\tilde{x}_{without}}{\tilde{x}_{without}}$$
+\\
+where $\tilde{x}$ is the median and with and without are with the extension running and without the extension running.
+
+Figure ~\ref{fig:overall_slowdown} shows the computed results. We have zoomed in on the [-50\%,50\%] range, as this is where the grand majority of values lie. The graph shows that the slowdown is not too great when the extension is running. Note that these values are recorded as percentages, and while some are as high as 50\%, the absolute values are in the order of seconds, and in many cases tens or hundreds of milliseconds, especially for the network component. Such values should not alter the user's experience significantly. The slowdown increases when we take caching into account. We expect this to be the case because the network filter probably causes the browser to use less caching, especially for the DOM component, as it might have to process it from scratch every time.
 
 \begin{figure}[h]
 	\includegraphics[scale=0.5]{results/density_histogram_filter_slowdown}
@@ -33,7 +41,7 @@ We compare the load times with and without the extension running by calculating 
 \end{figure}
 
 
-Figure ~\ref{fig:histogram_slowdown} shows a closer look at the distribution for the cold network filter slowdown on the top sites. We filtered out any values above 300\%, as these were mostly due to timeouts and other network errors. We see that for this component, most of the slowdown is centred around [-10\%,10\%].
+Figure ~\ref{fig:histogram_slowdown} shows a closer look at the distribution for the cold network filter slowdown on the top sites. We filtered out any values above |100|\%, as these were mostly due to timeouts and other network delays or errors. We see that for this component, most of the slowdown is centred around [-10\%,10\%].
 
 \begin{figure}[h]
 	\includegraphics[scale=0.4]{results/string_length_vs_verification_time}
@@ -65,7 +73,7 @@ As before, Figure ~\ref{fig:wordpress_slowdown} shows the results for slowdown w
 	\label{fig:wordpress_slowdown}
 \end{figure}
 
-Figure ~\ref{fig:histogram_slowdown_wordpress} shows the probability density of the cold network filter slowdown. In this case, we see that the distribution is skewed more towards a higher slowdown.
+Figure ~\ref{fig:histogram_slowdown_wordpress} shows the probability density of the cold network filter slowdown. In this case, we see that the distribution is skewed more towards a higher slowdown. As it is harder to discern the trend for this data set than its top site counterpart, we have also plotted the normal distribution of the data between 3 standard deviations. Again, most of the probability lies in the [-10\%,10\%] range.
 
 \begin{figure}[h]
 	\includegraphics[scale=0.5]{results/density_histogram_filter_slowdown_wordpress}
