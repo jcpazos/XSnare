@@ -33,7 +33,7 @@ We instead focus on application-specific detection at the client-side layer, and
 
 \subsection{An example application of XSnare}
 
-In order to further illustrate this approach, we present a small example of how DOM context can be used to defend against XSS, taken from CVE 2018-10309 \cite{examplecve}. This is reproducible in an off-the-box WordPress installation running the Responsive Cookie Consent plugin, v1.7, and Chrome's XSS auditor does not protect against this. Consider a website running PHP on the backend that takes user input and stores it to later display it to another user; in this case, the input element's value attribute is set by the webpage admin using the plugin's UI.
+In order to further illustrate this approach, we present a small example of how DOM context can be used to defend against XSS, taken from CVE 2018-10309 \cite{examplecve}. This is reproducible in an off-the-box WordPress installation running the Responsive Cookie Consent plugin, v1.7. This is also an example exploit which Chrome's XSS auditor does not protect against. Consider a website running PHP on the backend that takes user input and stores it to later display it to another user; in this case, the input element's value attribute is set by the webpage admin using the plugin's UI.
 
 The PHP code defines the static HTML template (in black) in the "admin-page.php" file, as well as the dynamic input (in red):
 
