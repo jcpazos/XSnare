@@ -16,16 +16,25 @@ for (var k = 0; k<urls.length; k++) {
 	urls[k] = prepend + urls[k];
 }
 
-const trials = 20;
+let extension_cold_cache = [];
+let extension_warm_cache = [];
+let no_extension_cold_cache = [];
+let no_extension_warm_cache = [];
+let profile_path = './firefox_profiles';
+
+const trials = 25;
 
 let options_extension_verify = new firefox.Options()
 				        .headless()
 				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1.3-an+fx.xpi')
-				  		.setPreference('extensions.dom_firewall.showChromeErrors', true);
+				  		.setPreference('extensions.dom_firewall.showChromeErrors', true)
+				  		.setProfile(profile_path);
+
 let options_extension = new firefox.Options()
 				        .headless()
 				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1.4-an+fx.xpi')
-				  		.setPreference('extensions.dom_firewall.showChromeErrors', true);
+				  		.setPreference('extensions.dom_firewall.showChromeErrors', true)
+				  		.setProfile(profile_path);
 
 let capabilities = new Capabilities()
 				  		.setAlertBehavior(UserPromptHandler.ACCEPT);
@@ -46,7 +55,8 @@ let builder_extension = new Builder()
 
 
 let options_no_extension = new firefox.Options()
-				        .headless();	
+				        .headless()
+				        .setProfile(profile_path);
 
 let builder_no_extension = new Builder()
 					.withCapabilities(
@@ -372,26 +382,32 @@ async function initTests(url) {
 	let stream;
 
 	loadTimes = await run_tests_cold_extension(url);
-	stream = fs.createWriteStream("extension_cold_cache_wordpress_results.txt", {flags:'a'});
+	extension_cold_cache.push(loadTimes);
+	stream = fs.createWriteStream("./results_wordpress/extension_cold_top_results.txt", {flags:'a'});
+	stream.write(JSON.stringify(loadTimes));
+	stream.write(",");
+	stream.end();
+
+
+	loadTimes = await run_tests_cold_no_extension(url);
+	no_extension_cold_cache.push(loadTimes);
+	stream = fs.createWriteStream("./results_wordpress/no_extension_cold_top_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
 	stream.write(",");
 	stream.end();
 
 
 	loadTimes = await run_tests_warm_extension(url);
-	stream = fs.createWriteStream("extension_warm_cache_wordpress_results.txt", {flags:'a'});
+	extension_warm_cache.push(loadTimes);
+	stream = fs.createWriteStream("./results_wordpress/extension_warm_top_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
 	stream.write(",");
 	stream.end();
 
-	loadTimes = await run_tests_cold_no_extension(url);
-	stream = fs.createWriteStream("no_extension_cold_cache_wordpress_results.txt", {flags:'a'});
-	stream.write(JSON.stringify(loadTimes));
-	stream.write(",");
-	stream.end();
 
 	loadTimes = await run_tests_warm_no_extension(url);
-	stream = fs.createWriteStream("no_extension_warm_cache_wordpress_results.txt", {flags:'a'});
+	no_extension_warm_cache.push(loadTimes);
+	stream = fs.createWriteStream("./results_wordpress/no_extension_warm_top_results.txt", {flags:'a'});
 	stream.write(JSON.stringify(loadTimes));
 	stream.write(",");
 	stream.end();
@@ -413,7 +429,9 @@ async function initTests(url) {
 
 //let end = process.argv[3];
 initTests(urls[url]).then(function () {
-	console.log("Tests successfully completed");
+	console.log("Tests successfully completed, processing results.");
+	processResults();
+	console.log("scripts processed succesfully");
 }).catch(function (err) {
 	console.log("error when writing tests: " + err);
 });
@@ -428,3 +446,380 @@ initTests(urls[url]).then(function () {
 	console.log("initextensiontests err : " + err);
 });*/
 
+function processResults() {
+	let i;
+	let max_byte_size = 0;
+	let extension_cold_cache_results = [];
+	let extension_warm_cache_results = [];
+	let no_extension_cold_cache_results = [];
+	let no_extension_warm_cache_results = [];
+
+	for (i=0; i<extension_cold_cache.length; i++) {
+		for (j=0; j<trials; j++) {
+			if (extension_cold_cache[i][j][6] > max_byte_size) {
+				max_byte_size = extension_cold_cache[i][j][6];
+			}
+		}
+	}
+
+	for (i=0; i<extension_cold_cache.length; i++) {
+		let newRes = [];
+		let j;
+		for (j=0;j<trials;j++) {
+			let toAdd = [];
+			if (extension_cold_cache[i][j] && extension_cold_cache[i][j][0] && extension_cold_cache[i][j][0] !== -1) {
+				toAdd[0] = extension_cold_cache[i][j][1] - extension_cold_cache[i][j][0];
+				toAdd[1] = extension_cold_cache[i][j][2] - extension_cold_cache[i][j][0];
+				toAdd[2] = extension_cold_cache[i][j][4] - extension_cold_cache[i][j][0];
+				toAdd[3] = extension_cold_cache[i][j][6];
+			} else {
+				toAdd[0] = 25000;
+				toAdd[1] = 25000;
+				toAdd[2] = 25000;
+				toAdd[3] = max_byte_size;
+			}
+			if (toAdd[3] === 0) {
+				toAdd[3] = max_byte_size;
+			}
+			if (toAdd[0] === 0) {
+				toAdd[0] = extension_cold_cache[i][j][3];
+			}
+			if (toAdd[1] === 0) {
+				toAdd[1] = extension_cold_cache[i][j][3];
+			}
+			newRes.push(toAdd);
+		}
+		extension_cold_cache_results.push(newRes);
+	}
+
+	for (i=0; i<extension_warm_cache.length; i++) {
+		for (j=0; j<trials; j++) {
+			if (extension_warm_cache[i][6] > max_byte_size) {
+				max_byte_size = extension_warm_cache[i][6];
+			}
+		}
+	}
+
+
+	for (i=0; i<extension_warm_cache.length; i++) {
+		let newRes = [];
+		let j;
+		for (j=0;j<trials;j++) {
+			let toAdd = [];
+			if (extension_warm_cache[i][j] && extension_warm_cache[i][j][0] && extension_warm_cache[i][j][0] !== -1) {
+				toAdd[0] = extension_warm_cache[i][j][1] - extension_warm_cache[i][j][0];
+				toAdd[1] = extension_warm_cache[i][j][2] - extension_warm_cache[i][j][0];
+				toAdd[2] = extension_warm_cache[i][j][4] - extension_warm_cache[i][j][0];
+				toAdd[3] = extension_warm_cache[i][j][6];
+			} else {
+				toAdd[0] = 25000;
+				toAdd[1] = 25000;
+				toAdd[2] = 25000;
+				toAdd[3] = max_byte_size;
+			}
+			if (toAdd[3] === 0) {
+				toAdd[3] = max_byte_size;
+			}
+			if (toAdd[0] === 0) {
+				toAdd[0] = extension_warm_cache[i][j][3];
+			}
+			if (toAdd[1] === 0) {
+				toAdd[1] = extension_warm_cache[i][j][3];
+			}
+			newRes.push(toAdd);
+		}
+		extension_warm_cache_results.push(newRes);
+	}
+
+	for (i=0; i<no_extension_cold_cache.length; i++) {
+		for (j=0; j<trials; j++) {
+			if (no_extension_cold_cache[i][6] > max_byte_size) {
+				max_byte_size = no_extension_cold_cache[i][6];
+			}
+		}
+	}
+
+	for (i=0; i<no_extension_cold_cache.length; i++) {
+		let newRes = [];
+		let j;
+		for (j=0;j<trials;j++) {
+			let toAdd = [];
+			if (no_extension_cold_cache[i][j] && no_extension_cold_cache[i][j][0] && no_extension_cold_cache[i][j][0] !== -1) {
+				toAdd[0] = no_extension_cold_cache[i][j][1] - no_extension_cold_cache[i][j][0];
+				toAdd[1] = no_extension_cold_cache[i][j][2] - no_extension_cold_cache[i][j][0];
+				toAdd[2] = no_extension_cold_cache[i][j][4] - no_extension_cold_cache[i][j][0];
+				toAdd[3] = no_extension_cold_cache[i][j][6];
+			} else {
+				toAdd[0] = 25000;
+				toAdd[1] = 25000;
+				toAdd[2] = 25000;
+				toAdd[3] = max_byte_size;
+			}
+			if (toAdd[3] === 0) {
+				toAdd[3] = max_byte_size;
+			}
+			if (toAdd[0] === 0) {
+				toAdd[0] = no_extension_cold_cache[i][j][3];
+			}
+			if (toAdd[1] === 0) {
+				toAdd[1] = no_extension_cold_cache[i][j][3];
+			}
+			newRes.push(toAdd);
+		}
+		no_extension_cold_cache_results.push(newRes);
+	}
+
+
+	for (i=0; i<no_extension_warm_cache.length; i++) {
+		for (j=0; j<trials; j++) {
+			if (no_extension_warm_cache[i][6] > max_byte_size) {
+				max_byte_size = no_extension_warm_cache[i][6];
+			}
+		}
+	}
+
+	for (i=0; i<no_extension_warm_cache.length; i++) {
+		let newRes = [];
+		let j;
+		for (j=0;j<trials;j++) {
+			let toAdd = [];
+			if (no_extension_warm_cache[i][j] && no_extension_warm_cache[i][j][0] && no_extension_warm_cache[i][j][0] !== -1) {
+				toAdd[0] = no_extension_warm_cache[i][j][1] - no_extension_warm_cache[i][j][0];
+				toAdd[1] = no_extension_warm_cache[i][j][2] - no_extension_warm_cache[i][j][0];
+				toAdd[2] = no_extension_warm_cache[i][j][4] - no_extension_warm_cache[i][j][0];
+				toAdd[3] = no_extension_warm_cache[i][j][6];
+			} else {
+				toAdd[0] = 25000;
+				toAdd[1] = 25000;
+				toAdd[2] = 25000;
+				toAdd[3] = max_byte_size;
+			}
+			if (toAdd[3] === 0) {
+				toAdd[3] = max_byte_size;
+			}
+			if (toAdd[0] === 0) {
+				toAdd[0] = no_extension_warm_cache[i][j][3];
+			}
+			if (toAdd[1] === 0) {
+				toAdd[1] = no_extension_warm_cache[i][j][3];
+			}
+			newRes.push(toAdd);
+		}
+		no_extension_warm_cache_results.push(newRes);
+	}
+
+	//get means from valid results
+	let no_extension_cold_means = [];
+	let no_extension_cold_medians = [];
+
+	for (i=0;i<no_extension_cold_cache_results.length;i++) {
+		let currMean = [];
+		let currMedians = [];
+		let j
+		for (j=0; j<4; j++) {
+			let pageMedians = [];
+			let mean = 0;
+			let k;
+			for (k=0;k<trials;k++) {
+				if (!Number.isNaN(no_extension_cold_cache_results[i][k][0])) {
+					mean+=no_extension_cold_cache_results[i][k][j];
+					pageMedians.push(no_extension_cold_cache_results[i][k][j]);
+				}
+			}
+			currMean.push(mean/trials);
+			pageMedians.sort((a, b) => a - b);
+			currMedians.push(pageMedians[(trials-1)/2]);
+		}
+		no_extension_cold_medians.push(currMedians);
+		no_extension_cold_means.push(currMean);
+	}
+
+	//get means from valid results
+	let no_extension_warm_means = [];
+	let no_extension_warm_medians = [];
+	for (i=0;i<no_extension_warm_cache_results.length;i++) {
+		let currMean = [];
+		let currMedians = [];
+		let j
+		for (j=0; j<4; j++) {
+			let pageMedians = [];
+			let mean = 0;
+			let k;
+			for (k=0;k<trials;k++) {
+				if (!Number.isNaN(no_extension_warm_cache_results[i][k][0])) {
+					mean+=no_extension_warm_cache_results[i][k][j];
+					pageMedians.push(no_extension_warm_cache_results[i][k][j]);
+				}
+			}
+			currMean.push(mean/trials);
+			pageMedians.sort((a, b) => a - b);
+			currMedians.push(pageMedians[(trials-1)/2]);
+		}
+		no_extension_warm_medians.push(currMedians);
+		no_extension_warm_means.push(currMean);
+	}
+
+	//get means from valid results
+	let extension_cold_means = [];
+	let extension_cold_medians = [];
+	for (i=0;i<extension_cold_cache_results.length;i++) {
+		let currMean = [];
+		let currMedians = [];
+		let j
+		for (j=0; j<4; j++) {
+			let pageMedians = [];
+			let mean = 0;
+			let k;
+			for (k=0;k<trials;k++) {
+				if (!Number.isNaN(extension_cold_cache_results[i][k][0])) {
+					mean+=extension_cold_cache_results[i][k][j];
+					pageMedians.push(extension_cold_cache_results[i][k][j]);
+				}
+			}
+			currMean.push(mean/trials);
+			pageMedians.sort((a, b) => a - b);
+			currMedians.push(pageMedians[(trials-1)/2]);
+		}
+		extension_cold_means.push(currMean);
+		extension_cold_medians.push(currMedians);
+	}
+
+	let extension_warm_means = [];
+	let extension_warm_medians = [];
+
+	for (i=0;i<extension_warm_cache_results.length;i++) {
+		let currMean = [];
+		let currMedians = [];
+		let j
+		for (j=0; j<4; j++) {
+			let pageMedians = [];
+			let mean = 0;
+			let k;
+			for (k=0;k<trials;k++) {
+				if (!Number.isNaN(extension_warm_cache_results[i][k][0])) {
+					mean+=extension_warm_cache_results[i][k][j];
+					pageMedians.push(extension_warm_cache_results[i][k][j]);
+				}
+			}
+			currMean.push(mean/trials);
+			pageMedians.sort((a, b) => a - b);
+			currMedians.push(pageMedians[(trials-1)/2]);
+		}
+		extension_warm_means.push(currMean);
+		extension_warm_medians.push(currMedians);
+	}
+
+	let counter_cold_means = 0;
+	let counter_cold_medians = 0;
+
+	let counter_warm_means = 0;
+	let counter_warm_medians = 0;
+
+	for (i=0; i<extension_cold_medians.length; i++) {
+		if (extension_cold_medians[i][0] > no_extension_cold_medians[i][0]) {
+			counter_cold_medians++;
+		}
+		if (extension_cold_means[i][0] > no_extension_cold_means[i][0]) {
+			counter_cold_means++;
+		}
+		if (extension_warm_medians[i][0] > no_extension_warm_medians[i][0]) {
+			counter_cold_medians++;
+		}
+		if (extension_warm_means[i][0] > no_extension_warm_means[i][0]) {
+			counter_cold_means++;
+		}
+	}
+
+	let extension_cold_sizes = [];
+	let speedups_cold_responseStart = [];
+	let speedups_cold_responseEnd = [];
+	let speedups_cold_domResponse = [];
+
+	let speedups_warm_responseStart = [];
+	let speedups_warm_responseEnd = [];
+	let speedups_warm_domResponse = [];
+
+	for (i=0; i<extension_cold_medians.length; i++) {
+		extension_cold_sizes.push(extension_cold_medians[i][3]);
+		let speedup_cold_responseStart = 100*(extension_cold_medians[i][0] - no_extension_cold_medians[i][0])/(no_extension_cold_medians[i][0]+1);
+		let speedup_cold_responseEnd = 100*(extension_cold_medians[i][1] - no_extension_cold_medians[i][1])/(no_extension_cold_medians[i][1]+1);
+		let speedup_cold_domResponse = 100*(extension_cold_medians[i][2] - no_extension_cold_medians[i][2])/(no_extension_cold_medians[i][2]+1);
+
+		speedups_cold_responseStart.push(speedup_cold_responseStart);
+		speedups_cold_responseEnd.push(speedup_cold_responseEnd);
+		speedups_cold_domResponse.push(speedup_cold_domResponse);
+
+		let speedup_warm_responseStart = 100*(extension_warm_medians[i][0] - no_extension_warm_medians[i][0])/(no_extension_warm_medians[i][0]+1);
+		let speedup_warm_responseEnd = 100*(extension_warm_medians[i][1] - no_extension_warm_medians[i][1])/(no_extension_warm_medians[i][1]+1);
+		let speedup_warm_domResponse = 100*(extension_warm_medians[i][2] - no_extension_warm_medians[i][2])/(no_extension_warm_medians[i][2]+1);
+
+		speedups_warm_responseStart.push(speedup_warm_responseStart);
+		speedups_warm_responseEnd.push(speedup_warm_responseEnd);
+		speedups_warm_domResponse.push(speedup_warm_domResponse);
+	}
+
+	let sizeMap = new Map();
+
+	for (i=0; i<extension_cold_sizes.length; i++) {
+		let tmp = sizeMap.get(extension_cold_sizes[i]);
+		if (!!tmp) {
+			sizeMap.set(extension_cold_sizes[i], Math.max(tmp, extension_cold_medians[i][1]));
+		}
+		else {
+			sizeMap.set(extension_cold_sizes[i], extension_cold_medians[i][1]);
+		}
+	}
+
+	let sortedMap = sorted = Array.from(sizeMap.keys()).sort((a,b) => a-b).map(function(k) {return {key: k, value: sizeMap.get(k)}});
+	let sizes = [];
+	let times = [];
+	for (i=0; i<sorted.length; i++) {
+		times.push(sorted[i].value);
+		sizes.push(sorted[i].key);
+	}
+
+	speedups_cold_responseStart.sort((a, b) => a - b);
+	speedups_cold_responseEnd.sort((a, b) => a - b);
+	speedups_cold_domResponse.sort((a, b) => a - b);
+	speedups_warm_responseStart.sort((a, b) => a - b);
+	speedups_warm_responseEnd.sort((a, b) => a - b);
+	speedups_warm_domResponse.sort((a, b) => a - b);
+	extension_cold_sizes.sort((a, b) => a - b);
+
+	stream = fs.createWriteStream("./results_wordpress/speedups_cold_responseStart.txt", {flags:'a'});
+	stream.write(JSON.stringify(speedups_cold_responseStart));
+	stream.write(",");
+	stream.end();
+
+	stream = fs.createWriteStream("./results_wordpress/speedups_cold_responseEnd.txt", {flags:'a'});
+	stream.write(JSON.stringify(speedups_cold_responseEnd));
+	stream.write(",");
+	stream.end();
+
+	stream = fs.createWriteStream("./results_wordpress/speedups_cold_domResponse.txt", {flags:'a'});
+	stream.write(JSON.stringify(speedups_cold_domResponse));
+	stream.write(",");
+	stream.end();
+
+	stream = fs.createWriteStream("./results_wordpress/speedups_warm_responseStart.txt", {flags:'a'});
+	stream.write(JSON.stringify(speedups_warm_responseStart));
+	stream.write(",");
+	stream.end();
+
+	stream = fs.createWriteStream("./results_wordpress/speedups_warm_responseEnd.txt", {flags:'a'});
+	stream.write(JSON.stringify(speedups_warm_responseEnd));
+	stream.write(",");
+	stream.end();
+
+	stream = fs.createWriteStream("./results_wordpress/speedups_warm_domResponse.txt", {flags:'a'});
+	stream.write(JSON.stringify(speedups_warm_domResponse));
+	stream.write(",");
+	stream.end();
+
+	stream = fs.createWriteStream("./results_wordpress/extension_cold_sizes.txt", {flags:'a'});
+	stream.write(JSON.stringify(extension_cold_sizes));
+	stream.write(",");
+	stream.end();
+
+
+}
