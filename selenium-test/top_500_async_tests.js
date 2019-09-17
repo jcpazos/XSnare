@@ -409,7 +409,7 @@ async function initTests(start, end) {
 
 const threads = 4;
 let promises = [];
-k = 0;
+k = 3;
 for (k=0; k < threads; k++) {
 	if (k === (threads-1)) {
 		promises.push(new Promise(function (resolve,reject) {
