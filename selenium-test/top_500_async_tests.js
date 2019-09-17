@@ -137,7 +137,7 @@ async function run_tests_cold_extension(url) {
 }
 
 async function run_tests_warm_extension(url) {
-	let i;
+	let j;
 	let loadTimes = [];
   	let loadTime = 0;
   	var start1;
@@ -146,13 +146,12 @@ async function run_tests_warm_extension(url) {
 	var end3;
 	var end4;
 	var end5;
-	
 	let driver;
 	try {
 		driver = await builder_extension.build();
 		await driver.manage().setTimeouts({pageLoad: 25000});
   		await driver.get("https://www.example.com");
-		let j;
+		
 		for (j=0; j<trials; j++) {
 			let data = [];
 			try {
@@ -213,7 +212,6 @@ async function run_tests_warm_extension(url) {
 }
 
 async function run_tests_cold_no_extension(url) {
-	let i;
   	let loadTimes = [];
   	let loadTime = 0;
 	let j;
@@ -286,7 +284,6 @@ async function run_tests_cold_no_extension(url) {
 }
 
 async function run_tests_warm_no_extension(url) {
-	let i;
 	let loadTimes = [];
   	let loadTime = 0;
   	var start1;
@@ -409,8 +406,8 @@ async function initTests(start, end) {
 
 const threads = 4;
 let promises = [];
-k = 3;
-for (k=0; k < threads; k++) {
+k = 0;
+for (k=3; k < threads; k++) {
 	if (k === (threads-1)) {
 		promises.push(new Promise(function (resolve,reject) {
 			resolve(initTests(k*110, 441));
