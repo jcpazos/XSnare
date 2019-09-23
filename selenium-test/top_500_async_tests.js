@@ -404,18 +404,21 @@ async function initTests(start, end) {
 }
 
 
+let start = process.argv[2];
+let end = process.argv[3];
+
 const threads = 4;
 let promises = [];
 k = 0;
 for (k=0; k < threads; k++) {
-	if (k === (threads-1)) {
+	if (k === (threads-1) && end === 109) {
 		promises.push(new Promise(function (resolve,reject) {
-			resolve(initTests(k*110, 441));
+			resolve(initTests((k*110)+start, 441));
 			//resolve(initTests(k*1, 4));
 		}));
 	} else {
 		promises.push(new Promise(function (resolve,reject) {
-			resolve(initTests(k*110, (k+1)*110));
+			resolve(initTests((k*110)+start, (k*110)+end));
 			//resolve(initTests(k*1, (k+1)*1));
 		}));
 	}
