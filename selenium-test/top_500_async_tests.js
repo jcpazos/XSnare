@@ -413,7 +413,7 @@ let promises = [];
 k = 0;
 
 for (k=0; k < threads; k++) {
-	if (k === (threads-1) && proc_end === 109) {
+	if (k === (threads-1) && proc_end === 110) {
 		promises.push(new Promise(function (resolve,reject) {
 			resolve(initTests((k*110)+proc_start, 441));
 			//resolve(initTests(k*1, 4));
