@@ -14,7 +14,7 @@ var fs = require("fs");
 
 let urls = urlArray;
 
-const trials = 25;
+const trials = 4;
 
 let extension_cold_cache = [];
 let extension_warm_cache = [];
@@ -404,21 +404,23 @@ async function initTests(start, end) {
 }
 
 
-let start = process.argv[2];
-let end = process.argv[3];
+let proc_start = Number(process.argv[2]);
+let proc_end = Number(process.argv[3]);
 
 const threads = 4;
 let promises = [];
+
 k = 0;
+
 for (k=0; k < threads; k++) {
-	if (k === (threads-1) && end === 109) {
+	if (k === (threads-1) && proc_end === 109) {
 		promises.push(new Promise(function (resolve,reject) {
-			resolve(initTests((k*110)+start, 441));
+			resolve(initTests((k*110)+proc_start, 441));
 			//resolve(initTests(k*1, 4));
 		}));
 	} else {
 		promises.push(new Promise(function (resolve,reject) {
-			resolve(initTests((k*110)+start, (k*110)+end));
+			resolve(initTests((k*110)+proc_start, (k*110)+proc_end));
 			//resolve(initTests(k*1, (k+1)*1));
 		}));
 	}
