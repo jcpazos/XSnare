@@ -14,7 +14,7 @@ var fs = require("fs");
 
 let urls = urlArray;
 
-const trials = 4;
+const trials = 25;
 
 let extension_cold_cache = [];
 let extension_warm_cache = [];
