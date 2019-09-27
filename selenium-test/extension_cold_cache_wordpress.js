@@ -778,14 +778,6 @@ function processResults() {
 		sizes.push(sorted[i].key);
 	}
 
-	speedups_cold_responseStart.sort((a, b) => a - b);
-	speedups_cold_responseEnd.sort((a, b) => a - b);
-	speedups_cold_domResponse.sort((a, b) => a - b);
-	speedups_warm_responseStart.sort((a, b) => a - b);
-	speedups_warm_responseEnd.sort((a, b) => a - b);
-	speedups_warm_domResponse.sort((a, b) => a - b);
-	extension_cold_sizes.sort((a, b) => a - b);
-
 	stream = fs.createWriteStream("./results_wordpress/speedups_cold_responseStart.txt", {flags:'a'});
 	stream.write(JSON.stringify(speedups_cold_responseStart));
 	stream.write(",");
