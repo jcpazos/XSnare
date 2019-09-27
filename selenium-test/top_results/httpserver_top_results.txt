@@ -1,4 +1,3 @@
-Listening 0.0.0.0:8000 web root dir /home/jose/Documents/dom-firewall/selenium-test
 127.0.0.1 - - [25/Sep/2019:16:33:14 +0000] "GET /?time=4.419999999999845&loadedSignatures=0&loadedProbes=&length=106984&url=https://marketingplatform.google.com/about/ HTTP/1.1" 200 8591 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0"
 127.0.0.1 - - [25/Sep/2019:16:33:14 +0000] "GET /?time=11.519999999999982&loadedSignatures=0&loadedProbes=wordpress&length=91319&url=https://www.biblegateway.com/ HTTP/1.1" 200 8581 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0"
 127.0.0.1 - - [25/Sep/2019:16:33:14 +0000] "GET /?time=4.759999999999991&loadedSignatures=0&loadedProbes=&length=169376&url=https://www.microsoft.com/en-ca/ HTTP/1.1" 200 8569 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0"

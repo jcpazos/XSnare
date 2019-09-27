@@ -5,7 +5,7 @@ var resMap = new Map();
 // create instance of readline
 // each instance is associated with single input stream
 let rl = readline.createInterface({
-    input: fs.createReadStream('httpserver_cold_results.txt')
+    input: fs.createReadStream('./top_results/httpserver_top_results.txt')
 });
 
 let line_no = 0;
