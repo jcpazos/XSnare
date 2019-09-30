@@ -29,11 +29,13 @@ For each set of tests, we reduced the recorded values to two comparisons: networ
 
 We compare the load times with and without the extension running by calculating the relative slowdown with the extension installed according to the following formula: 
 
-$$100*\frac{\tilde{x}_{with}-\tilde{x}_{without}}{\tilde{x}_{without}}$$
+\begin{equation*}
+100*\frac{\tilde{x}_{with}-\tilde{x}_{without}}{\tilde{x}_{without}}
+\end{equation*}
 \\
-where $\tilde{x}$ is the median and with and without are with the extension running and without the extension running.
+where $\tilde{x}$ is the median with/without the extension running.
 
-Figure ~\ref{fig:overall_slowdown} shows the computed results. We have zoomed in on the [-50\%,50\%] range, as this is where the grand majority of values lie. The graph shows that the slowdown is not too great when the extension is running. Note that these values are recorded as percentages, and while some are as high as 50\%, the absolute values are in the order of seconds, and in many cases tens or hundreds of milliseconds, especially for the network component. Such values should not alter the user's experience significantly. The slowdown increases when we take caching into account. We expect this to be the case because the network filter probably causes the browser to use less caching, especially for the DOM component, as it might have to process it from scratch every time. Overall, we see a slowdown of less than 10\% for roughly 70\% of sites, and less than 50\% for about 85\% of sites.
+Figure ~\ref{fig:overall_slowdown} shows the computed results. We have zoomed in on the $[-50\%,50\%]$ range, as this is where the grand majority of values lie. The graph shows that the slowdown is not too great when the extension is running. Note that these values are recorded as percentages, and while some are as high as 50\%, the absolute values are in the order of seconds, and in many cases tens or hundreds of milliseconds, especially for the network component. Such values should not alter the user's experience significantly. The slowdown increases when we take caching into account. We expect this to be the case because the network filter probably causes the browser to use less caching, especially for the DOM component, as it might have to process it from scratch every time. Overall, we see a slowdown of less than 10\% for roughly 70\% of sites, and less than 50\% for about 85\% of sites.
 
 \begin{figure}[h]
 	\includegraphics[scale=0.5]{results/density_histogram_filter_slowdown}
