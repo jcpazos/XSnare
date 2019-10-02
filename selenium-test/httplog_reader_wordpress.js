@@ -5,7 +5,7 @@ var resMap = new Map();
 // create instance of readline
 // each instance is associated with single input stream
 let rl = readline.createInterface({
-    input: fs.createReadStream('httpserver_wordpress_results.txt')
+    input: fs.createReadStream('./results_wordpress/wordpress_verify_results.txt')
 });
 
 let line_no = 0;
@@ -149,5 +149,5 @@ rl.on('close', function(line) {
 	console.log(JSON.stringify(lengths));
 	console.log(JSON.stringify(timeswp));
 	console.log(JSON.stringify(lengthswp));
-    //console.log('Total sites : ' + sites);
+    console.log('Total sites : ' + sites);
 });
