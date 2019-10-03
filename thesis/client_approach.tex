@@ -16,7 +16,7 @@ Many of these approaches are either unfit for widespread deployment or do not be
 We instead focus on application-specific detection at the client-side layer, and thus, don't rely on any server-side infrastructure (or its operators). Furthermore, it is complementary to the aforementioned techniques: a WAF will not reduce the security of our approach by any means, and having these two work in tandem is beneficial to the user's experience.
 
 \begin{figure}[h]
-	\includegraphics[scale=0.37]{img/web_app_architecture.png}
+	\includegraphics[scale=0.37]{img/web_app_architecture.pdf}
 	\caption{Architecture of typical web applications. Different security solutions apply at distinct layers.}
 	\label{fig:web_architecture}
 \end{figure}
@@ -25,11 +25,31 @@ We instead focus on application-specific detection at the client-side layer, and
 \subsection{Operation, at a glance}
  Commonly, bug bounty hunters and penetration testers will scour websites to find vulnerabilities and alert developers of issues in these, as well as potential fixes. Developers will then fix the bugs accordingly so that users are not subject to vulnerabilities. Inspired by this workflow, we believe this process can be partly automated using a firewall-based approach, so that users don't have to wait for developers to update their code. Figure~\ref{fig:dom_firewall} illustrates how the firewall can be used to guarantee full client-side protection: A user loads a request, such as www.myblog.com, this request might come back with malicious code in the form of an XSS attack. Before rendering the webpage in the browser, an extension can analyze the potentially malicious document, doing so by loading signatures which a security analyst (a bug bounty hunter, for example) has uploaded to a database, and completely eliminating the injected code. Finally, the extension returns a clean HTML document, which the browser then renders.
  
- \begin{figure}[h]
- 	\includegraphics[scale=0.23]{img/dom_firewall.png}
+
+ \begin{figure*}[h]
+ 	\begin{subfigure}[b]{1.0\textwidth}
+ 		\centering
+ 		\includegraphics[scale=0.55]{img/xsnare_top.pdf}
+ 		\caption{XSnare's browser extension component}
+ 		\label{fig:extension}
+ 	\end{subfigure}
+	 \hfill
+	 \begin{subfigure}[b]{0.75\textwidth}
+ 		\includegraphics[scale=0.55]{img/xsnare_bot.pdf}
+ 		\caption{XSnare's signature component}
+ 		\label{fig:signatures}
+ 	\end{subfigure}
+ 	 	\caption{XSnare's approach for protection against XSS.}
+		\label{fig:xsnare}
+ \end{figure*}
+
+\iffalse
+ \begin{figure*}[h]
+ 	\includegraphics[scale=0.55]{img/xsnare.png}
  	\caption{XSnare's approach for protection against XSS.}
  	\label{fig:dom_firewall}
- \end{figure}
+ \end{figure*}
+\fi
 
 \subsection{An example application of XSnare}
 

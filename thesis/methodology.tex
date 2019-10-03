@@ -9,16 +9,34 @@ For each CVE, we set up a Docker container with a clean installation of WordPres
 
 \subsection{Results}
 
-Of the initial 100 CVEs, we were able to analyze 76 across 40 affected pages. We dropped 24 CVEs due to reproducibility issues: some of the descriptions did not include a proof of concept of the exploit, and as such, was difficult for us to reproduce; or, the plugin code was no longer available. In some cases, it had been removed from the WordPress repository due to "security issues", which exacerbates the importance of being able to defend against these attacks. This is not to say, however, that our detector would not work for such a CVE, as the author would have a better idea of how the exploit manifests itself, and would therefore be in a better position to write a signature. The plugins we studied averaged 489,927 installations (the most popular one had 5 million installations). For the vulnerabilities, 27 (35.5\%) could be exploited by an unauthenticated user; 56 (73.7\%) targeted a high-privilege user as the victim, 7 (9.2\%) had a low-privilege user as the victim, the rest affected users of all types.
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{|c c|} 
+			\hline
+			Plugin & Installations\\ [1ex] 
+			\hline
+			WooCommerce  & 5+ million  \\  
+			Duplicator & 1+ million \\  
+			Loginizer & 900,000+ \\  
+			WP Statistics & 500,000+ \\  
+			Caldera Forms & 200,000+ \\   
+			\hline
+		\end{tabular}
+		\caption{Most popular studied WordPress plugins}
+		\label{table:1}
+	\end{center}
+\end{table}
+
+Of the initial 100 CVEs, we were able to analyze 76 across 40 affected pages. We dropped 24 CVEs due to reproducibility issues: some of the descriptions did not include a proof of concept of the exploit, and as such, was difficult for us to reproduce; or, the plugin code was no longer available. In some cases, it had been removed from the WordPress repository due to "security issues", which exacerbates the importance of being able to defend against these attacks. This is not to say, however, that our detector would not work for such a CVE, as the author would have a better idea of how the exploit manifests itself, and would therefore be in a better position to write a signature. The plugins we studied averaged 489,927 installations, \ref{table:1} shows the number of installations for the 5 most popular studied plugins. For the vulnerabilities, 27 (35.5\%) could be exploited by an unauthenticated user; 56 (73.7\%) targeted a high-privilege user as the victim, 7 (9.2\%) had a low-privilege user as the victim, the rest affected users of all types.
 
 Many of the studied CVEs included attacks for which there are known and widely deployed defenses. For example, many were cases of Reflected XSS, where the URL reveals the existence of an attack e.g:
 
 
 $http://[path to WordPress]/wp-admin/admin.php?page=wps\_pages\_page\&page-uri=<script>alert("XSS")</script>$
 
-While Firefox didn't block this request, Chrome's built-in XSS auditor did block it, and so we still wrote signatures for such attacks. We believe such solutions are important and complementary to our work. We wrote 59 WordPress signatures in total, which got rid of the PoC exploit when sanitized with one of our three methods. We were able to include several CVEs in some of them because they occurred in the same page and affected the same plugin. Overall, these signatures represent 71 (93.4\%) signed CVEs. The 5 we were not able to sign were due to lack of identifiers in the HTML, which would result in potentially large chunks of the document being replaced. For cases like these, the signature developer can weigh the trade-offs and decide whether the added cost is worth it.
+While Chrome's built-in XSS auditor blocked this request, Firefox did not, and so we still wrote signatures for such attacks. We wrote 59 WordPress signatures in total, which got rid of the PoC exploit when sanitized with one of our three methods. We were able to include several CVEs in some of them because they occurred in the same page and affected the same plugin. Overall, these signatures represent 71 (93.4\%) signed CVEs. The 5 we were not able to sign were due to lack of identifiers in the HTML, which would result in potentially large chunks of the document being replaced. For cases like these, the signature developer can weigh the trade-offs and decide whether the added cost is worth it.
 
-The majority of the 71 signatures maintained the same layout and core functionality of the webpage. However, a small number of signatures rendered small parts of the page unusable, due to the sanitization method used (e.g. a table showing user information is now rendered as blank). As with the case of unsigned CVEs, most of the responsibility of maintaining functionality is left to the signature developer, being as precise as possible is key: A full sanitization of the whole HTML string will most likely get rid of any exploits, but will also make the page completely unusable in most scenarios.
+The majority of the 71 signatures maintained the same layout and core functionality of the webpage. However, 12 signatures caused some elements to be rearranged, modifying the page's visual aspect. One caused a small part of the page unusable, due to the sanitization method used (e.g. a table showing user information is now rendered as blank). As with the case of unsigned CVEs, most of the responsibility of maintaining functionality is left to the signature developer, being as precise as possible is key: A full sanitization of the whole HTML string will most likely get rid of any exploits, but will also make the page completely unusable in most scenarios.
 
 While our goal with the signature language is to retain as much information of the webpage as possible after sanitization, we believe that even if a part of the page is now useless, this does not impact the user's experience as much, since most of these exploits manifest themselves in small sections of the HTML. A thorough study with regards to usability is out of scope for this work, but we provide a study on false positives and false negatives in later sections, which is related to this issue.
 
@@ -88,7 +106,7 @@ While our goal with the signature language is to retain as much information of t
 		\hline
 	\end{tabular}
 \caption{Study results}
-\label{table:1}
+\label{table:2}
 \end{center}
 \end{table}
 \fi
