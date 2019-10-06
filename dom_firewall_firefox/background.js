@@ -40,11 +40,11 @@ function mainFrameListener(details) {
   };
 
   filter.onstop = event => {
-   // try {
+    try {
         //TODO: mark verified scripts as 'safe' so contentscript doesn't check them again for dynamic checks
         //var length = str.length;
         //verifyStart = performance.now()
-        //str = verifyHTML(str, details.url, details.tabId);
+        str = verifyHTML(str, details.url, details.tabId);
         //verifyEnd = performance.now();
 
         /*let myRequest = new Request('http://localhost:8000/?time=' + (verifyEnd-verifyStart) + '&loadedSignatures=' + loadedCounter + '&loadedProbes=' + loadedProbes + '&length=' + length + '&url=' + details.url);
@@ -52,12 +52,12 @@ function mainFrameListener(details) {
         	//do nothing
         });*/
 
-   // } catch(err) {
-        /*debugger;
+    } catch(err) {
+        debugger;
         console.log("Error when verifying HTML: " + err);
         //TODO: advice the user that a vulnerability has been found. maybe add an alert box to the HTML.
-        str = "<!DOCTYPE HTML><html><head></head><body>This webpage has been identified as malicious and was stopped from loading</body></html>";*/
-   // }
+        str = "<!DOCTYPE HTML><html><head></head><body>This webpage has been identified as malicious and was stopped from loading</body></html>";
+    }
     //str = str.replace(/<script/g, replacer);
     filter.write(encoder.encode(str));
     //endTime = new Date();
@@ -244,7 +244,11 @@ function htmlToRegex(signatureHTMLTag, isComplete) {
 }
 
 function isRunningWordPress(HTMLString, url) {
-  return HTMLString.includes("wp-content") || HTMLString.includes("wp-toolbar") || url.includes("wp-content") || url.includes("wp-admin");
+	return HTMLString.includes("wp-content") || HTMLString.includes("wp-toolbar") || url.includes("wp-content") || url.includes("wp-admin");
+}
+
+function isRunningJoomla(HTMLString, url) {
+	return HTMLString.includes('<meta name="generator" content="Joomla! - Open Source Content Management"/>');
 }
 
 function runProbes(HTMLString, url, domain) {
@@ -283,6 +287,9 @@ function runProbes(HTMLString, url, domain) {
       probes['WordPress'] = null;
       console.log(error);
     })
+  } else if (isRunningJoomla(HTMLString, url)) {
+  	loadedProbes.push('joomla');
+  	probes['Joomla'] = {};
   }
 
   //the domain name itself is a probe with no default versioning

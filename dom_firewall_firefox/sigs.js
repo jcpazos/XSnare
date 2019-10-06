@@ -908,6 +908,18 @@ const main_frame_signatures = {
 
 
 
+    ],
+    'Joomla' : [
+    	{
+    		url: 'administrator/index.php?option=com_config',
+    		software: 'Joomla',
+    		softwareDetails: '',
+    		version: '3.9.1',
+    		type: 'string',
+    		typeDet: 'single-unique',
+    		endPoints: ['<input name="jform[filters][1][filter_tags]" type="text" id="jform_filters1_filter_tags" class="novalidate" title="Filter Tags<sup>2</sup>" value="',
+    					'<input name="jform[filters][1][filter_attributes]" type="text" id="jform_filters1_filter_attributes" class="novalidate" title="Filter Attributes<sup>3</sup>"']
+    	}
     ]
 };
 
