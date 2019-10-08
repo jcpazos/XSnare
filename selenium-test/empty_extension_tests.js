@@ -171,6 +171,9 @@ async function run_tests_warm_extension(url) {
  		await sleep(1000);
  		await driver.executeScript('document.getElementById("loginform").submit()');
  		await sleep(1000);
+ 		await driver.get('http://localhost:8080/wp-admin/plugins.php');
+ 		await driver.executeScript('document.getElementsByClassName("activate")[0].firstElementChild.click()');
+ 		await sleep(1000);
 
 		let j;
 		for (j=0; j<trials; j++) {
@@ -380,8 +383,6 @@ async function initTests(url) {
 
 	let loadTimes;
 	let stream;
-
-	await run_tests_cold_extension(url);
 
 	loadTimes = await run_tests_warm_extension(url);
 	extension_warm_cache.push(loadTimes);
