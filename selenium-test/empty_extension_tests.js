@@ -26,7 +26,7 @@ const trials = 25;
 
 let options_extension_verify = new firefox.Options()
 				        .headless()
-				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1.6-an+fx.xpi')
+				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1.3-an+fx.xpi')
 				  		.setPreference('extensions.dom_firewall.showChromeErrors', true)
 				  		.setProfile(profile_path);
 
@@ -178,7 +178,7 @@ async function run_tests_warm_no_extension(url) {
 	var end5;
 	let driver;
 	try {
-		driver = await builder_no_extension.build();
+		driver = await builder_extension.build();
 		await driver.manage().setTimeouts({pageLoad: 25000});
   		await driver.get("https://www.example.com");
   		await driver.get("http://localhost:8080/wp-admin");
