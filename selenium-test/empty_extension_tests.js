@@ -250,6 +250,14 @@ async function initTests(url) {
 	let loadTimes;
 	let stream;
 
+
+	loadTimes = await run_tests_warm_no_extension(url);
+	no_extension_warm_cache.push(loadTimes);
+	stream = fs.createWriteStream("./results_empty/no_extension_warm_top_results.txt", {flags:'a'});
+	stream.write(JSON.stringify(loadTimes));
+	stream.write(",");
+	stream.end();
+
 	loadTimes = await run_tests_warm_extension(url);
 	extension_warm_cache.push(loadTimes);
 	stream = fs.createWriteStream("./results_empty/extension_warm_top_results.txt", {flags:'a'});
@@ -258,12 +266,7 @@ async function initTests(url) {
 	stream.end();
 
 
-	loadTimes = await run_tests_warm_no_extension(url);
-	no_extension_warm_cache.push(loadTimes);
-	stream = fs.createWriteStream("./results_empty/no_extension_warm_top_results.txt", {flags:'a'});
-	stream.write(JSON.stringify(loadTimes));
-	stream.write(",");
-	stream.end();
+	
 
 	return true;
 }
