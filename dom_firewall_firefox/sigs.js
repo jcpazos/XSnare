@@ -920,6 +920,47 @@ const main_frame_signatures = {
     		endPoints: ['<input name="jform[filters][1][filter_tags]" type="text" id="jform_filters1_filter_tags" class="novalidate" title="Filter Tags<sup>2</sup>" value="',
     					'<input name="jform[filters][1][filter_attributes]" type="text" id="jform_filters1_filter_attributes" class="novalidate" title="Filter Attributes<sup>3</sup>"']
     	}
+    ],
+
+    'LimeSurvey': [
+        {
+            url: 'index.php',
+            software: 'LimeSurvey',
+            softwareDetails: '',
+            version: '3.17.13',
+            type: 'string',
+            typeDet: 'multiple',
+            endPoints: [ ['<h1 class=\" survey-name  text-center\"  >', '<div class=\" survey-description  text-info text-center\" >'],
+                         ['<div class=\" group-title   text-center h3 space-col\" >', '<div class=\" group-description  row well space-col\" >']
+                         ]
+
+        },
+        {
+            url: 'index.php/admin/survey?mandatory=1&sid=',
+            software: 'LimeSurvey',
+            softwareDetails: '',
+            version: '3.17.13',
+            type: 'string',
+            typeDet: 'multiple-several',
+            endPoints: [ ['<input type=\"hidden\" name=\"sid\" value=\"','<div class=\"modal-footer modal-footer-buttons\">'],
+                         ['<input type="hidden" name="sid" value=">', '<input type=\"hidden\" name=\"aValidQuestionTypes\" value=\"']
+            ],
+            endPointsPositions: [ [2,5],
+                                  [4,1]
+                                ]
+        }
+    ],
+
+    'generic' : [
+        {
+            url: 'plugins/content/sige/plugin_sige/print.php',
+            software: '',
+            softwareDetails: '',
+            version: '',
+            type: 'all',
+            typeDet: 'single',
+            endPoints: []
+        }
     ]
 };
 
