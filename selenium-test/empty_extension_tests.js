@@ -33,8 +33,8 @@ let options_extension_verify = new firefox.Options()
 let options_extension = new firefox.Options()
 				        .headless()
 				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1.6-an+fx.xpi')
-				  		.setPreference('extensions.dom_firewall.showChromeErrors', true)
-				  		.setProfile(profile_path);
+				  		.setPreference('extensions.dom_firewall.showChromeErrors', true);
+				  		//.setProfile(profile_path);
 
 let capabilities = new Capabilities()
 				  		.setAlertBehavior(UserPromptHandler.ACCEPT);
@@ -55,8 +55,8 @@ let builder_extension = new Builder()
 
 
 let options_no_extension = new firefox.Options()
-				        .headless()
-				        .setProfile(profile_path);
+				        .headless();
+				        //.setProfile(profile_path);
 
 let builder_no_extension = new Builder()
 					.withCapabilities(
