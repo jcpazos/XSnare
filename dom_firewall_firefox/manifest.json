@@ -1,6 +1,6 @@
 {
   "name": "DOM Firewall",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Testing Joomla signatures",
   "permissions": ["<all_urls>", "activeTab", "storage", "webRequest", "webRequestBlocking", "tabs"],
   "options_ui": {
