@@ -33,8 +33,8 @@ let options_extension_verify = new firefox.Options()
 let options_extension = new firefox.Options()
 				        .headless()
 				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1.6-an+fx.xpi')
-				  		.setPreference('extensions.dom_firewall.showChromeErrors', true);
-				  		//.setProfile(profile_path);
+				  		.setPreference('extensions.dom_firewall.showChromeErrors', true)
+				  		.setProfile(profile_path);
 
 let capabilities = new Capabilities()
 				  		.setAlertBehavior(UserPromptHandler.ACCEPT);
@@ -55,8 +55,8 @@ let builder_extension = new Builder()
 
 
 let options_no_extension = new firefox.Options()
-				        .headless();
-				        //.setProfile(profile_path);
+				        .headless()
+				        .setProfile(profile_path);
 
 let builder_no_extension = new Builder()
 					.withCapabilities(
@@ -73,83 +73,6 @@ function sleep(ms){
     })
 }
  
-async function run_tests_cold_extension(url) {
-  	let loadTimes = [];
-  	let loadTime = 0;
-	let j;
-	var start1 = new Date();
-	for (j=0; j<1; j++) {
-		var start1;
-		var end1;
-		var end2;
-		var end3;
-		var end4;
-		var end5;
-		loadTime = 0;
-		let driver;
-		let data = [];
-		try {
-			start1 = new Date();
-		 	driver = await builder_extension.build();
-
-		 	await driver.manage().setTimeouts({pageLoad: 25000});
-		 	await driver.get("http://localhost:8080/wp-admin");
-		 	await driver.findElement(By.id('user_login')).sendKeys('root');
-		 	await sleep(1000);
-	 		await driver.findElement(By.id('user_pass')).sendKeys('root');
-	 		await sleep(1000);
-	 		await driver.executeScript('document.getElementById("loginform").submit()');
-	 		await sleep(1000);
-	 		if (j==0) {
-		 		await driver.get('http://localhost:8080/wp-admin/plugins.php');
-		 		await driver.executeScript('document.getElementsByClassName("activate")[0].firstElementChild.click()');
-		 		await sleep(1000);
-	 		}
-		 	end1 = new Date();
-			await driver.get(url);
-			end2 = new Date();
-			loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-			end3 = new Date();
-			//console.log(loadTime);
-			let requestStart = loadTime.requestStart;
-			let responseStart = loadTime.responseStart;
-			let responseEnd = loadTime.responseEnd;
-			let domContentLoaded = loadTime.domContentLoadedEventEnd;
-			let domComplete = loadTime.domComplete;
-			let duration = loadTime.duration;
-			let bodySize = loadTime.decodedBodySize; 
-			data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
-			/*loadTimes[1].push();
-			loadTimes[2].push();
-			loadTimes[3].push();*/	
-		} catch (err) {
-			console.log('error in extension tests when loading page ' + url + ': ' + err);
-			if (driver) {
-				try {
-					loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-				} catch (err) {
-					console.log("error when executing script, driver no longer available: " + err);
-				}
-			}
-		} finally {
-			loadTimes.push(data);
-			if (driver) {
-				end4 = new Date();
-				await driver.quit();
-				end5 = new Date();
-				console.log("Time to start driver: " + (end1-start1));
-				console.log("Time to await page get: " + (end2-end1));
-				console.log("Time to await script execute: " + (end3-end2));
-				console.log("Time to close driver: " + (end5-end4));
-
-			}
-		}
-	}
-	console.log("latest load time for cold extension page " + url + ": " + JSON.stringify(loadTime));
-	//console.log("tests took: " + (end5-start1));
-	return loadTimes;
-}
-
 async function run_tests_warm_extension(url) {
 	let loadTimes = [];
   	let loadTime = 0;
@@ -161,19 +84,36 @@ async function run_tests_warm_extension(url) {
 	var end5;
 	let driver;
 	try {
-		driver = await builder_extension.build();
+		try {
+			driver = await builder_extension.build();
+		} catch (err) {
+			console.log('error in extension tests when building driver: ' + err);
+		}
+
 		await driver.manage().setTimeouts({pageLoad: 25000});
+		try {
   		await driver.get("https://www.example.com");
+  		} catch (err) {
+			console.log('error in extension tests when loading example page: ' + err);
+		}
+		try {
   		await driver.get("http://localhost:8080/wp-admin");
-	 	await driver.findElement(By.id('user_login')).sendKeys('root');
-	 	await sleep(1000);
- 		await driver.findElement(By.id('user_pass')).sendKeys('root');
- 		await sleep(1000);
- 		await driver.executeScript('document.getElementById("loginform").submit()');
- 		await sleep(1000);
- 		await driver.get('http://localhost:8080/wp-admin/plugins.php');
- 		await driver.executeScript('document.getElementsByClassName("activate")[0].firstElementChild.click()');
- 		await sleep(1000);
+  		} catch (err) {
+			console.log('error in extension tests when loading wp-admin: ' + err);
+		}
+		try {
+		 	await driver.findElement(By.id('user_login')).sendKeys('root');
+		 	await sleep(1000);
+	 		await driver.findElement(By.id('user_pass')).sendKeys('root');
+	 		await sleep(1000);
+	 		await driver.executeScript('document.getElementById("loginform").submit()');
+	 		await sleep(1000);
+	 		await driver.get('http://localhost:8080/wp-admin/plugins.php');
+	 		await driver.executeScript('document.getElementsByClassName("activate")[0].firstElementChild.click()');
+	 		await sleep(1000);
+ 		} catch (err) {
+			console.log('error in extension tests when activating plugin: ' + err);
+		}
 
 		let j;
 		for (j=0; j<trials; j++) {
@@ -224,80 +164,6 @@ async function run_tests_warm_extension(url) {
 		//console.log("Time to close driver: " + (end5-end4));
 	}
 	console.log("latest load time for warm extension page " + url + ": " + JSON.stringify(loadTime));
-	return loadTimes;
-}
-
-async function run_tests_cold_no_extension(url) {
-  	let loadTimes = [];
-  	let loadTime = 0;
-	let j;
-	var start1 = new Date();
-	for (j=0; j<trials; j++) {
-		var start1;
-		var end1;
-		var end2;
-		var end3;
-		var end4;
-		var end5;
-		loadTime = 0;
-		let driver;
-		let data = [];
-		try {
-			start1 = new Date();
-		 	driver = await builder_no_extension.build();
-		 	await driver.manage().setTimeouts({pageLoad: 25000});
-		 	await driver.get("http://localhost:8080/wp-admin");
-		 	await driver.findElement(By.id('user_login')).sendKeys('root');
-		 	await sleep(1000);
-	 		await driver.findElement(By.id('user_pass')).sendKeys('root');
-	 		await sleep(1000);
-	 		await driver.executeScript('document.getElementById("loginform").submit()');
-	 		await sleep(1000);
-
-		 	end1 = new Date();
-			await driver.get(url);
-			await sleep(1000);
-			end2 = new Date();
-			loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-			end3 = new Date();
-			//console.log(loadTime);
-			let requestStart = loadTime.requestStart;
-			let responseStart = loadTime.responseStart;
-			let responseEnd = loadTime.responseEnd;
-			let domContentLoaded = loadTime.domContentLoadedEventEnd;
-			let domComplete = loadTime.domComplete;
-			let duration = loadTime.duration;
-			let bodySize = loadTime.decodedBodySize; 
-			data = [requestStart, responseStart, responseEnd, domContentLoaded, domComplete, duration, bodySize];
-			/*loadTimes[1].push();
-			loadTimes[2].push();
-			loadTimes[3].push();*/	
-		} catch (err) {
-			console.log('error in extension tests when loading page ' + url + ': ' + err);
-			if (driver) {
-				try {
-					loadTime = await driver.executeScript('return performance.getEntriesByType("navigation")[0]');
-				} catch (err) {
-					console.log("error when executing script, driver no longer available: " + err);
-				}
-			}
-		} finally {
-			loadTimes.push(data);
-			if (driver) {
-				end4 = new Date();
-				await driver.quit();
-				end5 = new Date();
-				console.log("Time to start driver: " + (end1-start1));
-				console.log("Time to await page get: " + (end2-end1));
-				console.log("Time to await script execute: " + (end3-end2));
-				console.log("Time to close driver: " + (end5-end4));
-
-			}
-		}
-		
-	}
-	console.log("latest load time cold no extension for page " + url + ": " + JSON.stringify(loadTime));
-	//console.log("tests took: " + (end5-start1));
 	return loadTimes;
 }
 
