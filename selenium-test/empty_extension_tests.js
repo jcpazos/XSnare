@@ -26,7 +26,7 @@ const trials = 25;
 
 let options_extension_verify = new firefox.Options()
 				        .headless()
-				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1.3-an+fx.xpi')
+				  		.addExtensions('../dom_firewall_firefox/web-ext-artifacts/dom_firewall-0.1.6-an+fx.xpi')
 				  		.setPreference('extensions.dom_firewall.showChromeErrors', true)
 				  		.setProfile(profile_path);
 
