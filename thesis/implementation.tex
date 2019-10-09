@@ -18,7 +18,7 @@ We have implemented our browser extension in Firefox 69.0. Our signatures are cu
 	 \For{probe in loadedProbes}{
 	 	signaturesToCheck += DBSignatures[probe]\
  	 }
-  	 \textit{loadedSignatures} = []\
+  	 \textit{loadedSignatures} = []\\
   	 \For{signature in signaturesToCheck} {
   	 	\uIf{requestString and url match signature}{
   	 		loadedSignatures.push(signature)\\
