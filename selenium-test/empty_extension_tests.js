@@ -108,9 +108,6 @@ async function run_tests_warm_extension(url) {
 	 		await sleep(1000);
 	 		await driver.executeScript('document.getElementById("loginform").submit()');
 	 		await sleep(1000);
-	 		await driver.get('http://localhost:8080/wp-admin/plugins.php');
-	 		await driver.executeScript('document.getElementsByClassName("activate")[0].firstElementChild.click()');
-	 		await sleep(1000);
  		} catch (err) {
 			console.log('error in extension tests when activating plugin: ' + err);
 		}
@@ -187,6 +184,9 @@ async function run_tests_warm_no_extension(url) {
  		await driver.findElement(By.id('user_pass')).sendKeys('root');
  		await sleep(1000);
  		await driver.executeScript('document.getElementById("loginform").submit()');
+ 		await sleep(1000);
+ 		await driver.get('http://localhost:8080/wp-admin/plugins.php');
+ 		await driver.executeScript('document.getElementsByClassName("activate")[0].firstElementChild.click()');
  		await sleep(1000);
 
 		let j;
