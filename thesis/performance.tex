@@ -4,10 +4,11 @@ The extension's performance goals are to provide our security guarantees without
 While our extension's functionality only applies at the network level, there is potential slowdown at the DOM processing level due to the optimization techniques the browser applies throughout several levels of the web page load pipeline. Figure ~\ref{fig:navigationtiming} shows the different timestamps provided by the Navigation Timing API \cite{navigationtiming}, as well as a high-level description of the browser processing model. Since our filter listens on the onBeforeRequest event, none of the previous steps before Request are affected. In this section, we refer to the difference in time between responseEnd and requestStart as the "network filter time".
 
 \begin{figure*}[h]
- \includegraphics[scale=0.7]{img/timestamp-diagram.pdf}
- \caption{The Navigation Timing API's timestamps}
+ \includegraphics[scale=0.65]{img/timestamp-diagram.pdf}
+ \caption{The Navigation Timing API's timestamps\protect\footnotemark}
  \label{fig:navigationtiming}
  \end{figure*}
+
 
 \subsection{Top websites load times}
 We first report our extension's impact on top website load times, representing the expected behaviour of an user's average web browsing experience. For these tests, we first took the top 500 websites as reported by Moz.com \cite{top500}. For each website, we loaded it 25 times (with a 25 second timeout) and recorded the following values: requestStart, responseStart, responseEnd, domContentLoadedEventEnd, domComplete, duration, and decodedBodySize. From the initial 500, we only report values for 441 of them. The other 59 had consistent issues with timeouts, insecure certificates, and network errors. For our setup, we used a headless version of Firefox 6.90, and Selenium WebDriver for NodeJS, with GeckoDriver. All experiments were ran on one machine with an Intel Xeon CPU E5-2407 2.40GHz processor, 32 GB DRAM, and our university's 1GiB connection. We ran four test suites:
@@ -60,6 +61,8 @@ Figure ~\ref{fig:histogram_slowdown} shows a closer look at the distribution for
 \end{figure}
 
 When factoring in the rest of the network component, additional noise is introduced in the measurements. Figure ~\ref{fig:network_filter_decoded_size} shows the network filter time as a function of the page's decoded byte size. Applying least squares regression shows an upwards trend. However, the Spearman's rank correlation for this set of data is $-0.054$; we believe this to be due to the number of factors affecting this measurement. The data demonstrates that the size of the page being processed has a smaller impact than expected (see Figure ~\ref{fig:verification_time_string_length}) on the network filter time when the whole page load process is accounted for.
+
+\footnotetext{This image was taken from the w3 spec: \url{https://www.w3.org/TR/navigation-timing-2/}}
 
 Additionally, for each website we recorded the number of loaded signatures (i.e. signatures whose endpoints were found in the HTML). We report a 0\% false positive rate for loaded signatures. Thus, we can infer with confidence that the rate of false positives for loaded signatures during an average user's web browsing is similarly low. This rate could possibly go up as the number of signatures and covered frameworks increases. While we can not be sure that any of the sites is free of vulnerabilities described in our current signatures, this is very unlikely, as many of these websites are not running WordPress to begin with, and being some of the most popular, they would likely be updated relatively quickly if any vulnerability is found; thus, the rate of false negatives is likely extremely low as well.
 
