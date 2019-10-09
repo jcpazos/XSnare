@@ -30,7 +30,7 @@ Commonly, bug bounty hunters and penetration testers will scour websites to find
 
  Our system consists of three main components: a trusted Firefox extension for interposing between the application and the DOM, a periodically updated local database which maintains exploit definitions and descriptions of the vulnerabilities to be targeted by the extension in the form of signatures, and finally, a declarative language for describing exploits, expressive enough for an user to be precise about which parts of the HTML are vulnerable and how to sanitize them.
  
- We aim to reproduce the developer's intended server-side patch on the client-side, therefore, we need to be able to determine the separation between dynamic content and the static template, and pass the dynamic elements to a sanitization function. We provide further details of the mechanisms we provide to achieve this goal in Section TODO: give section number.
+ We aim to reproduce the developer's intended server-side patch on the client-side, therefore, we need to be able to determine the separation between dynamic content and the static template, and pass the dynamic elements to a sanitization function. We provide further details of the mechanisms we provide to achieve this goal in Section \ref{xsnare_design}.
  
  We evaluate our application-specific, signature-based approach, by testing it against recent XSS CVEs. CVE databases are well-maintained and widely available. They are one of the main tools used by developers to patch their code against known vulnerabilities. To the best of our knowledge, our work is the first to evaluate an XSS protection tool against real world exploits of this form at the scope we do.
 
