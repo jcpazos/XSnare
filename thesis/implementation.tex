@@ -10,38 +10,35 @@ We have implemented our browser extension in Firefox 69.0. Our signatures are cu
 
 \begin{algorithm}
 	\SetAlgoLined
-	//global DBSignatures\;
-	\SetKwProg{verifyRequest}{Function \emph{verifyRequest}}{}{end}
-	\verifyRequest{(requestString, url, tabId)}{
-	 loadedProbes = runProbes(HTMLString, url, domain)\;
-	 signaturesToCheck = []\;
+	//global DBSignatures\\
+	\SetKwProg{verifyRequest}{procedure \emph{verifyRequest}}{}{end}
+	\verifyRequest{(requestString, url)}{
+	 loadedProbes = runProbes(requestString, url)\\
+	 signaturesToCheck = []\\
 	 \For{probe in loadedProbes}{
-	 	signaturesToCheck += DBSignatures[probe]\;
+	 	signaturesToCheck += DBSignatures[probe]\
  	 }
-  	 loadedSignatures = []\;
+  	 \textit{loadedSignatures} = []\
   	 \For{signature in signaturesToCheck} {
-  	 	\uIf{signature applies to HTMLString and url}{
-  	 		loadedSignatures.push(signature)\;
+  	 	\uIf{requestString and url match signature}{
+  	 		loadedSignatures.push(signature)\\
   	 	}
   	 }
-     versionInfo = loadVersions(domain, loadedProbes)\;
-     endPointsList = [] \;
+     versionInfo = loadVersions(url, loadedProbes)\\
+     endPoints = [] \\
      \For{signature in loadedSignatures} {
      	\uIf{(signature,signature.version) $\in$ versionInfo}{
-     		endPointsList.push(signature.endPoints)\;
-     	}\uElseIf{versionInfo == null}{
-    		//couldn't apply versioning, push anyway\;
-    		endPointsList.push(signature.endPoints)\; 		
+     		endPoints.push(signature.endPointPairs)\\
      	}
     } 
 	\uIf{check for discrepancies in endPointsList}{
-       	Block page load\;
+       	Block page load\\
 	}
-	\For{endPointPair in endPointsList} {
-		indices = findEndPointsIndices(HTMLString, endPointPair)\;
-		sanitize(HTMLString,indices)\;
+	\For{endPointPair in endPoints} {
+		indices = findIndices(requestString, endPointPair)\\
+		sanitize(requestString,indices)\\
 	}
-		\caption{Request verification algorithm}
+		\caption{Sanitization algorithm}
 	}
 \end{algorithm}
 
