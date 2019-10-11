@@ -4,7 +4,7 @@
 *.log
 *.out
 revision.tex
-./dom_firewall.pdf
+dom_firewall.pdf
 dom_firewall.synctex.gz
 *~
 #*
