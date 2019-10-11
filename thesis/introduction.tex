@@ -30,7 +30,7 @@ web safely.
   \label{fig:web_architecture}
 \end{figure}
 
-Vulnerability defences can be implemented in multiple layers of the web application stack (Figure~\ref{fig:web_architecture}). Each layer opens different defence options for developers:
+Vulnerability defences can be implemented in multiple layers of the web application stack (Figure~\ref{fig:web_architecture}). Each layer opens different defence options:
 %Further details of these different approaches are described in Section 5:
 \begin{enumerate}
 	\item At the application's server-side, the developer is
@@ -41,17 +41,17 @@ Vulnerability defences can be implemented in multiple layers of the web applicat
           solutions, or by securing the code themselves, for example,
           by applying static analysis on the server code to detect
           unsanitised input.
-	\item Inside the hosting environment, developers deploy
+	\item In the hosting environment, developers deploy
           defences including generic firewalls and more specific \acp{WAF}, which defend against attacks
-          such as \ac{DDoS}, SQL injections and \ac{XSS}.
-	\item At the client side layer the user is defending from
-          malicious websites, and may have their own generic firewall,
-          blacklisted websites, and proxies.
-	\item Finally, the information gets to the user's
-          browser. This will usually have built-in defences, such as
-          Chrome's \ac{XSS} Auditor~\cite{xssauditor}. The user might also
-          install browser-dependent functionality, such as extensions
-          like NoScript \cite{Noscript}. Xsnare applies at this point.
+          such as \ac{DDoS}, \ac{SQL} injections and \ac{XSS}.
+	\item In the client's environment, the user requires protection from
+          malicious websites, and may install their own network firewall,
+          network filters, and web proxies.
+	\item The last line of defence is the browser. \sys operates at this point.
+          The browser has built-in defences, such as
+          Chrome's \ac{XSS} Auditor~\cite{xssauditor}. But the user can also
+          install browser extensions to block malicious requests and
+          responses. % such as the NoScript~\cite{Noscript} extension.
 \end{enumerate}
 
 Many of these approaches are either unfit for widespread deployment or
