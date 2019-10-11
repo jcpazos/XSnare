@@ -1,12 +1,12 @@
 \section{Writing Signatures} \label{signature_writing}
 
-We envision the process of signature development to be part of the vulnerability discovery work flow and CVE creation. As such, we expect a signature developer to have a solid understanding of the principles behind XSS so that they can properly identify the minimal section of the DOM which acts as an injection point. Similarly, it is important that they can identify unique traits of elements (e.g. HTML id's, classes, etc.) and the page overall in order to reduce the rate of false positives. In this section, we aim to show that minor effort is required from a knowledgeable security analyst when writing a signature for our extension.
+We envision the process of signature development to be part of the vulnerability discovery work flow and CVE creation. As such, we expect a signature developer to have a solid understanding of the principles behind \ac{XSS} so that they can properly identify the minimal section of the DOM which acts as an injection point. Similarly, it is important that they can identify unique traits of elements (e.g. HTML id's, classes, etc.) and the page overall in order to reduce the rate of false positives. In this section, we aim to show that minor effort is required from a knowledgeable security analyst when writing a signature for our extension.
 
 
 \subsection{Case Study: CVE-2018-10309} \label{case_study}
 Going back to our example in Section \ref{motivating_example}, we describe the process by which a signature is written after a vulnerability has been discovered by using one of our studied CVEs as an example. A full specification of our signature language is explained in Appendix \ref{appendix:language_specification}.  
 
-\textbf{Identifying the exploit.} An entry in Exploit Database \cite{studyCVE} describes a persistent XSS vulnerability in the WordPress plugin Responsive Cookie Consent for versions 1.7/1.6/1.5. This particular entry (as most do) comes with a proof of concept (PoC) for the exploit: 
+\textbf{Identifying the exploit.} An entry in Exploit Database \cite{studyCVE} describes a persistent \ac{XSS} vulnerability in the WordPress plugin Responsive Cookie Consent for versions 1.7/1.6/1.5. This particular entry (as most do) comes with a proof of concept (PoC) for the exploit: 
 \begin{enumerate}
 	\item Access WordPress control panel.
 	\item Navigate to the Responsive Cookie Consent plugin page.
@@ -64,7 +64,7 @@ After the signature has been written, the developer should make sure it was corr
 \end{enumerate}
 
 \subsection{Case Study: CVE-2018-10309}
-Going back to our example in Section 2.4, we describe the full process of writing a signature for one of the CVEs we studied. An entry in Exploit Database \cite{studyCVE} describes a persistent XSS vulnerability in the WordPress plugin Responsive Cookie Consent for versions 1.7/1.6/1.5. This particular entry (as most do) comes with a proof of concept for the exploit: 
+Going back to our example in Section 2.4, we describe the full process of writing a signature for one of the CVEs we studied. An entry in Exploit Database \cite{studyCVE} describes a persistent \ac{XSS} vulnerability in the WordPress plugin Responsive Cookie Consent for versions 1.7/1.6/1.5. This particular entry (as most do) comes with a proof of concept for the exploit: 
 \begin{enumerate}
 \item Access WordPress control panel.
 \item Navigate to the Responsive Cookie Consent plugin page.

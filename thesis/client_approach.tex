@@ -11,11 +11,11 @@
 		\includegraphics[scale=0.55]{img/xsnare_bot.pdf}
 		
 	\end{subfigure}
-	\caption{XSnare's approach for protection against XSS.}
+	\caption{\sys's approach for protection against XSS.}
 	\label{fig:xsnare}
 \end{figure*}
 
-We now present XSnare's components and how they interact with each other.
+We now present \sys's components and how they interact with each other.
 
 \subsection{Operation, at a glance} \label{operation}
   Figure~\ref{fig:xsnare} illustrates how the firewall can be used to guarantee full client-side protection: A user loads a request, such as \url{www.myblog.com}, this request might come back with malicious code in the form of an XSS attack. Before rendering the webpage in the browser, an extension can analyze the potentially malicious document. First, it loads signatures which a security analyst (a bug bounty hunter, for example) has uploaded to a database. The extension's detector analyzes the given HTML string and identifies the signatures which apply to this document. The signatures specify the injection spots in the document, and the extension's sanitizer gets rid of any malicious content. Finally, the extension passes a clean HTML document for the browser to render. Algorithm \ref{filter_algorithm} describes the network filtering process. Section \ref{implementation} explains this algorithm in more detail.
@@ -26,12 +26,12 @@ We now present XSnare's components and how they interact with each other.
 \iffalse
  \begin{figure*}[h]
  	\includegraphics[scale=0.55]{img/xsnare.png}
- 	\caption{XSnare's approach for protection against XSS.}
+ 	\caption{\sys's approach for protection against XSS.}
  	\label{fig:dom_firewall}
  \end{figure*}
 \fi
 
-\subsection{An example application of XSnare} \label{motivating_example}
+\subsection{An example application of \sys} \label{motivating_example}
 
 In order to further explain this approach, we present a small example of how DOM context can be used to defend against XSS, taken from CVE 2018-10309 \cite{examplecve}. This is reproducible in an off-the-box WordPress installation running the Responsive Cookie Consent plugin, v1.7. This is also an example exploit which Chrome's XSS auditor does not protect against. Consider a website running PHP on the backend that takes user input and stores it to later display it to another user; in this case, the \textbf{input} element's value attribute is set by the webpage admin using the plugin's UI.
 
@@ -74,7 +74,7 @@ When sanitizing the injection points, we would ideally apply functions that are 
 
 In the following sections we give a detailed description of each component of our system, the challenges that arise when trying to defend against XSS client-side, and the tools provided by the browser to facilitate our methods. 
  
- \subsection{XSnare Signatures} \label{signatures}
+ \subsection{\sys Signatures} \label{signatures}
 	 The signatures are at the core of our defense strategy. These must be precise enough for our system to get rid of the intended injection, and not an element of the website crucial to the user experience. Since we are only relying on DOM knowledge, these signatures must be related to HTML features, for example, specifying elements and element attributes that are unique to where the exploit might occur. 
 	 
 	 The basis for our signatures relies on two observations: first, an injection has a start and end point, that is, an element can only be injected between a specific HTML node and its immediate sibling in the DOM tree; second, in a well-formed DOM, the dynamic content will not be able to rearrange its location in the document without any JavaScript execution (e.g. removing and adding elements), allowing us to isolate it from the template code. Thus, our basic approach at signature definition is to specify an injection's start and its end, and any sanitization to be done between these two endpoints. Typically, one page will have several dynamic content injection points. The signature developer has to be able to identify all of these. Different scenarios might warrant different resolutions, ranging from stopping a webpage's rendering altogether, to performing some basic checks on the string. We discuss how different exploits might affect a signature definition and how our signature language gives an analyst enough expressibility to deal with these in later sections.
@@ -86,7 +86,7 @@ In the following sections we give a detailed description of each component of ou
  \subsection{Firewall Signature Language} \label{signature_language}
  Our signature language needs to be such that it has enough power of expression for the signature writer to be precise, both for determining the correct web application and to identify the affected areas in the HTML. Due to the nature of our signature definitions, a regex language suffices to express precise sections of the HTML. Furthermore, a regex language allows us to identify malformed HTML before it renders on the browser. The following is the signature that defends against the motivating example of Section 2.2:
  \lstset{basicstyle=\small}
-\begin{lstlisting}[breaklines=true,caption={An XSnare signature},label={lst:xsnare_signature}]
+\begin{lstlisting}[breaklines=true,caption={An \sys signature},label={lst:xsnare_signature}]
 url: 'wp-admin/options-general.php?page=rcc-settings',
 software: 'WordPress',
 softwareDetails: 'responsive-cookie-consent',
