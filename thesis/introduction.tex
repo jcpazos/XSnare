@@ -1,8 +1,8 @@
 \section{Introduction} \label{introduction}
 
-Cross-site scripting (XSS) is still one of the most dominant web
+\ac{XSS} is still one of the most dominant web
 vulnerabilites. In 2017, a report showed that 50\% of websites
-contained at least one XSS vulnerability~\cite{Acunetix}. Countermeasures
+contained at least one \ac{XSS} vulnerability~\cite{Acunetix}. Countermeasures
 exist, but many of them lack widespread deployment, and so have been unable to protect users.
 Many of these defenses require server-side and browser modifications~\cite{Jim:2007:DSI:1242572.1242654,Nadji:2009,Wurzinger:2009:SMX:1656360.1656379,10.1007/978-3-642-31540-4_17} and/or additional front-end developer effort~\cite{10.1007/978-3-319-66399-9_7}. Still, others disable client-side
 functionality~\cite{Noscript,Snyder:2017:MWD:3133956.3133966},
@@ -14,8 +14,8 @@ when software patches are available, many website
 administrators won't apply updates immediately: a 2016 study found that
 61\% of WordPress websites were running a version with known security
 vulnerabilities~\cite{Sucuri}, and another found that 30.95\% of
-Alexa's top 1 Million sites run a vulnerable version of WordPress
-\cite{wpwhitesecurity}. As the number of websites using client-side
+Alexa's top 1 Million sites run a vulnerable version of WordPress~\cite{wpwhitesecurity}.
+As the number of websites using client-side
 technologies continues to increase (a study showed that as early as
 2012, almost 100\% of the Alexa top 500 sites were using
 JavaScript~\cite{Stock:2017:WTI:3241189.3241265}), users are effectively left at
@@ -49,29 +49,29 @@ Vulnerability defences can be implemented in multiple layers of the web applicat
           blacklisted websites, and proxies.
 	\item Finally, the information gets to the user's
           browser. This will usually have built-in defences, such as
-          Chrome's XSS auditor \cite{xssauditor}. The user might also
+          Chrome's \ac{XSS} Auditor~\cite{xssauditor}. The user might also
           install browser-dependent functionality, such as extensions
           like NoScript \cite{Noscript}. Xsnare applies at this point.
 \end{enumerate}
 
 Many of these approaches are either unfit for widespread deployment or
 do not benefit from an application's contextual knowledge. For
-example, a \ac{WAF} might be enough to defend against most XSS attacks on
+example, a \ac{WAF} might be enough to defend against most \ac{XSS} attacks on
 one deployment, but it would require each individual developer to have
 the necessary knowledge and resources to integrate one. A network
 proxy at the client-side will usually have a generic set of rules to
 apply on incoming network traffic, and this will often lead to an
 elevated rate of false positives. Browser built-in defences are very
 coarse, and will only work on a subset of exploits. Chrome's XSS
-auditor, for example, only attempts to defend against reflected
-XSS. In fact, Google has recently announced its intention to deprecate
-XSS auditor, with reasons including "Bypasses abound", "It prevents
+Auditor, for example, only attempts to defend against reflected
+\ac{XSS}. In fact, Google has recently announced its intention to deprecate
+XSS Auditor, with reasons including "Bypasses abound", "It prevents
 some legit sites from working", and "Once detected, there’s nothing
-good to do" \cite{deprecatexssauditor}. Stock et
-al. \cite{Stock:2017:WTI:3241189.3241265} propose enhancements to the
+good to do"~\cite{deprecatexssauditor}. Stock et
+al.~\cite{Stock:2017:WTI:3241189.3241265} propose enhancements to the
 XSS Auditor. Their work covers a wider range of exploits than the
-auditor, but is limited to DOM-based XSS. Our work is not particular
-to a type of XSS.
+auditor, but is limited to DOM-based \ac{XSS}. Our work is not particular
+to a type of \ac{XSS}.
 
 While there is much work in the server-side area,
 \cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325}
@@ -95,7 +95,7 @@ false-negatives, due to the lack of information available at the
 layers they operate at. For example, NoScript works via domain
 whitelisting, thus by default, JavaScript scripts and other code will
 not execute. However, not all scripts outside of the whitelist should
-be assumed to be malicious. Browser-level filters like XSS auditor
+be assumed to be malicious. Browser-level filters like XSS Auditor
 work based on general policies and can therefore incorrectly sanitize
 non-malicious content.
 
@@ -103,7 +103,7 @@ In contrast, we posit that the DOM is the right place to interpose for
 the purpose of mitigating against these attacks, since we have the
 full picture at that point. While most of the functionality we provide
 could be done by a network filter on top of the browser, we require
-some additional context to perform effective XSS identification. In
+some additional context to perform effective \ac{XSS} identification. In
 particular, when an exploit manifests itself through dynamic
 behaviour, like a network request initiated by an user's click, we
 require knowledge of the tab which initiated the request to filter the
@@ -138,10 +138,10 @@ mechanisms we provide to achieve this goal in Section
 \ref{xsnare_design}.
 
 We evaluate our application-specific, signature-based approach, by
-testing it against recent XSS CVEs. CVE databases are well-maintained
+testing it against recent \ac{XSS} CVEs. CVE databases are well-maintained
 and widely available. They are one of the main tools used by
 developers to patch their code against known vulnerabilities. To the
-best of our knowledge, our work is the first to evaluate an XSS
+best of our knowledge, our work is the first to evaluate an \ac{XSS}
 protection tool against real world exploits of this form at the scope
 we do.
 
