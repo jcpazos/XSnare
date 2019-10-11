@@ -26,10 +26,10 @@ We provide a description of our signature language, in particular in the context
 	endPointsPositions: An array of integer tuples. These are optional but useful when the one of the endPoints HTML are used throughout the whole page and appear a fixed number of times. For example: if an injection ending point happens on an element <h3 class='my-header'>, this element might have 10 appearances throughout the page. However, only the 4th is an injection ending point. The signature would specify the second element of the tuple to be 7, as it would be the 7th such item in a regex match array (using 1-based indexing), counting from the bottom up. For ending points, we have to count from the bottom up because the attacker can inject arbitrarily many of these elements before it, and vice versa for starting points.
 \end{itemize}
 
-Additionally, if the value of type is 'listener', the signature will have an additional field called listenerData. Similarly to a regular signature, this consists of the following pieces of information:
+Additionally, if the value of type is `listener', the signature will have an additional field called listenerData. Similarly to a regular signature, this consists of the following pieces of information:
 \begin{itemize}
 	\item 
-	listenerType: The type of network listener as defined by the WebRequest API (e.g. 'script, 'XHR', etc.)
+	listenerType: The type of network listener as defined by the WebRequest API (e.g. `script', `XHR', etc.)
 	\item
 	listenerMethod: The request's HTTP method, for example "GET" or "POST".
 	\item
