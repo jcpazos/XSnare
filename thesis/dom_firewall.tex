@@ -11,10 +11,30 @@
 \lstset{escapeinside={<@}{@>}}
 \usepackage{url}
 
+%% The acronym package provides support for defining acronyms, providing
+%% their expansion when first used, and building glossaries.  See the
+%% example in glossary.tex and the example usage throughout the example
+%% document.
+%% NOTE: to use \MakeTextLowercase with acsfont
+%%   we *must* use the `nohyperlinks' option -- it causes errors with
+%%   hyperref otherwise.  See Section 5.2 in the ``LaTeX 2e for Class
+%%   and Package Writers Guide'' (clsguide.pdf) for details.
+\usepackage[printonlyused,nohyperlinks]{acronym}
 
+\acrodef{xhr}[XHR]{{\tt XMLHttpRequest}}
+\acrodef{WAF}[WAF]{Web Application Firewall}
+\acrodef{XSS}[XSS]{Cross-Site Scripting}
+\acrodef{CVE}[CVE]{Common Vulnerability and Exposures}
+\acrodef{DDoS}[DDoS]{Distributed Denial-of-Service}
+\acrodef{SQL}[SQL]{Structured Query Language}
+
+%%
+%% Macros
+\newcommand{\sys}[0]{XSnare\xspace}
+\newcommand{\xss}[0]{\ac{XSS}}
 
 \begin{document}
-\title{XSnare: Application-specific client-side Cross-site Scripting Protection}
+\title{\sys: Application-specific client-side Cross-site Scripting Protection}
 
 \author{Jos\'e Carlos Pazos}
 \affiliation{%
@@ -36,6 +56,16 @@
 
 \input{abstract}
 \maketitle
+
+\acresetall	% reset all acronyms used so far
+
+% assume we've used these common acronyms already
+% this will prevent their expansion
+% \acused{XSS}
+\acused{CVE}
+\acused{SQL}
+% \acused{DDoS}
+
 \input{introduction}
 \input{client_approach}
 \input{implementation}
