@@ -2,43 +2,36 @@
 
 Cross-site scripting (XSS) is still one of the most dominant web
 vulnerabilites. In 2017, a report showed that 50\% of websites
-contained at least one XSS vulnerability \cite{Acunetix}. Even though
-many countermeasures have been researched to combat these issues, many
-of them lack widespread deployment, and so have been unable to protect
-users. Many of these defenses leverage server-side techniques, along
-with browser modifications
-\cite{Jim:2007:DSI:1242572.1242654,Nadji:2009,Wurzinger:2009:SMX:1656360.1656379,10.1007/978-3-642-31540-4_17};
-or require additional developer effort
-\cite{10.1007/978-3-319-66399-9_7}. Still, others disable client-side
-functionality \cite{Noscript,Snyder:2017:MWD:3133956.3133966},
+contained at least one XSS vulnerability~\cite{Acunetix}. Countermeasures
+exist, but many of them lack widespread deployment, and so have been unable to protect users.
+Many of these defenses require server-side and browser modifications~\cite{Jim:2007:DSI:1242572.1242654,Nadji:2009,Wurzinger:2009:SMX:1656360.1656379,10.1007/978-3-642-31540-4_17} and/or additional front-end developer effort~\cite{10.1007/978-3-319-66399-9_7}. Still, others disable client-side
+functionality~\cite{Noscript,Snyder:2017:MWD:3133956.3133966},
 sometimes rendering websites unusable. We believe many of these
 solutions have not seen widespread adoption because they simply are
 not practical: developers might not be willing, or might not have the
 resources or expertise available to implement them. Furthermore, even
-when enough information is available for a developer, many website
-administrators won't deploy fixes immediately: a 2016 study found that
+when software patches are available, many website
+administrators won't apply updates immediately: a 2016 study found that
 61\% of WordPress websites were running a version with known security
-vulnerabilities \cite{Sucuri}, and another found that 30.95\% of
+vulnerabilities~\cite{Sucuri}, and another found that 30.95\% of
 Alexa's top 1 Million sites run a vulnerable version of WordPress
 \cite{wpwhitesecurity}. As the number of websites using client-side
 technologies continues to increase (a study showed that as early as
-2012, almost 100\% of the Alexa top 500 sites were using JavaScript
-\cite{Stock:2017:WTI:3241189.3241265}), users are effectively left at
-the mercy of developers, without tools that both allow them to protect
-themselves and browse the web worry-free.
+2012, almost 100\% of the Alexa top 500 sites were using
+JavaScript~\cite{Stock:2017:WTI:3241189.3241265}), users are effectively left at
+the mercy of developers and administrators if they wish to browse the
+web safely.
 
 
- \begin{figure}[h]
- 	\includegraphics[scale=0.37]{img/web_app_architecture_one.pdf}
- 	\caption{Architecture of typical web applications. Different security solutions apply at distinct layers.}
- 	\label{fig:web_architecture}
- \end{figure}
+\begin{figure}[h]
+  \includegraphics[scale=0.37]{img/web_app_architecture_one.pdf}
+  \vspace*{-5.0ex}
+  \caption{Architecture of typical web applications. Different security solutions apply at distinct layers.}
+  \label{fig:web_architecture}
+\end{figure}
 
-Figure~\ref{fig:web_architecture} shows a typical architecture for web
-applications. There are several different places where vulnerability
-defences can be integrated. We give a brief description of what can be
-done at each point. Further details of these different approaches are
-described in Section 5:
+Vulnerability defences can be implemented in multiple layers of the web application stack (Figure~\ref{fig:web_architecture}). Each layer opens different defence options for developers:
+%Further details of these different approaches are described in Section 5:
 \begin{enumerate}
 	\item At the application's server-side, the developer is
           trying to defend herself against malicious users. The first
