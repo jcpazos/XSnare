@@ -92,7 +92,7 @@ of control over servers, we strongly believe a novel client-side
 solution must be delivered. A number of existing solutions in this
 area also suffer from a high rate of false-positives and
 false-negatives, due to the lack of information available at the
-layers they operate at. For example, NoScript works via domain
+layers they operate at. For example, NoScript \cite{Noscript} works via domain
 whitelisting, thus by default, JavaScript scripts and other code will
 not execute. However, not all scripts outside of the whitelist should
 be assumed to be malicious. Browser-level filters like XSS Auditor
@@ -119,7 +119,16 @@ these, as well as potential fixes. Developers will then fix the bugs
 accordingly so that users are not subject to vulnerabilities. Inspired
 by this workflow, we believe this process can be partly automated
 using a firewall-based approach, so that users don't have to wait for
-developers to update their code.
+developers to update their code. A similar approach is presented in \cite{Kirda:2009:CCS:2639535.2639808}, as a client-side firewall-based 
+network proxy. Rules dictate the links which can be accessed by a website
+when generating requests, and can be created both automatically and manually
+by an user. Contrary to our work, this technique does not protect against
+attacks which do not generate a network request, such as deleting local
+files. Furthermore, they rely on websites having a small amount of external
+dynamic links to third-parties. This likely does not hold true anymore, 
+as websites require an ever-increasing amount of dynamic content, with 
+several interconnections with third-parties, such as advertisement, analytics,
+and other user interactions.
 
 Our system consists of three main components: a trusted Firefox
 extension for interposing between the application and the DOM, a
@@ -140,7 +149,10 @@ mechanisms we provide to achieve this goal in Section
 We evaluate our application-specific, signature-based approach, by
 testing it against recent \ac{XSS} CVEs. CVE databases are well-maintained
 and widely available. They are one of the main tools used by
-developers to patch their code against known vulnerabilities. To the
+developers to patch their code against known vulnerabilities. 
+
+
+To the
 best of our knowledge, our work is the first to evaluate an \ac{XSS}
 protection tool against real world exploits of this form at the scope
 we do.
