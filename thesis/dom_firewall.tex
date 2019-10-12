@@ -28,10 +28,48 @@
 \acrodef{DDoS}[DDoS]{Distributed Denial-of-Service}
 \acrodef{SQL}[SQL]{Structured Query Language}
 
+
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{black}\bfseries,
+  ndkeywords={export, boolean, throw, implements, import, this}, % removed class because of clash in html
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{black}\ttfamily,
+  stringstyle=\color{black}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+\lstset{
+   %language=JavaScript,
+   %backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   %numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   breakatwhitespace=true,
+   showtabs=false,
+   captionpos=t
+}
+
 %%
 %% Macros
 \newcommand{\sys}[0]{XSnare\xspace}
-\newcommand{\xss}[0]{\ac{XSS}}
+\newcommand{\xss}[0]{\ac{XSS}\xspace}
+\newcommand{\xhr}[0]{\ac{xhr}\xspace}
+\newcommand{\js}[1]{\lstinline[mathescape,basicstyle=\normalsize]^#1^}
+\newcommand{\code}[1]{\lstinline[mathescape,basicstyle=\normalsize]^#1^}
 
 \begin{document}
 \title{\sys: Application-specific client-side Cross-site Scripting Protection}
@@ -75,7 +113,7 @@
 \input{limitations}
 \input{related_work}
 \input{conclusion}
-\input{appendix}
+%\input{appendix}
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
