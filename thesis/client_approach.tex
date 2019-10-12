@@ -176,23 +176,36 @@ In (2), the attacker knows these are being used as injection endPoints and decid
 Figure ~\ref{fig:attacker_injection_unique} illustrates a case when there are several injection points in one page, but each of them is distinct. Now, because the filter is only looking for one pair of brackets, the attacker can't fool the extension into leaving part of the injection unsanitized. However, they could inject an extra ending bracket after the opening parenthesis, or similarly, an extra opening brace before the ending parenthesis. In either case, the extension will be tricked into sanitizing non-malicious content, the black pluses (+). We can detect this behaviour by noting that we know the order in which the endPoints should appear, and so if the filter sees a closing endPoint before the next expected starting endPoint, or similarly, a starting endPoint before the next expected closing endPoint, this attack can be identified. In the diagram, the order is brackets, parenthesis, braces. When it sees a closing bracket after an opening parenthesis, and similarly, when it sees an opening brace before a closing parenthesis, this represents the described attack. As with the previous scenario, we can not easily identify which endPoint is the real one, so sanitization will still potentially get rid of non-malicious content. As before, the signature developer specifies whether the page should be blocked or sanitization goes through as usual when this behaviour is detected.
 
 \subsection{Dynamic injections} \label{dynamic_injections}
-Some of the exploits manifest themselves through dynamically loaded files. For example, CVE-2018-7747 had XSS triggered when the user loaded information stored in the plugin's database after clicking on an element of the page. Since this was not loaded with the original HTML, it came as a response to an Ajax request. Our signature language provides functionality to protect against these kinds of exploits, by nesting signatures as shown in the example below:
+
+The top-level documents of web pages fetch additional dynamic content
+via \js{fetch} or AJAX APIs. Content fetched in
+this way is also vulnerable to \xss, and must be filtered. An example
+vulnerability is CVE-2018-7747 (Wordpress Caldera Forms, which allows malicious
+content retrieved from the plugin's database to be injected in response to a click.
+
+\sys allows XHR requests to be filtered with \js{xhr}-type
+signatures. To reduce the number of signatures that need to be
+considered when a browser issues a request, we require that signatures
+for XHR be nested inside a signature for a top-level document. If a
+page's main content matches an existing top-level signature description,
+\sys will then enable all nested XHR listeners.
+
+Signatures for dynamic requests are specified in the \js{listenerData}
+key, which includes a listener type and method. The idea is extensible
+to scripts and other objects loaded separately from the main document
+(e.g., images, stylesheets, etc.).
 
 \lstset{basicstyle=\small}
-\begin{lstlisting}[breaklines=true,caption={A signature for a dynamic request},label={lst:dynamic_signature}]
-url: 'wp-admin/admin.php?page=caldera-forms',
+\begin{lstlisting}[breaklines=true,caption={
+      An example dynamic request signature. This patches CVE-2018-7747.
+    },label={lst:dynamic_signature}]
 ...
-type: 'listener',
-listenerData: {
-listenerType: 'xhr',
-listenerMethod: 'POST',
-sanitizer: 'escape',
-type: 'string',
-url: 'wp-admin/admin-ajax.php',
-typeDet: 'single-unique',
-endPoints: ['<p><strong>', '[AltBody]']
-}
+listenerData: [{
+  listenerType: 'xhr', listenerMethod: 'POST',
+  sanitizer: 'escape', type: 'string',
+  listenerUrl: 'wp-admin/admin-ajax.php',
+  typeDet: 'single-unique',
+  endPoints: ['<p><strong>', '[AltBody]']
+}]
 \end{lstlisting}
-
-This signature describes an exploit on a WordPress site running the Caldera Forms plugin. The XSS occurs in the specified url. The \textbf{listenerData} attribute defines an extra listener to attach in the background page of the extension. In this case, the page listens for an XHR, specifically done as a POST to the subdomain specified in \textbf{listenerUrl}. The rest of the information is similar to a regular signature, as it will execute the filter and sanitize the response if necessary, according to the specified endpoints. The background page knows to only filter such requests originated from the correct web page. The type of resource to listen for is taken as specified by the webRequest API \cite{webRequest}. Instead of introducing nesting, we could have had the network filter listen to all types of resources and analyse each of them. We chose not to do this because we think it would be greatly detrimental to performance, as some signatures clearly do not apply for some resources (e.g. regex matching an HTML string in an image).
 
