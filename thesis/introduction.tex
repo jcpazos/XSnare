@@ -4,7 +4,7 @@
 vulnerabilites. In 2017, a report showed that 50\% of websites
 contained at least one \ac{XSS} vulnerability~\cite{Acunetix}. Countermeasures
 exist, but many of them lack widespread deployment, and so have been unable to protect users.
-Many of these defenses require server-side and browser modifications~\cite{Jim:2007:DSI:1242572.1242654,Nadji:2009,Wurzinger:2009:SMX:1656360.1656379,10.1007/978-3-642-31540-4_17} and/or additional front-end developer effort~\cite{10.1007/978-3-319-66399-9_7}. Still, others disable client-side
+Many of these defenses require server-side and browser modifications~\cite{Jim:2007:DSI:1242572.1242654,Nadji:2009,Wurzinger:2009:SMX:1656360.1656379,Sundareswaran:2012:XHS:2352970.2352994} and/or additional front-end developer effort~\cite{10.1007/978-3-319-66399-9_7}. Still, others disable client-side
 functionality~\cite{Noscript,Snyder:2017:MWD:3133956.3133966},
 sometimes rendering websites unusable. We believe many of these
 solutions have not seen widespread adoption because they simply are
@@ -61,7 +61,7 @@ one deployment, but it would require each individual developer to have
 the necessary knowledge and resources to integrate one. A network
 proxy at the client-side will usually have a generic set of rules to
 apply on incoming network traffic, and this will often lead to an
-elevated rate of false positives. Browser built-in defences are very
+elevated rate of false positives (FPs). Browser built-in defences are very
 coarse, and will only work on a subset of exploits. Chrome's XSS
 Auditor, for example, only attempts to defend against reflected
 \ac{XSS}. In fact, Google has recently announced its intention to deprecate
@@ -85,6 +85,9 @@ between a vulnerability and its patch. Furthermore, it is
 complementary to the aforementioned techniques: a \ac{WAF} will not reduce
 the security of a client-side approach by any means, and having these
 two work in tandem is beneficial to the user's experience.
+
+Furthermore, these defences often do not protect against purely client-side \ac{XSS}, such as reflected \ac{XSS}, or persistent client-side \ac{XSS}, which uses a browser's local storage or cookies as an attack vector. Steffens et al. \cite{DBLP:conf/ndss/SteffensRJS19} present a study of Persistent Client-Side \ac{XSS} across popular websites and find that as many as 21\% of the most frequented web sites are vulnerable to these attacks.  While some of these exploits are harder to carry out in practice, as many as 6\% of these sites are vulnerable to an attack by a realistic attacker.
+
 
 To provide users with the means to protect themselves in the absence
 of control over servers, we strongly believe a novel client-side

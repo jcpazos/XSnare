@@ -1,11 +1,7 @@
 \section{Related Work}
-In the following sections, we discuss related work and how it compares with our own. We highlight the similarities and how our work improves upon these previous ideas. We classify existing work into multiple categories: client-side, server-side, browser built-in, and hybrid: a combination of these.
+In this section, we discuss related work: we highlight the similarities and how our work improves upon these previous ideas. We classify existing work into multiple categories: client-side, server-side, browser built-in, and hybrid: a combination of these.
 
 \subsection{Server-side techniques} In addition to existing parameter sanitization techniques, taint-tracking has been proposed as a means to consolidate sanitization of vulnerable parameters \cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325}. These techniques are complementary to ours and, provide an additional line of defence against \ac{XSS}. However, many of them rely on the client-side rendering to maintain the server-side properties, which will not always be the case.
-
-Furthermore, these defences often do not protect against purely client-side \ac{XSS}, such as reflected \ac{XSS}, or persistent client-side \ac{XSS}, which uses a browser's local storage or cookies as an attack vector. Steffens et al. \cite{DBLP:conf/ndss/SteffensRJS19} present a study of Persistent Client-Side \ac{XSS} across popular websites and find that as many as 21\% of the most frequented web sites are vulnerable to these attacks.  While some of these exploits are harder to carry out in practice, as many as 6\% of these sites are vulnerable to an attack by a realistic attacker.
-
-Our framework is not particular to client or server-side \ac{XSS} as long as the exploit string appears in the HTML of the web site.
 
 \subsection{Client-side techniques} 
 

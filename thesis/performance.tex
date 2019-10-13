@@ -23,7 +23,7 @@ For each set of tests, we reduced the recorded values to two comparisons: networ
 
 \begin{figure}[h]
 	\includegraphics[scale=0.5]{results/extension_slowdown_overall.png}
-	\caption{Cumulative distribution of relative percentage slowdown with extension installed for top sites}
+	\caption{Cumulative distribution of relative percentage slowdown with extension installed for top sites.}
 	\label{fig:overall_slowdown}
 \end{figure}
 
@@ -39,7 +39,7 @@ Figure ~\ref{fig:overall_slowdown} shows the computed results. We have zoomed in
 
 \begin{figure}[h]
 	\includegraphics[scale=0.5]{results/density_histogram_filter_slowdown.png}
-	\caption{Density histogram of network filter slowdown for top sites}
+	\caption{Density histogram of network filter slowdown for top sites.}
 	\label{fig:histogram_slowdown}
 \end{figure}
 
@@ -48,19 +48,11 @@ Figure ~\ref{fig:histogram_slowdown} shows a closer look at the distribution for
 
 \begin{figure}[h]
 	\includegraphics[scale=0.37]{results/string_length_vs_verification_time.png}
-	\caption{Scatter plot of network filter time as a function of decoded byte size for top sites}
+	\caption{Scatter plot of network filter time as a function of decoded byte size for top sites.}
 	\label{fig:verification_time_string_length}
 \end{figure}
 
  Figure ~\ref{fig:verification_time_string_length} shows the time spent by the call to our string verification function in the network filter as a function of the length of the string to be verified. We loaded the same websites 25 times each and calculated the median times and lengths.  The blue dots are the pages for which the WordPress probes tested negative, and the green dots are the pages for which the probes tested positive: 55 in total (our implementation currently only has probes for WordPress). We applied least squares regression to calculate the shown trend lines. The Spearman's rank correlation values for no WordPress, WordPress, and overall are 0.91, 0.91, and 0.72 respectively, demonstrating positive correlation. Since both our probes and signatures use regex matching, we expect both trend lines to be linear, as seen in the graph. Recall that once a probe for a certain software passes, we perform a linear scan over the signatures for that specific software and check whether it applies to the given HTML string or not. Thus, we expect the slope of the line to be higher when the WordPress probe passes. Since only around 25\% of sites use WordPress on average \cite{w3techs}, we expect the impact of our network filter to be closer to the non-WordPress values, as corroborated by our overall trend line.
-
-\begin{figure}[h]
-	\includegraphics[scale=0.5]{results/byte_size_vs_filter_time.png}
-	\caption{Scatter plot of network filter time as a function of decoded byte size for top sites}
-	\label{fig:network_filter_decoded_size}
-\end{figure}
-
-When factoring in the rest of the network component, additional noise is introduced in the measurements. Figure ~\ref{fig:network_filter_decoded_size} shows the network filter time as a function of the page's decoded byte size. Applying least squares regression shows an upwards trend. However, the Spearman's rank correlation for this set of data is $-0.054$; we believe this to be due to the number of factors affecting this measurement. The data demonstrates that the size of the page being processed has a smaller impact than expected (see Figure ~\ref{fig:verification_time_string_length}) on the network filter time when the whole page load process is accounted for.
 
 \footnotetext{This image was taken from the w3 spec: \url{https://www.w3.org/TR/navigation-timing-2/}}
 
@@ -74,7 +66,7 @@ As before, Figure ~\ref{fig:wordpress_slowdown} shows the results for slowdown w
 
 \begin{figure}[h]
 	\includegraphics[scale=0.5]{results/extension_slowdown_wordpress.png}
-	\caption{Cumulative distribution of relative percentage slowdown with extension installed for WordPress sites}
+	\caption{Cumulative distribution of relative percentage slowdown with extension installed for WordPress sites.}
 	\label{fig:wordpress_slowdown}
 \end{figure}
 
@@ -82,14 +74,14 @@ Figure ~\ref{fig:histogram_slowdown_wordpress} shows the probability density of 
 
 \begin{figure}[h]
 	\includegraphics[scale=0.5]{results/density_histogram_filter_slowdown_wordpress.png}
-	\caption{Density histogram of network filter slowdown for top sites}
+	\caption{Density histogram of network filter slowdown for top sites.}
 	\label{fig:histogram_slowdown_wordpress}
 \end{figure}
 
-Finally, as in Figure ~\ref{fig:verification_time_string_length}, we report the string verification time as a function of its length, for the WordPress sites, shown in Figure ~\ref{fig:verification_time_string_length_wordpress}. The Spearman's rank correlation for this set of data is 0.630. 
+Finally, we report the string verification time as a function of its length, for the WordPress sites, shown in Figure ~\ref{fig:verification_time_string_length_wordpress}. The Spearman's rank correlation for this set of data is 0.630. 
 
 \begin{figure}[h]
 	\includegraphics[scale=0.5]{results/string_length_vs_verification_time_wordpress.png}
-	\caption{Scatter plot of network filter time as a function of decoded byte size for top sites}
+	\caption{Scatter plot of network filter time as a function of decoded byte size for WordPress sites.}
 	\label{fig:verification_time_string_length_wordpress}
 \end{figure}
