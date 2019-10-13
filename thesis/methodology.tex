@@ -6,7 +6,7 @@ In order to verify the applicability of our detector and signature language, we 
 
 Our work focuses on WordPress as a study platform: we look at recent CVEs related to WordPress plugins. While this may seem restrictive, there are several reasons why this is a worthwhile endeavour:
 \begin{itemize}
-	\item WordPress powers 25\% of all websites according to a recent survey  \cite{w3techs}. The same study states that 30.3\% of the Alexa top 1000 sites use WordPress. Thus, we can be confident that our study results will hold true for the average user.
+	\item WordPress powers 34.7\% of all websites according to a recent survey  \cite{w3stats}. The same study states that 30.3\% of the Alexa top 1000 sites use WordPress. Thus, we can be confident that our study results will hold true for the average user.
 	\item WordPress plugins are very popular among developers (there are currently more than 55,000 plugins \cite{wpplugins}). Due to its user popularity, WordPress is also heavily analysed by security experts. There are currently 286 CVEs related to WordPress in the CVE Details database \cite{cvedetails}. Plugins, specifically, are an important part of this issue, 52\% of the vulnerabilities reported by WPScan are caused by WordPress plugins \cite{wpscan}.
 	\item Due to the open source nature of WordPress plugins, we can easily analyze both the client-side HTML, as well as the server-side code that generated it, and use this to reach conclusions about the design of our solution.
 	\item Using one framework, we can install many different plugins for the version we want, reproduce attacks, and investigate the conditions under which they happen, without having to install additional software.
