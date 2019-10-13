@@ -1,8 +1,8 @@
-\section{Approach Viability}
+\section{Approach Viability} \label{viability}
 
 In order to verify the applicability of our detector and signature language, we tested the system by looking at several recent CVEs related to \ac{XSS}. Our objective is two-fold: to verify that our signature language provides the necessary functionality to express an exploit and its patch, and to test our detector against existing exploits.
 
-\subsection{Test methodology}
+\subsection{Test methodology} \label{methodology}
 
 Our work focuses on WordPress as a study platform: we look at recent CVEs related to WordPress plugins. While this may seem restrictive, there are several reasons why this is a worthwhile endeavour:
 \begin{itemize}
@@ -49,7 +49,7 @@ The majority of the 71 signatures maintained the same layout and core functional
 
 While our goal with the signature language is to retain as much information of the webpage as possible after sanitization, we believe that even if a part of the page is now useless, this does not impact the user's experience as much, since most of these exploits manifest themselves in small sections of the HTML. A thorough study with regards to usability is out of scope for this work, but we provide a study on false positives and false negatives in later sections, which is related to this issue.
 
-\subsection{Generalizability}
+\subsection{Generalizability} \label{generalizability}
 TODO: get one more
 Furthermore, to demonstrate the generalizability of our approach to other frameworks, we analysed 4 additional CVEs, 2 related to Joomla! and 2 for LimeSurvey. We chose Joomla! because it is another very popular Content Management System. Unfortunately, we only found 2 CVEs that we were able to reproduce, as the software for its extensions is not as available. For fairness, we looked for the most recent CVEs we could reproduce listed in Exploit Database, since these have recorded proof of concepts (PoCs). We carried out the same procedure as with the Wordpress CVEs, and were able to patch all of the exploits. This brings our CVE coverage rate to 93.75\%.
 
