@@ -1,28 +1,89 @@
 \section{Related Work}
 We classify existing work into multiple categories: client-side, server-side, browser built-in, and hybrid: a combination of these.
 
-\subsection{Server-side techniques} In addition to existing parameter sanitization techniques, taint-tracking has been proposed as a means to consolidate sanitization of vulnerable parameters \cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325}. These techniques are complementary to ours, and provide an additional line of defence against \ac{XSS}. However, many of them rely on the client-side rendering to maintain the server-side properties, which will not always be the case.
+\noindent \textbf{Server-side techniques.} 
+In addition to existing parameter sanitization techniques,
+taint-tracking has been proposed as a means to consolidate
+sanitization of vulnerable parameters
+\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325}. These
+techniques are complementary to ours, and provide an additional line
+of defence against \ac{XSS}. However, many of them rely on the
+client-side rendering to maintain the server-side properties, which
+will not always be the case.
 
-\subsection{Client-side techniques} 
+\noindent \textbf{Client-side techniques.} 
+DOMPurify~\cite{10.1007/978-3-319-66399-9_7} presents a robust
+\ac{XSS} filter that works purely on the client-side. The authors
+argue that the DOM is the ideal place for sanitization to occur. While
+we agree with this view, their work relies on application developers
+to adopt their filter and modify their code to use it. Unfortunately,
+developers might not be aware of vulnerable points in their
+application beforehand. In our study, we saw many instances of input
+parameters lacking basic sanitization. Thus, we have decided to use
+the DOMPurify sanitization for our injection points. We also believe
+the API is straightforward and simple to use, and won't require much
+signature developer effort to use effectively.
 
-DOMPurify~\cite{10.1007/978-3-319-66399-9_7} presents a robust \ac{XSS} filter that works purely on the client-side. The authors argue that the DOM is the ideal place for sanitization to occur. While we agree with this view, their work relies on application developers to adopt their filter and modify their code to use it. Unfortunately, developers might not be aware of vulnerable points in their application beforehand. In our study, we saw many instances of input parameters lacking basic sanitization. Thus, we have decided to use the DOMPurify sanitization for our injection points. We also believe the API is straightforward and simple to use, and won't require much signature developer effort to use effectively.
+Jim et al. \cite{Jim:2007:DSI:1242572.1242654} present a method to
+defend against injection attacks through Browser-Enforced Embedded
+Policies. This approach is similar to ours, as the policies specify
+places where script execution should not occur. However, policies are
+defined by the application developers, and this again relies on them
+knowing where their code might be vulnerable. Furthermore, browser
+modifications are required to benefit from it, and issues of
+cross-portability and backwards compatibility arise.
 
-Jim et al. \cite{Jim:2007:DSI:1242572.1242654} present a method to defend against injection attacks through Browser-Enforced Embedded Policies. This approach is similar to ours, as the policies specify places where script execution should not occur. However, policies are defined by the application developers, and this again relies on them knowing where their code might be vulnerable. Furthermore, browser modifications are required to benefit from it, and issues of cross-portability and backwards compatibility arise.
+Hallaraker and Vigna \cite{Hallaraker:2005:DMJ:1078029.1078861} use a
+policy language to detect malicious code on the client-side. Similarly
+to us, they make use of signatures to protect against known types of
+exploits. However, unlike our approach, their signatures are not
+application-level, and there is no model for signature
+maintenance. Furthermore, there is no evaluation on the efficacy of
+their signatures.
 
-Hallaraker and Vigna \cite{Hallaraker:2005:DMJ:1078029.1078861} use a policy language to detect malicious code on the client-side. Similarly to us, they make use of signatures to protect against known types of exploits. However, unlike our approach, their signatures are not application-level, and there is no model for signature maintenance. Furthermore, there is no evaluation on the efficacy of their signatures. 
+Although not solely related to \ac{XSS}, Snyder et
+al.~\cite{Snyder:2017:MWD:3133956.3133966} report a study in which
+they disable several JavaScript APIs and test the number of websites
+that are clearly non-functional without the full functionality of the
+APIs. They present a novel technique to interpose on JavaScript
+execution via the use of ES6 Proxies, allowing for efficient trapping
+of function calls. We initially thought of stopping XSS in a similar
+way, but quickly found exploits which could not be covered. This
+approach increases security due to vulnerabilities present in several
+JavaScript APIs, however, we believe disabling API functionality
+should only be used as a last resort.
 
-Although not solely related to \ac{XSS}, Snyder et al.~\cite{Snyder:2017:MWD:3133956.3133966} report a study in which they disable several JavaScript APIs and test the number of websites that are clearly non-functional without the full functionality of the APIs. They present a novel technique to interpose on JavaScript execution via the use of ES6 Proxies, allowing for efficient trapping of function calls. We initially thought of stopping XSS in a similar way, but quickly found exploits which could not be covered. This approach increases security due to vulnerabilities present in several JavaScript APIs, however, we believe disabling API functionality should only be used as a last resort.
+\noindent \textbf{Browser built-in defences.}  Browsers are equipped
+with several built-in defences. We previously described XSS
+Auditor~\ref{introduction}), the other two important ones are Content
+Security Policy and the Same-origin policy.
 
-\subsection{Browser built-in defences}
-Browsers are equipped with several built-in defences, other than the previously described XSS Auditor \ref{introduction}):
-\begin{itemize}
-	\item Content Security Policy (CSP)~\cite{CSP} has been widely adopted and in many cases provides developers with a reliable way to protect against \ac{XSS} and Cross-site request forgery (CSRF) attacks. However, CSP requires the developer to know which scripts might be malicious.
-	\item Same-origin policy~\cite{SOP} is another useful security mechanism for protection against \ac{XSS} and CSRF. This policy restricts how a document or script loaded from one origin can interact with a resource from another origin. However, if the attack is injected in the same website the attacker intends to compromise, this will not defend against it.
-\end{itemize}
+Content Security Policy (CSP)~\cite{CSP} has been widely adopted and
+in many cases provides developers with a reliable way to protect
+against \ac{XSS} and Cross-site request forgery (CSRF)
+attacks. However, CSP requires the developer to know which scripts
+might be malicious.
 
-As with other approaches these browser defences are complementary to ours.
+Same-origin policy~\cite{SOP} is another useful security mechanism for
+protection against \ac{XSS} and CSRF. This policy restricts how a
+document or script loaded from one origin can interact with a resource
+from another origin. However, if the attack is injected in the same
+website the attacker intends to compromise, this will not defend
+against it.
 
-\subsection{Client and server hybrids}
+As with other approaches these browser policies are complementary to
+XSnare.
 
-XSS-Dec~\cite{Sundareswaran:2012:XHS:2352970.2352994} employs a hybrid solution, mainly via the use of a proxy, which keeps track of an encrypted version of the server's source files, and uses this information to derive exploits in a page visited by the user. This approach is similar to ours, in the sense that we assume previous knowledge of the clean HTML document. Furthermore, they use both anomaly-based detection and signature-based detection to calculate the likelihood of an attack taking place, and prevent it from happening. However, there is no mention of signature maintenance. In a way, our system offloads all this functionality to the client-side, without the need of any server-side information.
+\noindent \textbf{Client and server hybrids.}
+XSS-Dec~\cite{Sundareswaran:2012:XHS:2352970.2352994} employs a hybrid
+solution, mainly via the use of a proxy, which keeps track of an
+encrypted version of the server's source files, and uses this
+information to derive exploits in a page visited by the user. This
+approach is similar to ours, in the sense that we assume previous
+knowledge of the clean HTML document. Furthermore, they use both
+anomaly-based detection and signature-based detection to calculate the
+likelihood of an attack taking place, and prevent it from
+happening. However, there is no mention of signature maintenance. In a
+way, our system offloads all this functionality to the client-side,
+without the need of any server-side information.
 
