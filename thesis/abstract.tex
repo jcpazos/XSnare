@@ -1,26 +1,39 @@
 \begin{abstract}
 
-We present \sys, a fully client-side \ac{XSS}
-solution, implemented as a Firefox extension. Our approach takes
-advantage of available previous knowledge of a web application's
-HTML template content, as well as the rich context available in the
-DOM to block XSS attacks. \sys prevents \ac{XSS} exploits by using a 
-a database of exploit descriptions, which are written with the help of previously recorded
-CVEs. CVEs for XSS are widely available and are
-one of the main ways to tackle zero-day exploits. \sys effectively
-singles out potential injection points for exploits in the HTML and sanitizes content to prevent malicious payloads from appearing in the DOM.
+We present \sys, a fully client-side \ac{XSS} solution, implemented as
+a Firefox extension. Our approach takes advantage of available
+previous knowledge of a web application's HTML template content, as
+well as the rich context available in the DOM to block XSS
+attacks. \sys prevents \ac{XSS} exploits by using a database of
+exploit descriptions, which are written with the help of previously
+recorded CVEs. CVEs for XSS are widely available and are one of the
+main ways to tackle zero-day exploits. \sys effectively singles out
+potential injection points for exploits in the HTML and sanitizes
+content to prevent malicious payloads from appearing in the DOM.
 
-XSnare is a framework for emulating server-side software sanitization on the application client-side. It can protect application users before application developers release patches and before server operators apply them.
-
-We evaluate our approach by studying
-104 recent CVEs related to XSS attacks, and find that our tool
-defends against 93.75\% of these exploits. To the best of our knowledge,
-XSnare is the first rotection mechanism for XSS that is
-application-specific, and based on publicly available CVE information.
-We show that XSnare's specificity protects users against exploits which evade other, more generic, anti-XSS approaches.
-
-Our performance evaluation shows that our extension's overhead on web page loading time is less than 10\% for 72.6\% of the sites studied.
+XSnare is a framework for emulating server-side software sanitization
+on the application client-side. It can protect application users
+before application developers release patches and before server
+operators apply them.
 %
-\iv{Can you be more specific/descriptive with 'of the sites studied.' -- like 'of the sites in the Alexa top 500 list.' ?}
+\iv{Is the first sentence in this paragraph necessary? i.e.,
+  'emulating server-side software sanitization' seems like the wrong
+  focus. I like the emphasis of the second sentence: this protects
+  clients regardless of what's on the server. Why do you want to start
+  and even mention the emulation pov?}
+
+We evaluate our approach by studying 104 recent CVEs related to XSS
+attacks, and find that our tool defends against 93.75\% of these
+exploits. To the best of our knowledge, XSnare is the first protection
+mechanism for XSS that is application-specific, and based on publicly
+available CVE information.  We show that XSnare's specificity protects
+users against exploits which evade other, more generic, anti-XSS
+approaches.
+
+Our performance evaluation shows that our extension's overhead on web
+page loading time is less than 10\% for 72.6\% of the sites studied.
+%
+\iv{Can you be more specific/descriptive with 'of the sites studied.'
+  -- like 'of the sites in the Alexa top 500 list.' ?}
 
 \end{abstract}
