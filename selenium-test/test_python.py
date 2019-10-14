@@ -403,6 +403,15 @@ factoredStringLengths = [x / 10000 for x in stringLengths]
 factoredStringLengthsTopwp = [x / 10000 for x in stringLengthsTopwp]
 factoredStringLengthsAll = [x / 10000 for x in stringLengthsAll]
 
+plot_size = len(filterTimesAll)
+counter = 0
+for t in filterTimesAll:
+	if (t < 10):
+		counter+= 1
+
+print("values less than 10ms verification time")
+print(counter/float(plot_size))*100.0
+
 X = np.array(factoredStringLengths)
 Y = np.array(filterTimes)
 z = np.polyfit(X, Y, 1)
@@ -421,9 +430,9 @@ p_3 = np.poly1d(z_3)
 plt.scatter(X,Y, s=10)
 plt.scatter(X_2,Y_2, s=10, marker='^', c='green')
 
-plt.plot(X,p(X),"r--")
+plt.plot(X,p(X),color='red', linestyle='dotted')
 plt.plot(X_2,p_2(X_2), color='orange', linestyle='dashed')
-plt.plot(X_3,p_3(X_3), color='black', linestyle='dashed')
+plt.plot(X_3,p_3(X_3), color='black', linestyle='solid')
 
 rho_filterTimes, pval1 = stats.spearmanr(X,Y)
 rho_filterTimesTopwp, pval2 = stats.spearmanr(X_2,Y_2)
