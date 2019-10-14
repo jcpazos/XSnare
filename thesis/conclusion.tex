@@ -1,2 +1,35 @@
 \section{Conclusion}
-We have presented \sys, a fully client-side protection mechanism against XSS. This approach has many benefits over currently existing systems, as well as being complementary to many of them. Our firewall architecture makes it so that users can protect themselves in the face of an ever-increasing number of potential attacks and attack vectors, with little additional effort required for a knowledgeable security analyst when taking into consideration the existing vulnerability detection work flow. The CVE study we conducted showed that the provided API for sanitization and injection point detection is effective, as 93.75\% of these vulnerabilities could be defended against with our tool. Our prototype implementation meets the required performance goals to not be detrimental to an user's web browsing experience, as web page load times are affected by less than 10\% overhead on 72.6\% of sites.
+
+Users cannot depend on administrators to patch vulnerable server-side
+software or for developers to adopt best practices to mitigate XSS
+vulnerabilities. Instead, users should protect themselves with a
+client-side solution. In this paper we described the design,
+implementation, and evaluation of one such client-side approach in
+\sys.
+%
+\sys prevents \ac{XSS} exploits by using a database of exploit
+signatures and by using a novel mechanism to detect XSS exploits in a
+browser extension.
+%
+We evaluated our approach through a study of 104 CVEs in which we
+showed that our tool defends against 93.75\% of the exploits.
+
+%% We have presented \sys, a fully client-side protection mechanism
+%% against XSS.
+%% \sys has many benefits over existing
+%% systems, as well as being complementary to many of them. 
+%% The \sys firewall
+%% architecture allows users to protect themselves in the face
+%% of an ever-increasing number of potential attacks and attack vectors,
+%% with little additional effort required for a knowledgeable security
+%% analyst when taking into consideration the existing vulnerability
+%% detection work flow.
+
+
+
+%%  we conducted showed that the provided API for
+%% sanitization and injection point detection is effective, as 93.75\% of
+%% these vulnerabilities could be defended with \sys. Our \sys prototype
+%% meets the required performance goals to not be detrimental to a user's
+%% web experience, as web page load times increase by less than 10\% on
+%% 72.6\% of sites.
