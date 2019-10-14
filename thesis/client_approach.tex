@@ -133,12 +133,17 @@ Once the page's identifying information and the dynamic content is established b
  
 We provide different types of sanitization: "DOMPurify", "escape", and "regex". Regex Pattern matching can be particularly effective when the expected value has a simple representation, e.g. a name field should only have a particular subset of characters available. Additionally, for each of these approaches, the signature can specify a corresponding config value. DOMPurify provides a rich API for additional configuration. When escaping, defining specific characters to escape via regex can be useful. For pattern matching via regex, the config value specifies the string the injection point content should match.
  
-An alternative to this approach would have been to allow signatures to specify arbitrary code for the sanitization routines. While this would provide a more accurate sanitization technique, we have decided to impose a declarative spec for these routines for three main reasons:
-\begin{enumerate} 
-	\item Security Concerns: We assume signatures come from a trusted source. However, partly due to the way they are currently stored, it is possible for an attacker to add malicious signatures. In general, this would only harming the web site user experience by removing safe content. The ability to run arbitrary code would lead a serious security flaw, as it would execute in a high-privilege environment.
-	\item Case Coverage: While our provided methods might be limited in some scenarios, we have applied them in our studied CVEs with positive results, and are confident they can cover most use cases.
-	\item Adoption: A declarative language will help signature developers expedite the process of writing signatures, as they will find that our provided methods will most often suffice.
-\end{enumerate}
+An alternative to this approach would have been to allow signatures to
+specify arbitrary code for the sanitization routines. While this would
+provide a more accurate sanitization technique, we have decided to
+impose a declarative spec for security reasons and because we believe
+a declarative spec is sufficiently expressive and usable.
+
+%% \begin{enumerate} 
+%% 	\item Security Concerns: We assume signatures come from a trusted source. However, partly due to the way they are currently stored, it is possible for an attacker to add malicious signatures. In general, this would only harming the web site user experience by removing safe content. The ability to run arbitrary code would lead a serious security flaw, as it would execute in a high-privilege environment.
+%% 	\item Case Coverage: While our provided methods might be limited in some scenarios, we have applied them in our studied CVEs with positive results, and are confident they can cover most use cases.
+%% 	\item Adoption: A declarative language will help signature developers expedite the process of writing signatures, as they will find that our provided methods will most often suffice.
+%% \end{enumerate}
  
  \subsection{Firefox Extension} \label{firefox_extension}
  Our system's main component is a browser extension which rewrites potentially infected HTML into a clean document. We believe an extension to be ideal for the purpose of defending against attacks due to the context available to it. Previous client-side work has focused on browser modifications and higher-level tools. Without access to the page's context, an XSS protection tool does not have the information required for the application-specific behaviour we seek. The extension's main purpose is to detect exploits in the HTML by using signature definitions and maintain a local database of signatures that is periodically updated from the main server. The extension translates signature definitions into patches that rewrite incoming HTML on a per-URL basis, according to the top-down, bottom-up scan described in \autoref{motivating_example}. 
