@@ -40,10 +40,10 @@ heavily on JavaScript\footnote{As early as 2012, it is used by almost
   sites~\cite{Stock:2017:WTI:3241189.3241265}}, and some sites offer
 versions without scripts, albeit with a level of interactivity below
 what users have come to expect.
-% Can something be said about the dom-XSS attacks?
+% Can something be said about the dom-based XSS attacks?
 
 Some software vendors respond to \xss whenever a vulnerability is disclosed.
-After disclosure (but hopefully before), security conscious developers hopefully will publish patches. When the software affected in released in the form of
+After disclosure (but ideally before), security conscious developers hopefully will publish patches. When the software affected is released in the form of
 packages, frameworks, or libraries, and used by several web applications,
 there are extra delays before users can benefit from the patch -- the updated software has to first be deployed by service administrators.
 
@@ -54,7 +54,11 @@ security vulnerabilities~\cite{Sucuri}. In another report, we learn
 that 30.95\% of Alexa's top 1 Million sites run a vulnerable version
 of WordPress~\cite{wpwhitesecurity}.
 
-Sadly, users are effectively left at the mercy of developers and administrators if they wish to browser the web safely.
+Sadly, users are effectively left at the mercy of developers and
+administrators if they wish to enjoy patched applications. Our
+solution, \sys, is a browser extension which detects known \xss
+exploits, and patches pages before exploits occur in the browser.
+
 
 \begin{figure}[h]
   \includegraphics[scale=0.37]{img/web_app_architecture_one.pdf}
