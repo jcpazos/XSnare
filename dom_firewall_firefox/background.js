@@ -255,6 +255,10 @@ function isRunningLimeSurvey(HTMLString, url) {
   return HTMLString.includes('<meta name=\"generator\" content=\"LimeSurvey http://www.limesurvey.org\" />') || HTMLString.includes('<a class="navbar-brand" href="/index.php/admin/index">');
 }
 
+function isRunningBoltCMS(HTMLString, url) {
+  return HTMLString.includes('<meta name="generator" content="Bolt">');
+}
+
 function runProbes(HTMLString, url, domain) {
   loadedProbes = [];
   //this might be done better by loading a signature-like language for probes
@@ -297,6 +301,9 @@ function runProbes(HTMLString, url, domain) {
   } else if (isRunningLimeSurvey(HTMLString, url)) {
     loadedProbes.push('limesurvey');
     probes['LimeSurvey'] = {};
+  } else if (isRunningBoltCMS(HTMLString, url)) {
+    loadedProbes.push('BoltCMS');
+    probes['BoltCMS'] = {};
   }
 
   //the domain name itself is a probe with no default versioning

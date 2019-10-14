@@ -922,6 +922,19 @@ const main_frame_signatures = {
     	}
     ],
 
+    'BoltCMS': [
+        {
+            url: 'preview',
+            software: 'BoltCMS',
+            softwareDetails: '',
+            version: '3.6.2',
+            type: 'string',
+            typeDet: 'single-several',
+            endPoints: ['<h1 class="title is-size-1 is-size-3-mobile">','<p class="meta is-hidden-touch">'],
+            endPointsPositions: [1,1]
+        }
+    ],
+
     'LimeSurvey': [
         {
             url: 'index.php',
