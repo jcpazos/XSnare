@@ -1,25 +1,60 @@
 \section{Introduction} \label{introduction}
 
-\ac{XSS} is still one of the most dominant web
-vulnerabilities. A 2017 report showed that 50\% of websites
-contained at least one \ac{XSS} vulnerability~\cite{Acunetix}. Countermeasures
-exist, but many of them lack widespread deployment.
-Many of these defenses require server-side and browser modifications~\cite{Jim:2007:DSI:1242572.1242654,Nadji:2009,Wurzinger:2009:SMX:1656360.1656379,Sundareswaran:2012:XHS:2352970.2352994} and/or additional front-end developer effort~\cite{10.1007/978-3-319-66399-9_7}. Other solutions disable client-side
-functionality~\cite{Noscript,Snyder:2017:MWD:3133956.3133966},
-sometimes rendering websites unusable. We believe many of these
-solutions have not seen widespread adoption because they are
-not practical: developers might not be willing, or might not have the
-resources or expertise to implement them. Furthermore, even
-when software patches are available, many 
-administrators do not apply them immediately: one study found that
-61\% of WordPress websites were running a version with known security
-vulnerabilities~\cite{Sucuri}, and another study found that 30.95\% of
-Alexa's top 1 Million sites run a vulnerable version of WordPress~\cite{wpwhitesecurity}.
-As more and more websites use client-side
-technologies\footnote{In 2012 almost 100\% of the Alexa top 500 sites were using
-JavaScript~\cite{Stock:2017:WTI:3241189.3241265}}, users are effectively left at
-the mercy of developers and administrators if they wish to browse the
-web safely.
+\ac{XSS} is still one of the most dominant web vulnerabilites. A 2017
+report showed that 50\% of websites contained at least one \ac{XSS}
+vulnerability~\cite{Acunetix}. Countermeasures exist, but many of them
+lack widespread deployment, and so web users are still mostly
+unprotected.
+
+Informally, the cause of \xss is a lack of input sanitization:
+user-chosen data ``escapes'' into a page's template and makes its way
+into the javascript engine, or modifies the DOM
+unintendedly.
+%
+Consequently, many of the \xss defenses published so far
+propose to fix the problem at the source, by properly separating the
+template from the user data on the server, or by modifying
+browsers~\cite{Jim:2007:DSI:1242572.1242654,Nadji:2009,Wurzinger:2009:SMX:1656360.1656379,Sundareswaran:2012:XHS:2352970.2352994}.
+%
+There are also similar solutions that can be implemented in the
+front-end code of an application~\cite{10.1007/978-3-319-66399-9_7}.
+In all cases, these technologies must be adopted by the application
+software developers.
+
+The main drawback with these approaches, from a user perspective, is
+that unless application maintainers adopt these technologies
+systematically, they are of little benefit, and users remain at risk.
+One hindrance to their adoption is that developers may not have the
+expertise necessary, or sufficient resources to implement necessary
+precautions. As a consequence, many of the approaches cited so far
+have not seen widespread adoption, and \xss still prevails today.
+
+Luckily, users wishing to take more control over the safety of their
+browsing can install browser extensions to filter some malicious
+scripts and content. Unfortunately, these extensions achieve most of
+their security by disabling functionality in the applications, which
+can severely damage the usability of the
+sites~\cite{Noscript,Snyder:2017:MWD:3133956.3133966}. Most sites rely
+heavily on JavaScript\footnote{As early as 2012, it is used by almost
+  100\% of the Alexa top 500
+  sites~\cite{Stock:2017:WTI:3241189.3241265}}, and some sites offer
+versions without scripts, albeit with a level of interactivity below
+what users have come to expect.
+% Can something be said about the dom-XSS attacks?
+
+Some software vendors respond to \xss whenever a vulnerability is disclosed.
+After disclosure (but hopefully before), security conscious developers hopefully will publish patches. When the software affected in released in the form of
+packages, frameworks, or libraries, and used by several web applications,
+there are extra delays before users can benefit from the patch -- the updated software has to first be deployed by service administrators.
+
+Unfortunately, website administrators will not, and often cannot,
+apply software updates immediately: one study found
+that 61\% of WordPress websites were running a version with known
+security vulnerabilities~\cite{Sucuri}. In another report, we learn
+that 30.95\% of Alexa's top 1 Million sites run a vulnerable version
+of WordPress~\cite{wpwhitesecurity}.
+
+Sadly, users are effectively left at the mercy of developers and administrators if they wish to browser the web safely.
 
 \begin{figure}[h]
   \includegraphics[scale=0.37]{img/web_app_architecture_one.pdf}
