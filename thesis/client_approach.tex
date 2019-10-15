@@ -132,20 +132,19 @@ sanitization.
 %% specifying elements and attributes that are unique to where the
 %% exploit might occur.
 
-Our basic signature definition thus specifies a match expression to
+Our basic signature definition specifies a match expression to
 locate an injection's start and endpoints, and any sanitization to be
 done between these two endpoints. We discuss the difficulty of
 supporting pages with multiple dynamic content injection points in
 later sections.
 
-Our signatures are defined with these two assumptions in mind: first,
+They are defined with two assumptions in mind: first,
 \textbf{an injection must have a start point and end point}, that is,
 an element can only be injected between a specific HTML node and its
 immediate sibling in the DOM tree; second, in a well-formed DOM,
 \textbf{the dynamic content will not be able to rearrange its location
   in the document without JavaScript execution} (e.g., removing and
-adding elements), allowing us to isolate it from the template
-code.
+adding elements), allowing us to isolate it from the template.
 
 We believe CVEs are an ideal growing source of signature definitions. Since previous
 client-side work does not focus on application-specific protection,
