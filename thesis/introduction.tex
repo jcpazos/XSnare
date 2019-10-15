@@ -19,19 +19,16 @@ browsers~\cite{Jim:2007:DSI:1242572.1242654,Nadji:2009,Wurzinger:2009:SMX:165636
 There are also similar solutions that can be implemented in the
 front-end code of an application~\cite{10.1007/978-3-319-66399-9_7}.
 In all cases, these technologies must be adopted by the application
-software developers.
+software developers, otherwise users are completely unprotected.
 
-The main drawback with these approaches, from a user perspective, is
-that unless application maintainers adopt these technologies
-systematically, they are of little benefit, and users remain at risk
-from \xss. One hindrance to their adoption is that developers may not have the
+One hindrance to their adoption is that developers may not have the
 expertise necessary, or sufficient resources to implement necessary
 precautions.
 %As a consequence, many of the approaches cited so far
 %have not seen widespread adoption, and \xss still prevails today.
-The viability of services dedicated to scanning for exploits,
-and the existence of a flourishing security-consulting economy is a testament
-to this.
+The viability of services centered around vulnerability detection,
+and the existence of a flourishing security-consulting economy
+is a testament to this.
 
 
 Luckily, users wishing to gain reassurance over the safety of the
@@ -42,8 +39,8 @@ can severely damage the usability of the
 sites~\cite{Noscript,Snyder:2017:MWD:3133956.3133966}. Most sites rely
 heavily on JavaScript\footnote{As early as 2012, it is used by almost
   100\% of the Alexa top 500
-  sites~\cite{Stock:2017:WTI:3241189.3241265}}, and some sites offer
-versions without scripts, albeit with a level of interactivity below
+  sites~\cite{Stock:2017:WTI:3241189.3241265}}. Some sites can offer
+alternate versions without scripts, albeit with a level of interactivity below
 what users have come to expect.
 % Can something be said about the dom-based XSS attacks?
 
@@ -63,8 +60,8 @@ of WordPress~\cite{wpwhitesecurity}.
 
 Users are in effect at the mercy of developers and administrators if
 they need to browse safe, up-to-date, applications. Our solution \sys,
-remedies this problem -- based on a database of known vulnerabilities,
-it aims to patch any vulnerable page displayed in the user's browser.
+helps remedy this problem -- based on information from past disclosures,
+it aims to patch known page vulnerabilities received by the user's browser.
 
 \begin{figure}[h]
   \includegraphics[scale=0.37]{img/web_app_architecture.pdf}
