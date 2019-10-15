@@ -10,19 +10,21 @@ We now present the design of \sys and its components. % and how they interact wi
 %
 % \subsection{Operation, at a glance} \label{operation}
 %
-At a high-level, it protects against \xss as follows (see \autoref{fig:xsnare}): A user requests a page, \url{example.com}.
+We begin with a high-level view of its operation (see
+\autoref{fig:xsnare}): A user requests a page, \url{example.com}, on a
+browser with the \sys extension installed.
 %
 The response may or may not contain
 malicious \xss payloads.
 %
-Before the browser renders the document, the \sys extension analyzes
+Before the browser renders the document, \sys analyzes
 the potentially malicious document. The extension loads signatures
 from its local database into its detector. The detector analyzes the
 HTML string arriving from the network, and identifies the signatures
 which apply to the document. These signatures specify one or more
 ``injection spots'' in the document, which correspond, roughly
 speaking, to regions of the DOM where improperly sanitized content
-(malicious) could be injected, unchecked.  The extension's sanitizer
+could be injected.  The extension's sanitizer
 eliminates any malicious content and outputs a clean HTML document to
 the browser for rendering (\autoref{filter_algorithm}).
 
@@ -36,10 +38,11 @@ To further explain our approach, we present a small example of how
 DOM context can be used to defend against XSS, taken from CVE
 2018-10309~\cite{examplecve}. This is reproducible in an off-the-shelf
 WordPress installation running the Responsive Cookie Consent plugin,
-v1.7. This is also an example exploit which Chrome's XSS auditor does
-not protect against. Consider a website running PHP on the backend
-that takes user input and stores it to later display it to another
-user; in this case, the \textbf{input} element's value.
+v1.7. This is a stored \xss vulnerability, and as such is not caught
+by some generic client-side \xss filters, including Chrome's XSS auditor.
+
+Consider a website running PHP on the backend which stores user input
+from one user, and displays it later to another user, inside an \textbf{input} element.
 
 The PHP code defines the static HTML template (in black), as well as the dynamic input (in red):
 
@@ -62,7 +65,7 @@ However, the php code is vulnerable to an injection attack, e.g.:
 \begin{lstlisting}
 border-size = ""><script>alert('XSS')</script>
 \end{lstlisting}
-The browser will render the following, executing the injected script:
+The browser will render this, executing the injected script:
 \begin{lstlisting}
 <input id="rcc_settings[border-size]" 
 name="rcc-settings[border-size]" 
@@ -71,13 +74,48 @@ type="text" value=<@\textcolor{red}{""><script>alert('XSS')</script>}@>
 for="rcc_settings[border-size]">
 \end{lstlisting}
 
-Note that this HTML is well-formed, so it is hard to detect that a malicious injection has occurred without knowing the application developer's intention. However, assuming an analyst has knowledge of how the full HTML should render without any injections, they can single out the point of injection, by separating the dynamic content from the server-side template, and get rid of the malicious script entirely. In the example, the injected script can be easily distinguished from the rest of the HTML template due to their identifiable attributes. By searching for this specific \textbf{input} element from the top of the document, and this \textbf{label} element from the bottom, we can effectively ensnare injection points in the HTML. 
+Note that the resulting HTML is well-formed, so a mere syntactic check
+will not detect the malicious injection. Let us assume a security
+analyst knows the original template, i.e., without injected
+content. If the analyst were given a filled-in document, they could
+(in most cases) separate the injected content from the server-side
+template, and get rid of the malicious script entirely, using proper sanitization. %\sys essentially automates the decision and sanitization process.
 
-This mechanism is partly inspired by work from Nadji et al.~\cite{Nadji:2009}. Their client and server-side hybrid approach for XSS defence, uses server-specified policies enforced on the client side. Unlike other prior work, they do not rely on developers to identify untrusted sources, and tag elements server-side, such that the client has a clear distinction of untrusted code, which can be filtered accordingly. We remove the server-side component by tagging client-side.
+The injected script is bounded by template elements with identifiable
+attributes. Assuming (for now) that there is only one such vulnerable
+injection point, we can search for the \textbf{input} element from the
+top of the document, and the \textbf{label} from the bottom to ensnare
+the injection points in the HTML.
 
-When sanitizing the injection points, we would ideally apply functions that are equivalent to the server-side patch, but the application developer's intention might not always be clear. We analysed the code in the example, and we noted that while the developer claimed the bug was fixed in version 1.8 of this plugin, this was not the case: the developer fixed other similar vulnerabilities but did not handle this specific parameter. However, we can infer the application's intended behaviour from the other patches~\cite{rccpatch}. In particular, the developer applied a built-in WordPress function \code{sanitize\_text\_field}, which sanitizes the parameters by checking for common invalid characters like invalid UTF-8. The task of determining the intended behaviour falls upon a security analyst, who will act as the signature developer for a given exploit.  
+This shares goals with the client/server hybrid approach of Nadji et
+al.~\cite{Nadji:2009}. They automatically tag injected DOM elements on the
+server-side using a taint-tracking, so that the client (a
+modified browser) can reliably separate template vs
+injected content. We do not require any server-side modifications, but rather opt for a client-side tagging solution based on exploit definitions.
 
-In the following sections we give a detailed description of each component of our system, the challenges that arise when trying to defend against XSS client-side, and the tools provided by the browser to facilitate our methods. 
+The injected content, once identified, must be sanitized appropriately.
+The appropriate action will depend on the application setting, but
+assuming a patch has been written, it suffices to translate the
+intention in the server code's path to the client-side.
+This can be straightforward, once the fix is understood.
+%but the application developer's intention might not always be clear.
+
+The developer incorrectly claimed the bug had
+been fixed in version 1.8 of the plugin.
+Other similar vulnerabilities had indeed been fixed, but not this one~\cite{rccpatch}. The built-in WordPress function \code{sanitize\_text\_field} needed to be applied.
+%%which sanitizes the parameters by
+%%checking for common invalid characters like invalid UTF-8.
+
+\xss does not automatically determine the relevant actions to
+implement from a patch. We assign this task to a security
+analyst, who will act as the signature developer for a given
+exploit. The system will however automate the signature matching and
+sanitization.
+
+%% In the following sections we give a detailed description of each
+%% component of our system, the challenges that arise when trying to
+%% defend against XSS client-side, and the tools provided by the browser
+%% to facilitate our methods.
 
 \subsection{\sys Signatures} \label{signatures}
 The signatures are at the core of XSnare. They must be precise enough for our system to get rid of the intended injection, without removing elements of the website crucial to the user experience. Since we are only relying on DOM knowledge, these signatures must be related to HTML features, for example, specifying elements and attributes that are unique to where the exploit might occur. 
