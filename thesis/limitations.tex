@@ -15,7 +15,7 @@ Furthermore, since we rely on handwritten signatures to defend against attacks, 
 
 \textbf{Usability.} A main aspect of our work is its increased potential for usability and adoption from both a user's perspective that installs the extension to defend themselves against \ac{XSS}, and a signature developer that has to write the database descriptions according to a known CVE. Future work could focus on usability studies related to both of these components.
 
-\textbf{Protection against CSRF.} We believe we can adapt our work to defend against CSRF exploits, as well. Using a similar signature language as the one for \ac{XSS}, a signature developer could specify pages with potential vulnerabilities to only allow network requests that cannot exploit such vulnerabilities. 
+\textbf{Protection against CSRF.} We believe we can adapt our work to defend against Cross-site request forgery (CSRF) exploits, as well. Using a similar signature language as the one for \ac{XSS}, a signature developer could specify pages with potential vulnerabilities to only allow network requests that cannot exploit such vulnerabilities. 
 
 %% While our work has only focused on \ac{XSS}, we believe we can easily adapt our network filter to defend against CSRF exploits as well. Using a similar signature language as the one for \ac{XSS}, a signature developer could specify pages with potential vulnerabilities to only allow network requests that can not exploit such vulnerabilities. In some scenarios, it might be useful to track DOM events, e.g., user clicks to protect against click-jacking attacks. This kind of information is not available to the network; however, the extension could install a script on the page to monitor these actions. 
 

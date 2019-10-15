@@ -10,7 +10,7 @@ why we targeted WordPress plugins:
 \begin{itemize}
 	\item WordPress powers 34.7\% of all websites according to a recent survey  \cite{w3stats}. The same study states that 30.3\% of the Alexa top 1000 sites use WordPress. Thus, we can be confident that our study results will hold true for the average user.
 	\item WordPress plugins are very popular among developers (there are currently more than 55,000 plugins \cite{wpplugins}). Due to its user popularity, WordPress is also heavily analysed by security experts. A search for WordPress CVEs on the Mitre CVE database \cite{cvemitre} gives 2310 results. Plugins, specifically, are an important part of this issue, 52\% of the vulnerabilities reported by WPScan are caused by WordPress plugins \cite{wpscan}.
-	\item Due to the open source nature of WordPress plugins, we can easily analyze both the client-side HTML, as well as the server-side code that generated it, and use this to reach conclusions about the design of our solution.
+	\item WordPress plugin code is accessible, so we can easily analyze both the client-side HTML, as well as the server-side code that generated it, which is helpful when writing signatures.
 	\item Using one framework, we can install many different plugins for the version we want, reproduce attacks, and investigate the conditions under which they happen, without having to install additional software.
 \end{itemize}
 
@@ -40,9 +40,9 @@ For each CVE, we set up a Docker container with a clean installation of WordPres
 
 \vspace{-0.3in}
 
-Of the initial 100 CVEs, we were able to analyze 76 across 40 affected pages. We dropped 24 CVEs due to reproducibility issues: some of the descriptions did not include a PoC of the exploit, and as such, was difficult for us to reproduce; or, the plugin code was no longer available. In some cases, it had been removed from the WordPress repository due to "security issues", which emphasizes the importance of being able to defend against these attacks. This is not to say, however, that our detector would not work for such a CVE, as the author would have a better idea of how the exploit manifests itself, and would therefore be in a better position to write a signature. The plugins we studied averaged 489,927 installations; \ref{table:1} shows the number of installations for the 5 most popular studied plugins. For the vulnerabilities, 27 (35.5\%) could be exploited by an unauthenticated user; 56 (73.7\%) targeted a high-privilege user as the victim, 7 (9.2\%) had a low-privilege user as the victim, the rest affected users of all types.
+Of the initial 100 CVEs, we were able to analyze 76 across 40 affected pages. We dropped 24 CVEs due to reproducibility issues: some of the descriptions did not include a PoC, making it difficult for us to reproduce; or, the plugin code was no longer available. In some cases, it had been removed from the WordPress repository due to "security issues", which emphasizes the importance of being able to defend against these attacks. This is not to say, however, that our detector would not work for such a CVE, as the author would have a better idea of how the exploit manifests itself, and would be in a better position to write a signature. The plugins we studied averaged 489,927 installations; \autoref{table:1} shows the number of installations for the 5 most popular studied plugins. For the vulnerabilities, 27 (35.5\%) could be exploited by an unauthenticated user; 56 (73.7\%) targeted a high-privilege user as the victim, 7 (9.2\%) had a low-privilege user as the victim, the rest affected users of all types.
 
-Many of the studied CVEs included attacks for which there are known and widely deployed defenses. For example, many were cases of Reflected \ac{XSS}, where the URL reveals the existence of an attack e.g:
+Many of the studied CVEs included attacks for which there are known and widely deployed defenses. For example, many were cases of Reflected \ac{XSS}, where the URL revealed the existence of an attack, e.g:
 
 
 $http://[path to WordPress]/wp-admin/admin.php?page=wps\_pages\_page\&page-uri=<script>alert("\ac{XSS}")</script>$
@@ -51,7 +51,7 @@ While Chrome's built-in \ac{XSS} auditor blocked this request, Firefox did not, 
 
 After manual testing, the majority of the 71 signatures maintained the same layout and core functionality of the webpage. However, 12 signatures caused some elements to be rearranged, modifying the page's visual aspect. One caused a small part of the page to become unusable, due to the sanitization method used (a table showing user information was now rendered as blank). Most of the responsibility of maintaining functionality is left to the signature developer, being as precise as possible is key.
 
-While our goal with the signature language is to retain as much information of the webpage as possible after sanitization, we believe that even if a part of the page is now useless, this does not impact the user's experience as much, since most of these exploits occur in small sections of the HTML. A thorough study with regards to usability is out of scope for this work, but we provide some study on false positives and false negatives in later sections, which is related to this issue.
+While our goal is to retain as much information of the page as possible after sanitization, we believe that even if a part of the page is now useless, this does not impact the user's experience as much, since most of these exploits occur in small sections of the HTML. A thorough study with regards to usability is out of scope for this work, but we provide some insight into false positives and false negatives in later sections, which is related to this issue.
 
 \subsection{Generalizability} \label{generalizability}
 

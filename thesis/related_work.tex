@@ -24,7 +24,7 @@ Policies. This approach is similar to ours, as the policies specify
 prohibited script execution points. However, this again relies on application developers knowing where their code might be vulnerable. Furthermore, browser modifications are required to benefit from it. Similarly, Hallaraker and Vigna \cite{Hallaraker:2005:DMJ:1078029.1078861} use a
 policy language to detect malicious code on the client-side. Like \sys, they make use of signatures to protect against known types of
 exploits. However, unlike our approach, their signatures are not
-application-level, and there is no model for signature
+application-specific, and there is no model for signature
 maintenance. Furthermore, there is no evaluation on the efficacy of
 their signatures.
 
@@ -36,13 +36,12 @@ should only be used as a last resort.
 
 \noindent \textbf{Browser built-in defences.}  Browsers are equipped
 with several built-in defences. We previously described XSS
-Auditor ~\ref{introduction}), the other two important ones are Content
+Auditor in \autoref{introduction}, the other two important ones are Content
 Security Policy and the Same-origin policy.
 
 Content Security Policy (CSP)~\cite{CSP} has been widely adopted and
 in many cases provides developers with a reliable way to protect
-against \ac{XSS} and Cross-site request forgery (CSRF)
-attacks. However, CSP requires the developer to know which scripts
+against \ac{XSS} and CSRF attacks. However, CSP requires the developer to know which scripts
 might be malicious.
 
 Same-origin policy~\cite{SOP} is another useful security mechanism for
