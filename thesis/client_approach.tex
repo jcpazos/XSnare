@@ -236,18 +236,25 @@ signatures defined for this paper.
 %% 	\item Case Coverage: While our provided methods might be limited in some scenarios, we have applied them in our studied CVEs with positive results, and are confident they can cover most use cases.
 %% 	\item Adoption: A declarative language will help signature developers expedite the process of writing signatures, as they will find that our provided methods will most often suffice.
 %% \end{enumerate}
- 
+
  \subsection{Firefox Extension} \label{firefox_extension}
 
  Our system's main component is a browser extension which rewrites
- potentially infected HTML into a clean document. We believe an
- extension to be ideal for our purposes due to the context available
- to it. Previous client-side work has focused on browser modifications
- and higher-level tools. These tools do not have the context required
- for the application-specific behaviour we seek. The extension detects
+ potentially infected HTML into a clean document.
+ %% % this is a repeat
+ %% We believe an
+ %% extension to be ideal for our purposes due to the context available
+ %% to it.
+ %% Previous client-side work has focused on browser modifications
+ %% and higher-level tools. These tools do not have the context required
+ %% for the application-specific behaviour we seek.
+ The extension detects
  exploits in the HTML by using signature definitions and maintains a
- local database of signatures that is periodically updated from the
- main server. The extension translates signature definitions into
+ local database of signatures. We leave the design of an update mechanism
+ to future work, but in the simplest form, database updates are
+ bundled with new revisions of the extension.
+ %
+ The extension translates signature definitions into
  patches that rewrite incoming HTML on a per-URL basis, according to
  the top-down, bottom-up scan described in
  \autoref{motivating_example}.
