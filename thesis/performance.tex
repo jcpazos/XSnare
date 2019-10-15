@@ -12,12 +12,12 @@ While our extension's functionality only applies at the network level, there is 
 
 \subsection{Top websites load times} \label{top_sites}
 We first report our extension's impact on top website load times, representing the expected behaviour of an user's average web browsing experience. For these tests, we first took the top 500 websites as reported by Moz.com \cite{top500}. For each website, we loaded it 25 times (with a 25 second timeout) and recorded the following values: requestStart, responseEnd, domComplete, and decodedBodySize. From the initial 500, we only report values for 441 of them. The other 59 had consistent issues with timeouts, insecure certificates, and network errors. For our setup, we used a headless version of Firefox 69.0, and Selenium WebDriver for NodeJS, with GeckoDriver. All experiments were run on one machine with an Intel Xeon CPU E5-2407 2.40GHz processor, 32 GB DRAM, and our university's 1GiB connection. We ran four test suites:
-\begin{itemize}
+\begin{enumerate}
 	\item No extension cold cache: Firefox is loaded without the extension installed and the web driver is re-instantiated for every page load.
-	\item Extension cold cache: As above, but Firefox is loaded with the extension installed.
+	\item Extension cold cache: As in 1), but Firefox is loaded with the extension installed.
 	\item No extension warm cache: Firefox is loaded without the extension installed and the same web driver is used for the page's 25 loads.
-	\item Extension warm cache: As above, but Firefox is launched with the extension installed.
-\end{itemize}
+	\item Extension warm cache: As in 3), but Firefox is launched with the extension installed.
+\end{enumerate}
 
 \footnotetext{This image was taken from the w3 spec: \url{https://www.w3.org/TR/navigation-timing-2/}}
 
@@ -37,7 +37,7 @@ We compare the load times with and without the extension running by calculating 
 \\
 where $\tilde{x}$ is the median with/without the extension running.
 
-Figure ~\ref{fig:overall_slowdown} shows the computed results. The graph shows a slowdown of less than 10\% for 72.6\% of sites, and less than 50\% for 82\% of sites when the extension is running. Note that these values are recorded as percentages, and while some are as high as 50\%, the absolute values are in 77\% of cases less than a second. This overhead should not alter the user's experience significantly. The slowdown increases by at most 5\% when we take caching into account. This is likely because the network filter causes the browser to use less caching, especially for the DOM component, as it might have to process it from scratch every time. We manually checked the websites for which values were higher than |40\%| and verified that our extension did not change the page's contents, a possible cause for faster load times. We also checked the timings for the page as reported by the browser and noted a high variance even within small time windows. The time spent by our verification function was less than 10ms for 87.6\% of sites (\autoref{fig:verification_time_string_length}). This corroborates our findings that the slowdown is mostly negligible.
+Figure ~\ref{fig:overall_slowdown} shows the computed results. The graph shows a slowdown of less than 10\% for 72.6\% of sites, and less than 50\% for 82\% of sites when the extension is running. Note that these values are recorded as percentages, and while some are as high as 50\%, the absolute values are in 77\% of cases less than a second. This overhead should not alter the user's experience significantly. The slowdown increases by at most 5\% when we take caching into account. This is likely because the network filter causes the browser to use less caching, especially for the DOM component, as it might have to process it from scratch every time. While it may seem counter-intuitive that some pages have shorter loading times without the extension, there are several variables at play that can affect these measurements (local network, server-side load, internal scheduling, etc). We manually checked the websites for which values were higher than |40\%| and verified that our extension did not change the page's contents, a possible cause for faster load times. We also checked the timings for the page as reported by the browser and noted a high variance even within small time windows. The time spent by our verification function was less than 10ms for 87.6\% of sites (\autoref{fig:verification_time_string_length}). This corroborates our findings that the slowdown is mostly negligible.
 
 \iffalse
 \begin{figure}[h]

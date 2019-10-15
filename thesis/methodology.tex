@@ -16,7 +16,7 @@ why we targeted WordPress plugins:
 
 We looked at the 100 most recent WordPress \ac{XSS} CVEs, as of October 2018. We have chosen to use a CVE database, CVE Details \cite{cvedetails}, as opposed to other databases that include vulnerabilities or exploits, mainly because of reliability. We have been able to find hundreds of verified attacks on WordPress and its plugins using a CVE database, which also usually contain information on how to reproduce them. This provides the perfect platform to analyze \ac{XSS} attacks and decide whether they can be countered by our approach. 
 
-For each CVE, we set up a Docker container with a clean installation of WordPress 5.2 and installed the vulnerable plugin's version. A few of the CVEs depended on the WordPress version as well, and so we used the required WordPress version for those. We then tried to reproduce the exploit as described by the CVE author. Finally, we analyzed the vulnerable page and wrote a signature to patch the exploit.
+For each CVE, we set up a Docker container with a clean installation of WordPress 5.2 and installed the vulnerable plugin's version. A few of the CVEs depended on the WordPress version as well, so we used the required WordPress version for those. We then tried to reproduce the exploit as described by the CVE. Finally, we analyzed the vulnerable page and wrote a signature to patch the exploit.
 
 \subsection{Results}
 
@@ -56,7 +56,7 @@ While our goal is to retain as much information of the page as possible after sa
 To test the generalizability of our approach to other frameworks, we
 analysed 5 additional CVEs, 2 related to Joomla!, 2 for LimeSurvey,
 and 1 for Bolt CMS.  We chose Joomla! because it is another 
-popular Content Management System. Unfortunately, we only found 2 CVEs
+popular CMS. Unfortunately, we only found 2 CVEs
 that we were able to reproduce, as the software for its extensions is
 often not available. For fairness, we looked for the most recent CVEs
 we could reproduce listed in the Exploit Database~\cite{exploitdb}, since

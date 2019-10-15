@@ -257,9 +257,8 @@ signatures defined for this paper.
  The extension translates signature definitions into patches that
  rewrite incoming HTML on a per-URL basis, according to the top-down,
  bottom-up scan described in \autoref{motivating_example}.
-
-The patch applied by the extension needs to take place in the raw HTML
-string: even before any code runs, parsing the HTML into a DOM tree
+ 
+ The extension's detector acts as an in-network filter. We initially considered other designs but quickly found out that applying the patch at the network level was necessary for sanitization correctness: even before any code runs, parsing the HTML into a DOM tree
 might cause elements to be re-arranged into an unexpected order,
 making our extension sanitize the wrong spot.  Consider the following
 example, where an element inside a <tr> tag is rearranged after
@@ -298,8 +297,7 @@ injection, as it occurs before the table element, creating a false
 negative (FN). Similarly, elements rearranged inside an injection
 point can create false positives. This example would generate a class
 of circumvention techniques for our detector, so we can't wait until
-the website has been rendered to analyse the response, and therefore,
-our detector acts as an in-browser network filter. This guarantees
+the website has been rendered to analyse the response. This guarantees
 that a knowledgeable attacker can not take advantage of this
 behaviour.
 
