@@ -9,7 +9,7 @@ plugins. While this may seem restrictive, there are several reasons
 why we targeted WordPress plugins:
 \begin{itemize}
 	\item WordPress powers 34.7\% of all websites according to a recent survey  \cite{w3stats}. The same study states that 30.3\% of the Alexa top 1000 sites use WordPress. Thus, we can be confident that our study results will hold true for the average user.
-	\item WordPress plugins are very popular among developers (there are currently more than 55,000 plugins \cite{wpplugins}). Due to its user popularity, WordPress is also heavily analysed by security experts. There are currently 286 CVEs related to WordPress in the CVE Details database \cite{cvedetails}. Plugins, specifically, are an important part of this issue, 52\% of the vulnerabilities reported by WPScan are caused by WordPress plugins \cite{wpscan}.
+	\item WordPress plugins are very popular among developers (there are currently more than 55,000 plugins \cite{wpplugins}). Due to its user popularity, WordPress is also heavily analysed by security experts. A search for WordPress CVEs on the Mitre CVE database \cite{cvemitre} gives 2310 results. Plugins, specifically, are an important part of this issue, 52\% of the vulnerabilities reported by WPScan are caused by WordPress plugins \cite{wpscan}.
 	\item Due to the open source nature of WordPress plugins, we can easily analyze both the client-side HTML, as well as the server-side code that generated it, and use this to reach conclusions about the design of our solution.
 	\item Using one framework, we can install many different plugins for the version we want, reproduce attacks, and investigate the conditions under which they happen, without having to install additional software.
 \end{itemize}
@@ -54,18 +54,14 @@ While our goal with the signature language is to retain as much information of t
 \subsection{Generalizability} \label{generalizability}
 
 To test the generalizability of our approach to other frameworks, we
-analysed 4 additional CVEs, 2 related to Joomla!, 2 for LimeSurvey,
-and 1 for Bolt CMS. 
-%
-\iv{Isn't this 5 = 2+2+1, not 4?}
-%
-We chose Joomla! because it is another 
+analysed 5 additional CVEs, 2 related to Joomla!, 2 for LimeSurvey,
+and 1 for Bolt CMS.  We chose Joomla! because it is another 
 popular Content Management System. Unfortunately, we only found 2 CVEs
 that we were able to reproduce, as the software for its extensions is
 often not available. For fairness, we looked for the most recent CVEs
 we could reproduce listed in the Exploit Database~\cite{exploitdb}, since
 these have recorded proof of concepts (PoCs). We carried out the same
 procedure as with the Wordpress CVEs, and were able to patch all of
-the \iv{5?} exploits. This brought our CVE coverage rate up to 93.75\%.
+the 5 exploits. This brought our CVE coverage rate up to 93.4\%.
 
 
