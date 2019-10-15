@@ -166,7 +166,19 @@ like on response to a click, we
 benefit from knowledge of the initiating tab to filter the
 response. Previous client-side solutions have opted for detectors that were generic and site-agnostic~\cite{Kirda:2009:CCS:2639535.2639808,Jim:2007:DSI:1242572.1242654,Hallaraker:2005:DMJ:1078029.1078861}. Our work goes in the opposite direction, and tries rather to prevent precisely-defined exploits in specific applications.
 
-If a patch for a server-side vulnerability can be ``translated'' into an equivalent patch for the output it generates (i.e. the page received by the browser), then a great opportunity arises. Our extension, which has access to the user's browsing context, can identify pages on which the patch should be applied based on a database of signatures. \sys can thus protect users as soon as a patch is implemented and added to its database. Furthermore, the client-side patch will continue to be beneficial until \textit{all} server operators running that software have had a chance to upgrade their deployments. We detail its design mechanisms in Section~\ref{xsnare_design}.
+If a patch for a server-side vulnerability can be ``translated'' into
+an equivalent set of operations to apply on the fully formed HTML
+document in the browser, then we can seize the opportunity to defend
+{\em early} against exploits of that vulnerability.
+%
+Our extension, which has access to the user's browsing context, can
+identify vulnerable pages based on a database of signatures for
+previous disclosures. This way, \sys can protect users as soon as a patch
+is implemented and added to its database. The client-side
+patch will remain beneficial a until \textit{all} server
+operators running that software have had a chance to upgrade their
+deployments.
+%% We detail its design in \autoref{xsnare_design}.
 
 
  A similar philosophy is adopted by the client-side firewall-based network proxy Noxes~\cite{Kirda:2009:CCS:2639535.2639808}. %%  Rules dictate the links which can be accessed by a website
