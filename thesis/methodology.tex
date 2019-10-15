@@ -38,8 +38,6 @@ For each CVE, we set up a Docker container with a clean installation of WordPres
 	\end{center}
 \end{table}
 
-\vspace{-0.3in}
-
 Of the initial 100 CVEs, we were able to analyze 76 across 40 affected pages. We dropped 24 CVEs due to reproducibility issues: some of the descriptions did not include a PoC, making it difficult for us to reproduce; or, the plugin code was no longer available. In some cases, it had been removed from the WordPress repository due to "security issues", which emphasizes the importance of being able to defend against these attacks. This is not to say, however, that our detector would not work for such a CVE, as the author would have a better idea of how the exploit manifests itself, and would be in a better position to write a signature. The plugins we studied averaged 489,927 installations; \autoref{table:1} shows the number of installations for the 5 most popular studied plugins. For the vulnerabilities, 27 (35.5\%) could be exploited by an unauthenticated user; 56 (73.7\%) targeted a high-privilege user as the victim, 7 (9.2\%) had a low-privilege user as the victim, the rest affected users of all types.
 
 Many of the studied CVEs included attacks for which there are known and widely deployed defenses. For example, many were cases of Reflected \ac{XSS}, where the URL revealed the existence of an attack, e.g:
