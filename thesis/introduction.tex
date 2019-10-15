@@ -95,30 +95,31 @@ Each layer of the web application stack  (Figure~\ref{fig:web_architecture}) ope
   responses, such as NoScript~\cite{Noscript}, and \sys.
 \end{enumerate}
 
-Many of these approaches are either unfit for widespread deployment or
-do not benefit from an application's contextual knowledge. For
-example, a \ac{WAF} might be enough to defend against most \ac{XSS} attacks on
-one deployment, but it would require each individual developer to have
-the necessary knowledge and resources to integrate one. A network
-proxy at the client-side will usually have a generic set of rules to
-apply on incoming network traffic, and this will often lead to an
-elevated rate of false positives (FPs). Browser built-in defences are very
-coarse, and will only work on a subset of exploits. Chrome's XSS
+We drew two observations from existing solutions a) server-side
+solutions have to be applied independently on each server, and b)
+solutions on the client are typically written as generic filters which
+catch everything, and consequently do not take full advantage
+of the specificity of an application or vulnerability.
+
+For example, a \ac{WAF} can effectively protect the deployment
+placed behind it, but users cannot realistically expect that every
+site they visit be protected by one. At the opposite end, in the client's
+environment, a user might configure a network proxy for all web
+traffic, using a generic set of rules, but this will often lead to an
+elevated rate of false positives (FPs).
+
+Similarly, browser built-in defences are very coarse, and will only work on a subset of exploits. Chrome's XSS
 Auditor, for example, only attempts to defend against reflected
 \ac{XSS}. Google recently announced its intention to deprecate
-XSS Auditor; the reasons include \emph{``Bypasses abound''}, \emph{``It prevents
+XSS Auditor, for reasons including \emph{``Bypasses abound''}, \emph{``It prevents
 some legit sites from working''}, and \emph{``Once detected, there's nothing
 good to do''}~\cite{deprecatexssauditor}. Stock et
 al.~\cite{precise_dom_xss} propose enhancements to
 XSS Auditor and cover a wider range of exploits than the
-auditor, but are limited to DOM-based \ac{XSS}. Our work is not particular
-to a type of \ac{XSS}.
+auditor, but are limited to DOM-based \ac{XSS}.
+Our work covers all types of \ac{XSS}.
 
-While there is much work on the server-side~\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325}, the
-adoption of server-side techniques might not be feasible for many
-developers. A 2018 study found that the average time to patch a \ac{CVE}
-regardless of severity is 38 days, increasing to as much as 54 days
-for low severity vulnerabilities, and the oldest unpatched \ac{CVE} was 340
+Implementing adequate server-side protections~\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325} can represent a colossal task. A 2018 study found that the average time to patch a \ac{CVE}, all severities combined, is 38 days, increasing to as much as 54 days for low severity vulnerabilities, and the oldest unpatched \ac{CVE} was 340
 days old~\cite{Rapid7}. A client-side solution does not rely on
 application developers, so it reduces the turnaround time
 between a vulnerability and its patch.
