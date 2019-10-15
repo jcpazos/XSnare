@@ -245,16 +245,16 @@ plt.axvline(0, linestyle='dashed', color='grey')
 #plt.hlines(0.5, -1, 1, linestyle='dashed', color='grey')
 
 f = interp1d(X_2, Y)
-plt.plot(X_2,f(X_2),marker='^',markevery=(n/15))
+plt.plot(X_2,f(X_2),marker='^',markevery=(n/5))
 
 f = interp1d(X_3, Y)
-plt.plot(X_3,f(X_3), marker='s',markevery=(n/15))
+plt.plot(X_3,f(X_3), marker='s',markevery=(n/5))
 
 f = interp1d(X_5, Y)
-plt.plot(X_5,f(X_5),marker='x',markevery=(n/15))
+plt.plot(X_5,f(X_5),marker='x',markevery=(n/5))
 
 f = interp1d(X_6, Y)
-plt.plot(X_6,f(X_6),marker='D',markevery=(n/15))
+plt.plot(X_6,f(X_6),marker='D',markevery=(n/5))
 
 p1.remove()
 p2.remove()
