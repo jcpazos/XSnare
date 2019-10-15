@@ -1,27 +1,26 @@
 \section{Related Work}
 We classify existing work into multiple categories: client-side, server-side, browser built-in, and hybrid: a combination of these.
 
-\noindent \textbf{Server-side techniques.} 
+\noindent \textbf{Server-side techniques.}
 In addition to existing parameter sanitization techniques,
 taint-tracking has been proposed as a means to consolidate
-sanitization of vulnerable parameters
-\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325}. These
+sanitization of vulnerable parameters~\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325}. These
 techniques are complementary to ours, and provide an additional line
 of defence against \ac{XSS}. However, many of them rely on the
 client-side rendering to maintain the server-side properties, which
 will not always be the case.
 
-\noindent \textbf{Client-side techniques.} 
+\noindent \textbf{Client-side techniques.}
 DOMPurify~\cite{10.1007/978-3-319-66399-9_7} presents a robust
 \ac{XSS} client-side filter. The authors
 argue that the DOM is the ideal place for sanitization to occur. While
 we agree with this view, their work relies on application developers
 to adopt their filter and modify their code to use it. Thus, we have partly automated this step by including it as our default sanitization function.
 
-Jim et al. \cite{Jim:2007:DSI:1242572.1242654} present a method to
+Jim et al.~\cite{Jim:2007:DSI:1242572.1242654} present a method to
 defend against injection attacks through Browser-Enforced Embedded
 Policies. This approach is similar to ours, as the policies specify
-prohibited script execution points. However, this again relies on application developers knowing where their code might be vulnerable. Furthermore, browser modifications are required to benefit from it. Similarly, Hallaraker and Vigna \cite{Hallaraker:2005:DMJ:1078029.1078861} use a
+prohibited script execution points. However, this again relies on application developers knowing where their code might be vulnerable. Furthermore, browser modifications are required to benefit from it. Similarly, Hallaraker and Vigna~\cite{Hallaraker:2005:DMJ:1078029.1078861} use a
 policy language to detect malicious code on the client-side. Like \sys, they make use of signatures to protect against known types of
 exploits. However, unlike our approach, their signatures are not
 application-specific, and there is no model for signature
@@ -39,17 +38,17 @@ with several built-in defences. We previously described XSS
 Auditor in \autoref{introduction}, the other two important ones are Content
 Security Policy and the Same-origin policy.
 
-Content Security Policy (CSP)~\cite{CSP} has been widely adopted and
+\ac{CSP}~\cite{CSP} has been widely adopted and
 in many cases provides developers with a reliable way to protect
-against \ac{XSS} and CSRF attacks. However, CSP requires the developer to know which scripts
+against \ac{XSS} and \ac{CSRF} attacks. However, \ac{CSP} requires the developer to know which scripts
 might be malicious.
 
 Same-origin policy~\cite{SOP} is another useful security mechanism for
-protection against \ac{XSS} and CSRF. This policy restricts how a
+protection against \ac{XSS} and \ac{CSRF}. This policy restricts how a
 document or script loaded from one origin can interact with a resource
 from another origin. However, if the attack is injected in the same
 website the attacker intends to compromise, this will not defend
-against it. As with other approaches these browser policies are complementary to XSnare.
+against it. As with other approaches these browser policies are complementary to \sys.
 
 \noindent \textbf{Client and server hybrids.}
 XSS-Dec~\cite{Sundareswaran:2012:XHS:2352970.2352994} uses a proxy which keeps track of an encrypted version of the server's source files, and applies this information to derive exploits in a page visited by the user. This approach is similar to ours, since we assume previous

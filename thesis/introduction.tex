@@ -1,6 +1,6 @@
 \section{Introduction} \label{introduction}
 
-\ac{XSS} is still one of the most dominant web vulnerabilites. A 2017
+\ac{XSS} is still one of the most dominant web vulnerabilities. A 2017
 report showed that 50\% of websites contained at least one \ac{XSS}
 vulnerability~\cite{Acunetix}. Countermeasures exist, but many of them
 lack widespread deployment, and so web users are still mostly
@@ -8,7 +8,7 @@ unprotected.
 
 Informally, the cause of \xss is a lack of input sanitization:
 user-chosen data ``escapes'' into a page's template and makes its way
-into the javascript engine, or modifies the DOM
+into the JavaScript engine, or modifies the DOM
 unintendedly.
 %
 Consequently, many of the \xss defenses published so far
@@ -70,7 +70,7 @@ it aims to patch any vulnerable page displayed in the user's browser.
   \includegraphics[scale=0.37]{img/web_app_architecture.pdf}
   \vspace*{-5.0ex}
 %  \caption{Architecture of typical web applications. Different security solutions apply at distinct layers.}
-  \caption{Different web security solutions with XSnare on the client-side.}
+  \caption{Different web security solutions with \sys on the client-side.}
   \label{fig:web_architecture}
 \end{figure}
 
@@ -80,7 +80,7 @@ Each layer of the web application stack  (Figure~\ref{fig:web_architecture}) ope
 
 \item The application logic is the first line of defence.
   Code safety can be enhanced with third-party vulnerability scanning solutions, and a thorough
-  code-review process. Taint, and static code analysis tools can detect unsanitised inputs.
+  code-review process. Taint, and static code analysis tools can detect unsanitized inputs.
 
 \item In the hosting environment, network firewalls, specifically \acp{WAF} can defend against attacks such as \ac{DDoS}, \ac{SQL} injections and \ac{XSS}.
 

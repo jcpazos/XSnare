@@ -1,4 +1,4 @@
-\section{XSnare Design} \label{xsnare_design}
+\section{\sys Design} \label{xsnare_design}
 
  \begin{figure}[h]
 	\includegraphics[scale=0.55]{img/xsnare.pdf}
@@ -159,7 +159,7 @@ We are conscious that \sys signatures will not write themselves, and that
 this task represents a new step in the workflow. Luckily, converting
 the CVE information into a signature does not require active
 participation from the application developers -- Security enthusiasts and
-web developers have the skills to fulfil this role satisfactorily.
+web developers have the skills to fulfill this role satisfactorily.
 
 Long term, we imagine that volunteers (or entrepreneurs) would
 cultivate and maintain the signature database. New signatures could be
@@ -297,9 +297,9 @@ injection, as it occurs before the table element, creating a false
 negative (FN). Similarly, elements rearranged inside an injection
 point can create false positives. This example would generate a class
 of circumvention techniques for our detector, so we can't wait until
-the website has been rendered to analyse the response. This guarantees
+the website has been rendered to analyze the response. This guarantees
 that a knowledgeable attacker can not take advantage of this
-behaviour.
+behavior.
 
 \subsection{Handling multiple injections in one page} \label{multiple_injections}
 
@@ -335,7 +335,7 @@ injected in the star. Therefore, we have to use the first starting
 point and the last ending point before a starting one (when searching
 from the bottom-up) and sanitize everything in between. This might get
 rid of a substantial amount of valid HTML, so we defer to the
-signature developer's judgement of what behaviour the detector should
+signature developer's judgment of what behavior the detector should
 follow. We expand upon this further in \autoref{case_study}.
 
 
@@ -353,7 +353,7 @@ the attacker can't fool the extension into leaving part of the
 injection unsanitized. However, they could, for example, inject an
 extra ending bracket after the opening parenthesis (or an extra
 starting brace). The extension will be tricked into sanitizing
-non-malicious content, the black pluses (+). This behaviour can be
+non-malicious content, the black pluses (+). This behavior can be
 detected by noting that we know the order in which the
 \code{endPoints} should appear, and so if the filter sees a closing
 \code{endPoint} before the next expected starting \code{endPoint}, or
@@ -362,14 +362,14 @@ similarly, a starting \code{endPoint} before the next expected closing
 order of the solid elements characterizes the possible malformations
 in the end points. As with the previous scenario, we have to sanitize
 the outermost end points, potentially deleting non-malicious
-content. The signature developer specifies the sanitization behaviour.
+content. The signature developer specifies the sanitization behavior.
 
 \subsection{Dynamic injections} \label{dynamic_injections}
 
 The top-level documents of web pages fetch additional dynamic content
 via \js{fetch} or AJAX APIs. Content fetched in
 this way is also vulnerable to \xss, and must be filtered. An example
-vulnerability is CVE-2018-7747 (Wordpress Caldera Forms, which allows malicious
+vulnerability is CVE-2018-7747 (WordPress Caldera Forms, which allows malicious
 content retrieved from the plugin's database to be injected in response to a click.
 
 \sys allows XHR requests to be filtered with \js{xhr}-type

@@ -4,9 +4,14 @@ We expect a signature developer to have a solid understanding of the principles 
 
 
 \subsection{Case Study: CVE-2018-10309} \label{case_study}
-Going back to our example in Section \ref{motivating_example}, we describe the process for writing a signature using one of our studied CVEs.  
+Going back to our example in Section \ref{motivating_example}, we describe the process for writing a signature using one of our studied CVEs.
 
-\textbf{Identifying the exploit.} An entry in Exploit Database \cite{studyCVE} describes a persistent \ac{XSS} vulnerability in the WordPress plugin Responsive Cookie Consent for versions 1.7/1.6/1.5. This entry (as most do) comes with a proof of concept (PoC) for the exploit, which describes the Cookie Bar Border Bottom Size parameter as vulnerable. We run a local WordPress installation with this plugin.
+\textbf{Identifying the exploit.} An entry in Exploit Database
+\cite{studyCVE} describes a persistent \ac{XSS} vulnerability in the
+WordPress plugin Responsive Cookie Consent for versions
+1.7/1.6/1.5. This entry (as most do) comes with a \ac{PoC} for the
+exploit, which describes the Cookie Bar Border Bottom Size parameter
+as vulnerable. We run a local WordPress installation with this plugin.
 
 \textbf{Establishing the separation between dynamic and static content.} We insert the string \js{"$>$script$>$alert('XSS')$<$/script$>$} in the Cookie Bar Border Bottom Size (rcc\_settings[border-size] in the HTML) input field. This results in an alert box popping up in the page.
 
@@ -44,7 +49,7 @@ Going back to our example in Section 2.4, we describe the full process of writin
 \item Select one of the input fields. For example, "Cookie Bar Border Bottom Size".
 \item Insert the script you wish to inject.
 \item Save the plugin settings.
-\item Injected script will run in the victim's browser. Depending on which input field you inserted the script, the script may also run everytime you load the Responsive Cookie Consent plugin page.
+\item Injected script will run in the victim's browser. Depending on which input field you inserted the script, the script may also run every time you load the Responsive Cookie Consent plugin page.
 	
 \end{enumerate}
 
