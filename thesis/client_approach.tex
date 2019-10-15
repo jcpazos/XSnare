@@ -132,13 +132,8 @@ sanitization.
 %% specifying elements and attributes that are unique to where the
 %% exploit might occur.
 
-Our basic signature definition specifies a match expression to
-locate an injection's start and endpoints, and any sanitization to be
-done between these two endpoints. We discuss the difficulty of
-supporting pages with multiple dynamic content injection points in
-later sections.
 
-They are defined with two assumptions in mind: first,
+Our signature definitions make two assumptions: first,
 \textbf{an injection must have a start point and end point}, that is,
 an element can only be injected between a specific HTML node and its
 immediate sibling in the DOM tree; second, in a well-formed DOM,
@@ -146,12 +141,15 @@ immediate sibling in the DOM tree; second, in a well-formed DOM,
   in the document without JavaScript execution} (e.g., removing and
 adding elements), allowing us to isolate it from the template.
 
-We believe CVEs are an ideal growing source of signature definitions. Since previous
-client-side work does not focus on application-specific protection,
-these tools often use less accurate heuristics to detecting
-exploits. Furthermore, once new vulnerabilities are found, these
-systems often lack the maintainability obtained by leveraging active
-CVE development.
+Pages commonly contain more than one vulnerable injection point.
+We discuss the difficulty of supporting these pages in \autoref{multiple_injections}.
+
+We believe CVEs are an ideal growing source of signature
+definitions. Since previous client-side work does not focus on
+application-specific protection, these tools often use less accurate
+heuristics to detecting exploits. Furthermore, once new
+vulnerabilities are found, these systems often lack the
+maintainability obtained by leveraging active CVE development.
 %Our system assumes signatures are written by a third-party:
 %% Pentesters will commonly identify
 %% new issues with application code, inform developers and publish them for the
@@ -185,9 +183,9 @@ one, albeit outside the scope of this paper.
  expression for the signature writer to be precise, both for
  determining the correct web application and to identify the affected
  areas in the HTML. For injection point isolation, a language based on
- regular expressions (regex language) suffices to express precise
+ regular expressions suffices to express precise
  sections of the HTML. The following is the signature that defends
- against the motivating example of Section 2.2:
+ against the motivating example of \autoref{motivating_example}:
 
  \begin{lstlisting}[breaklines=true,caption={An \sys signature},label={lst:xsnare_signature}]
 url: 'wp-admin/options-general.php?page=rcc-settings',
@@ -208,30 +206,30 @@ for="rcc_settings[border-size]">']
 A description of the development process for this signature is given
 in Section \ref{case_study}. In summary, a signature will have the
 necessary information to determine whether a loaded page has a
-vulnerability, and the HTML identifiers to properly eliminate
-malicious content.
+vulnerability, and specify appropriate actions for eliminating
+any malicious payloads.
 
-Once the page's identifying information and the dynamic content is
-established by an analyst, they can configure their signatures with a
-function chosen from a pre-defined static set of sanitization
-functions. These functions inoculate potentially malicious injections
+%% Once the page's identifying information and the dynamic content is
+%% established by an analyst,
+Analysts configure their signatures with one
+function chosen from the static set of sanitization
+functions offered by \sys. These functions inoculate potentially malicious injections
 based on the DOM context surrounding the injection. The goal of
-signatures is to provide such sanitization, while maintaining the core
-web page user experience. To this end, default injection point
-sanitization is done with DOMPurify's~\cite{10.1007/978-3-319-66399-9_7} default
-configuration~\footnote{This library is described by its creators as a
-  "DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML
-  and SVG". The Mozilla community cites it as an useful tool for
-  "safely inserting external content into a
-  page"~\cite{safecontent}}. However, there are cases where page
-functionality is lost due to a generic sanitization approach. Thus, a
-different sanitization method can sometimes be more desirable.
+signatures is to provide such sanitization, ideally without ``breaking''
+the user experience of the page. The default function preset is DOMPurify's~\cite{10.1007/978-3-319-66399-9_7} default
+configuration,
+%% \footnote{This library is described by its creators as a
+%%   "DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML
+%%   and SVG". The Mozilla community cites it as an useful tool for
+%%   "safely inserting external content into a
+%%   page"~\cite{safecontent}}
+which takes care of common sanitization needs~\cite{safecontent}. However, DOMPurify's defaults can be unnecessarily restrictive, in which cases the other sanitization methods are more desirable.
 
-An alternative to providing static functions would have been to allow signatures to
-specify arbitrary code for the sanitization routines. While this would
-provide more accurate sanitization, we have decided to
-impose a declarative spec for security reasons and because we believe
-a declarative spec is sufficiently expressive.
+We considered allowing arbitrary sanitization code in
+signatures. While it would open complex sanitization possibilities, we
+have decided against it, principally for security reasons. The minimal
+set of functions we settled on also sufficed to express all of the
+signatures defined for this paper.
 
 %% \begin{enumerate} 
 %% 	\item Security Concerns: We assume signatures come from a trusted source. However, partly due to the way they are currently stored, it is possible for an attacker to add malicious signatures. In general, this would only harming the web site user experience by removing safe content. The ability to run arbitrary code would lead a serious security flaw, as it would execute in a high-privilege environment.
