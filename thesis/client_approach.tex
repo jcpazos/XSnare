@@ -247,17 +247,16 @@ signatures defined for this paper.
  %% to it.
  %% Previous client-side work has focused on browser modifications
  %% and higher-level tools. These tools do not have the context required
- %% for the application-specific behaviour we seek.
- The extension detects
- exploits in the HTML by using signature definitions and maintains a
- local database of signatures. We leave the design of an update mechanism
- to future work, but in the simplest form, database updates are
- bundled with new revisions of the extension.
+ %% for the application-specific behaviour we seek.  The extension
+ detects exploits in the HTML by using signature definitions and
+ maintains a local database of signatures. We leave the design of an
+ update mechanism to future work, but in its current form, the
+ database is bundled with each new installation of the extension.
  %
- The extension translates signature definitions into
- patches that rewrite incoming HTML on a per-URL basis, according to
- the top-down, bottom-up scan described in
- \autoref{motivating_example}.
+
+ The extension translates signature definitions into patches that
+ rewrite incoming HTML on a per-URL basis, according to the top-down,
+ bottom-up scan described in \autoref{motivating_example}.
 
 The patch applied by the extension needs to take place in the raw HTML
 string: even before any code runs, parsing the HTML into a DOM tree
