@@ -61,12 +61,10 @@ security vulnerabilities~\cite{Sucuri}. In another report, we learn
 that 30.95\% of Alexa's top 1 Million sites run a vulnerable version
 of WordPress~\cite{wpwhitesecurity}.
 
-Sadly, users are effectively left at the mercy of developers and
-administrators if they wish to enjoy patched applications. Our
-solution \sys, remedies this problem. It is a browser extension that
-can recognize \xss payloads based on a database of known
-vulnerabilities, and live-patch pages accordingly to prevent exploits.
-
+Users are in effect at the mercy of developers and administrators if
+they need to browse safe, up-to-date, applications. Our solution \sys,
+remedies this problem -- based on a database of known vulnerabilities,
+it aims to patch any vulnerable page displayed in the user's browser.
 
 \begin{figure}[h]
   \includegraphics[scale=0.37]{img/web_app_architecture_one.pdf}
@@ -101,28 +99,30 @@ solutions on the client are typically written as generic filters which
 catch everything, and consequently do not take full advantage
 of the specificity of an application or vulnerability.
 
-For example, a \ac{WAF} can effectively protect the deployment
-placed behind it, but users cannot realistically expect that every
-site they visit be protected by one. At the opposite end, in the client's
-environment, a user might configure a network proxy for all web
-traffic, using a generic set of rules, but this will often lead to an
-elevated rate of false positives (FPs).
+For example, a \ac{WAF} can effectively protect the deployment placed
+behind it, but users cannot realistically expect that every site they
+visit be protected by one. At the opposite end, in the client's
+environment, a user might configure a network proxy for all website
+traffic, with generic rules achieving maximum coverage, but this
+will often lead to an elevated rate of false positives (FPs).
 
-Similarly, browser built-in defences are very coarse, and will only work on a subset of exploits. Chrome's XSS
-Auditor, for example, only attempts to defend against reflected
-\ac{XSS}. Google recently announced its intention to deprecate
-XSS Auditor, for reasons including \emph{``Bypasses abound''}, \emph{``It prevents
-some legit sites from working''}, and \emph{``Once detected, there's nothing
-good to do''}~\cite{deprecatexssauditor}. Stock et
-al.~\cite{precise_dom_xss} propose enhancements to
-XSS Auditor and cover a wider range of exploits than the
-auditor, but are limited to DOM-based \ac{XSS}.
-Our work covers all types of \ac{XSS}.
+Similarly, browser built-in defences are very coarse, and will only
+work on a subset of exploits. Chrome's XSS Auditor, for example, only
+attempts to defend against reflected \ac{XSS}. Google recently
+announced its intention to deprecate XSS Auditor, for reasons
+including \emph{``Bypasses abound''}, \emph{``It prevents some legit
+  sites from working''}, and \emph{``Once detected, there's nothing
+  good to do''}~\cite{deprecatexssauditor}. Stock et
+al.~\cite{precise_dom_xss} propose enhancements to XSS Auditor and
+cover a wider range of exploits than the auditor, but are limited to
+DOM-based \ac{XSS}.  Our work covers all types of \ac{XSS}.
 
-Implementing adequate server-side protections~\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325} can represent a colossal task. A 2018 study found that the average time to patch a \ac{CVE}, all severities combined, is 38 days, increasing to as much as 54 days for low severity vulnerabilities, and the oldest unpatched \ac{CVE} was 340
-days old~\cite{Rapid7}. A client-side solution does not rely on
-application developers, so it reduces the turnaround time
-between a vulnerability and its patch.
+Implementing adequate server-side protections~\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325} throughout a codebase could arguably qualify as a colossal task, considering the high turnaround times for resolving simpler bugs. A 2018 study found that the average time to patch a \ac{CVE}, all severities combined, is 38 days, increasing to as much as 54 days for low severity ones, and the oldest unpatched \ac{CVE} was 340
+days old~\cite{Rapid7}.
+
+%% % JS: I think this is false (or unproven, anyway):
+% A client-side solution does not rely on application developers, so it reduces the turnaround time between a vulnerability and its patch.
+
 %% IB: Cut for space.
 %%
 %% Furthermore, it is
@@ -130,8 +130,8 @@ between a vulnerability and its patch.
 %% the security of a client-side approach, and having these
 %% two work in tandem is beneficial to the user's experience.
 
-Furthermore, these defences often do not protect against pure
-client-side \ac{XSS}, such as reflected \ac{XSS}, or persistent
+Server-side defences also do not protect against client-only forms of
+\xss, e.g., reflected \ac{XSS}, or persistent
 client-side \ac{XSS}, which use a browser's local storage or cookies
 as an attack vector. Steffens et
 al.~\cite{DBLP:conf/ndss/SteffensRJS19} present a study of Persistent
@@ -158,29 +158,25 @@ content.
 \textbf{We posit that the DOM is the right place to mitigate XSS
   attacks as it provides a full picture of the web application.} While
 most of the functionality we provide could be done by a network filter
-on top of the browser, we require some additional context. In
-particular, when an exploit manifests itself through dynamic
-behaviour, like a network request initiated by an user's click, we
-require knowledge of the tab which initiated the request to filter the
-response. Previous work on client-side solutions has focused on
-generic approaches to vulnerability
-detection~\cite{Kirda:2009:CCS:2639535.2639808,Jim:2007:DSI:1242572.1242654,Hallaraker:2005:DMJ:1078029.1078861}. Our
-work is application-specific and can therefore be more precise when
-targeting vulnerabilities.
+in front of the browser, we take advantage of additional context
+provided by the browser.
+%
+Particularly, when an exploit occurs as a result of user interactions,
+like on response to a click, we
+benefit from knowledge of the initiating tab to filter the
+response. Previous client-side solutions have opted for detectors that were generic and site-agnostic~\cite{Kirda:2009:CCS:2639535.2639808,Jim:2007:DSI:1242572.1242654,Hallaraker:2005:DMJ:1078029.1078861}. Our work goes in the opposite direction, and tries rather to prevent precisely-defined exploits in specific applications.
 
-Commonly, bug bounty hunters and penetration testers will scour
-websites to find vulnerabilities and alert developers of issues 
-and potential fixes. Developers will then fix the bugs
-accordingly so that users are not subject to vulnerabilities. Inspired
-by this workflow, we believe this process can be partly automated
-using a firewall-based approach, so that users do not have to wait for
-developers to update their code. A similar approach is presented in~\cite{Kirda:2009:CCS:2639535.2639808}, as a client-side firewall-based 
-network proxy. %%  Rules dictate the links which can be accessed by a website
+If a patch for a server-side vulnerability can be ``translated'' into an equivalent patch for the output it generates (i.e. the page received by the browser), then a great opportunity arises. Our extension, which has access to the user's browsing context, can identify pages on which the patch should be applied based on a database of signatures. \sys can thus protect users as soon as a patch is implemented and added to its database. Furthermore, the client-side patch will continue to be beneficial until \textit{all} server operators running that software have had a chance to upgrade their deployments. We detail its design mechanisms in Section~\ref{xsnare_design}.
+
+
+ A similar philosophy is adopted by the client-side firewall-based network proxy Noxes~\cite{Kirda:2009:CCS:2639535.2639808}. %%  Rules dictate the links which can be accessed by a website
 %% when generating requests, and can be created both automatically and manually
-%% by a user. 
-Unlike our work, this technique does not protect against
-attacks which do not generate a network request, such as deleting local
-files. 
+%% by a user.
+Unlike \sys, however, Noxes only applies generic policies based on information available at the network layer. Namely, it does not protect against
+attacks invisible to the network, e.g., deleting local files.
+% It motivates the need for basic customization between domain names, but not between applications.
+We believe additional contextual knowledge also offers more accurate vulnerability detection.
+
 %% IB: Cut details below -- too detailed.
 %% 
 %% Furthermore, they rely on websites having a small number of external
@@ -201,25 +197,25 @@ files.
 %% precise about which parts of the HTML are vulnerable and how to
 %% sanitize them.
 
-We aim to reproduce the developer's intended server-side patch on the
-client-side, therefore, we need to be able to determine the separation
-between dynamic content and the static template, and pass the dynamic
-elements to a sanitization function. We further detail XSnare's
-mechanisms that achieve this in Section~\ref{xsnare_design}.
+%% We aim to reproduce the developer's intended server-side patch on the
+%% client-side, therefore, we need to be able to determine the separation
+%% between dynamic content and the static template, and pass the dynamic
+%% elements to a sanitization function. We further detail XSnare's
+%% mechanisms that achieve this in Section~\ref{xsnare_design}.
 
-We evaluate our application-specific, signature-based approach, by
-testing it against recent \ac{XSS} CVEs. CVE databases are
+We evaluate our approach, by
+testing its efficacy against recent \ac{XSS} CVEs. CVE databases are
 well-maintained and widely available. They are one of the main tools
 used by developers to patch their code against known
 vulnerabilities. Furthermore, we evaluate the performance overhead of
 our extension on web page load times, and show that it does not
 significantly affect a user's browsing experience.
 
-In summary, our contributions include: 
+Our contributions include: 
 \begin{itemize}
 
-	\item XSnare: a novel client-side framework that protects
-          users against XSS vulnerabilities with a database of robust
+	\item \sys: a novel client-side framework that protects
+          users against XSS vulnerabilities with a database of
           signatures for these vulnerabilities, written in a
           declarative language.
 
@@ -227,10 +223,9 @@ In summary, our contributions include:
           point in a web page and to apply the intended server-side
           patch on the client-side.
 
-	\item Evaluation of the efficacy of our protection mechanism
-          with a number of XSS CVEs (\autoref{viability}); as well as
-          the performance impact of the XSnare browser extension
-          (\autoref{performance}). %% , demonstrating that our tool's
+	\item A collection of signatures to protect users against
+          real XSS CVEs (\autoref{viability}), demonstrating the practicality
+          of \sys; and the evaluation of its impact on browsing (\autoref{performance}). %% , demonstrating that our tool's
           %% feasibility in practice.
 
 \end{itemize}
