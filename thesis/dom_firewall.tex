@@ -73,6 +73,15 @@
 
 \input{annotations}
 
+%% The following commands causes chapter and section references to
+%% uppercase the part name.
+\renewcommand{\chapterautorefname}{Chapter}
+\renewcommand{\sectionautorefname}{Section}
+\renewcommand{\subsectionautorefname}{Section}
+\renewcommand{\subsubsectionautorefname}{Section}
+\renewcommand{\algorithmautorefname}{Algorithm}
+
+
 \begin{document}
 \title{\sys: Application-specific client-side Cross-site Scripting Protection}
 
