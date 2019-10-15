@@ -23,18 +23,19 @@ software developers.
 
 The main drawback with these approaches, from a user perspective, is
 that unless application maintainers adopt these technologies
-systematically, they are of little benefit, and users remain at risk.
-One hindrance to their adoption is that developers may not have the
+systematically, they are of little benefit, and users remain at risk
+from \xss. One hindrance to their adoption is that developers may not have the
 expertise necessary, or sufficient resources to implement necessary
-precautions. As a consequence, many of the approaches cited so far
-have not seen widespread adoption, and \xss still prevails today.
-The viability of sites devoted to scanning for exploits,
-and the existence of a flourishing web security economy is a testament
+precautions.
+%As a consequence, many of the approaches cited so far
+%have not seen widespread adoption, and \xss still prevails today.
+The viability of services dedicated to scanning for exploits,
+and the existence of a flourishing security-consulting economy is a testament
 to this.
 
 
-Luckily, users wishing to take more control over the safety of their
-browsing can install browser extensions to filter some malicious
+Luckily, users wishing to gain reassurance over the safety of the
+sites they visit can install browser extensions to filter malicious
 scripts and content. Unfortunately, these extensions achieve most of
 their security by disabling functionality in the applications, which
 can severely damage the usability of the
@@ -75,28 +76,23 @@ vulnerabilities, and live-patch pages accordingly to prevent exploits.
   \label{fig:web_architecture}
 \end{figure}
 
-Vulnerability defences can be implemented in multiple layers of the web application stack (Figure~\ref{fig:web_architecture}). Each layer opens different defence options:
+Each layer of the web application stack  (Figure~\ref{fig:web_architecture}) opens different defence options against \xss:
 %Further details of these different approaches are described in Section 5:
 \begin{enumerate}
-	\item At the application's server-side, the developer is
-          trying to defend herself against malicious users. The first
-          line of defence from these vulnerabilities lies in the
-          application logic itself. The developer might choose to
-          ensure safety of the code, either by using third-party
-          solutions, or by securing the code themselves, for example,
-          by applying static analysis on the server code to detect
-          unsanitised input.
-	\item In the hosting environment, developers deploy
-          defences including generic firewalls and more specific \acp{WAF}, which defend against attacks
-          such as \ac{DDoS}, \ac{SQL} injections and \ac{XSS}.
-	\item In the client's environment, the user requires protection from
-          malicious websites, and may install their own network firewall,
-          network filters, and web proxies.
-	\item The last line of defence is the browser. \sys operates at this point.
-          The browser has built-in defences, such as
-          Chrome's \ac{XSS} Auditor~\cite{xssauditor}. But the user can also
-          install third-party extensions to block malicious requests and
-          responses. % such as the NoScript~\cite{Noscript} extension.
+
+\item The application logic is the first line of defence.
+  Code safety can be enhanced with third-party vulnerability scanning solutions, and a thorough
+  code-review process. Taint, and static code analysis tools can detect unsanitised inputs.
+
+\item In the hosting environment, network firewalls, specifically \acp{WAF} can defend against attacks such as \ac{DDoS}, \ac{SQL} injections and \ac{XSS}.
+
+\item In the client's environment (residential or commercial), users may install network firewalls, network content filters, and web proxies.
+
+\item The last line of defence is the browser.
+  Browser have built-in defences, such as
+  Chrome's \ac{XSS} Auditor~\cite{xssauditor}. Users can also
+  install third-party extensions to block malicious requests and
+  responses, such as NoScript~\cite{Noscript}, and \sys.
 \end{enumerate}
 
 Many of these approaches are either unfit for widespread deployment or
@@ -113,7 +109,7 @@ Auditor, for example, only attempts to defend against reflected
 XSS Auditor; the reasons include \emph{``Bypasses abound''}, \emph{``It prevents
 some legit sites from working''}, and \emph{``Once detected, there's nothing
 good to do''}~\cite{deprecatexssauditor}. Stock et
-al.~\cite{precise_dom_xss} propose enhancements to 
+al.~\cite{precise_dom_xss} propose enhancements to
 XSS Auditor and cover a wider range of exploits than the
 auditor, but are limited to DOM-based \ac{XSS}. Our work is not particular
 to a type of \ac{XSS}.
