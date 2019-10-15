@@ -23,7 +23,7 @@ Furthermore, since we rely on handwritten signatures to defend against attacks, 
 
 %% As of September 2019, CVE Details had 14894 \ac{XSS} vulnerabilities in its database \cite{vulnbytype}. This means that our current signatures only cover 0.5\% of all existing \ac{XSS} vulnerabilities. More efficient approaches at searching and filtering, as well as for the data structures used in the signature database could be applied to maintain a low performance overhead. The task of signature filtering, for example, is embarrassingly parallel in the number of signatures.
 
-\textbf{Design considerations}. In our current implementation, each browser user has to install our extension. However, the same functionality could be offloaded to a single processing unit similar to a proxy, which handles the filtering for all machines in a network. This deployment model might be more feasible for certain environments.
+\textbf{Design considerations}. Currently, each browser user has to install our extension. However, the same functionality could be offloaded to a single processing unit similar to a proxy, which handles the filtering for all machines in a network. This deployment model might be more feasible for certain environments.
 
 %% While any user could alter their local signature database, most will not have the technical expertise to do so. However, a trusted community of users could flag websites as being potentially malicious as part of a separate database, saving time for others.
 
