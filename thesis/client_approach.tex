@@ -121,46 +121,57 @@ sanitization.
 
 %The signatures are at the core of XSnare.
 
-Signatures must be precise enough for our system to get rid of the
-intended injection, without removing elements of the website crucial
-to the user experience. Since we are only relying on DOM knowledge,
-these signatures must be related to HTML features, for example,
-specifying elements and attributes that are unique to where the
-exploit might occur.
+%% this is a repeat with the next section
+%% Signatures rely heavily on document structure. They must be
+%% conservative enough to capture all of the injected content, yet be
+%% precise enough to affect only specific elements of specific pages.
+%% %
+%% %
+%Since we are only relying on DOM knowledge,
+%% These signatures rely heavily HTML features, for example,
+%% specifying elements and attributes that are unique to where the
+%% exploit might occur.
 
-The basis for our signatures relies on two observations: first,
+Our basic signature definition thus specifies a match expression to
+locate an injection's start and endpoints, and any sanitization to be
+done between these two endpoints. We discuss the difficulty of
+supporting pages with multiple dynamic content injection points in
+later sections.
+
+Our signatures are defined with these two assumptions in mind: first,
 \textbf{an injection must have a start point and end point}, that is,
 an element can only be injected between a specific HTML node and its
 immediate sibling in the DOM tree; second, in a well-formed DOM,
 \textbf{the dynamic content will not be able to rearrange its location
   in the document without JavaScript execution} (e.g., removing and
 adding elements), allowing us to isolate it from the template
-code. Thus, our basic approach at signature definition is to specify
-an injection's start and its end, and any sanitization to be done
-between these two endpoints. Typically, one page will have several
-dynamic content injection points. We discuss the difficulties that
-arise when this occurs and the techniques we used to deal with these
-in later sections.
+code.
 
-We believe CVEs to be an ideal source for signatures. Since previous
+We believe CVEs are an ideal growing source of signature definitions. Since previous
 client-side work does not focus on application-specific protection,
 these tools often use less accurate heuristics to detecting
 exploits. Furthermore, once new vulnerabilities are found, these
 systems often lack the maintainability obtained by leveraging active
 CVE development.
-
 %Our system assumes signatures are written by a third-party:
-Bug bounty hunters and penetration testers will commonly identify
-issues in application code, inform developers and publish them for the
-benefit of the community in the form of CVES.
+%% Pentesters will commonly identify
+%% new issues with application code, inform developers and publish them for the
+%% benefit of the community in the form of CVEs.
 
-We require an extra step in the workflow, which is to audit CVEs and
-convert them into corresponding signatures. Security enthusiasts and
-web developers would have the competency to fulfil this role and
-propose new signatures (i.e. they have working knowledge of the page's
-HTML ). We imagine that an organisation would vet these proposals and
-gather them into an audited database, akin to how antivirus or
-antispam software is managed.
+We are conscious that \sys signatures will not write themselves, and that
+this task represents a new step in the workflow. Luckily, converting
+the CVE information into a signature does not require active
+participation from the application developers -- Security enthusiasts and
+web developers have the skills to fulfil this role satisfactorily.
+
+Long term, we imagine that volunteers (or entrepreneurs) would
+cultivate and maintain the signature database. New signatures could be
+contributed by a community of amateur or professional security analysts, in a manner not
+so different from how antispam or antivirus software is managed.
+% We don't perceive this development model to be radically different from existing ones.
+
+The challenge of automatically deriving signatures from detailed CVEs is an interesting
+one, albeit outside the scope of this paper.
 
 %Thus, the signature database is maintained by a trusted entity which
 %audits CVEs, and a malicious analyst cannot take advantage of this
