@@ -11,7 +11,7 @@ Going back to our example in Section \ref{motivating_example}, we describe the p
 WordPress plugin Responsive Cookie Consent for versions
 1.7/1.6/1.5. This entry (as most do) comes with a \ac{PoC} for the
 exploit, which describes the Cookie Bar Border Bottom Size parameter
-as vulnerable. We run a local WordPress installation with this plugin.
+as vulnerable. We run a local WordPress installation with this plugin. In general, the system does not rely on the existence of a \ac{PoC}, we personally relied on this as we did not discover the CVEs and did not have the full context of the exploit.
 
 \textbf{Establishing the separation between dynamic and static content.} We insert the string \js{"$>$script$>$alert('XSS')$<$/script$>$} in the Cookie Bar Border Bottom Size (rcc\_settings[border-size] in the HTML) input field. This results in an alert box popping up in the page.
 

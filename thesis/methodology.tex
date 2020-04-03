@@ -1,6 +1,6 @@
 \section{Approach Viability} \label{viability}
 
-To verify the applicability of our detector and signature language, we tested the system by looking at several recent CVEs related to \ac{XSS}. Our objective is two-fold: to verify that our signature language provides the necessary functionality to express an exploit and its patch, and to test our detector against existing exploits.
+To verify the applicability of our detector and signature language, we tested the system by looking at several recent CVEs related to \ac{XSS}. We have three objectives: to verify that our signature language provides the necessary functionality to express an exploit and its patch, to test our detector against existing exploits, and to show that our signature language does not incur a high time overhead when writing a signature.
 
 \subsection{Test methodology} \label{methodology}
 
@@ -16,7 +16,9 @@ why we targeted WordPress plugins:
 
 We looked at the 100 most recent WordPress \ac{XSS} CVEs, as of October 2018. We have chosen to use a CVE database, CVE Details \cite{cvedetails}, as opposed to other databases that include vulnerabilities or exploits, mainly because of reliability. We have been able to find hundreds of verified attacks on WordPress and its plugins using a CVE database, which also usually contain information on how to reproduce them. This provides the perfect platform to analyze \ac{XSS} attacks and decide whether they can be countered by our approach. 
 
-For each CVE, we set up a Docker container with a clean installation of WordPress 5.2 and installed the vulnerable plugin's version. A few of the CVEs depended on the WordPress version as well, so we used the required WordPress version for those. We then tried to reproduce the exploit as described by the CVE. Finally, we analyzed the vulnerable page and wrote a signature to patch the exploit.
+For each CVE, we set up a Docker container with a clean installation of WordPress 5.2 and installed the vulnerable plugin's version. A few of the CVEs depended on the WordPress version as well, so we used the required WordPress version for those. Of the CVEs we looked at, only one of them occurred in WordPress core. We believe it would be harder to precisely sanitize injection points in WordPress core, as many of the plugins have very particular settings pages where the exploits occur, and the HTML is more identifiable. WordPress core, on the other hand, can be heavily altered by the use of themes and the user's own changes. However, as evidenced by our investigation, the vast majority of exploits occur in plugins.
+ 
+ We then reproduced the exploit as described by the CVE. Finally, we analyzed the vulnerable page and wrote a signature to patch the exploit.
 
 \subsection{Results}
 
@@ -63,5 +65,21 @@ we could reproduce listed in the Exploit Database~\cite{exploitdb}, since
 these have recorded \acp{PoC}. We carried out the same
 procedure as with the WordPress CVEs, and were able to patch all of
 the 5 exploits. This brought our CVE coverage rate up to 94.2\%.
+
+\subsection{Signature writing times} \label{signature_times}
+
+Figure ~\ref{fig:signature_times} shows a histogram of the time taken to write each of our signatures: this includes the time taken to check the HTML injection points, write the signature and debug it. We do not include the time taken to discover and carry out an exploit, as this is part of the CVE writing process. The median time is 3.89 minutes, and the standard deviation is 4.18 minutes. 72\% of signatures took less than 5 minutes to write. We believe this to be a reasonable amount of time for the security granted by our extension.
+
+The signature which took the longest to write (25 minutes) corresponded to an exploit which had several injection points in the HTML, 12 exactly. Additionally, testing this signature proved more difficult than others, as some of the injections were a result of a script inserting elements in the DOM after the page had loaded. This caused the initial HTML to look innocuous, but with exploits still occurring after sanitization. As this script was part of the initial request, we eventually got to the root of the problem. We believe a more experienced exploit analyst might be able to detect this kind of behaviour more easily. Furthermore, having so many injection points in the HTML is cause for great complexity, and the writer can decide to block the page entirely, which would bring down the time taken.
+
+Similarly, the second longest time taken (18 minutes) corresponded to an exploit which had 7 injection points, but each of these belonged to a part of the HTML with very generic element identifiers. Our language provides a means to overcome this, by being able to specify the element's "position": for example, if there are three <h3 class="title"> elements, in the HTML, and only one of them is an injection starting point, the writer can specify that the third one needs to be sanitized. The same happens for the ending points. As there were 7 of these such points, debugging took longer than for most of the other signatures. Again, this is a very complex case, and can be more prone to user error than other signatures, the writer might instead decide to block the page entirely.
+
+Note that we have some signatures which cover several CVEs, as sometimes one page can have multiple CVEs associated with it. In particular, we had 6 of these, which had a median write time of 6.54 minutes. This means that the time per CVE is lower than the overall median of 3.89. Another source of increase timing is the more complicated case of listener type signatures, like ones for exploits caused by an XHR. We had 4 of these signatures, with a median write time of 9.86. As only a small number of these were present, we expect the time taken to write an average signature to be lower than the calculated total median.
+
+\begin{figure}[h]
+	\includegraphics[scale=0.5]{results/signature_times_small.pdf}
+	\caption{Histogram of time taken to write signatures.}
+	\label{fig:signature_times}
+\end{figure}
 
 

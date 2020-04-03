@@ -248,7 +248,7 @@ signatures defined for this paper.
  %% Previous client-side work has focused on browser modifications
  %% and higher-level tools. These tools do not have the context required
  %% for the application-specific behaviour we seek.  The extension
- detects exploits in the HTML by using signature definitions and
+ The extension detects exploits in the HTML by using signature definitions and
  maintains a local database of signatures. We leave the design of an
  update mechanism to future work, but in its current form, the
  database is bundled with each new installation of the extension.
@@ -363,6 +363,8 @@ order of the solid elements characterizes the possible malformations
 in the end points. As with the previous scenario, we have to sanitize
 the outermost end points, potentially deleting non-malicious
 content. The signature developer specifies the sanitization behavior.
+
+Note that these complex cases do not mean that our approach is not always applicable. The process of writing the signature might become more complicated, but the extension provides a choice for blocking the page entirely if the signature writer believes a given case is too complex for our signature language.
 
 \subsection{Dynamic injections} \label{dynamic_injections}
 
