@@ -11,6 +11,7 @@
 \pagestyle{plain} % removes running headers
 \usepackage{booktabs} % For formal tables
 \usepackage{listings}
+\usepackage{url}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage[ruled,linesnumbered]{algorithm2e}
@@ -90,6 +91,7 @@
 \renewcommand{\algorithmautorefname}{Algorithm}
 
 
+
 \begin{document}
 	
 %don't want date printed
@@ -97,7 +99,10 @@
 
 \title{\Large \bf \sys: Application-specific client-side cross-site scripting protection}
 
-
+%for single author (just remove % characters)
+\author{
+	{\rm Anonymous author(s)}
+}
 \maketitle
 
 \input{abstract}

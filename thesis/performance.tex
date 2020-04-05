@@ -4,7 +4,9 @@ The extension's performance goals are to provide our security guarantees without
 While our extension's functionality only applies at the network level, there is potential slowdown at the DOM processing level due to the optimization techniques the browser applies throughout several levels of the web page load pipeline. \autoref{fig:navigationtiming} shows the different timestamps provided by the Navigation Timing API~\cite{navigationtiming}, as well as a high-level description of the browser processing model. Since our filter listens on the onBeforeRequest event, none of the previous steps before Request are affected. In this section, we refer to the difference in time between responseEnd and requestStart as the "network filter time".
 
 \begin{figure}[h]
+	\begin{center}
  \includegraphics[scale=0.65]{img/timestamp-diagram-edited.pdf}
+ \end{center}
  \caption{The Navigation Timing API's timestamps\protect\footnotemark}
  \label{fig:navigationtiming}
  \end{figure}
@@ -38,9 +40,12 @@ suites:
 For each set of tests, we reduced the recorded values to two comparisons: network filter (responseEnd - requestStart), and page ready (domComplete - responseStart). The first analyzes the time spent by the network filter, while the second determines the time spent until the whole document has loaded. We calculate the medians for each website for each of these measures as well as the decodedByteSize.
 
 \begin{figure}[h]
+		\begin{center}
 	\includegraphics[scale=0.5]{results/extension_slowdown_overall_small.pdf}
 	\caption{Cumulative distribution of relative percentage slowdown with extension installed for top sites.}
 	\label{fig:overall_slowdown}
+\end{center}
+	
 \end{figure}
 
 We compare the load times with and without the extension running by calculating the relative slowdown with the extension installed according to the following formula:
@@ -51,7 +56,7 @@ We compare the load times with and without the extension running by calculating 
 \\
 where $\tilde{x}$ is the median with/without the extension running.
 
-Figure ~\ref{fig:overall_slowdown} shows the computed results. The graph shows a slowdown of less than 10\% for 72.6\% of sites, and less than 50\% for 82\% of sites when the extension is running. Note that these values are recorded as percentages, and while some are as high as 50\%, the absolute values are in 77\% of cases less than a second. This overhead should not alter the user's experience significantly. The slowdown increases by at most 5\% when we take caching into account. This is likely because the network filter causes the browser to use less caching, especially for the DOM component, as it might have to process it from scratch every time. While it may seem counter-intuitive that some pages have shorter loading times without the extension, there are several variables at play that can affect these measurements (local network, server-side load, internal scheduling, etc). We manually checked the websites for which values were higher than |40\%| and verified that our extension did not change the page's contents, a possible cause for faster load times. We also checked the timings for the page as reported by the browser and noted a high variance even within small time windows. The time spent by our verification function was less than 10ms for 87.6\% of sites (\autoref{fig:verification_time_string_length}). This corroborates our findings that the slowdown is mostly negligible.
+\autoref{fig:overall_slowdown} shows the computed results. The graph shows a slowdown of less than 10\% for 72.6\% of sites, and less than 50\% for 82\% of sites when the extension is running. Note that these values are recorded as percentages, and while some are as high as 50\%, the absolute values are in 77\% of cases less than a second. This overhead should not alter the user's experience significantly. The slowdown increases by at most 5\% when we take caching into account. This is likely because the network filter causes the browser to use less caching, especially for the DOM component, as it might have to process it from scratch every time. While it may seem counter-intuitive that some pages have shorter loading times without the extension, there are several variables at play that can affect these measurements (local network, server-side load, internal scheduling, etc). We manually checked the websites for which values were higher than |40\%| and verified that our extension did not change the page's contents, a possible cause for faster load times. We also checked the timings for the page as reported by the browser and noted a high variance even within small time windows. The time spent by our verification function was less than 10ms for 87.6\% of sites (\autoref{fig:verification_time_string_length}). This corroborates our findings that the slowdown is mostly negligible.
 
 \iffalse
 \begin{figure}[h]
@@ -70,7 +75,7 @@ Figure ~\ref{fig:histogram_slowdown} shows a closer look at the distribution for
 	\label{fig:verification_time_string_length}
 \end{figure}
 
- Figure ~\ref{fig:verification_time_string_length} shows the time spent by the call to our string verification function in the network filter as a function of the length of the string to be verified. The blue dots are the pages for which our framework probes tested negative, and the green triangles are the pages for which the probes tested positive: 55 in total. We applied least squares regression to calculate the shown trend lines. The Spearman's rank \footnote{The Spearman's correlation coefficient measures the strength and direction of association between two ranked variables: https://statistics.laerd.com/statistical-guides/spearmans-rank-order-correlation-statistical-guide.php} correlation values for no probe, probe, and overall are 0.91, 0.91, and 0.72 respectively, demonstrating positive correlation. Since both our probes and signatures use regex matching, we expect both trend lines to be linear, as seen in the graph. Recall that once a probe for a certain software passes, we perform a linear scan over the signatures for that specific software and check whether it applies to the given HTML string or not. Thus, we expect the slope of the line to be higher when a probe passes. Around 37.4\% of all web sites use frameworks covered by our probes~\cite{w3stats}, thus, we expect the impact of our network filter to be closer to the non-probe values, as corroborated by our overall trend line.
+ \autoref{fig:verification_time_string_length} shows the time spent by the call to our string verification function in the network filter as a function of the length of the string to be verified. The blue dots are the pages for which our framework probes tested negative, and the green triangles are the pages for which the probes tested positive: 55 in total. We applied least squares regression to calculate the shown trend lines. The Spearman's rank \footnote{The Spearman's correlation coefficient measures the strength and direction of association between two ranked variables: https://statistics.laerd.com/statistical-guides/spearmans-rank-order-correlation-statistical-guide.php} correlation values for no probe, probe, and overall are 0.91, 0.91, and 0.72 respectively, demonstrating positive correlation. Since both our probes and signatures use regex matching, we expect both trend lines to be linear, as seen in the graph. Recall that once a probe for a certain software passes, we perform a linear scan over the signatures for that specific software and check whether it applies to the given HTML string or not. Thus, we expect the slope of the line to be higher when a probe passes. Around 37.4\% of all web sites use frameworks covered by our probes~\cite{w3stats}, thus, we expect the impact of our network filter to be closer to the non-probe values, as corroborated by our overall trend line.
  
  \subsection{False positives on the Web}
 
@@ -102,7 +107,10 @@ Finally, we report the string verification time as a function of its length, for
 
 
 \begin{figure}[h]
+	\begin{center}
 	\includegraphics[scale=0.55]{results/string_length_vs_verification_time_wordpress_small.pdf}
+	
 	\caption{Scatter plot of network filter time as a function of character length for WordPress sites.}
 	\label{fig:verification_time_string_length_wordpress}
+\end{center}
 \end{figure}
