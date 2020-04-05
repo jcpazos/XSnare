@@ -28,12 +28,10 @@ run on one machine with an Intel Xeon CPU E5-2407 2.40GHz processor,
 32 GB DRAM, and our university's 1GiB connection. We ran four test
 suites:
 
-\begin{enumerate}
-	\item No extension cold cache: Firefox is loaded without the extension installed and the web driver is re-instantiated for every page load.
-	\item Extension cold cache: As in 1), but Firefox is loaded with the extension installed.
-	\item No extension warm cache: Firefox is loaded without the extension installed and the same web driver is used for the page's 25 loads.
-	\item Extension warm cache: As in 3), but Firefox is launched with the extension installed.
-\end{enumerate}
+	\textbf{No extension cold cache}: Firefox is loaded without the extension installed and the web driver is re-instantiated for every page load.
+	\textbf{Extension cold cache}: As before, but Firefox is loaded with the extension installed.
+	\textbf{No extension warm cache}: Firefox is loaded without the extension installed and the same web driver is used for the page's 25 loads.
+	\textbf{Extension warm cache}: As before, but Firefox is launched with the extension installed.
 
 \footnotetext{This image was taken from the w3 spec: \url{https://www.w3.org/TR/navigation-timing-2/}}
 
