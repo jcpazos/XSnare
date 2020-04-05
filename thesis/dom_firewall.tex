@@ -1,15 +1,20 @@
-\documentclass[sigconf, anonymous, review]{acmart}
-\settopmatter{printacmref=false} % Removes citation information below abstract
-\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{usenix2019_v3}
+
+% to be able to draw some self-contained figs
+\usepackage{tikz}
+\usepackage{amsmath}
+
+% inlined bib file
+\usepackage{filecontents}
+
 \pagestyle{plain} % removes running headers
-\usepackage{xcolor}
 \usepackage{booktabs} % For formal tables
 \usepackage{listings}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \lstset{escapeinside={<@}{@>}}
-\usepackage{url}
 
 %% The acronym package provides support for defining acronyms, providing
 %% their expansion when first used, and building glossaries.  See the
@@ -86,29 +91,17 @@
 
 
 \begin{document}
-\title{\sys: Application-specific client-side cross-site scripting protection}
+	
+%don't want date printed
+\date{}
 
-\author{Jos\'e Carlos Pazos}
-\affiliation{%
-  \institution{University of British Columbia}
-}
-\email{jpazos@cs.ubc.ca}
+\title{\Large \bf \sys: Application-specific client-side cross-site scripting protection}
 
-\author{Jean-S\'ebastien L\'egar\'e}
-\affiliation{%
-	\institution{University of British Columbia}
-}
-\email{jslegare@cs.ubc.ca}
 
-\author{William Aiello}
-\affiliation{%
-	\institution{University of British Columbia}
-}
-\email{aiello@cs.ubc.ca}
-
+\maketitle
 
 \input{abstract}
-\maketitle
+
 
 \acresetall	% reset all acronyms used so far
 
@@ -130,7 +123,7 @@
 \input{conclusion}
 %\input{appendix}
 
-\bibliographystyle{ACM-Reference-Format}
+\bibliographystyle{plain}
 \bibliography{references}
 
 \end{document}

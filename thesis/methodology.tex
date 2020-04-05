@@ -8,7 +8,7 @@ Our evaluation focuses on recent CVEs related to WordPress
 plugins. While this may seem restrictive, there are several reasons
 why we targeted WordPress plugins:
 \begin{itemize}
-	\item WordPress powers 34.7\% of all websites according to a recent survey  \cite{w3stats}. The same study states that 30.3\% of the Alexa top 1000 sites use WordPress. Thus, we can be confident that our study results will hold true for the average user.
+	\item WordPress powers 34.7\% of all websites according to a recent survey  \cite{w3stats} \cite{DBLP:journals/corr/abs-1801-01203}. The same study states that 30.3\% of the Alexa top 1000 sites use WordPress. Thus, we can be confident that our study results will hold true for the average user.
 	\item WordPress plugins are very popular among developers (there are currently more than 55,000 plugins \cite{wpplugins}). Due to its user popularity, WordPress is also heavily analyzed by security experts. A search for WordPress CVEs on the Mitre CVE database \cite{cvemitre} gives 2310 results. Plugins, specifically, are an important part of this issue, 52\% of the vulnerabilities reported by WPScan are caused by WordPress plugins \cite{wpscan}.
 	\item WordPress plugin code is accessible, so we can easily analyze both the client-side HTML, as well as the server-side code that generated it, which is helpful when writing signatures.
 	\item Using one framework, we can install many different plugins for the version we want, reproduce attacks, and investigate the conditions under which they happen, without having to install additional software.
