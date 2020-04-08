@@ -1,6 +1,6 @@
 \section{Limitations and Future Work}
 
-\textbf{Generalizability and scope of study.} As discussed in \autoref{methodology}, while many websites share similar structures to the ones we covered, our study only considered 4 other sites apart from WordPress ones, and only CMS sites. Not all websites might be identified as easily. Furthermore, our CVE study only covered 105 CVEs, 24 of which had to be discarded in our analysis. We intend to cover more in the future to have a better representation of WordPress websites, plugins, and the web as a whole.
+\textbf{Generalizability and scope of study.} As discussed in \autoref{methodology}, while many websites share similar structures to the ones we covered, our study only considered 4 other sites apart from WordPress ones, and only CMS sites. Not all websites might be identified as easily. Furthermore, our CVE study only covered 76 CVEs, 24 of which had to be discarded in our analysis. We intend to cover more in the future to have a better representation of WordPress websites, plugins, and the web as a whole.
 
 \textbf{False positives and false negatives.} Due to the nature of our approach, it is extremely hard to completely get rid of FPs: If the sanitization applied targets JavaScript code, for example, a FP will likely be triggered. Furthermore, since we rely on handwritten signatures to defend against attacks, vulnerable sites for which no signature has been written will be subject to FNs. In the future, we intend to study the rate of FPs and FNs in our approach and compare it to previous work.
 
