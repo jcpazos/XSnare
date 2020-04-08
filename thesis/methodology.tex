@@ -126,10 +126,11 @@ to future work.
 %% negatives in 
 %, which is related to this issue.
 
-\subsection{Generalizability} \label{generalizability}
+\subsection{Generalizability beyond WordPress}
+\label{generalizability}
 
 To test the generalizability of our approach to other frameworks, we
-analysed 5 additional CVEs, 2 related to Joomla!, 2 for LimeSurvey,
+analyzed 5 additional CVEs, 2 related to Joomla!, 2 for LimeSurvey,
 and 1 for Bolt CMS.  We chose Joomla! because it is another
 popular \ac{CMS}. Unfortunately, we only found 2 CVEs
 that we were able to reproduce, as the software for its extensions is
@@ -141,13 +142,54 @@ the 5 exploits. This brought our CVE coverage rate up to 94.2\%.
 
 \subsection{Signature writing times} \label{signature_times}
 
- \autoref{fig:signature_times} shows a histogram of the time taken to write each of our signatures: this includes the time taken to check the HTML injection points, write the signature and debug it. We do not include the time taken to discover and carry out an exploit, as this is part of the CVE writing process. The median time is 3.89 minutes, and the standard deviation is 4.18 minutes. 72\% of signatures took less than 5 minutes to write. We believe this to be a reasonable amount of time for the security granted by our extension.
+\autoref{fig:signature_times} plots a histogram of the times it took
+one of the authors to compose each of the signatures. Each time
+measurement includes the time it took to check the HTML injection
+points, write the signature and to debug it. We do not include the
+time taken to discover and carry out an exploit, as this is part of
+the CVE writing process. The median time is 3.89 minutes, and the
+standard deviation is 4.18 minutes. 72\% of signatures were written in
+under 5 minutes. We believe this to be a reasonable amount of time
+considering the security granted by our extension.
 
-The signature which took the longest to write (25 minutes) corresponded to an exploit which had several injection points in the HTML, 12 exactly. Additionally, testing this signature proved more difficult than others, as some of the injections were a result of a script inserting elements in the DOM after the page had loaded. This caused the initial HTML to look innocuous, but with exploits still occurring after sanitization. As this script was part of the initial request, we eventually got to the root of the problem. We believe a more experienced exploit analyst might be able to detect this kind of behaviour more easily. Furthermore, having so many injection points in the HTML is cause for great complexity, and the writer can decide to block the page entirely, which would bring down the time taken.
+The signature which took the longest time to write (25 minutes)
+corresponds to an exploit with 12 HTML injection points. Additionally,
+testing this signature proved difficult, as some of
+the injections were a result of a script inserting elements in the DOM
+after the page had loaded. This caused the initial HTML to look
+innocuous, but with exploits still occurring after sanitization. As
+this script was part of the initial request, we eventually got to the
+root of the problem. We believe a more experienced exploit analyst
+might be able to detect this kind of behaviour more
+easily. %% Furthermore, having so many injection points in the HTML is
+%% cause for great complexity, and the writer can decide to block the
+%% page entirely, which would bring down the time taken.
 
-Similarly, the second longest time taken (18 minutes) corresponded to an exploit which had 7 injection points, but each of these belonged to a part of the HTML with generic element identifiers. Our language provides a means to overcome this, by being able to specify the element's "position": for example, if there are three <h3 class="title"> elements, in the HTML, and only one of them is an injection starting point, the writer can specify that the third one needs to be sanitized. The same happens for the ending points. As there were 7 of these such points, debugging took longer than for most of the other signatures. Again, this is a complex case, and can be more prone to user error than other signatures, the writer might instead decide to block the page entirely.
+The signature which took the second longest time to write (18 minutes)
+corresponds to an exploit with 7 injection points; each of
+these belongs to a part of the HTML with generic element
+identifiers. Our language provides a means to overcome this, by allowing
+the developer to specify the element's "position": for example, if there are
+three <h3 class="title"> elements, in the HTML, and only one of them
+is an injection starting point, the writer can specify that the third
+one needs to be sanitized. The same can be done for the ending points. As
+there were 7 of such points, debugging took longer than for
+other signatures.
+%% Again, this is a complex case, and can be
+%% more prone to user error than other signatures, the writer might
+%% instead decide to block the page entirely.
 
-Note that we have some signatures which cover several CVEs, as sometimes one page can have multiple CVEs associated with it. In particular, we had 6 of these, which had a median write time of 6.54 minutes. This means that the time per CVE is lower than the overall median of 3.89. Another source of increase timing is the more complicated case of listener type signatures, like ones for exploits caused by an XHR. We had 4 of these signatures, with a median write time of 9.86. As only a small number of these were present, we expect the time taken to write an average signature to be lower than the calculated total median.
+%% Our dataset contained signatures which cover several CVEs, as
+%% sometimes a single page is associated with multiple CVEs. We had 6
+%% such pages. which had a median write time of 6.54 minutes. This means
+%% that the time per CVE is lower than the overall median of
+%% 3.89.
+Another source of longer timings are complicated 
+listener type signatures, like the ones for exploits caused by an
+XHR. We had 4 such signatures and composed these with a median time of 9.86 minutes.
+%% these had a median write time of 9.86.
+As only a small number of these were present, we expect the time
+taken to compose a typical signature to be lower than the overall median in this experiment.
 
 \begin{figure}[h]
 	\begin{center}
