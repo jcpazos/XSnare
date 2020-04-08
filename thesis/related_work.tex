@@ -35,20 +35,11 @@ should only be used as a last resort.
 
 \noindent \textbf{Browser built-in defences.}  Browsers are equipped
 with several built-in defences. We previously described XSS
-Auditor in \autoref{introduction}, the other two important ones are Content
-Security Policy and the Same-origin policy.
-
-\ac{CSP}~\cite{CSP} has been widely adopted and
+Auditor in \autoref{introduction}, another important one is the 
+ \ac{CSP}~\cite{CSP}. It has been widely adopted and
 in many cases provides developers with a reliable way to protect
 against \ac{XSS} and \ac{CSRF} attacks. However, \ac{CSP} requires the developer to identify which scripts
 might be malicious.
-
-Same-origin policy~\cite{SOP} is another useful security mechanism for browser
-protection. This policy restricts how a
-document or script loaded from one origin can interact with a resource
-from another origin, which can prevent some XSS and CSRF. However, if the attack is injected in the same
-website the attacker intends to compromise, this will not defend
-against it. As with other approaches these browser policies are complementary to \sys.
 
 \noindent \textbf{Client and server hybrids.}
 XSS-Dec~\cite{Sundareswaran:2012:XHS:2352970.2352994} uses a proxy which keeps track of an encrypted version of the server's source files, and applies this information to derive exploits in a page visited by the user. This approach is similar to ours, since we assume previous

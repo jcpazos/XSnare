@@ -45,7 +45,7 @@ Consider a website running PHP on the backend which stores user input
 from one user, and displays it later to another user, inside an \textbf{input} element.
 
 The PHP code defines the static HTML template (in black), as well as the dynamic input (in red):
-
+\vspace{-0.2cm}
 \begin{lstlisting}
 <input id="rcc_settings[border-size]" 
 name="rcc-settings[border-size]" 
@@ -195,7 +195,7 @@ software: 'WordPress',
 softwareDetails: 'responsive-cookie-consent',
 version: '1.5',
 type: 'string',
-typeDet: 'single',
+typeDet: 'single-unique',
 sanitizer: 'regex',
 config: '/^[0-9](\.[0-9]+)?$/',
 endPoints: 
@@ -265,7 +265,7 @@ might cause elements to be re-arranged into an unexpected order,
 making our extension sanitize the wrong spot.  Consider the following
 example, where an element inside a <tr> tag is rearranged after
 parsing the string:
-
+\vspace{-0.2cm}
 \begin{lstlisting}
 <table class="wp-list-table">
   <thead>
@@ -273,15 +273,14 @@ parsing the string:
 	     <th></th>
 	     <@\textcolor{red}{<img src="1" onerror="alert(1)">}@>
 	     <th>
-   	     <form method="GET" action="">
-...
+   	     <form method="GET" action=""> ...
 \end{lstlisting}
 
 In this HTML, the signature developer might identify the exploit as
 occurring inside the given table. However, if we wait until the string
 has been parsed into a DOM tree to sanitize, the elements are
 rearranged due to <tr> not allowing an <img> as its child:
-
+\vspace{-0.2cm}
 \begin{lstlisting}
 <@\textcolor{red}{<img src="1" onerror="alert(1)">}@>
 <table class="wp-list-table">
@@ -289,8 +288,7 @@ rearranged due to <tr> not allowing an <img> as its child:
    <tr>
 	   <th></th>
 	   <th>
-       <form method="GET" action="">
-...
+       <form method="GET" action=""> ...
 \end{lstlisting}
 
 Note that the injected <img> tag is now outside of the table, simply
