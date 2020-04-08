@@ -8,8 +8,7 @@ unprotected.
 
 Informally, the cause of \xss is a lack of input sanitization:
 user-chosen data ``escapes'' into a page's template and makes its way
-into the JavaScript engine, or modifies the DOM
-unintendedly.
+into the JavaScript engine, or modifies the DOM.
 %
 Consequently, many of the \xss defenses published so far
 propose to fix the problem at the source, by properly separating the
@@ -19,37 +18,36 @@ browsers~\cite{Jim:2007:DSI:1242572.1242654,Nadji:2009,Wurzinger:2009:SMX:165636
 There are also similar solutions that can be implemented in the
 front-end code of an application~\cite{10.1007/978-3-319-66399-9_7}.
 In all cases, these technologies must be adopted by the application
-software developers, otherwise users are completely unprotected.
+software developers, otherwise users are left unprotected.
 
-One hindrance to their adoption is that developers may not have the
-expertise necessary, or sufficient resources to implement necessary
-precautions.
+One barrier to adoption of existing \xss defenses is that developers may not have the
+necessary expertise, or sufficient resources, to use the approach.
 %As a consequence, many of the approaches cited so far
 %have not seen widespread adoption, and \xss still prevails today.
-The viability of services centered around vulnerability detection,
-and the existence of a flourishing security-consulting economy
-is a testament to this.
-
-
+%% The viability of services centered around vulnerability detection,
+%% and the existence of a flourishing security-consulting economy
+%% is a testament to this.
+%
+%
 Luckily, users wishing to gain reassurance over the safety of the
 sites they visit can install browser extensions to filter malicious
 scripts and content. Unfortunately, these extensions achieve most of
-their security by disabling functionality in the applications, which
-can severely damage the usability of the
-sites~\cite{Noscript,Snyder:2017:MWD:3133956.3133966}. Most sites rely
-heavily on JavaScript\footnote{As early as 2012, it is used by almost
+their security by disabling functionality in the applications, such as JavaScript, which
+impairs the usability of the
+sites~\cite{Noscript,Snyder:2017:MWD:3133956.3133966}. For example, most sites rely
+on JavaScript being enabled\footnote{As early as 2012, it is used by almost
   100\% of the Alexa top 500
-  sites~\cite{Stock:2017:WTI:3241189.3241265}}. Some sites can offer
-alternate versions without scripts, albeit with a level of interactivity below
-what users have come to expect.
+  sites~\cite{Stock:2017:WTI:3241189.3241265}}. %% Some sites may offer
+%% alternate, non-script versions, albeit with a level of interactivity below
+%% what users have come to expect.
 % Can something be said about the dom-based XSS attacks?
 
-Some software vendors respond to \xss when a vulnerability is
-disclosed, with patches. When the software affected is released in
-the form of packages, frameworks, or libraries, and used by several
-web applications, there are extra delays before users can benefit from
-the patch -- the updated software has to first be deployed by service
-administrators.
+When an \xss vulnerability is disclosed, some software vendors respond
+with patches. If the affected software is released in the form of
+packages, frameworks, or libraries, and used by several web
+applications, there is delay before users can benefit from the
+patch. Most importantly, the patched software must be re-deployed by
+site administrators.
 
 Unfortunately, website administrators will not, and often cannot,
 apply software updates immediately: one study found
@@ -59,9 +57,9 @@ that 30.95\% of Alexa's top 1 Million sites run a vulnerable version
 of WordPress~\cite{wpwhitesecurity}.
 
 Users are in effect at the mercy of developers and administrators if
-they need to browse safe, up-to-date, applications. Our solution \sys,
-helps remedy this problem -- based on information from past disclosures,
-it aims to patch known page vulnerabilities received by the user's browser.
+they need to browse safe, up-to-date, applications. Our solution, \textbf{\sys},
+helps with this problem -- based on information from past disclosures,
+\sys patches known page vulnerabilities directly in the browser.
 
 \begin{figure}[h]
   \includegraphics[scale=0.37]{img/web_app_architecture.pdf}
@@ -90,11 +88,11 @@ Each layer of the web application stack  (Figure~\ref{fig:web_architecture}) ope
   responses, such as NoScript~\cite{Noscript}, and \sys.
 \end{enumerate}
 
-We draw two observations from existing solutions, a) server-side
-solutions have to be applied independently on each server, and b)
+We make two observations about existing solutions: (a) server-side
+solutions have to be applied independently on each server, and (b)
 solutions on the client are typically written as generic filters which
-catch everything, and consequently do not take full advantage
-of the specificity of an application or vulnerability.
+attempt to catch everything, and consequently do not take full advantage
+of the specificity of the application or the vulnerability.
 
 For example, a \ac{WAF} can effectively protect the deployment placed
 behind it, but users cannot realistically expect that every site they
@@ -112,10 +110,9 @@ including \emph{``Bypasses abound''}, \emph{``It prevents some legit
   good to do''}~\cite{deprecatexssauditor}. Stock et
 al.~\cite{precise_dom_xss} propose enhancements to XSS Auditor and
 cover a wider range of exploits than the auditor, but are limited to
-DOM-based \ac{XSS}.  \textbf{Our work covers all types of \ac{XSS}.}
+DOM-based \ac{XSS}.  \textbf{By contrast, our work covers all types of \ac{XSS}.}
 
-Implementing adequate server-side protections~\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325} throughout a codebase could arguably qualify as a colossal task, considering the high turnaround times for resolving simpler bugs. A 2018 study found that the average time to patch a \ac{CVE}, all severities combined, is 38 days, increasing to as much as 54 days for low severity ones, and the oldest unpatched \ac{CVE} was 340
-days old~\cite{Rapid7}.
+Implementing adequate server-side protections~\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325} throughout a codebase could arguably qualify as a colossal task, considering the high turnaround times for resolving simpler bugs. A 2018 study found that the average time to patch a \ac{CVE}, all severities combined, is 38 days, increasing to as much as 54 days for low severity CVEs, and the oldest unpatched \ac{CVE} was 340 days old~\cite{Rapid7}.
 
 %% % JS: I think this is false (or unproven, anyway):
 % A client-side solution does not rely on application developers, so it reduces the turnaround time between a vulnerability and its patch.
@@ -172,7 +169,7 @@ Our extension, which has access to the user's browsing context, can
 identify vulnerable pages based on a database of signatures for
 previous disclosures. This way, \sys can protect users as soon as a patch
 is implemented and added to its database. The client-side
-patch will remain beneficial a until \textit{all} server
+patch will remain beneficial until \textit{all} server
 operators running that software have had a chance to upgrade their
 deployments.
 %% We detail its design in \autoref{xsnare_design}.
@@ -212,17 +209,18 @@ We believe additional contextual knowledge also offers more accurate vulnerabili
 %% elements to a sanitization function. We further detail XSnare's
 %% mechanisms that achieve this in Section~\ref{xsnare_design}.
 
-We evaluate our system, by
-testing its efficacy against recent \ac{XSS} CVEs. CVE databases are
-well-maintained and widely available sources of real-world vulnerabilities.
+We evaluate \sys by
+testing it on 76 recent \ac{XSS} CVEs. %% CVE databases are
+%% well-maintained and a widely available sources of real-world vulnerabilities.
+%
 %They are one of the main tools
 %used by developers to patch their code against known
 %vulnerabilities.
-Furthermore, we measure its performance overhead on page load times,
-on a wide array of sites and show that it does not significantly
-affect browsing experience.
+We also report \sys{}'s performance overhead on page load times
+across a wide range of sites and show that it does not significantly
+impact browsing experience.
 
-Our contributions include:
+To summarize, our contributions include:
 \begin{itemize}
 
 	\item \sys: a novel client-side framework that protects
