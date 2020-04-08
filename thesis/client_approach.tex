@@ -231,7 +231,8 @@ We considered allowing arbitrary sanitization code in
 signatures. While it would open complex sanitization possibilities, we
 have decided against it, principally for security reasons. The minimal
 set of functions we settled on also sufficed to express all of the
-signatures defined for this paper.
+signatures defined for this paper. See Appendix~\ref{appendix:language_specification} for
+more details.
 
 %% \begin{enumerate} 
 %% 	\item Security Concerns: We assume signatures come from a trusted source. However, partly due to the way they are currently stored, it is possible for an attacker to add malicious signatures. In general, this would only harming the web site user experience by removing safe content. The ability to run arbitrary code would lead a serious security flaw, as it would execute in a high-privilege environment.
