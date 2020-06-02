@@ -1,21 +1,16 @@
-\documentclass[letterpaper,twocolumn,10pt]{article}
-\usepackage{usenix2019_v3}
-
-% to be able to draw some self-contained figs
-\usepackage{tikz}
-\usepackage{amsmath}
-
-% inlined bib file
-\usepackage{filecontents}
-
+\documentclass[sigconf, anonymous, review]{acmart}
+\settopmatter{printacmref=false} % Removes citation information below abstract
+\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
 \pagestyle{plain} % removes running headers
+\usepackage{xcolor}
 \usepackage{booktabs} % For formal tables
 \usepackage{listings}
-\usepackage{url}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \lstset{escapeinside={<@}{@>}}
+\usepackage{url}
+
 
 %% The acronym package provides support for defining acronyms, providing
 %% their expansion when first used, and building glossaries.  See the
@@ -94,42 +89,52 @@
 
 \begin{document}
 	
-%don't want date printed
-\date{}
-
-\title{\Large \bf \sys: Application-specific client-side cross-site scripting protection}
-
-%for single author (just remove % characters)
-\author{
-	{\rm Anonymous author(s)}
-}
-\maketitle
-
-\input{abstract}
-
-
-\acresetall	% reset all acronyms used so far
-
-% assume we've used these common acronyms already
-% this will prevent their expansion
-% \acused{XSS}
-\acused{CVE}
-\acused{SQL}
-\acused{DDoS}
-
-\input{introduction}
-\input{client_approach}
-\input{implementation}
-\input{signature_development}
-\input{methodology}
-\input{performance}
-\input{limitations}
-\input{related_work}
-\input{conclusion}
-
-\bibliographystyle{plain}
-\bibliography{references}
-
-\input{appendix}
+\begin{document}
+	\title{\sys: Application-specific client-side cross-site scripting protection}
+	
+	\author{Jos\'e Carlos Pazos}
+	\affiliation{%
+		\institution{University of British Columbia}
+	}
+	\email{jpazos@cs.ubc.ca}
+	
+	\author{Jean-S\'ebastien L\'egar\'e}
+	\affiliation{%
+		\institution{University of British Columbia}
+	}
+	\email{jslegare@cs.ubc.ca}
+	
+	\author{William Aiello}
+	\affiliation{%
+		\institution{University of British Columbia}
+	}
+	\email{aiello@cs.ubc.ca}
+	
+	
+	\input{abstract}
+	\maketitle
+	
+	\acresetall	% reset all acronyms used so far
+	
+	% assume we've used these common acronyms already
+	% this will prevent their expansion
+	% \acused{XSS}
+	\acused{CVE}
+	\acused{SQL}
+	\acused{DDoS}
+	
+	\input{introduction}
+	\input{client_approach}
+	\input{implementation}
+	\input{signature_development}
+	\input{methodology}
+	\input{performance}
+	\input{limitations}
+	\input{related_work}
+	\input{conclusion}
+	%\input{appendix}
+	
+	\bibliographystyle{ACM-Reference-Format}
+	\bibliography{references}
 
 \end{document}
