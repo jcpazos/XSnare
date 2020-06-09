@@ -20,6 +20,7 @@
 %%   we *must* use the `nohyperlinks' option -- it causes errors with
 %%   hyperref otherwise.  See Section 5.2 in the ``LaTeX 2e for Class
 %%   and Package Writers Guide'' (clsguide.pdf) for details.
+\usepackage{hyperref}
 \usepackage[printonlyused,nohyperlinks]{acronym}
 
 \acrodef{xhr}[XHR]{{\tt XMLHttpRequest}}
@@ -85,6 +86,12 @@
 \renewcommand{\subsubsectionautorefname}{Section}
 \renewcommand{\algorithmautorefname}{Algorithm}
 
+
+%%%%%%%%%%%%%%% URLs with special characters
+% from: https://tex.stackexchange.com/questions/250102/insert-special-symbols-in-url
+\urldef{\deprecatexssauditorURL}\url{https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/TuYw-EZhO9g/blGViehIAwAJ}
+
+%%%%%%%%%%%%%%%
 
 	
 \begin{document}
