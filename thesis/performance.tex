@@ -78,17 +78,19 @@ verification function was less than 10ms for 87.6\% of sites
 (\autoref{fig:verification_time_string_length}). This corroborates our
 findings that the slowdown is mostly negligible.
 
-Furthermore, since we are using a limited set of signatures and framework 
-probes, we tested our system against a large number of signatures. Currently,
-there are 15303 CVEs related to XSS in CVE Details \cite{xsscves}. We added
-15500 signatures to our database, and recorded the time spent by the 
+%% Furthermore, since we are using a limited set of signatures and framework 
+%% probes,
+We also tested our system against with a large number of signatures. Currently,
+there are 15,303 CVEs related to XSS in CVE Details~\cite{xsscves}. We added
+15,500 signatures to our database and recorded the time spent by the 
 network filter to process these sites. These signatures were crafted so that
-the extension would check it against the loaded sites, but would not trigger the
-injection search and sanitization process. This means that we effectively forced 
-our extension to test each site against 15500 signatures. The mean time spent 
-by the filtering process was  1930 ms, with a time of less than 2000 ms for 88\% 
-of sites. In practice, we would expect a much smaller filter time, as many 
-frameworks would have large amounts of signatures. For example, there are 
-currently 200+ listed CVEs  related to WordPress core and its plugins.
+the extension would check each one against the loaded sites,
+but would not trigger the injection search and sanitization process.
+This means that we effectively forced 
+our extension to test each site against 15,500 signatures. The mean time spent 
+by the filtering process was 1930ms, with less than 2,000ms for 88\% 
+of the sites. In practice, we would expect a smaller filter time, as many 
+frameworks would have many signatures. For example, there are 
+currently 200+ CVEs listed for WordPress core and its plugins.
 
 
