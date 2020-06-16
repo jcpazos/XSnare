@@ -9,14 +9,15 @@ exploit descriptions, which are written with the help of previously
 recorded CVEs. CVEs for XSS are widely available and are one of the
 main ways to tackle zero-day exploits. \sys effectively singles out
 potential injection points for exploits in the HTML and sanitizes
-content to prevent malicious payloads from appearing in the DOM.
+content to prevent malicious payloads from appearing in the DOM;
+displaying a secured version of the site, even if is exploited.
 
 \sys can protect application users
 before application developers release patches and before server
 operators apply them.
 
 We evaluated \sys on 81 recent CVEs related to XSS
-attacks, and found that it defends against 94.2\% of these
+attacks, and found that it defends against 93.8\% of these
 exploits. To the best of our knowledge, \sys is the first protection
 mechanism for XSS that is application-specific, and based on publicly
 available CVE information.  We show that \sys{}'s specificity protects

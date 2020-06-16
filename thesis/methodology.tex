@@ -65,7 +65,7 @@ vulnerable page and wrote a signature to patch the exploit.
 	\end{center}
 \end{table}
 
-Of the initial 100 CVEs, we were able to analyze 81 across 44 affected
+Of the initial 100 CVEs, we were able to analyze 76 across 44 affected
 pages. We dropped 24 CVEs due to reproducibility issues: some of the
 descriptions did not include a PoC, making it difficult for us to
 reproduce; or, the plugin code was no longer available. In some cases,
@@ -113,7 +113,12 @@ visual aspect. One caused a small part of the page to become unusable,
 due to the sanitization method (a table showing user information
 was now rendered as blank). Most of the responsibility of maintaining
 functionality is left to the signature developer. We found that being precise
-is key to retaining functionality.
+is key to retaining functionality. Furthermore, even if the layout of the page is
+affected, we firmly believe that applying the signature is preferable
+to potentially allowing an exploit to go through. Users can still take
+advantage of the fact that pages remain largely usable, as opposed to
+having the page being blocked, an approach commonly used by malware
+detection software.
 
 While our goal is to retain as much information of the page as
 possible after sanitization, we believe that even if a part of the
@@ -138,7 +143,7 @@ often not available. For fairness, we looked for the most recent CVEs
 we could reproduce listed in the Exploit Database~\cite{exploitdb}, since
 these have recorded \acp{PoC}. We carried out the same
 procedure as with the WordPress CVEs, and were able to patch all of
-the 5 exploits. This brought our CVE coverage rate up to 94.2\%.
+the 5 exploits. This brought our CVE coverage rate up to 93.8\%.
 
 \subsection{Signature writing times} \label{signature_times}
 

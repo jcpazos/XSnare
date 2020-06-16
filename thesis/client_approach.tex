@@ -88,7 +88,7 @@ top of the document, and the \textbf{label} from the bottom to ensnare
 the injection points in the HTML.
 
 This shares goals with the client/server hybrid approach of Nadji et
-al.~\cite{Nadji:2009}. They automatically tag injected DOM elements on the
+al.~\cite{nadji2009document}. They automatically tag injected DOM elements on the
 server-side using a taint-tracking, so that the client (a
 modified browser) can reliably separate template vs
 injected content. We do not require any server-side modifications, but rather opt for a client-side tagging solution based on exploit definitions.
@@ -161,7 +161,7 @@ the CVE information into a signature does not require active
 participation from the application developers -- Security enthusiasts and
 web developers have the skills to fulfill this role satisfactorily.
 
-In general, we do not require the existence of a publicly disclosed CVE to be able to write a signature for an exploit, it is the process of its development that is useful to our approach (documenting an exploit and its cause). As described in \autoref{viability}, CVEs are a convenient way for us to test our system against real-world vulnerabilities. However, a knowledgeable analyst can write a signature without having publicly disclosed a CVE. In fact, for security measures, many CVEs are not publicly available until the application developer has patched its software. Our system can help defend against zero day attacks, as once a vulnerability is known, an analyst is able to write a signature for it as soon as they have knowledge of the issue. 
+In general, we do not require the existence of a publicly disclosed CVE to be able to write a signature for an exploit, it is the process of its development that is useful to our approach (documenting an exploit and its cause). As described in \autoref{viability}, CVEs are a convenient way for us to test our system against real-world vulnerabilities. However, a knowledgeable analyst can write a signature without having publicly disclosed a CVE. In fact, for security measures, many CVEs are not publicly available until the application developer has patched its software. Our system can help defend reduce the time between zero day attacks and patch deployment, as once a vulnerability is known, an analyst is able to write a signature for it as soon as they have knowledge of the issue.
 
 Long term, we imagine that volunteers (or entrepreneurs) would
 cultivate and maintain the signature database. New signatures could be

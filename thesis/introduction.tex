@@ -6,7 +6,7 @@ vulnerability \cite{Acunetix}. Countermeasures exist, but many of them
 lack widespread deployment, and so web users are still mostly
 unprotected.
 
-Informally, the cause of \xss is a lack of input sanitization:
+Informally, the cause of \xss is a lack of input validation:
 user-chosen data ``escapes'' into a page's template and makes its way
 into the JavaScript engine, or modifies the DOM.
 %
@@ -31,16 +31,26 @@ necessary expertise, or sufficient resources, to use the approach.
 %
 Luckily, users wishing to gain reassurance over the safety of the
 sites they visit can install browser extensions to filter malicious
-scripts and content. Unfortunately, these extensions achieve most of
-their security by disabling functionality in the applications, such as JavaScript, which
-impairs the usability of the
-sites~\cite{Noscript,Snyder:2017:MWD:3133956.3133966}. For example, most sites rely
-on JavaScript being enabled\footnote{As early as 2012, it is used by almost
-  100\% of the Alexa top 500
-  sites~\cite{Stock:2017:WTI:3241189.3241265}}. %% Some sites may offer
-%% alternate, non-script versions, albeit with a level of interactivity below
-%% what users have come to expect.
-% Can something be said about the dom-based XSS attacks?
+scripts and content. Unfortunately, some of the most popular of these
+extensions, like NoScript \cite{Noscript}, achieve most of their security
+by disabling functionality in the applications, such as JavaScript, which
+impairs the usability of the sites, but this might not always be practical,
+as most sites rely on JavaScript being enabled. \footnote{As early as 2012, 
+it is used by almost 100\% of the Alexa top 500 sites~\cite{Stock:2017:WTI:3241189.3241265}}.
+
+
+A study by Snyder et al. \cite{Noscript,Snyder:2017:MWD:3133956.3133966}
+showed that browser security can be increased by disabling some rarely used
+JavaScript APIs, largely maintaining usability. Our work builds upon this idea,
+retaining website usability as much as possible.
+%sites~\cite{Noscript,Snyder:2017:MWD:3133956.3133966}.
+%Unfortunately, these extensions achieve most of
+%their security by disabling functionality in the applications, such as JavaScript, which
+%impairs the usability of the
+%sites~\cite{Noscript,Snyder:2017:MWD:3133956.3133966}.
+%For example, most sites rely on JavaScript being enabled
+%\footnote{As early as 2012, it is used by almost 100\% of
+%the Alexa top 500 sites~\cite{Stock:2017:WTI:3241189.3241265}}.
 
 When an \xss vulnerability is disclosed, some software vendors respond
 with patches. If the affected software is released in the form of
@@ -124,7 +134,7 @@ Implementing adequate server-side protections~\cite{Xu:2006:TPE:1267336.1267345,
 %% the security of a client-side approach, and having these
 %% two work in tandem is beneficial to the user's experience.
 
-Server-side defences also do not protect against client-only forms of
+Server-side defences also do not commonly protect against client-only forms of
 \xss, e.g., reflected \ac{XSS}, or persistent
 client-side \ac{XSS}, which use a browser's local storage or cookies
 as an attack vector. Steffens et

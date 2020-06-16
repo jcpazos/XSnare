@@ -22,7 +22,12 @@ consistent issues with timeouts, insecure certificates, and network
 errors. In our setup, we used a headless version of Firefox 69.0, and
 Selenium WebDriver for NodeJS, with GeckoDriver. All experiments were
 run on one machine with an Intel Xeon CPU E5-2407 2.40GHz processor,
-32 GB DRAM, and our university's 1GiB connection.
+32 GB DRAM, and our university's 1GiB connection. While we could not 
+diagnose the exact reason for the aforementioned issues, this was not 
+caused by our extension, as it works after a response has been
+delivered to the browser, and we manually loaded each of those pages
+in our personal computer with our extension running without 
+being able to reproduce them.
 
 We ran four test suites:
 \textbf{No extension cold cache}: Firefox is loaded without the extension installed and the web driver is re-instantiated for every page load.
