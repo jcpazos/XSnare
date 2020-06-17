@@ -14,6 +14,10 @@ In the future we intend to study a more diverse set of CVEs and go beyond CMS-ba
 
 %% While our work has only focused on \ac{XSS}, we believe we can easily adapt our network filter to defend against \ac{CSRF} exploits as well. Using a similar signature language as the one for \ac{XSS}, a signature developer could specify pages with potential vulnerabilities to only allow network requests that can not exploit such vulnerabilities. In some scenarios, it might be useful to track DOM events, e.g., user clicks to protect against click-jacking attacks. This kind of information is not available to the network; however, the extension could install a script on the page to monitor these actions.
 
+\textbf{Filtering network data.} Our extension filter's design depends on Firefox's implementation of the WebRequest API. In particular, the filterResponseData method allows the extension to modify an incoming HTTP request, and is only currently available in Firefox \footnote{https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/filterResponseData}. While
+this feature has been previously requested on other browsers like Chrome, it has not received an implementation yet. This 
+impacts our system's availability, limiting it to Firefox users.
+
 \textbf{Dealing with an increasing number of signatures.} As the number of framework probes increases, and more types of sites are covered, the performance impact will increase. Using more efficient approaches to searching and filtering, and using better data structures in the signature database could to lower this overhead.
 
 %% As of September 2019, CVE Details had 14894 \ac{XSS} vulnerabilities in its database \cite{vulnbytype}. This means that our current signatures only cover 0.5\% of all existing \ac{XSS} vulnerabilities. More efficient approaches at searching and filtering, as well as for the data structures used in the signature database could be applied to maintain a low performance overhead. The task of signature filtering, for example, is embarrassingly parallel in the number of signatures.
