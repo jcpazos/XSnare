@@ -54,17 +54,36 @@ The extension naturally retains this context.
 \subsection{Filtering process} \label{filtering_process}
 \autoref{filter_algorithm} describes our network filtering process: once a request's response comes in through the network, we process it and sanitize it if necessary.
 
-\textbf{Loading signatures}
+\textbf{Loading signatures.}
 Our detector loads signatures and finds injection points in the document. However, not all signatures need to be loaded for a specific website, since not all sites run the same frameworks. When loading signatures, we proceed in a manner similar to a decision tree. The detector first probes the page (line 3) to identify the underlying framework (the \textbf{software} in our signature language). We currently provide a number of static probes. However, as more applications are required to be included, we believe it would be better to cover this task in the signature definitions. The widely popular network mapping tool Nmap~\cite{nMap} uses probes in a similar manner, kept in a modifiable file. As mentioned in \autoref{viability}, we currently only have signatures for CMS applications. Our probes use specific identifiers related to the application, as well as the particular site that is affected by the exploit. WordPress pages, for example, have several elements in the page that identify it as a WordPress page. While this might seem easier for CMS style pages, and we acknowledge that application fingerprinting is a hard problem in general, we believe other web apps will also have similar identifying information, like headers, element ID's, script/CSS sources, etc. 
 
 After running these probes, the detector loads corresponding frameworks' signatures and filters out checks whether the information of each loaded signature matches the page (lines 5-12).
 
-\textbf{Version identification}
-We then apply version identification (lines 13-16). Our objective for versioning is that our signatures don't trigger false positives on websites running patched software. We found this to be one of the harder aspects of signature loading. In many \acp{CMS}, for example, file names are not updated with the latest versions, or do not include them at all, and thus, this information is often hard to come by from the client-side perspective. This information is often more available to admins of a site. While this might not be the bulk of users, it is the bulk of disclosed CVEs, as described in \autoref{viability}.
+\textbf{Version identification.} We then apply version identification
+(lines 13-16). Our objective for versioning is to prevent signatures from
+triggering false positives on websites running patched software. We
+found this to be one of the harder aspects of signature loading. In
+many \acp{CMS}, for example, file names are not updated with the
+latest version, and versioning information is often unavailable on the client-side.
+%% This information is often more available to admins of a
+%% site. While this might not be the bulk of users, it is the bulk of
+%% disclosed CVEs, as described in \autoref{viability}.
 
-Furthermore, we believe that even if we load a signature when the application has already been fixed at the server-side, it will often preserve the page's functionality, as many of the CVEs are a result of unsanitized input. Motivated by this observed behavior, our mechanism follows a series of increasingly accurate but less applicable version identifiers: first, we apply framework specific version probes. If these are not successful, the signature language provides functionality for version identification in the HTML through regex. If information is unavailable through the HTML, the version in the signature is left blank and the patch is applied regardless of version, as we can not be sure the page is running patched software. Our tool takes advantage of having perfect knowledge of an exploit's conditions, which reduces the rate of false positives compared to a software-agnostic approach. 
+We have observed that even if we load a signature when the
+application has already been patched on the server, it will often
+preserve the page's functionality. We believe this is because many CVEs are due to
+unsanitized input. Motivated by this observation, our mechanism
+follows a series of increasingly accurate but less applicable version
+identifiers: first, we apply framework specific version probes. If
+these are not successful, the signature language provides
+functionality for version identification in the HTML through regex. If
+versioning is unavailable in the HTML, the patch is applied
+as we cannot be sure the page is running patched
+software. %% Our tool takes advantage of having perfect knowledge of an
+%% exploit's conditions, which reduces the rate of false positives
+%% compared to a software-agnostic approach.
 
-\textbf{Injection point search and sanitization}
+\textbf{Injection point search and sanitization.}
 Once we have the correct signatures, we find the indices for the endpoints using our top-down, bottom-up scan, and need to check for potential malformations in the injection points, as described in \autoref{multiple_injections} (lines 19-24). The page load is blocked and a message is returned to the user, or if the signature developer specifies so, sanitization proceeds on the new endpoints. Finally, if all \textbf{endPoint} pairs are in the expected order, we sanitize each injection point (lines 25-27).
 
 \subsection{Sanitization methods} \label{sanitization_methods}

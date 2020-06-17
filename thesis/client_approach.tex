@@ -6,12 +6,32 @@
 	\label{fig:xsnare}
 \end{figure}
 
-We now present the design of \sys and its components. % and how they interact with each other.
+We now present the design of \sys and its components (\autoref{fig:xsnare}). We begin by reviewing our threat model.
+
+ % and how they interact with each other.
 %
 % \subsection{Operation, at a glance} \label{operation}
 %
-We begin with a high-level view of its operation (see
-\autoref{fig:xsnare}): A user requests a page, \url{example.com}, on a
+
+\subsection{Threat model}
+
+Our work makes no assumptions about the web server. In particular, the
+server may run out of date and vulnerable software that delivers pages
+to the user's browser with XSS exploits.
+
+We trust the browser and the browser's extension mechanism to
+correctly execute \sys. We also depend on the browser to disallow
+malicious tampering with the client-side signature database.
+
+We trust the analyst who writes the signature definitions used by
+\sys. For \sys to be effective the signatures must be correct. An
+incorrect signature that fails to match a vulnerability, however, will
+only minimally impact the page (with a longer page load time).
+
+\subsection{Overview}
+
+We now review the high-level operation of \sys with \autoref{fig:xsnare}.
+A user requests a page, \url{example.com}, on a
 browser with the \sys extension installed.
 %
 The response may or may not contain
