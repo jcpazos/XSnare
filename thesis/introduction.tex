@@ -32,15 +32,15 @@ necessary expertise, or sufficient resources, to use the approach.
 Luckily, users wishing to gain reassurance over the safety of the
 sites they visit can install browser extensions to filter malicious
 scripts and content. Unfortunately, some of the most popular of these
-extensions, like NoScript \cite{Noscript}, achieve most of their security
+extensions, like NoScript~\cite{Noscript}, achieve most of their security
 by disabling functionality in the applications, such as JavaScript, which
 impairs the usability of the sites. This might not always be practical,
-as most sites rely on JavaScript being enabled \footnote{As early as 2012, 
+as most sites rely on JavaScript being enabled\footnote{As early as 2012, 
 it is used by almost 100\% of the Alexa top 500 sites~\cite{Stock:2017:WTI:3241189.3241265}}.
-A study by Snyder et al. \cite{Snyder:2017:MWD:3133956.3133966}
+A study by Snyder et al.~\cite{Snyder:2017:MWD:3133956.3133966}
 showed that browser security can be increased by disabling some rarely used
-JavaScript APIs, largely maintaining usability. Our work builds upon this idea,
-retaining website usability as much as possible after an exploit has been disabled.
+JavaScript APIs, largely retaining usability. Our work builds on this idea,
+retaining website usability after an exploit is disabled.
 %sites~\cite{Noscript,Snyder:2017:MWD:3133956.3133966}.
 %Unfortunately, these extensions achieve most of
 %their security by disabling functionality in the applications, such as JavaScript, which
@@ -77,7 +77,7 @@ helps with this problem -- based on information from past disclosures,
   \label{fig:web_architecture}
 \end{figure}
 
-Each layer of the web application stack  (Figure~\ref{fig:web_architecture}) opens different defence options against \xss. Note that solutions ate different layers are often complementary:
+Each layer of the web application stack  (Figure~\ref{fig:web_architecture}) opens different defence options against \xss. Note that solutions at different layers are often complementary:
 %Further details of these different approaches are described in Section 5:
 \begin{enumerate}
 
@@ -194,7 +194,15 @@ attacks invisible to the network, e.g., deleting local files.
 % It motivates the need for basic customization between domain names, but not between applications.
 %We believe additional contextual knowledge also offers more accurate vulnerability detection.
 
-Our system's signatures are designed to be application-specific, both in terms of exploit detection and sanitization. We believe that this model is not a step backwards for vulnerability detection. There are many exploits that will not be caught by other approaches; application-specific signatures provide a means to accurately dispose of exploits while maintaining the web site's usability as much as possible. We acknowledge that due to the nature of signatures, however, this is not a "one size fits all" solution, and is meant to work towards an increase in user security by cooperating with existing and future solutions.
+Our system's signatures are designed to be application-specific, both
+in terms of exploit detection and sanitization. %% We believe that this
+%% model is not a step backwards for vulnerability detection. There are
+%% many exploits that will not be caught by other approaches;
+Application-specific signatures accurately dispose
+of exploits while retaining the web site's usability. We acknowledge that due to the nature of signatures,
+however, this is not a ``one size fits all'' solution, and is meant to
+safeguard users' security in coordination with existing
+and future solutions.
 %% IB: Cut details below -- too detailed.
 %% 
 %% Furthermore, they rely on websites having a small number of external

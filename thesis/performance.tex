@@ -13,21 +13,23 @@ evaluation results please see ~\autoref{appendix:perf-eval}.
 %% representing the expected behaviour of an user's average web browsing
 %% experience. 
 % 
-For these tests we used the top 500 websites as
+In our setup, we used a headless version of Firefox 69.0, and
+Selenium WebDriver for NodeJS, with GeckoDriver. All experiments were
+run on one machine with an Intel Xeon CPU E5-2407 2.40GHz processor,
+32 GB DRAM, and our university's 1GiB connection.
+
+In our tests we used the top 500 websites as
 reported by Moz.com~\cite{top500}. For each website, we loaded it 25
 times (with a 25 second timeout) and recorded the following values:
 requestStart, responseEnd, domComplete, and decodedBodySize. From the
 initial set of 500, we only report values for 441: the other 59 had
 consistent issues with timeouts, insecure certificates, and network
-errors. In our setup, we used a headless version of Firefox 69.0, and
-Selenium WebDriver for NodeJS, with GeckoDriver. All experiments were
-run on one machine with an Intel Xeon CPU E5-2407 2.40GHz processor,
-32 GB DRAM, and our university's 1GiB connection. While we could not 
-diagnose the exact reason for the aforementioned issues, this was not 
-caused by our extension, as it works after a response has been
-delivered to the browser, and we manually loaded each of those pages
-in our personal computer with our extension running without 
-being able to reproduce them.
+errors. While we could not 
+diagnose the exact reason for these issues, they were not
+caused by our extension: it works after a response has been
+delivered to the browser. We also manually loaded each page
+on a personal computer with our extension running successfully and 
+were not able to reproduce the issues.
 
 We ran four test suites:
 \textbf{No extension cold cache}: Firefox is loaded without the extension installed and the web driver is re-instantiated for every page load.
@@ -80,17 +82,17 @@ findings that the slowdown is mostly negligible.
 
 %% Furthermore, since we are using a limited set of signatures and framework 
 %% probes,
-We also tested our system against with a large number of signatures. Currently,
-there are 15,303 CVEs related to XSS in CVE Details~\cite{xsscves}. We added
-15,500 signatures to our database and recorded the time spent by the 
-network filter to process these sites. These signatures were crafted so that
-the extension would check each one against the loaded sites,
-but would not trigger the injection search and sanitization process.
-This means that we effectively forced 
-our extension to test each site against 15,500 signatures. The mean time spent 
-by the filtering process was 1930ms, with less than 2,000ms for 88\% 
-of the sites. In practice, we would expect a smaller filter time, as many 
-frameworks would have many signatures. For example, there are 
+We also tested our system with a large number of signatures. We added
+15,500 signatures to our database and recorded the time spent by the
+network filter to process these sites\footnote{There are 15,303 CVEs
+  related to XSS in CVE Details~\cite{xsscves}.}. These signatures
+were crafted so that the extension would check each one against the
+loaded sites, but would not trigger the injection search and
+sanitization process.  This means that we effectively forced our
+extension to test each site against 15,500 signatures. The mean time
+spent by the filtering process was 1,930ms, with less than 2,000ms for
+88\% of the sites. In practice, we would expect a smaller filter time,
+as many frameworks would have many signatures. For example, there are
 currently 200+ CVEs listed for WordPress core and its plugins.
 
 
