@@ -214,7 +214,7 @@ any malicious payloads.
 %% established by an analyst,
 Analysts configure their signatures with one
 function chosen from the static set of sanitization
-functions offered by \sys. These functions inoculate potentially malicious injections
+functions offered by \sys (\autoref{sanitization_methods}). These functions inoculate potentially malicious injections
 based on the DOM context surrounding the injection. The goal of
 signatures is to provide such sanitization, ideally without ``breaking''
 the user experience of the page. The default function preset is DOMPurify's~\cite{10.1007/978-3-319-66399-9_7} default
@@ -224,7 +224,7 @@ configuration,
 %%   and SVG". The Mozilla community cites it as an useful tool for
 %%   "safely inserting external content into a
 %%   page"~\cite{safecontent}}
-which takes care of common sanitization needs~\cite{safecontent}. However, DOMPurify's defaults can be unnecessarily restrictive, in which cases the other sanitization methods are more desirable.
+which takes care of common sanitization needs~\cite{safecontent}. However, DOMPurify's defaults can be unnecessarily restrictive, or, contrarily, not restrictive enough, in which cases the other sanitization methods are more desirable.
 
 We considered allowing arbitrary sanitization code in
 signatures. While it would open complex sanitization possibilities, we
