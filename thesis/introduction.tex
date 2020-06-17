@@ -13,7 +13,7 @@ into the JavaScript engine, or modifies the DOM.
 Consequently, many of the \xss defenses published so far
 propose to fix the problem at the source, by properly separating the
 template from the user data on the server, or by modifying
-browsers~\cite{Jim:2007:DSI:1242572.1242654,Nadji:2009,Wurzinger:2009:SMX:1656360.1656379,Sundareswaran:2012:XHS:2352970.2352994}.
+browsers~\cite{Jim:2007:DSI:1242572.1242654,nadji2009document,Wurzinger:2009:SMX:1656360.1656379,Sundareswaran:2012:XHS:2352970.2352994}.
 %
 There are also similar solutions that can be implemented in the
 front-end code of an application~\cite{10.1007/978-3-319-66399-9_7}.
@@ -34,15 +34,13 @@ sites they visit can install browser extensions to filter malicious
 scripts and content. Unfortunately, some of the most popular of these
 extensions, like NoScript \cite{Noscript}, achieve most of their security
 by disabling functionality in the applications, such as JavaScript, which
-impairs the usability of the sites, but this might not always be practical,
-as most sites rely on JavaScript being enabled. \footnote{As early as 2012, 
+impairs the usability of the sites. This might not always be practical,
+as most sites rely on JavaScript being enabled \footnote{As early as 2012, 
 it is used by almost 100\% of the Alexa top 500 sites~\cite{Stock:2017:WTI:3241189.3241265}}.
-
-
-A study by Snyder et al. \cite{Noscript,Snyder:2017:MWD:3133956.3133966}
+A study by Snyder et al. \cite{Snyder:2017:MWD:3133956.3133966}
 showed that browser security can be increased by disabling some rarely used
 JavaScript APIs, largely maintaining usability. Our work builds upon this idea,
-retaining website usability as much as possible.
+retaining website usability as much as possible after an exploit has been disabled.
 %sites~\cite{Noscript,Snyder:2017:MWD:3133956.3133966}.
 %Unfortunately, these extensions achieve most of
 %their security by disabling functionality in the applications, such as JavaScript, which
@@ -168,7 +166,7 @@ provided by the browser.
 Particularly, when an exploit occurs as a result of user interactions,
 like on response to a click, we
 benefit from knowledge of the initiating tab to filter the
-response. Previous client-side solutions have opted for detectors that were generic and site-agnostic~\cite{Kirda:2009:CCS:2639535.2639808,Jim:2007:DSI:1242572.1242654,Hallaraker:2005:DMJ:1078029.1078861}. Our work goes in the opposite direction, and tries rather to prevent precisely-defined exploits in specific applications.
+response. Previous client-side solutions have opted for detectors that were generic and site-agnostic~\cite{Kirda:2009:CCS:2639535.2639808,Jim:2007:DSI:1242572.1242654,Hallaraker:2005:DMJ:1078029.1078861}. Our work goes in the opposite direction, and tries rather to prevent precisely-defined exploits in specific applications. 
 
 If a patch for a server-side vulnerability can be ``translated'' into
 an equivalent set of operations to apply on the fully formed HTML
@@ -181,7 +179,7 @@ previous disclosures. This way, \sys can protect users as soon as a patch
 is implemented and added to its database. The client-side
 patch will remain beneficial until \textit{all} server
 operators running that software have had a chance to upgrade their
-deployments.
+deployments. 
 %% We detail its design in \autoref{xsnare_design}.
 
 
@@ -191,8 +189,9 @@ deployments.
 Unlike \sys, however, Noxes only applies generic policies based on information available at the network layer. Namely, it does not protect against
 attacks invisible to the network, e.g., deleting local files.
 % It motivates the need for basic customization between domain names, but not between applications.
-We believe additional contextual knowledge also offers more accurate vulnerability detection.
+%We believe additional contextual knowledge also offers more accurate vulnerability detection.
 
+Our system's signatures are designed to be application-specific, both in terms of exploit detection and sanitization. We believe that this model is not a step backwards for vulnerability detection. Previous solutions will not catch many exploits; application-specific signatures provide a means to accurately dispose of exploits while maintaining the web site's usability as much as possible. We acknowledge that due to the nature of signatures, however, this is not a "one size fits all" solution, and is meant to work towards an increase in user security by cooperating with existing and future solutions.
 %% IB: Cut details below -- too detailed.
 %% 
 %% Furthermore, they rely on websites having a small number of external
