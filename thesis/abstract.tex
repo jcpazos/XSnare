@@ -1,31 +1,27 @@
 \begin{abstract}
 
-We present \sys, a fully client-side \ac{XSS} solution, implemented as
-a Firefox extension. Our approach takes advantage of available
-previous knowledge of a web application's HTML template content, as
-well as the rich context available in the DOM to block XSS
-attacks. \sys prevents \ac{XSS} exploits by using a database of
-exploit descriptions, which are written with the help of previously
-recorded CVEs. CVEs for XSS are widely available and are one of the
-main ways to tackle zero-day exploits. \sys effectively singles out
-potential injection points for exploits in the HTML and sanitizes
-content to prevent malicious payloads from appearing in the DOM;
-displaying a secured version of the site, even if is exploited.
-
-\sys can protect application users
+We present \sys, a client-side \ac{XSS} solution implemented as
+a Firefox extension. The client-side design of \sys can protect users
 before application developers release patches and before server
 operators apply them.
 
-We evaluated \sys on 81 recent CVEs related to XSS
-attacks, and found that it defends against 93.8\% of these
-exploits. To the best of our knowledge, \sys is the first protection
-mechanism for XSS that is application-specific, and based on publicly
-available CVE information.  We show that \sys{}'s specificity protects
-users against exploits which evade other, more generic, anti-XSS
-approaches.
+\sys blocks XSS attacks by using previous knowledge of a web
+application's HTML template content and the rich DOM context. \sys
+uses a database of exploit descriptions, which are written with the
+help of previously recorded CVEs. It singles out injection points for
+exploits in the HTML and dynamically sanitizes content to prevent
+malicious payloads from appearing in the DOM. \sys displays a secured
+version of the site, even if is exploited.
+
+We evaluated \sys on 81 recent CVEs related to XSS attacks, and found
+that it defends against 93.8\% of these exploits. To the best of our
+knowledge, \sys is the first protection mechanism for XSS that is
+application-specific, and based on publicly available CVE information.
+We show that \sys{}'s specificity protects users against exploits
+which evade other, more generic, XSS defenses.
 
 Our performance evaluation shows that our extension's overhead on web
 page loading time is less than 10\% for 72.6\% of the sites in the Moz
-Top 500 \cite{top500} list.
+Top 500 list.
 
 \end{abstract}

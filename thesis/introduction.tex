@@ -33,10 +33,9 @@ Luckily, users wishing to gain reassurance over the safety of the
 sites they visit can install browser extensions to filter malicious
 scripts and content. Unfortunately, some of the most popular of these
 extensions, like NoScript~\cite{Noscript}, achieve most of their security
-by disabling functionality in the applications, such as JavaScript, which
-impairs the usability of the sites. This might not always be practical,
-as most sites rely on JavaScript being enabled\footnote{As early as 2012, 
-it is used by almost 100\% of the Alexa top 500 sites~\cite{Stock:2017:WTI:3241189.3241265}}.
+by disabling functionality, such as JavaScript, which
+impairs usability\footnote{As early as 2012, 
+JavaScript was used by almost 100\% of the Alexa top 500 sites~\cite{Stock:2017:WTI:3241189.3241265}}.
 A study by Snyder et al.~\cite{Snyder:2017:MWD:3133956.3133966}
 showed that browser security can be increased by disabling some rarely used
 JavaScript APIs, largely retaining usability. Our work builds on this idea,
@@ -64,10 +63,10 @@ security vulnerabilities~\cite{Sucuri}. In another report, we learn
 that 30.95\% of Alexa's top 1 Million sites run a vulnerable version
 of WordPress~\cite{wpwhitesecurity}.
 
-Users are in effect at the mercy of developers and administrators if
-they need to browse safe, up-to-date, applications. Our solution, \textbf{\sys},
+Users are at the mercy of developers and administrators if
+they want to access safe, up-to-date, applications. Our solution, \textbf{\sys},
 helps with this problem -- based on information from past disclosures,
-\sys patches known page vulnerabilities directly in the browser.
+\sys patches known page vulnerabilities \emph{directly in the browser}.
 
 \begin{figure}[h]
   \includegraphics[scale=0.37]{img/web_app_architecture.pdf}
@@ -77,7 +76,7 @@ helps with this problem -- based on information from past disclosures,
   \label{fig:web_architecture}
 \end{figure}
 
-Each layer of the web application stack  (Figure~\ref{fig:web_architecture}) opens different defence options against \xss. Note that solutions at different layers are often complementary:
+Each layer of the web application stack (Figure~\ref{fig:web_architecture}) presents different options to defend against \xss. Note that solutions at different layers are often complementary:
 %Further details of these different approaches are described in Section 5:
 \begin{enumerate}
 
@@ -102,9 +101,9 @@ solutions on the client are typically written as generic filters which
 attempt to catch everything, and consequently do not take full advantage
 of the specificity of the application or the vulnerability.
 
-For example, a \ac{WAF} can effectively protect the deployment placed
-behind it, but users cannot realistically expect that every site they
-visit be protected by one. At the opposite end, in the client's
+For example, a \ac{WAF} can effectively protect the users
+behind it, but users cannot realistically expect every site to
+be protected by a \ac{WAF}. At the opposite end, in the client's
 environment, a user might configure a network proxy for all website
 traffic, with generic rules achieving maximum coverage, but this
 will often lead to an elevated rate of false positives (FPs).
@@ -120,7 +119,9 @@ al.~\cite{precise_dom_xss} propose enhancements to XSS Auditor and
 cover a wider range of exploits than the auditor, but are limited to
 DOM-based \ac{XSS}.  \textbf{By contrast, our work covers all types of \ac{XSS}.}
 
-Implementing adequate server-side protections~\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325} throughout a codebase could arguably qualify as a colossal task, considering the high turnaround times for resolving simpler bugs. A 2018 study found that the average time to patch a \ac{CVE}, all severities combined, is 38 days, increasing to as much as 54 days for low severity CVEs, and the oldest unpatched \ac{CVE} was 340 days old~\cite{Rapid7}.
+Implementing adequate server-side protections~\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325} requires time.
+% throughout a codebase could arguably qualify as a colossal task, considering the high turnaround times for resolving simpler bugs.
+A 2018 study found that the average time to patch a \ac{CVE}, all severities combined, is 38 days, increasing to as much as 54 days for low severity CVEs, and the oldest unpatched \ac{CVE} was 340 days old~\cite{Rapid7}.
 
 %% % JS: I think this is false (or unproven, anyway):
 % A client-side solution does not rely on application developers, so it reduces the turnaround time between a vulnerability and its patch.
@@ -144,7 +145,7 @@ client-side \ac{XSS} across popular websites and find that as many as
 %% attacker.
 %
 \textbf{To provide users with the means to protect themselves in the absence
-of control over servers, we strongly believe that a novel client-side
+of control over servers, we believe that a client-side
 solution is necessary.}
 
 A number of existing solutions in this area also suffer from high
@@ -153,20 +154,19 @@ rates of false-positives and false-negatives. %% , due to the lack of
 For example, NoScript~\cite{Noscript} works via domain white-listing, thus by
 default, JavaScript scripts and other code will not execute. However,
 not all scripts outside of the whitelist should be assumed to be
-malicious. Browser-level filters like XSS Auditor work based on
+malicious. Browser-level filters like XSS Auditor use
 general policies and can therefore incorrectly sanitize non-malicious
 content.
 
 \textbf{We posit that the DOM is the right place to mitigate XSS
   attacks as it provides a full picture of the web application.} While
 most of the functionality we provide could be done by a network filter
-in front of the browser, we take advantage of additional context
-provided by the browser.
+in front of the browser, we take advantage of additional browser context.
 %
 Particularly, when an exploit occurs as a result of user interactions,
-like on response to a click, we
-benefit from knowledge of the initiating tab to filter the
-response. Previous client-side solutions have opted for detectors that were generic and site-agnostic~\cite{Kirda:2009:CCS:2639535.2639808,Jim:2007:DSI:1242572.1242654,Hallaraker:2005:DMJ:1078029.1078861}. Our work goes in the opposite direction, and tries rather to prevent precisely-defined exploits in specific applications. 
+like in response to a click, our approach
+benefits from knowing the initiating tab to filter the
+response. Previous client-side solutions have opted for detectors that were generic and site-agnostic~\cite{Kirda:2009:CCS:2639535.2639808,Jim:2007:DSI:1242572.1242654,Hallaraker:2005:DMJ:1078029.1078861}. Our work goes in the opposite direction, and tries to instead prevent precisely-defined exploits in specific applications. 
 
 If a patch for a server-side vulnerability can be ``translated'' into
 an equivalent set of operations to apply on the fully formed HTML
@@ -199,10 +199,14 @@ in terms of exploit detection and sanitization. %% We believe that this
 %% model is not a step backwards for vulnerability detection. There are
 %% many exploits that will not be caught by other approaches;
 Application-specific signatures accurately dispose
-of exploits while retaining the web site's usability. We acknowledge that due to the nature of signatures,
-however, this is not a ``one size fits all'' solution, and is meant to
-safeguard users' security in coordination with existing
-and future solutions.
+of exploits while retaining the web site's usability.
+
+%% We acknowledge that due to the nature of signatures,
+%% however, this is not a ``one size fits all'' solution, and is meant to
+%% safeguard users' security in coordination with existing
+%% and future solutions.
+
+
 %% IB: Cut details below -- too detailed.
 %% 
 %% Furthermore, they rely on websites having a small number of external
@@ -238,7 +242,7 @@ testing it on 81 recent \ac{XSS} CVEs. %% CVE databases are
 %vulnerabilities.
 We also report \sys{}'s performance overhead on page load times
 across a wide range of sites and show that it does not significantly
-impact browsing experience.
+impact the user's browsing experience.
 
 To summarize, our contributions include:
 \begin{itemize}
