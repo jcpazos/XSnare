@@ -67,5 +67,5 @@ Furthermore, we believe that even if we load a signature when the application ha
 \textbf{Injection point search and sanitization}
 Once we have the correct signatures, we find the indices for the endpoints using our top-down, bottom-up scan, and need to check for potential malformations in the injection points, as described in \autoref{multiple_injections} (lines 19-24). The page load is blocked and a message is returned to the user, or if the signature developer specifies so, sanitization proceeds on the new endpoints. Finally, if all \textbf{endPoint} pairs are in the expected order, we sanitize each injection point (lines 25-27).
 
-\subsection{Sanitization methods}
+\subsection{Sanitization methods} \label{sanitization_methods}
 We provide different types of sanitization: "DOMPurify", "escape", and "regex". Regex Pattern matching can be particularly effective when the expected value has a simple representation (e.g., a field for only numbers). For each of these approaches, the signature can specify a corresponding config value. DOMPurify provides a rich API for additional configuration. When escaping, defining specific characters to escape via regex can be useful. For pattern matching via regex, config specifies the value the injected should match.
