@@ -1,7 +1,8 @@
-\documentclass[sigconf, anonymous, review]{acmart}
-\settopmatter{printacmref=false} % Removes citation information below abstract
-\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
+\documentclass[10pt,conference]{IEEEtran}
+%%\settopmatter{printacmref=false} % Removes citation information below abstract
+%%\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
 \pagestyle{plain} % removes running headers
+\usepackage{amsmath}
 \usepackage{xcolor}
 \usepackage{booktabs} % For formal tables
 \usepackage{listings}
@@ -10,6 +11,8 @@
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \lstset{escapeinside={<@}{@>}}
 \usepackage{url}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 
 %% The acronym package provides support for defining acronyms, providing
@@ -97,28 +100,44 @@
 \begin{document}
 	\title{\sys: Application-specific client-side cross-site scripting protection}
 	
-	\author{Jos\'e Carlos Pazos}
-	\affiliation{%
-		\institution{University of British Columbia}
+	
+	\author{\IEEEauthorblockN{Anonymous author(s)}
 	}
-	\email{jpazos@cs.ubc.ca}
 	
-	\author{Jean-S\'ebastien L\'egar\'e}
-	\affiliation{%
-		\institution{University of British Columbia}
-	}
-	\email{jslegare@cs.ubc.ca}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	%\author{\IEEEauthorblockN{Jos\'e Carlos Pazos}
+	%	\IEEEauthorblockA{\textit{Department of Computer Science} \\
+	%		\textit{University of British Columbia}\\
+	%		Vancouver, Canada \\
+	%		jpazos@cs.ubc.ca}
+	%	\and
+	%	\IEEEauthorblockN{Jean-S\'ebastien L\'egar\'e}
+	%	\IEEEauthorblockA{\textit{Department of Computer Science} \\
+	%		\textit{University of British Columbia}\\
+	%		Vancouver, Canada \\
+	%		jslegare@cs.ubc.ca}
+	%	\and
+	%	\IEEEauthorblockN{William Aiello}
+	%	\IEEEauthorblockA{\textit{Department of Computer Science} \\
+	%			\textit{University of British Columbia}\\
+	%			Vancouver, Canada \\
+	%			aiello@cs.ubc.ca}
+	%	\and
+	%	\IEEEauthorblockN{Ivan Beschastnikh}
+	%	\IEEEauthorblockA{\textit{Department of Computer Science} \\
+	%		\textit{University of British Columbia}\\
+	%		Vancouver, Canada \\
+	%		bestchai@cs.ubc.ca}
+	%}
 	
-	\author{William Aiello}
-	\affiliation{%
-		\institution{University of British Columbia}
-	}
-	\email{aiello@cs.ubc.ca}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	
-	\input{abstract}
 	\maketitle
-	
+	\input{abstract}
 	\acresetall	% reset all acronyms used so far
 	
 	% assume we've used these common acronyms already
@@ -137,9 +156,7 @@
 	\input{limitations}
 	\input{related_work}
 	\input{conclusion}
-	
-	
-	\bibliographystyle{ACM-Reference-Format}
+	\bibliographystyle{IEEEtran}
 	\bibliography{references}
 	\input{appendix}
 
