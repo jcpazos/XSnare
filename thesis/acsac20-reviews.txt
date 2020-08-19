@@ -1,0 +1,184 @@
+Hope this message finds you well. Thank you very much for submitting
+your work to ACSAC 2020. We are sorry to inform you that your submission
+(#153 "XSnare: Application-specific client-side...") is not selected and
+will not appear in the program. This year we received 302 submissions (a
+new ACSAC record). 243 of them advanced to Round 2 and ultimately 70
+papers are selected to publish. The selection process is very
+competitive. Many strong papers are not included.
+
+The reviews of your paper are shown below. We sincerely hope these
+comments and feedback are helpful to your team. We still very much hope
+that you can join us virtually at ACSAC 2020 in December. Thank you
+again for considering ACSAC and take care!
+
+-- ACSAC PC Chairs (Daphne Yao and Heng Yin)
+
+https://acsac20.hotcrp.com
+
+Review #153A
+===========================================================================
+
+Overall merit
+-------------
+2. Weak reject
+
+Reviewer expertise
+------------------
+4. Expert
+
+Paper summary
+-------------
+The paper presents XSnare, a Firefox extension that protects users from known but unpatched XSS vulnerabilities. XSnare blocks XSS attacks based on a manually created database of XSS signatures leveraging known CVEs. The authors evaluate XSnare against 100 XSS CVEs of WordPress, two CVEs of Joomla, two of LimeSurvey, and one of Bolt, finding XSnare effective against 93.8% of these exploits.
+
+Strengths
+---------
++ An XSS defense via browser extension is an interesting idea
++ well-written and well-organized paper.
+
+Weaknesses
+----------
+- XSnare cannot defend against zero-day XSS vulnerabilities
+- XSnare's approach is subject to the same problems as block-lists (DB of signatures and DB of known frameworks).
+- Evaluation of manual effort to create signatures is flawed
+
+Comments for author
+-------------------
+The paper starts with a convincing problem statement and motivation. The idea of having a browser extension like XSnare that works as a last line of defense against XSS vulnerabilities can be very useful.
+
+My main worry is the limitation of XSnare: it can only protect against known XSS, and it cannot defend against zero-days. This limitation derives from a design choice, i.e., XSnare uses XSS signatures to stop exploitations.
+
+Apart from making it hard to protect from unknown XSS, using a  database of signatures introduce other shortcomings that could render XSnake ineffective. The accuracy of XSnake depends on the quality of the database. If a signature is missed, XSnare will not be able to prevent an XSS. Accordingly, XSnare inherits the same shortcomings of blocked list-based filters. For example, maintaining up-to-date a database of signatures is not easy, especially when the initial inputs are CVEs. CVEs do not have a predefined structure and do not contain sufficient details to determine the location of the vulnerability nor the signature.  I expect lots of work to turn a CVE into a signature, and I find unconvincing the 4 minutes (more below). Since the motivation to XSnare is developers not having time to develop or deploy a patch, I am wondering how and who should handle the task of curating the database of signatures.
+
+Then, to work in practice, updates need to be shared with extensions frequently, and the paper does not address this aspect, which is a critical one.
+
+All in all, I am not convinced that the current design of XSnare can be helpful. The authors are invited to explore more the maintainability of the database signatures, expanding on the manual effort required to turn CVEs into signatures and on the system to keep XSnare up to date.
+
+Below are additional comments:
+
+* The paper mentions that XSnare is written in a declarative language. However, the authors do not elaborate more on that, and it is unclear what they mean by declarative.
+* The evaluation suggests that the manual creation of one vulnerability signature for XSnare takes about 4 minutes, showing that manual creation is impractical at large-scale (e.g., ten thousand or more CVEs). This result is not convincing and biased. The source of bias is that the authors discarded other CVEs for several reasons, and the 4 minutes is calculated only considering the creation of signatures of good CVEs, ignoring the effort it takes to evaluate also bad CVEs. Also, it is important to note that 24 CVEs were dropped because of reproducibility issues based on the results of this paper. Basically, if the CVE does not contain a PoC, XSnare will not be able to defend from these exploitations.
+* In Section 3.1, the task of determining the application's frameworks is limited to several static probes. The knowledge database in this method of application fingerprinting requires frequent updates, which renders XSnare not effective against unknown fingerprints, and some web applications are left unprotected.
+* XSnare is challenged with the task of "automatically" identifying the exact version of the target client-side framework, e.g., to see if it requires a patch or the patch has already been made. As discussed before, maintaining the database of signatures is already challenging. Maintaining two databases up to date may be very difficult unless using lots of resources, which could be prohibitive.
+* XSnare's implementation seems to support only Firefox. Is there any plan to support other browsers?
+* The paper claims that XSnare can protect against all types of XSS, but it is unclear exactly what vulnerabilities are covered by the ~70 CVEs.
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+Review #153B
+===========================================================================
+
+Overall merit
+-------------
+2. Weak reject
+
+Reviewer expertise
+------------------
+4. Expert
+
+Paper summary
+-------------
+This paper provides a client based protection for XSS attacks. It runs in the browser as an extension, so no changes to the browser and firewalls on the client or server is required. It only works for known CVEs and assumes the security analyst writes precise enough signatures to match the CVEs , which can be accessed via a database. It analyses the HTML code in the response content, finds patterns, and removes exploits. The patterns can be specified using regular expressions. They provide a static set of sanitization functions for analysts to choose from to prevent exploitation of vulnerabilities.
+
+Strengths
+---------
+* Not relying on developers and vendors to fix known vulnerabilities and apply patches. The user can can take action by herself.
+
+Weaknesses
+----------
+* Requires lots of manual effort, e.g., for writing and testing the signatures
+* XSnare does not seem to be generalizable and would mainly be applicable to CMS applications
+* Evaluation
+  - is only conducted on CMS applications
+  - no reports on false positives and false negatives
+
+Comments for author
+-------------------
+* XSnare does not seem to be generalizable and only applicable to CMS applications because it relies on an analyst to write the signatures. If a known CVE is present in a non-CMS application with different content and structure, it is very probable for the signatures to fail. Unfortunately, the evaluation also lack non-CMS applications to prove otherwise.
+* This paper claims that it is fine to block a page entirely if the signature writer believes a given case is too complex. Preferring security over usability with no evaluation to support the claim is a weak and unrealistic argument.
+* The explanation of the the scanning mechanism in Section 2.3 is unclear and vague.
+* Assumptions on the analyst: It seems like the bulk of the work is delegated to the analyst. Examples: (1) deriving exploits from detailed CVEs; (2)  avoid removing valid HTML while handling multiple injections; and (3) blocking the page entirely if the signature writer believes a given case too complex.
+* You need to discuss how obfuscation and minification for affect detecting signatures.
+* Section 5.2 states that 24 CVEs were dropped due to reproducability issues. This problem could suggest that relying on known CVE descriptions is very limiting and not enough to prevent XSS attacks in the wild.
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+Review #153C
+===========================================================================
+
+Overall merit
+-------------
+2. Weak reject
+
+Reviewer expertise
+------------------
+4. Expert
+
+Paper summary
+-------------
+The authors propose XSnare, which is an approach to prevent XSS in outdated web applications from known exploits.
+Given that someone is willing to manually create a signature for a known exploit, XSnare can use this signature to prevent exploitation.
+The authors implement their approach as a Firefox extension and show that they can prevent the vast majority of 81 recent CVEs with a moderate overhead.
+
+Strengths
+---------
+- Well written and presented
+- Interesting solution to an actual problem
+
+Weaknesses
+----------
+- No comparison to other XSS defenses
+- Evaluation mostly limited to WordPress plugins
+
+Comments for author
+-------------------
+In general, the idea sounds promising. Creating a application-specific defense sounds counter-intuitive at first, since a generic solution would be much more interesting. However, this enables you to use information about known exploits and, with this additional knowledge, could result in a stronger defense than a generic solution like the (now deprecated) XSS Auditor -- at the cost of additional manual labor for the creation of signatures.
+
+Unfortunately, the evaluation in particular did not convince me that XSnare would actually work in practice. First of all, there is no comparison to other current or past defense techniques like the XSS Auditor or NoScript's XSS filter. It would be interesting to know how many of the exploits would have been prevented by them vs XSnare. Second, the focus on WordPress plugins is a problem. As mentioned in the paper, these have a predictable naming scheme which makes fingerprinting them a lot easier. Section 5.3 is way too short to convince me about the generalizability. This section is especially confusing since you never mention which exploits you could actually reproduce in the end and how you have chosen the software. What about popular CMSs like Ghost, Grav or Drupal? Third, there is no measurement of false positive rates, i.e. you never visited benign websites where we do not expect the presence of an exploit and check whether they still work. Last but not least, there i!
+ s no information about the robustness of this approach. It might be easy with a fresh installation of WordPress which only contains the one plugin you want to test, but you might get very different results on a real WordPress instance with a different themes and lots of other plugins also running on the same page.
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+Review #153D
+===========================================================================
+
+Overall merit
+-------------
+2. Weak reject
+
+Reviewer expertise
+------------------
+4. Expert
+
+Paper summary
+-------------
+This paper presents XSnare, a browser extension  that Firefox users can deploy to protect themselves against unpatched XSS vulnerabilities in CMS-based web applications. XSnare uses a database of XSS vulnerabilities signatures built by a security analyst from CVEs. Then, when XSnare (the extension) intercepts an HTML response, it checks it against the XSS signatures databases, seeking malicious user input in the webpages. In this case, the malicious input is sanitized, and the user presented with a benign HTML. The authors evaluated their solution against real-world XSS vulnerabilities, and demonstrate its effectiveness.
+
+Strengths
+---------
+- proposes a client-side solution that users can used to protect themselves against unpatched vulnerabilities in web applications, especially in presence of non-reactive web developers.
+- demonstrated its feasibility in particular for CMS-based web applications.
+- could potentially complement existing client-side solutions like CSP
+
+Weaknesses
+----------
+- the ability for Xsnare to keep up with new vulnerabilities is not clear
+- very limited solution (only Firefox) and requires user action
+- more effecient client-side solutions already exist, which acts on the DOM
+
+Comments for author
+-------------------
+Xsnare can be used to protect against known vulnerabilities which are left-unpatched by web developers. In this case, Wordpress and other CMS are certainly a good target. In particular, I think that this solution can be used to complement other solutions that mitigate content injection attacks such as XSS.
+
+Nonetheless, a question is who will be maintain the signature database ? As the authors have experienced, if some signatures are rather easy to write, others may require more effort. Also, nothing guarantees that the written signatures will effectively protect against various ways attackers may try to exploit the related vulnerabilities.
+
+Also, the choice of an extension is questionable. First user action is needed to install the addon. In the best case, only tech-savvy Firefox users will install it. Since the solution works at the level of HTML, I think that service workers can definitely do a better job. They work on most browsers, can intercept and manipulate HTML content before they are rendered by browsers, do not require any user action. Adapting XSnare to service workers will not require much effort, because both extensions and service workers are written in JavaScript.
+
+Finally, a client-side solution, very effective, already exist. It is called CSP. Contrary to what the authors mentionned that "CSP requires the developer to identify which scripts might be
+malicious", CSP is a whitelisting mechanism. It is sufficient to know the benign scripts in web pages and to whitelist them. And all the malicious ones will be gracefully blocked by the browser. So the comparison with CSP is unfortunate.
+
