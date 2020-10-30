@@ -87,7 +87,7 @@ types.
 Many of the studied CVEs included attacks for which there are known
 and widely deployed defenses. For example, many were cases of
 Reflected \ac{XSS}, where the URL revealed the existence of an attack,
-e.g.,: \url{http://<target>&page-uri=<script>alert("\ac{XSS}")</script>}
+e.g.,: \url{http://<target>\&page-uri=<script>alert("XSS")</script>}
 While Chrome's built-in \ac{XSS} auditor blocked this request, Firefox
 did not, and so we still wrote signatures for such attacks\footnote{In
 practice, we found several cases where even XSS auditor did not block
@@ -173,7 +173,7 @@ corresponds to an exploit with 7 injection points; each of
 these belongs to a part of the HTML with generic element
 identifiers. Our language provides a means to overcome this, by allowing
 the developer to specify the element's "position": for example, if there are
-three <h3 class="title"> elements, in the HTML, and only one of them
+three $<$h3 class="title"$>$ elements, in the HTML, and only one of them
 is an injection starting point, the writer can specify that the third
 one needs to be sanitized. The same can be done for the ending points. As
 there were 7 of such points, debugging took longer than for

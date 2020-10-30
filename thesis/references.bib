@@ -507,3 +507,60 @@ acmid = {2352994},
 publisher = {Springer-Verlag},
 address = {Berlin, Heidelberg},
 } 
+
+@INPROCEEDINGS{6825636, 
+ author={E. {Abgrall} and Y. L. {Traon} and S. {Gombault} and M. {Monperrus}}, 
+ booktitle={2014 IEEE Seventh International Conference on Software Testing, Verification and Validation Workshops}, 
+  title={Empirical Investigation of the Web Browser Attack Surface under Cross-Site Scripting: An Urgent Need for Systematic Security Regression Testing}, 
+  year={2014}, 
+ volume={}, 
+ number={},
+  pages={34-41},  
+doi={10.1109/ICSTW.2014.63}}
+
+
+@inproceedings{10.1145/1595696.1595711,
+author = {Bezemer, Cor-Paul and Mesbah, Ali and van Deursen, Arie},
+title = {Automated Security Testing of Web Widget Interactions},
+year = {2009},
+isbn = {9781605580012},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1595696.1595711},
+doi = {10.1145/1595696.1595711},
+abstract = {We present a technique for automatically detecting security vulnerabilities in client-side self-contained components, called web widgets, that can co-exist independently on a single web page. In this paper we focus on two security scenarios, namely the case in which (1) a malicious widget changes the content (DOM) of another widget, and (2) a widget steals data from another widget and sends it to the server via an HTTP request. We propose a dynamic analysis approach for automatically executing the web application and analyzing the runtime changes in the user interface, as well as the outgoing HTTP calls, to detect inter-widget interaction violations.Our approach, implemented in a number of open source ATUSA plugins, called DIVA, requires no modification of application code, and has few false positives. We discuss the results of an empirical evaluation of the violation revealing capabilities, performance, and scalability of our approach, by means of two case studies, on the Exact Widget Framework and Pageflakes, a commercial, widely used widget framework.},
+booktitle = {Proceedings of the 7th Joint Meeting of the European Software Engineering Conference and the ACM SIGSOFT Symposium on The Foundations of Software Engineering},
+pages = {81–90},
+numpages = {10},
+keywords = {security testing, web applications},
+location = {Amsterdam, The Netherlands},
+series = {ESEC/FSE '09}
+}
+
+@inproceedings{10.1145/1368088.1368112,
+author = {Wassermann, Gary and Su, Zhendong},
+title = {Static Detection of Cross-Site Scripting Vulnerabilities},
+year = {2008},
+isbn = {9781605580791},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1368088.1368112},
+doi = {10.1145/1368088.1368112},
+abstract = {Web applications support many of our daily activities, but they often have security problems, and their accessibility makes them easy to exploit. In cross-site scripting (XSS), an attacker exploits the trust a web client (browser) has for a trusted server and executes injected script on the browser with the server's privileges. In 2006, XSS constituted the largest class of newly reported vulnerabilities making it the most prevalent class of attacks today. Web applications have XSS vulnerabilities because the validation they perform on untrusted input does not suffice to prevent that input from invoking a browser's JavaScript interpreter, and this validation is particularly difficult to get right if it must admit some HTML mark-up. Most existing approaches to finding XSS vulnerabilities are taint-based and assume input validation functions to be adequate, so they either miss real vulnerabilities or report many false positives.This paper presents a static analysis for finding XSS vulnerabilities that directly addresses weak or absent input validation. Our approach combines work on tainted information flow with string analysis. Proper input validation is difficult largely because of the many ways to invoke the JavaScript interpreter; we face the same obstacle checking for vulnerabilities statically, and we address it by formalizing a policy based on the W3C recommendation, the Firefox source code, and online tutorials about closed-source browsers. We provide effective checking algorithms based on our policy. We implement our approach and provide an extensive evaluation that finds both known and unknown vulnerabilities in real-world web applications.},
+booktitle = {Proceedings of the 30th International Conference on Software Engineering},
+pages = {171–180},
+numpages = {10},
+keywords = {static analysis, web applications, cross-site scripting, input validation},
+location = {Leipzig, Germany},
+series = {ICSE '08}
+}
+
+@INPROCEEDINGS{5070521, 
+ author={A. {Kieyzun} and P. J. {Guo} and K. {Jayaraman} and M. D. {Ernst}}, 
+ booktitle={2009 IEEE 31st International Conference on Software Engineering},   
+title={Automatic creation of SQL Injection and cross-site scripting attacks},   
+year={2009},
+  volume={}, 
+ number={}, 
+ pages={199-209}, 
+ doi={10.1109/ICSE.2009.5070521}}

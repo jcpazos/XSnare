@@ -4,7 +4,7 @@ We classify existing work into several categories: client-side, server-side, bro
 \noindent \textbf{Server-side techniques.}
 In addition to existing parameter sanitization techniques,
 taint-tracking has been proposed as a means to consolidate
-sanitization of vulnerable parameters~\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325}. These
+sanitization of vulnerable parameters, and identify vulnerabilities automatically. ~\cite{10.1145/1368088.1368112, Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325, 5070521}. These
 techniques are complementary to ours, and provide an additional line
 of defence against \ac{XSS}. However, many of them rely on the
 client-side rendering to maintain the server-side properties, which
@@ -39,7 +39,7 @@ Auditor in \autoref{introduction}, another important one is the
  \ac{CSP}~\cite{CSP}. It has been widely adopted and
 in many cases provides developers with a reliable way to protect
 against \ac{XSS} and \ac{CSRF} attacks. However, \ac{CSP} requires the developer to identify which scripts
-might be malicious.
+might be malicious. Previous work has also highlighted the need for further built-in defences \cite{6825636}.
 
 \noindent \textbf{Client and server hybrids.}
 XSS-Dec~\cite{Sundareswaran:2012:XHS:2352970.2352994} uses a proxy which keeps track of an encrypted version of the server's source files, and applies this information to derive exploits in a page visited by the user. This approach is similar to ours, since we assume previous

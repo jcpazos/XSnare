@@ -80,18 +80,20 @@ verification function was less than 10ms for 87.6\% of sites
 (\autoref{fig:verification_time_string_length}). This corroborates our
 findings that the slowdown is mostly negligible.
 
+\textbf{False positives on the Web.} For each website, we recorded the number of loaded signatures. We report a 0\% FP rate for these. Thus, we can infer with confidence that the rate of falsely loaded signatures during an average user's web browsing is similarly low. This rate could possibly go up as we cover more frameworks. Since many of these pages are not running WordPress and are very popular and more prone to fixing their vulnerabilities, the rate of false negatives is likely extremely low as well.
 %% Furthermore, since we are using a limited set of signatures and framework 
 %% probes,
-We also tested our system with a large number of signatures. We added
+
+\textbf{Scalability with signatures.} We tested our system with a large number of signatures. We added
 15,500 signatures to our database and recorded the time spent by the
 network filter to process these sites\footnote{There are 15,303 CVEs
-  related to XSS in CVE Details~\cite{xsscves}.}. These signatures
+  related to XSS in CVE Details~\cite{xsscves}.}. These
 were crafted so that the extension would check each one against the
-loaded sites, but would not trigger the injection search and
-sanitization process.  This means that we effectively forced our
+loaded sites, without triggering the injection search and
+sanitization. Thus, we effectively forced our
 extension to test each site against 15,500 signatures. The mean time
 spent by the filtering process was 1,930ms, with less than 2,000ms for
-88\% of the sites. In practice, we would expect a smaller filter time,
+88\% of the sites. In practice, we expect a smaller filter time,
 as many frameworks would have many signatures. For example, there are
 currently 200+ CVEs listed for WordPress core and its plugins.
 
