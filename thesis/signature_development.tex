@@ -1,6 +1,6 @@
 \section{Writing Signatures} \label{signature_writing}
 
-We expect a signature developer to have a solid understanding of the principles behind \ac{XSS}, as well as web applications, HTML, CSS and JavaScript, so they can identify precise injection points. In this section, we aim to show that minor effort is required from a knowledgeable analyst when writing a signature.
+We expect a signature developer to have a solid understanding of the principles behind \ac{XSS}, as well as web applications, HTML, CSS and JavaScript, so they can identify precise injection points. In this section, we aim to show that minor effort is required from an analyst when writing a signature.
 
 
 \subsection{Case Study: CVE-2018-10309} \label{case_study}
@@ -9,20 +9,21 @@ Going back to our example in \autoref{motivating_example}, we describe the proce
 \textbf{Identifying the exploit.} An entry in Exploit Database
 \cite{studyCVE} describes a persistent \ac{XSS} vulnerability in the
 WordPress plugin Responsive Cookie Consent for versions
-1.7/1.6/1.5. This entry (as most do) comes with a \ac{PoC} for the
-exploit, which describes the Cookie Bar Border Bottom Size parameter
-as vulnerable. We run a local WordPress installation with this plugin. In general, the system does not rely on the existence of a \ac{PoC}, we personally relied on this as we did not discover the CVEs and did not have the full context of the exploit.
+1.7/1.6/1.5. This entry describes the Cookie Bar Border Bottom Size parameter
+as vulnerable. We run a local WordPress installation with this plugin.
 
-\textbf{Establishing the separation between dynamic and static content.} We insert the string "$>$script$>$alert('XSS')$<$/script$>$ in the Cookie Bar Border Bottom Size (rcc\_settings[border-size] in the HTML) input field. This results in an alert box popping up in the page.
+\textbf{Establishing the separation between dynamic and static content.} We insert the string "$>$script$>$alert('XSS')$<$/script$>$ in the Cookie Bar Border Bottom Size (rcc\_settings[border-size] in the HTML) input field as a \ac{PoC}. This results in an alert box popping up in the page.
 
-In general, the analyst is able to find the vulnerable HTML from the server-side code without having to reproduce the exploit. Since we did not write the CVE, we had to do this extra step.
+In general, the analyst can find the vulnerable HTML from the server-side code without reproducing the exploit. Since we did not discover the exploit, we had to do this extra step.
 
-In the example, the \textbf{input} element is the injection starting point, and the \textbf{label} tag is the end point, since it is the element immediately after the \textbf{input}. Identification of correct endpoints is extremely important, and in particular, when a page has multiple injection points, the signature developer must ensure the chosen elements do not overlap with other innocuous ones. In some cases, the developer might think it best to completely stop the page from loading. While one of our main goals is to maintain the page’s usability, there are cases where large portions of the document would be affected by the sanitization. We believe compromising usability for security is preferable in this case.
+In the example, the \textbf{input} element is the injection starting point, and the \textbf{label} tag is the end point. Identification of correct endpoints is extremely important, and in particular, when a page has multiple injection points, the signature developer must ensure the elements do not overlap with other innocuous ones. In some cases, the developer might think it best to stop the page from loading due to the complexity of the injection points. 
+%While one of our main goals is to maintain the page’s usability, there are cases where large portions of the document would be affected by the sanitization. We believe compromising usability for security is preferable in this case.
+We believe that if sanitization is impractical, compromising usability for security is preferable.
 
 \textbf{Collecting other required page information and writing the signature.} The next step is to gather the remaining information to determine whether the signature applies to the page loaded. The full signature for this example was previously shown in \autoref{lst:xsnare_signature}. The page's HTML includes a link to a stylesheet with href "http://localhost:8080/wp-content/plugins/responsive-cookie-consent...", "wp-content/plugins/plugin-name" is the standard way of identifying that a WordPress page is running a certain plugin, in this case, "responsive-cookie-consent". Since the exploit only occurs in this specific spot in the HTML, the \textbf{typeDet} is listed as "single-unique". 
 Since the vulnerable parameter is a border-size, the \textbf{sanitizer} applied is "regex", further restricting the pattern to only numbers in \textbf{config}. We list the \textbf{endPoints} as taken from the HTML.
 
-\textbf{Testing the signature}. Finally, we load up our extension and reload the web page. We expect to not have an alert box pop up, and we manually look at the HTML to verify correct sanitization. If the exploit is not properly sanitized, the developer is able to use the debugging tools provided by the browser to check the incoming network response information seen by the extension's background page and make sure it matches the signature values.
+\textbf{Testing the signature}. Finally, we run the extension. We expect to not have an alert box pop up, and we manually look at the HTML to verify correct sanitization. If the exploit is not properly sanitized, the developer is able to use the debugging tools provided by the browser to check the incoming network response information seen by the extension's background page and make sure it matches the signature values.
 
 \iffalse
 \subsection{Signature writing process}

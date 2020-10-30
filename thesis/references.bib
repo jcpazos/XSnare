@@ -564,3 +564,74 @@ year={2009},
  number={}, 
  pages={199-209}, 
  doi={10.1109/ICSE.2009.5070521}}
+
+@inproceedings{10.1145/1390630.1390661,
+author = {Wassermann, Gary and Yu, Dachuan and Chander, Ajay and Dhurjati, Dinakar and Inamura, Hiroshi and Su, Zhendong},
+title = {Dynamic Test Input Generation for Web Applications},
+year = {2008},
+isbn = {9781605580500},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1390630.1390661},
+doi = {10.1145/1390630.1390661},
+abstract = {Web applications routinely handle sensitive data, and many people rely on them to support various daily activities, so errors can have severe and broad-reaching consequences. Unlike most desktop applications, many web applications are written in scripting languages, such as PHP. The dynamic features commonly supported by these languages significantly inhibit static analysis and existing static analysis of these languages can fail to produce meaningful results on realworld web applications.Automated test input generation using the concolic testing framework has proven useful for finding bugs and improving test coverage on C and Java programs, which generally emphasize numeric values and pointer-based data structures. However, scripting languages, such as PHP, promote a style of programming for developing web applications that emphasizes string values, objects, and arrays.In this paper, we propose an automated input test generation algorithm that uses runtime values to analyze dynamic code, models the semantics of string operations, and handles operations whose argument and return values may not share a common type. As in the standard concolic testing framework, our algorithm gathers constraints during symbolic execution. Our algorithm resolves constraints over multiple types by considering each variable instance individually, so that it only needs to invert each operation. By recording constraints selectively, our implementation successfully finds bugs in real-world web applications which state-of-the-art static analysis tools fail to analyze.},
+booktitle = {Proceedings of the 2008 International Symposium on Software Testing and Analysis},
+pages = {249–260},
+numpages = {12},
+keywords = {concolic testing, automatic test generation, web applications, directed random testing},
+location = {Seattle, WA, USA},
+series = {ISSTA '08}
+}
+
+@ARTICLE{5416728,
+author={S. {Artzi} and A. {Kiezun} and J. {Dolby} and F. {Tip} and D. {Dig} and A. {Paradkar} and M. D. {Ernst}},
+  journal={IEEE Transactions on Software Engineering}, 
+  title={Finding Bugs in Web Applications Using Dynamic Test Generation and Explicit-State Model Checking},   
+year={2010},  
+volume={36}, 
+ number={4},
+pages={474-494},
+  doi={10.1109/TSE.2010.31}}
+
+@inproceedings{10.1145/2393596.2393608,
+author = {Xiao, Xusheng and Paradkar, Amit and Thummalapenta, Suresh and Xie, Tao},
+title = {Automated Extraction of Security Policies from Natural-Language Software Documents},
+year = {2012},
+isbn = {9781450316149},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2393596.2393608},
+doi = {10.1145/2393596.2393608},
+booktitle = {Proceedings of the ACM SIGSOFT 20th International Symposium on the Foundations of Software Engineering},
+articleno = {12},
+numpages = {11},
+keywords = {access control, natural language processing, requirements analysis},
+location = {Cary, North Carolina},
+series = {FSE '12}
+}
+
+@INPROCEEDINGS{8094406,
+  author={J. {Pan} and X. {Mao}},
+  booktitle={2017 IEEE International Conference on Software Maintenance and Evolution (ICSME)},  
+ title={Detecting DOM-Sourced Cross-Site Scripting in Browser Extensions}, 
+  year={2017}, 
+ volume={}, 
+ number={},
+pages={24-34},  
+doi={10.1109/ICSME.2017.11}}
+
+@InProceedings{10.1007/978-3-642-04444-1_33,
+author="Sun, Fangqi
+and Xu, Liang
+and Su, Zhendong",
+editor="Backes, Michael
+and Ning, Peng",
+title="Client-Side Detection of XSS Worms by Monitoring Payload Propagation",
+booktitle="Computer Security -- ESORICS 2009",
+year="2009",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="539--554",
+abstract="Cross-site scripting (XSS) vulnerabilities make it possible for worms to spread quickly to a broad range of users on popular Web sites. To date, the detection of XSS worms has been largely unexplored. This paper proposes the first purely client-side solution to detect XSS worms. Our insight is that an XSS worm must spread from one user to another by reconstructing and propagating its payload. Our approach prevents the propagation of XSS worms by monitoring outgoing requests that send self-replicating payloads. We intercept all HTTP requests on the client side and compare them with currently embedded scripts. We have implemented a cross-platform Firefox extension that is able to detect all existing self-replicating XSS worms that propagate on the client side. Our test results show that it incurs low performance overhead and reports no false positives when tested on popular Web sites.",
+isbn="978-3-642-04444-1"
+}

@@ -96,7 +96,7 @@ a reflected XSS.}.
 We wrote 59 WordPress signatures in total, which got rid of the PoC
 exploit when sanitized with one of our three methods. Note that while
 a PoC is often the most simple form of an attack, our sanitization
-methods, and in particular DOMPurify, can get rid of complex
+methods can get rid of complex
 injections as well. We were able to include several CVEs in some PoCs
 because they occurred in the same page and affected the same
 plugin. Overall, these signatures represent 71 (93.4\%) signed
@@ -104,14 +104,12 @@ CVEs. The 5 we were not able to sign were due to lack of identifiers
 in the HTML, which would result in potentially large chunks of the
 document being replaced\footnote{In these cases, the signature developer
 can weigh the trade-offs and decide whether the added cost is worth
-it.}
+it.}.
 
 After manual testing, the majority of the 71 signatures maintained the
 same layout and core functionality of the webpage. However, 12
-signatures caused some elements to be rearranged, modifying the page's
-visual aspect. One caused a small part of the page to become unusable,
-due to the sanitization method (a table showing user information
-was now rendered as blank). Most of the responsibility of maintaining
+signatures caused some elements to be rearranged. One caused a  
+table showing user information to render as blank. Most of the responsibility of maintaining
 functionality is left to the signature developer. We found that being precise
 is key to retaining functionality. Furthermore, even if the layout of the page is
 affected, we believe that applying the signature is preferable
@@ -149,8 +147,8 @@ the 5 exploits. This brought our CVE coverage rate up to 93.8\%.
 one of the authors to compose each of the signatures. Each time
 measurement includes the time it took to check the HTML injection
 points, write the signature and to debug it. We do not include the
-time taken to discover and carry out an exploit, as this is part of
-the CVE writing process. The median time is 3.89 minutes, and the
+time taken to discover and carry out an exploit, as we assume a vulnerability
+has been discovered already. The median time is 3.89 minutes, and the
 standard deviation is 4.18 minutes. 72\% of signatures were written in
 under 5 minutes. We believe this to be a reasonable amount of time
 considering the security granted by our extension.
@@ -164,35 +162,31 @@ innocuous, but with exploits still occurring after sanitization. As
 this script was part of the initial request, we eventually got to the
 root of the problem. We believe a more experienced exploit analyst
 might be able to detect this kind of behaviour more
-easily. %% Furthermore, having so many injection points in the HTML is
-%% cause for great complexity, and the writer can decide to block the
-%% page entirely, which would bring down the time taken.
-
-The signature which took the second longest time to write (18 minutes)
-corresponds to an exploit with 7 injection points; each of
-these belongs to a part of the HTML with generic element
-identifiers. Our language provides a means to overcome this, by allowing
-the developer to specify the element's "position": for example, if there are
-three $<$h3 class="title"$>$ elements, in the HTML, and only one of them
-is an injection starting point, the writer can specify that the third
-one needs to be sanitized. The same can be done for the ending points. As
-there were 7 of such points, debugging took longer than for
-other signatures.
-%% Again, this is a complex case, and can be
-%% more prone to user error than other signatures, the writer might
-%% instead decide to block the page entirely.
+easily.
+% As only a small number of these were present, we expect the time
+%taken to compose a typical signature to be lower than the overall median in this experiment.
+%The signature which took the second longest time to write (18 minutes)
+%corresponds to an exploit with 7 injection points; each of
+%these belongs to a part of the HTML with generic element
+%identifiers. Our language provides a means to overcome this, by allowing
+%the developer to specify the element's "position": for example, if there are
+%three $<$h3 class="title"$>$ elements, in the HTML, and only one of them
+%is an injection starting point, the writer can specify that the third
+%one needs to be sanitized. The same can be done for the ending points. As
+%there were 7 of such points, debugging took longer than for
+%other signatures.
 
 %% Our dataset contained signatures which cover several CVEs, as
 %% sometimes a single page is associated with multiple CVEs. We had 6
 %% such pages. which had a median write time of 6.54 minutes. This means
 %% that the time per CVE is lower than the overall median of
 %% 3.89.
-Another source of longer timings are complicated 
-listener type signatures, like the ones for exploits caused by an
-XHR. We had 4 such signatures and composed these with a median time of 9.86 minutes.
+%Another source of longer timings are complicated 
+%listener type signatures, like the ones for exploits caused by an
+%XHR. We had 4 such signatures and composed these with a median time of 9.86 minutes.
 %% these had a median write time of 9.86.
-As only a small number of these were present, we expect the time
-taken to compose a typical signature to be lower than the overall median in this experiment.
+%As only a small number of these were present, we expect the time
+%taken to compose a typical signature to be lower than the overall median in this experiment.
 
 \begin{figure}[h]
 	\begin{center}

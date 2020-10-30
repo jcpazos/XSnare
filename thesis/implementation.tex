@@ -72,11 +72,12 @@ latest version, and versioning information is often unavailable on the client-si
 We have observed that even if we load a signature when the
 application has already been patched on the server, it will often
 preserve the page's functionality. Motivated by this observation, our mechanism
-follows a series of increasingly accurate but less applicable version
-identifiers: first, we apply framework specific version probes. If
-these are not successful, the signature language provides
-functionality for version identification in the HTML through regex. If
-versioning is unavailable in the HTML, the patch is applied
+follows a series of increasingly accurate but less precise version
+identifiers.
+%: first, we apply framework specific version probes. If
+%these are not successful, the signature language provides
+%functionality for version identification in the HTML through regex. 
+If versioning is unavailable in the HTML, the patch is applied
 as we cannot be sure the page is running patched
 software. %% Our tool takes advantage of having perfect knowledge of an
 %% exploit's conditions, which reduces the rate of false positives

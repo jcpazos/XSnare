@@ -179,7 +179,10 @@ the CVE information into a signature does not require active
 participation from the application developers -- security enthusiasts and
 web developers are sufficiently skilled to compose signatures.
 
-In general, we do not require the existence of a publicly disclosed CVE to be able to write a signature for an exploit. As described in \autoref{viability}, CVEs are a convenient way for us to test our system against real-world vulnerabilities. However, a knowledgeable analyst can write a signature without a public CVE. In fact, for security measures, many CVEs are not publicly available until the application developer has patched its software. Our system can help reduce the time between zero day attacks and patch deployment: an analyst can write a signature for a vulnerability as soon as they know the issue.
+In general, we do not require the existence of a publicly disclosed CVE to be able to write a signature for an exploit.
+CVEs have been useful to us as we did not discover the exploits.
+% As described in \autoref{viability}, CVEs are a convenient way for us to test our system against real-world vulnerabilities. %However, 
+A knowledgeable analyst can write a signature without a public CVE. In fact, for security measures, many CVEs are not publicly available until the application developer has patched its software. Our system can help reduce the time between zero day attacks and patch deployment: an analyst can write a signature for a vulnerability as soon as they know the issue.
 
 Long term, we imagine that volunteers (or entrepreneurs) would
 cultivate and maintain the signature database. New signatures could be
@@ -252,8 +255,9 @@ We considered allowing arbitrary sanitization code in
 signatures. While it would open complex sanitization possibilities, we
 have decided against it, principally for security reasons. The minimal
 set of functions we settled on also sufficed to express all of the
-signatures defined for this paper. See ~\autoref{appendix:language_specification} for
-more details.
+signatures defined for this paper.
+% See ~\autoref{appendix:language_specification} for
+%more details.
 
 %% \begin{enumerate} 
 %% 	\item Security Concerns: We assume signatures come from a trusted source. However, partly due to the way they are currently stored, it is possible for an attacker to add malicious signatures. In general, this would only harming the web site user experience by removing safe content. The ability to run arbitrary code would lead a serious security flaw, as it would execute in a high-privilege environment.
@@ -388,7 +392,7 @@ in the end points. As with the previous scenario, we have to sanitize
 the outermost end points, potentially deleting non-malicious
 content. The signature developer specifies the sanitization behavior.
 
-Note that these complex cases do not mean that our approach is not always applicable, 
+Note that these complex cases do not mean that our approach is not applicable, 
 as the extension provides a choice for blocking the page entirely if the signature
 writer believes a given case is too complex for our signature language.
 
