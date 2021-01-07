@@ -635,3 +635,21 @@ pages="539--554",
 abstract="Cross-site scripting (XSS) vulnerabilities make it possible for worms to spread quickly to a broad range of users on popular Web sites. To date, the detection of XSS worms has been largely unexplored. This paper proposes the first purely client-side solution to detect XSS worms. Our insight is that an XSS worm must spread from one user to another by reconstructing and propagating its payload. Our approach prevents the propagation of XSS worms by monitoring outgoing requests that send self-replicating payloads. We intercept all HTTP requests on the client side and compare them with currently embedded scripts. We have implemented a cross-platform Firefox extension that is able to detect all existing self-replicating XSS worms that propagate on the client side. Our test results show that it incurs low performance overhead and reports no false positives when tested on popular Web sites.",
 isbn="978-3-642-04444-1"
 }
+
+@inproceedings{10.1145/1595696.1595711,
+author = {Bezemer, Cor-Paul and Mesbah, Ali and van Deursen, Arie},
+title = {Automated Security Testing of Web Widget Interactions},
+year = {2009},
+isbn = {9781605580012},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1595696.1595711},
+doi = {10.1145/1595696.1595711},
+abstract = {We present a technique for automatically detecting security vulnerabilities in client-side self-contained components, called web widgets, that can co-exist independently on a single web page. In this paper we focus on two security scenarios, namely the case in which (1) a malicious widget changes the content (DOM) of another widget, and (2) a widget steals data from another widget and sends it to the server via an HTTP request. We propose a dynamic analysis approach for automatically executing the web application and analyzing the runtime changes in the user interface, as well as the outgoing HTTP calls, to detect inter-widget interaction violations.Our approach, implemented in a number of open source ATUSA plugins, called DIVA, requires no modification of application code, and has few false positives. We discuss the results of an empirical evaluation of the violation revealing capabilities, performance, and scalability of our approach, by means of two case studies, on the Exact Widget Framework and Pageflakes, a commercial, widely used widget framework.},
+booktitle = {Proceedings of the 7th Joint Meeting of the European Software Engineering Conference and the ACM SIGSOFT Symposium on The Foundations of Software Engineering},
+pages = {81–90},
+numpages = {10},
+keywords = {web applications, security testing},
+location = {Amsterdam, The Netherlands},
+series = {ESEC/FSE '09}
+}

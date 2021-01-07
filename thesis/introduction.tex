@@ -8,7 +8,7 @@ unprotected.
 
 Informally, the cause of \xss is a lack of input validation:
 user-chosen data ``escapes'' into a page's template and makes its way
-into the JavaScript engine, or modifies the DOM.
+into the JavaScript engine, or modifies the Document Object Model (DOM).
 %
 Consequently, many of the \xss defenses published so far
 propose to fix the problem at the source, by properly separating the
@@ -64,7 +64,7 @@ that 30.95\% of Alexa's top 1 Million sites run a vulnerable version
 of WordPress~\cite{wpwhitesecurity}.
 
 Users are at the mercy of developers and administrators if
-they want to access safe, up-to-date, applications. Our solution, \textbf{\sys},
+they want to access safe, up-to-date, applications. Our solution, \sys,
 helps with this problem -- based on information from past disclosures,
 \sys patches known page vulnerabilities \emph{directly in the browser}.
 
@@ -117,11 +117,11 @@ including \emph{``Bypasses abound''}, \emph{``It prevents some legit
   good to do''}~\cite{deprecatexssauditor}. Stock et
 al.~\cite{precise_dom_xss} propose enhancements to XSS Auditor and
 cover a wider range of exploits than the auditor, but are limited to
-DOM-based \ac{XSS}.  \textbf{By contrast, our work covers all types of \ac{XSS}.}
+DOM-based \ac{XSS}.  By contrast, our work covers all types of \ac{XSS}.
 
 Implementing adequate server-side protections~\cite{Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325} requires time.
 % throughout a codebase could arguably qualify as a colossal task, considering the high turnaround times for resolving simpler bugs.
-A 2018 study found that the average time to patch a \ac{CVE}, all severities combined, is 38 days, increasing to as much as 54 days for low severity CVEs, and the oldest unpatched \ac{CVE} was 340 days old~\cite{Rapid7}.
+A 2018 study found that the average time to patch a known exploit in the form of a \ac{CVE}, all severities combined, is 38 days, increasing to as much as 54 days for low severity \ac{CVE}s, and the oldest unpatched \ac{CVE} was 340 days old~\cite{Rapid7}.
 
 %% % JS: I think this is false (or unproven, anyway):
 % A client-side solution does not rely on application developers, so it reduces the turnaround time between a vulnerability and its patch.
@@ -144,9 +144,9 @@ client-side \ac{XSS} across popular websites and find that as many as
 %% many as 6\% of these sites are vulnerable to an attack by a realistic
 %% attacker.
 %
-\textbf{To provide users with the means to protect themselves in the absence
+To provide users with the means to protect themselves in the absence
 of control over servers, we believe that a client-side
-solution is necessary.}
+solution is necessary.
 
 A number of existing solutions in this area also suffer from high
 rates of false-positives and false-negatives. %% , due to the lack of
@@ -158,8 +158,8 @@ malicious. Browser-level filters like XSS Auditor use
 general policies and can therefore incorrectly sanitize non-malicious
 content.
 
-\textbf{We posit that the DOM is the right place to mitigate XSS
-  attacks as it provides a full picture of the web application.} While
+We posit that the DOM is the right place to mitigate XSS
+  attacks as it provides a full picture of the web application. While
 most of the functionality we provide could be done by a network filter
 in front of the browser, we take advantage of additional browser context.
 %
@@ -234,7 +234,7 @@ of exploits while retaining the web site's usability.
 %% mechanisms that achieve this in Section~\ref{xsnare_design}.
 
 We evaluate \sys by
-testing it on 81 recent \ac{XSS} CVEs. %% CVE databases are
+testing it on 81 recent \ac{XSS} \ac{CVE}s. %% CVE databases are
 %% well-maintained and a widely available sources of real-world vulnerabilities.
 %
 %They are one of the main tools

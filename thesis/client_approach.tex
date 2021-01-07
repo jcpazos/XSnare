@@ -24,9 +24,9 @@ correctly execute \sys. We also depend on the browser to disallow
 malicious tampering with the client-side signature database.
 
 We trust the analyst who writes the signature definitions used by
-\sys. For \sys to be effective the signatures must be correct. An
-incorrect signature that fails to match a vulnerability, however, will
-only minimally impact the page (with a longer page load time).
+\sys. For \sys to be effective the signatures must be correct. However,
+a signature that fails to match a vulnerability, will
+only impact the page with longer load times.
 
 \subsection{Overview}
 
@@ -46,7 +46,7 @@ which apply to the document. These signatures specify one or more
 speaking, to regions of the DOM where improperly sanitized content
 could be injected.  The extension's sanitizer
 eliminates any malicious content and outputs a clean HTML document to
-the browser for rendering (\autoref{filter_algorithm}).
+the browser for rendering. %(\autoref{filter_algorithm}).
 
 %% The network filter is presented in \autoref{filter_algorithm} describes the
 %% network filtering process. Section \ref{implementation} explains this
@@ -55,7 +55,7 @@ the browser for rendering (\autoref{filter_algorithm}).
 \subsection{An example application of \sys} \label{motivating_example}
 
 To further explain our approach, we present a small example of how
-DOM context can be used to defend against XSS, taken from CVE
+HTML context can be used to defend against XSS, taken from CVE
 2018-10309~\cite{examplecve}. This is reproducible in an off-the-shelf
 WordPress installation running the Responsive Cookie Consent plugin,
 v1.7. This is a stored \xss vulnerability, and as such is not caught
@@ -80,7 +80,7 @@ Normally, the \textbf{input} might have a value of "0":
 <label class="description"
  for="rcc_settings[border-size]">
 \end{lstlisting}
-However, the php code is vulnerable to an injection attack, e.g.:
+However, the php code is vulnerable to an injection attack:
 \begin{lstlisting}
 border-size = ""><script>alert('XSS')</script>
 \end{lstlisting}
@@ -125,10 +125,10 @@ Other similar vulnerabilities had indeed been fixed, but not this one~\cite{rccp
 %%which sanitizes the parameters by
 %%checking for common invalid characters like invalid UTF-8.
 
-\sys does not automatically determine the relevant actions to
+\sys does not automatically determine the actions to
 implement from a patch. We assign this task to a security
-analyst, who will act as the signature developer for a given
-exploit. The system will however automate the signature matching and
+analyst, who acts as the signature developer for an
+exploit. The system automates signature matching and
 sanitization.
 
 %% In the following sections we give a detailed description of each
@@ -229,8 +229,9 @@ endPoints:
 for="rcc_settings[border-size]">']
 \end{lstlisting}
 
-A description of the development process for this signature is given
-in Section \ref{case_study}. In summary, a signature will have the
+%A description of the development process for this signature is given
+%in Section \ref{case_study}.
+ In summary, a signature will have the
 necessary information to determine whether a loaded page has a
 vulnerability, and specify appropriate actions for eliminating
 any malicious payloads.
@@ -360,10 +361,7 @@ pairs of end points, the detector cannot tell the difference between
 the solid and dotted patterns, and will not get rid of the content
 injected in the star. Therefore, we have to use the first starting
 point and the last ending point before a starting one (when searching
-from the bottom-up) and sanitize everything in between. This might get
-rid of a substantial amount of valid HTML, so we defer to the
-signature developer's judgment of what behavior the detector should
-follow. We expand upon this further in \autoref{case_study}.
+from the bottom-up) and sanitize everything in between.
 
 
 \begin{figure}[h]
@@ -388,9 +386,12 @@ non-malicious content, the black pluses (+). Since we know the order in which th
 similarly, a starting \code{endPoint} before the next expected closing
 \code{endPoint}, this attack can be identified. In the diagram, the
 order of the solid elements characterizes the possible malformations
-in the end points. As with the previous scenario, we have to sanitize
-the outermost end points, potentially deleting non-malicious
-content. The signature developer specifies the sanitization behavior.
+in the end points.
+ 
+In both scenarios, we have to sanitize
+the outermost end points. This might get rid of a substantial amount of valid HTML,
+so we defer to the signature developer's judgment of what behavior the 
+detector should follow. We expand upon this further in \autoref{case_study}.
 
 Note that these complex cases do not mean that our approach is not applicable, 
 as the extension provides a choice for blocking the page entirely if the signature
@@ -411,8 +412,7 @@ for XHR be nested inside a signature for a top-level document. If a
 page's main content matches an existing top-level signature description,
 \sys will then enable all nested XHR listeners.
 
-Signatures for dynamic requests are specified in the \js{listenerData}
-key, which includes a listener type and method. The idea is extensible
+Listing 2 shows an example of such a signature. The idea is extensible
 to scripts and other objects loaded separately from the main document
 (e.g., images, stylesheets, etc.).
 

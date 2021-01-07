@@ -1,4 +1,4 @@
-\documentclass[10pt,conference]{IEEEtran}
+\documentclass[10pt,conference, compsocconf]{IEEEtran}
 %%\settopmatter{printacmref=false} % Removes citation information below abstract
 %%\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
 \pagestyle{plain} % removes running headers
@@ -101,7 +101,23 @@
 	\title{\sys: Application-specific client-side cross-site scripting protection}
 	
 	
-	\author{\IEEEauthorblockN{Anonymous author(s)}
+	\author{\IEEEauthorblockN{Jos\'e Carlos Pazos}
+		\IEEEauthorblockA{Department of Computer Science\\
+			University of British Columbia\\
+			Vancouver\\
+			jpazos@cs.ubc.ca}
+		\and
+		\IEEEauthorblockN{Jean-Sébastien Légaré}
+		\IEEEauthorblockA{Department of Computer Science\\
+			University of British Columbia\\
+			Vancouver\\
+			jslegare@cs.ubc.ca}
+		\and
+		\IEEEauthorblockN{Ivan Beschastnikh}
+		\IEEEauthorblockA{Department of Computer Science\\
+			University of British Columbia\\
+			Vancouver\\
+			bestchai@cs.ubc.ca}
 	}
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -143,7 +159,7 @@
 	% assume we've used these common acronyms already
 	% this will prevent their expansion
 	% \acused{XSS}
-	\acused{CVE}
+	%\acused{CVE}
 	\acused{SQL}
 	\acused{DDoS}
 	
@@ -156,6 +172,10 @@
 	\input{limitations}
 	\input{related_work}
 	\input{conclusion}
+	
+	\section*{Acknowledgment}
+	We would like to thank Dr. William Aiello, who provided crucial expert advice and insight in the early
+	stages of the project. We miss him dearly.
 	%\input{appendix}
 	\bibliographystyle{IEEEtran}
 	\bibliography{references}
