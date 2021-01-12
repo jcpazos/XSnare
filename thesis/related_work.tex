@@ -1,7 +1,7 @@
 \section{Related Work}
-We classify existing work into several categories: client-side, server-side, browser built-in, and hybrid: a combination of these.
+We classify existing work into several categories: client-side, server-side, browser built-in, and hybrid approaches.
 
-\noindent \textbf{Server-side techniques.}
+\textbf{Server-side techniques.}
 In addition to existing parameter sanitization techniques,
 taint-tracking has been proposed as a means to consolidate
 sanitization of vulnerable parameters, and identify vulnerabilities automatically. ~\cite{10.1145/1368088.1368112, Xu:2006:TPE:1267336.1267345,DBLP:conf/sec/Nguyen-TuongGGSE05,Pietraszek:2005:DAI:2146257.2146267,Bisht:2008:XPD:1428322.1428325, 5070521}. These techniques are complementary to ours, and provide an additional line
@@ -14,7 +14,7 @@ There has also been work on other server-side analysis approaches
 to find bugs security vulnerabilities in web applications. \cite{10.1145/1390630.1390661, 5416728, 10.1145/2393596.2393608}.
 However, these do not target XSS specifically.
 
-\noindent \textbf{Client-side techniques.}
+\textbf{Client-side techniques.}
 DOMPurify~\cite{10.1007/978-3-319-66399-9_7} presents a robust
 \ac{XSS} client-side filter. The authors
 argue that the DOM is the ideal place for sanitization to occur. While
@@ -40,15 +40,15 @@ Additionally, client-side taint tracking, through the use of static and dynamic 
  has also been applied as a means to detect XSS, either
 at the browser level or at the extension level \cite{8094406, 10.1007/978-3-642-04444-1_33}.
 
-\noindent \textbf{Browser built-in defences.}  Browsers are equipped
+\textbf{Browser built-in defences.}  Browsers are equipped
 with several built-in defences. We previously described XSS
-Auditor in \autoref{introduction}, another important one is the 
+Auditor in \autoref{introduction}. Another important one is the 
  \ac{CSP}~\cite{CSP}. It has been widely adopted and
 in many cases provides developers with a reliable way to protect
 against \ac{XSS} and \ac{CSRF} attacks. However, \ac{CSP} requires the developer to identify which scripts
 might be malicious. Previous work has also highlighted the need for further built-in defences \cite{6825636}.
 
-\noindent \textbf{Client and server hybrids.}
+\textbf{Client and server hybrids.}
 XSS-Dec~\cite{Sundareswaran:2012:XHS:2352970.2352994} uses a proxy which keeps track of an encrypted version of the server's source files, and applies this information to derive exploits in a page visited by the user. This approach is similar to ours, since we assume previous
-knowledge of the clean HTML document. Furthermore, they use anomaly-based and signature-based detection to prevent attacks. In a way, our system offloads all this functionality to the client-side, without the need for any server-side information.
+knowledge of the clean HTML document. Furthermore, they use anomaly-based and signature-based detection to prevent attacks. Our system offloads all this functionality to the client-side, without the need for any server-side information.
 

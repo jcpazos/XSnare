@@ -31,7 +31,7 @@ only impact the page with longer load times.
 \subsection{Overview}
 
 We now review the high-level operation of \sys with \autoref{fig:xsnare}.
-A user requests a page, \url{example.com}, on a
+A user requests a page, \textit{example.com}, on a
 browser with the \sys extension installed.
 %
 The response may or may not contain
@@ -108,15 +108,15 @@ the injection points in the HTML.
 
 This shares goals with the client/server hybrid approach of Nadji et
 al.~\cite{nadji2009document}. They automatically tag injected DOM elements on the
-server-side using a taint-tracking, so that the client (a
-modified browser) can reliably separate template vs
+server-side using a taint-tracking, so that a
+modified browser can reliably separate template vs
 injected content. We do not require any server-side modifications, but rather opt for a client-side tagging solution based on exploit definitions.
 
 The injected content, once identified, must be sanitized appropriately.
 The appropriate action will depend on the application setting, but
 assuming a patch has been written, it suffices to translate the
 intention in the server code's path to the client-side.
-This can be straightforward, once the fix is understood.
+This is straightforward once the fix is understood.
 %but the application developer's intention might not always be clear.
 
 The developer incorrectly claimed the bug had
@@ -174,10 +174,11 @@ heuristics to detect exploits. %% Furthermore, once new
 %% new issues with application code, inform developers and publish them for the
 %% benefit of the community in the form of CVEs.
 %
-Of course, \sys signatures will not write themselves. Luckily, converting
-the CVE information into a signature does not require active
-participation from the application developers -- security enthusiasts and
-web developers are sufficiently skilled to compose signatures.
+\sys signatures are written specifically to match a known software 
+vulnerability. Even though they cannot be generated 
+automatically, any trusted developer can write and compose 
+these signatures. This does not require participation from application developers.
+
 
 In general, we do not require the existence of a publicly disclosed CVE to be able to write a signature for an exploit.
 CVEs have been useful to us as we did not discover the exploits.
@@ -193,8 +194,8 @@ extension AdBlock, for example, relies on filter rules taken from open-source fi
 %% the power of properly maintained open-sourcing for security and privacy.
 % We don't perceive this development model to be radically different from existing ones.
 
-The challenge of automatically deriving signatures from detailed CVEs is an interesting
-one, albeit outside the scope of this paper.
+The challenge of automatically deriving signatures from detailed CVEs is challenging, 
+albeit outside the scope of this paper.
 
 %Thus, the signature database is maintained by a trusted entity which
 %audits CVEs, and a malicious analyst cannot take advantage of this
@@ -211,7 +212,8 @@ one, albeit outside the scope of this paper.
  areas in the HTML. For injection point isolation, a language based on
  regular expressions suffices to express precise
  sections of the HTML. The following is the signature that defends
- against the motivating example of \autoref{motivating_example}:
+ against the motivating example of \autoref{motivating_example}
+ (For an in-depth description of the signature language, please see \cite{pazos2020precise}):
 
  \begin{lstlisting}[breaklines=true,caption={An \sys signature},label={lst:xsnare_signature}]
 url: 'wp-admin/options-general.php?page=rcc-settings',
@@ -288,12 +290,11 @@ signatures defined for this paper.
  rewrite incoming HTML on a per-URL basis, according to the top-down,
  bottom-up scan described in \autoref{motivating_example}.
  
- The extension's detector acts as an in-network filter. We initially considered other designs but quickly found out that applying the patch at the network level was necessary for sanitization correctness: even before any code runs, parsing the HTML into a DOM tree
-might cause elements to be re-arranged into an unexpected order,
+ The extension's detector acts as an in-network filter. We initially considered other designs but quickly found out that applying the patch at the network level was necessary for sanitization correctness: even before any JavaScript code runs, the browser's built-in DOM parser can rearrange elements into an unexpected order,
 making our extension sanitize the wrong spot.  Consider the following
 example, where an element inside a $<$tr$>$ tag is rearranged after
 parsing the string:
-\vspace{-0.2cm}
+
 \begin{lstlisting}
 <table class="wp-list-table">
   <thead>
@@ -324,8 +325,8 @@ by virtue of the DOM parsing. The extension will not find an injection in the ex
 place, creating a false
 negative (FN). Similarly, elements rearranged inside an injection
 point can create false positives. This example would generate a class
-of circumvention techniques for our detector, so we can't wait until
-the website has been rendered to analyze the response.
+of circumvention techniques for our detector, so we must analyze the DOM before the
+ browser has a chance to modify it.
 
 \subsection{Handling multiple injections in one page} \label{multiple_injections}
 
@@ -345,7 +346,7 @@ could easily inject fake endPoints in between the original ones.
 \end{figure}
 
 In Figure~\ref{fig:attacker_injection}a, the brackets indicate a
-template. The content in between is an injection point (the star),
+template. The content in between (i.e. the star) is an injection point ,
 where dynamic content is injected into the template. In the case of a
 vulnerability, the injected content can expand to any arbitrary
 string. The signature separates the injection from the rest by
@@ -356,7 +357,7 @@ represented by the brackets. This HTML originally has two pairs of
 In Figure~\ref{fig:attacker_injection}b, the attacker knows these are
 being used as injection end points and decides to inject a fake ending
 point and a fake starting point (the dotted brackets), with some
-additional malicious content in between. If just looking for multiple
+additional malicious content in between. If just searching for multiple
 pairs of end points, the detector cannot tell the difference between
 the solid and dotted patterns, and will not get rid of the content
 injected in the star. Therefore, we have to use the first starting
@@ -402,10 +403,10 @@ writer believes a given case is too complex for our signature language.
 The top-level documents of web pages fetch additional dynamic content
 via \js{fetch} or AJAX APIs. Content fetched in
 this way is also vulnerable to \xss, and must be filtered. An example
-vulnerability is CVE-2018-7747 (WordPress Caldera Forms, which allows malicious
+vulnerability is CVE-2018-7747 (in WordPress Caldera Forms, which allows malicious
 content retrieved from the plugin's database to be injected in response to a click.
 
-\sys allows XHR requests to be filtered with \js{xhr}-type
+\sys allows XMLHTTPRequests (XHR) to be filtered with \js{XHR}-type
 signatures. To reduce the number of signatures that need to be
 considered when a browser issues a request, we require that signatures
 for XHR be nested inside a signature for a top-level document. If a

@@ -60,7 +60,7 @@ vulnerable page and wrote a signature to patch the exploit.
 			Caldera Forms & 200,000+ \\   
 			\hline
 		\end{tabular}
-		\caption{Most popular studied WordPress plugins}
+		\caption{Top 5 most popular WordPress plugins  included in our study.}
 		\label{table:1}
 	\end{center}
 \end{table}
@@ -76,18 +76,17 @@ against these attacks. %% This is not to say, however, that our detector
 %% of how the exploit manifests itself, and would be in a better position
 %% to write a signature.
 
-The resulting plugins we studied averaged 489,927
+The plugins we studied averaged 489,927
 installations: \autoref{table:1} shows the number of installations for
-the 5 most popular plugins we studied. For the vulnerabilities, 27
+the 5 most popular plugins studied. For the vulnerabilities, 27
 (35.5\%) could be exploited by an unauthenticated user; 56 (73.7\%)
 targeted a high-privilege user as the victim, 7 (9.2\%) had a
-low-privilege user as the victim, the rest affected users of all
-types.
+low-privilege user as the victim; the rest affected all users.
 
 Many of the studied CVEs included attacks for which there are known
 and widely deployed defenses. For example, many were cases of
 Reflected \ac{XSS}, where the URL revealed the existence of an attack,
-e.g.,: \url{http://<target>\&page-uri=<script>alert("XSS")</script>}
+e.g.,: \nolinkurl{http://<target>\&page-uri=<script>alert("XSS")</script>}
 While Chrome's built-in \ac{XSS} auditor blocked this request, Firefox
 did not, and so we still wrote signatures for such attacks\footnote{In
 practice, we found several cases where even XSS auditor did not block
@@ -114,7 +113,8 @@ functionality is left to the signature developer. We found that being precise
 is key to retaining functionality. Furthermore, even if the layout of the page is
 affected, we believe that applying the signature is preferable
 to allowing an exploit. And, unlike the complete blocking approach commonly used by malware
-detection software, our approach allows the user to access the page.
+detection software, our approach opens the option to let the user access the page.
+
 
 While our goal is to retain as much information of the page as
 possible after sanitization, we believe that even if a part of the
